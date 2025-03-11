@@ -161,6 +161,17 @@
             border-radius: 5px;
             font-size: 0.9rem;
             border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .skill-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .container {
@@ -397,34 +408,34 @@
             <div class="skill-category">
                 <h3>Software & Engines</h3>
                 <div class="skill-list">
-                    <span class="skill-tag">Maya</span>
-                    <span class="skill-tag">Unity</span>
-                    <span class="skill-tag">Unreal</span>
-                    <span class="skill-tag">CoD Engine</span>
-                    <span class="skill-tag">Perforce</span>
-                    <span class="skill-tag">Git</span>
-                    <span class="skill-tag">Mercurial</span>
+                    <span class="skill-tag"><span class="skill-icon">🔷</span>Maya</span>
+                    <span class="skill-tag"><span class="skill-icon">🎮</span>Unity</span>
+                    <span class="skill-tag"><span class="skill-icon">🎯</span>Unreal</span>
+                    <span class="skill-tag"><span class="skill-icon">🎖️</span>CoD Engine</span>
+                    <span class="skill-tag"><span class="skill-icon">🔄</span>Perforce</span>
+                    <span class="skill-tag"><span class="skill-icon">🔀</span>Git</span>
+                    <span class="skill-tag"><span class="skill-icon">🔁</span>Mercurial</span>
                 </div>
             </div>
             
             <div class="skill-category">
                 <h3>Programming Languages</h3>
                 <div class="skill-list">
-                    <span class="skill-tag">Python</span>
-                    <span class="skill-tag">C#</span>
-                    <span class="skill-tag">C++</span>
-                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag"><span class="skill-icon">🐍</span>Python</span>
+                    <span class="skill-tag"><span class="skill-icon">#</span>C#</span>
+                    <span class="skill-tag"><span class="skill-icon">++</span>C++</span>
+                    <span class="skill-tag"><span class="skill-icon">JS</span>JavaScript</span>
                 </div>
             </div>
             
             <div class="skill-category">
                 <h3>Core Competencies</h3>
                 <div class="skill-list">
-                    <span class="skill-tag">Pipeline Development</span>
-                    <span class="skill-tag">Performance Optimization</span>
-                    <span class="skill-tag">Tool Creation</span>
-                    <span class="skill-tag">Workflow Automation</span>
-                    <span class="skill-tag">Technical Problem Solving</span>
+                    <span class="skill-tag"><span class="skill-icon">🔧</span>Pipeline Development</span>
+                    <span class="skill-tag"><span class="skill-icon">⚡</span>Performance Optimization</span>
+                    <span class="skill-tag"><span class="skill-icon">🛠️</span>Tool Creation</span>
+                    <span class="skill-tag"><span class="skill-icon">⚙️</span>Workflow Automation</span>
+                    <span class="skill-tag"><span class="skill-icon">🧩</span>Technical Problem Solving</span>
                 </div>
             </div>
             
@@ -588,30 +599,37 @@
                     <h3>Get In Touch</h3>
                     
                     <div class="contact-item">
-                        <div class="contact-label">Email:</div>
+                        <div class="contact-label">📧 Email:</div>
                         <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
                     </div>
                     
                     <div class="contact-item">
-                        <div class="contact-label">Phone:</div>
+                        <div class="contact-label">📱 Phone:</div>
                         <div><a href="tel:8084695433">808-469-5433</a></div>
                     </div>
                     
                     <div class="contact-item">
-                        <div class="contact-label">LinkedIn:</div>
+                        <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
                         <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
                     </div>
                     
                     <div class="contact-item">
-                        <div class="contact-label">GitHub:</div>
+                        <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FF5722"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg> Blog:</div>
                         <div><a href="https://github.com/RawMeat3000" target="_blank">github.com/RawMeat3000</a></div>
                     </div>
+                    
                 </div>
                 
                 <div class="contact-box">
                     <h3>Let's Work Together</h3>
                     <p>I'm always open to discussing new projects, technical challenges, or opportunities to collaborate on innovative tools and pipelines.</p>
-                    <p style="margin-top: 15px;">If you need help optimizing performance, streamlining your content pipeline, or developing custom tools for your team, I'm here to help.</p>
+                    <p style="margin-top: 15px;">Whether you need help optimizing performance, streamlining your content pipeline, or developing custom tools for your team, feel free to reach out!</p>
+                    <div class="code-snippet">
+                        // Simple code example
+                        function connectWithMe() {
+                          return "Let's build something great together!";
+                        }
+                    </div>
                 </div>
             </div>
         </div>
