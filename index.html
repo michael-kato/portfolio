@@ -6,13 +6,14 @@
     <title>Michael Kato | Technical Artist</title>
     <style>
         :root {
-            --bg-color: #0a0a0a;
-            --text-color: #33ff33;
-            --accent-color: #00aaff;
-            --secondary-color: #aa00ff;
+            --bg-color: #1a1a1a;
+            --text-color: #d8d8d8;
+            --accent-color: #5b9bd5;
+            --secondary-color: #8064a2;
             --tertiary-color: #cccccc;
-            --card-bg: #111111;
-            --border-color: #33ff33;
+            --card-bg: #2a2a2a;
+            --border-color: #4f4f4f;
+            --header-bg: #252525;
         }
         
         * {
@@ -24,9 +25,9 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            padding: 20px;
+            padding: 0;
             max-width: 1200px;
             margin: 0 auto;
         }
@@ -42,24 +43,32 @@
         }
         
         header {
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
-            margin-bottom: 40px;
+            background-color: var(--header-bg);
+            padding: 40px 20px;
             text-align: center;
+            border-bottom: 1px solid var(--border-color);
         }
         
-        .ascii-title {
-            font-size: 14px;
-            white-space: pre;
-            line-height: 1.2;
-            margin: 0 auto 20px;
+        .header-title {
+            font-size: 2.5rem;
             color: var(--accent-color);
-            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .header-subtitle {
+            font-size: 1.2rem;
+            color: var(--tertiary-color);
+            max-width: 600px;
+            margin: 0 auto;
         }
         
         .terminal-line {
             display: flex;
-            margin-bottom: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            background-color: #252525;
+            padding: 10px;
+            border-radius: 5px;
         }
         
         .prompt {
@@ -72,82 +81,71 @@
         }
         
         .output {
-            margin-left: 20px;
+            margin: 5px 0 15px 0;
         }
         
         nav {
-            margin: 30px 0;
-            border: 1px solid var(--border-color);
-            padding: 10px;
-            border-radius: 5px;
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            margin: 0;
         }
         
         nav ul {
             display: flex;
             list-style-type: none;
-            justify-content: space-around;
+            justify-content: center;
             flex-wrap: wrap;
+            gap: 20px;
         }
         
         nav li {
-            margin: 5px 10px;
+            margin: 5px 0;
         }
         
         nav a {
-            padding: 5px 10px;
+            padding: 8px 15px;
             color: var(--text-color);
             border: 1px solid var(--border-color);
-            border-radius: 3px;
+            border-radius: 5px;
             transition: all 0.3s;
+            font-weight: 500;
         }
         
         nav a:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
+            background-color: var(--accent-color);
+            color: #fff;
+            border-color: var(--accent-color);
             text-decoration: none;
         }
         
         section {
-            margin: 50px 0;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
+            margin: 40px 0;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
         }
         
         .section-header {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             text-align: center;
-            position: relative;
         }
         
         .section-header h2 {
             display: inline-block;
-            background-color: var(--bg-color);
-            padding: 0 10px;
-            position: relative;
-            top: -30px;
-            font-size: 1.5rem;
-        }
-        
-        .section-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 1px;
-            background-color: var(--border-color);
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--secondary-color);
         }
         
         .skill-category {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
         }
         
         .skill-category h3 {
             color: var(--accent-color);
-            margin-bottom: 10px;
-            border-bottom: 1px dashed var(--border-color);
+            margin-bottom: 15px;
             padding-bottom: 5px;
+            border-bottom: 1px dashed var(--border-color);
         }
         
         .skill-list {
@@ -157,76 +155,89 @@
         }
         
         .skill-tag {
-            border: 1px solid var(--border-color);
-            padding: 3px 8px;
-            border-radius: 3px;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 6px 12px;
+            border-radius: 5px;
             font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
         }
         
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 25px;
         }
         
         .project-card {
             border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 5px;
+            padding: 20px;
+            border-radius: 8px;
             background-color: var(--card-bg);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
         
         .project-header {
-            border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 10px;
-            margin-bottom: 10px;
             color: var(--accent-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
         }
         
-        .project-ascii {
-            font-size: 10px;
-            line-height: 1.2;
-            white-space: pre;
-            color: var(--text-color);
-            margin: 10px 0;
-            overflow: auto;
-            max-height: 150px;
+        .project-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+        
+        .project-description {
+            margin-bottom: 15px;
         }
         
         .project-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin: 10px 0;
+            gap: 8px;
+            margin: 15px 0;
         }
         
         .project-tag {
-            background-color: #222;
+            background-color: #333;
             color: var(--text-color);
-            padding: 2px 6px;
-            border-radius: 3px;
+            padding: 4px 8px;
+            border-radius: 4px;
             font-size: 0.8rem;
         }
         
         .timeline {
-            margin: 30px auto;
+            margin: 40px auto;
             max-width: 800px;
         }
         
         .timeline-item {
-            border-left: 2px solid var(--border-color);
-            padding-left: 20px;
-            margin-bottom: 30px;
+            border-left: 2px solid var(--accent-color);
+            padding-left: 25px;
+            margin-bottom: 40px;
             position: relative;
         }
         
         .timeline-item::before {
             content: '';
-            width: 12px;
-            height: 12px;
+            width: 15px;
+            height: 15px;
             background-color: var(--accent-color);
             position: absolute;
-            left: -7px;
+            left: -8px;
             top: 5px;
             border-radius: 50%;
         }
@@ -234,96 +245,107 @@
         .timeline-header {
             color: var(--accent-color);
             margin-bottom: 5px;
+            font-size: 1.3rem;
         }
         
         .timeline-subheader {
             color: var(--secondary-color);
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
         }
         
         .timeline-content ul {
             margin-left: 20px;
+            margin-top: 10px;
         }
         
         .contact-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            gap: 30px;
         }
         
         .contact-box {
             border: 1px solid var(--border-color);
-            padding: 20px;
-            border-radius: 5px;
+            padding: 25px;
+            border-radius: 8px;
+            background-color: var(--card-bg);
         }
         
         .contact-box h3 {
             color: var(--accent-color);
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 1px dashed var(--border-color);
-            padding-bottom: 5px;
         }
         
         .contact-item {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             display: flex;
         }
         
         .contact-label {
             color: var(--secondary-color);
-            margin-right: 10px;
+            margin-right: 15px;
             min-width: 80px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background-color: var(--card-bg);
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            color: #fff;
         }
         
         footer {
             text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
+            padding: 30px 20px;
+            background-color: var(--header-bg);
             color: var(--tertiary-color);
+            border-top: 1px solid var(--border-color);
         }
         
-        /* Terminal typing effect */
-        .typing-effect {
-            overflow: hidden;
-            border-right: 0.15em solid var(--text-color);
-            white-space: nowrap;
-            margin: 0 auto;
-            letter-spacing: 0.15em;
-            animation: 
-                typing 3.5s steps(40, end),
-                blink-caret 0.75s step-end infinite;
+        .code-snippet {
+            background-color: #252525;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
         }
         
-        @keyframes typing {
-            from { width: 0 }
-            to { width: 100% }
-        }
-        
-        @keyframes blink-caret {
-            from, to { border-color: transparent }
-            50% { border-color: var(--text-color) }
-        }
-        
-        /* Media queries */
         @media (max-width: 768px) {
-            .ascii-title {
-                font-size: 8px;
-            }
-            
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-            
             nav ul {
                 flex-direction: column;
                 align-items: center;
             }
             
             nav li {
-                margin: 5px 0;
                 width: 100%;
                 text-align: center;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
             }
             
             .contact-grid {
@@ -334,417 +356,281 @@
 </head>
 <body>
     <header>
-        <pre class="ascii-title">
- __  __ _      _                 _   _  __      _        
-|  \/  (_) ___| |__   __ _  ___| | | |/ /__ _ | |_ ___  
-| |\/| | |/ __| '_ \ / _` |/ _ \ | | ' // _` || __/ _ \ 
-| |  | | | (__| | | | (_| |  __/ | | . \ (_| || || (_) |
-|_|  |_|_|\___|_| |_|\__,_|\___|_| |_|\_\__,_| \__\___/ 
-                                                         
- _____         _           _           _    ___         _   _     _   
-|_   _|__  ___| |__  _ __ (_) ___ __ _| |  / _ \  _ __ | |_(_)___| |_ 
-  | |/ _ \/ __| '_ \| '_ \| |/ __/ _` | | | | | || '__|| __| |/ __| __|
-  | |  __/ (__| | | | | | | | (_| (_| | | | |_| || |   | |_| | (__ | |_ 
-  |_|\___|\___|_| |_|_| |_|_|\___\__,_|_|  \___/ |_|    \__|_|\___|\__|
-        </pre>
-        
-        <div class="terminal-line">
-            <span class="prompt">user@portfolio:~$</span>
-            <span class="command typing-effect">cat readme.txt</span>
-        </div>
-        <div class="output">
-            Technical Artist specializing in Pipeline Development, Performance Optimization, and Tool Creation.
-            Passionate about bridging the gap between art and technology to create efficient workflows and solve complex technical challenges.
-        </div>
+        <h1 class="header-title">Michael Kato</h1>
+        <p class="header-subtitle">Technical Artist specializing in Pipeline Development, Performance Optimization, and Tool Creation</p>
     </header>
     
     <nav>
         <ul>
-            <li><a href="#about">[About]</a></li>
-            <li><a href="#skills">[Skills]</a></li>
-            <li><a href="#portfolio">[Projects]</a></li>
-            <li><a href="#experience">[Experience]</a></li>
-            <li><a href="#contact">[Contact]</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
     
     <section id="about">
-        <div class="section-header">
-            <h2>./about.sh</h2>
-        </div>
-        
-        <div class="terminal-line">
-            <span class="prompt">user@portfolio:~/about$</span>
-            <span class="command">whoami</span>
-        </div>
-        <div class="output">
-            I'm a Technical Artist with over 9 years of industry experience across gaming and XR technologies. 
-            Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient 
-            workflows and solving complex technical challenges to empower creative teams and deliver exceptional 
-            user experiences.
-        </div>
-        
-        <div class="terminal-line">
-            <span class="prompt">user@portfolio:~/about$</span>
-            <span class="command">ls -la expertise/</span>
-        </div>
-        <div class="output">
-            total 4
-            drwxr-xr-x 2 mkato staff 68 Mar 11 10:15 ./
-            drwxr-xr-x 5 mkato staff 170 Mar 11 10:15 ../
-            -rw-r--r-- 1 mkato staff 289 Mar 11 10:15 pipeline_development
-            -rw-r--r-- 1 mkato staff 421 Mar 11 10:15 performance_optimization
-            -rw-r--r-- 1 mkato staff 355 Mar 11 10:15 tool_creation
-            -rw-r--r-- 1 mkato staff 312 Mar 11 10:15 workflow_automation
+        <div class="container">
+            <div class="section-header">
+                <h2>About Me</h2>
+            </div>
+            
+            <p style="margin-bottom: 20px;">I'm a Technical Artist with over 9 years of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
+            
+            <div class="terminal-line">
+                <span class="prompt">></span>
+                <span class="command">My approach to technical art</span>
+            </div>
+            <div class="output">
+                I bridge the gap between art and engineering teams by developing robust pipelines, optimizing performance, and creating tools that streamline content creation workflows. I'm passionate about solving technical problems that enable artists to focus on creativity.
+            </div>
         </div>
     </section>
     
     <section id="skills">
-        <div class="section-header">
-            <h2>./skills --list-all</h2>
-        </div>
-        
-        <div class="skill-category">
-            <h3>Software & Engines</h3>
-            <div class="skill-list">
-                <span class="skill-tag">Maya</span>
-                <span class="skill-tag">Unity</span>
-                <span class="skill-tag">Unreal</span>
-                <span class="skill-tag">CoD Engine</span>
-                <span class="skill-tag">Perforce</span>
-                <span class="skill-tag">Git</span>
-                <span class="skill-tag">Mercurial</span>
+        <div class="container">
+            <div class="section-header">
+                <h2>Technical Skills</h2>
             </div>
-        </div>
-        
-        <div class="skill-category">
-            <h3>Programming Languages</h3>
-            <div class="skill-list">
-                <span class="skill-tag">Python</span>
-                <span class="skill-tag">C#</span>
-                <span class="skill-tag">C++</span>
-                <span class="skill-tag">JavaScript</span>
+            
+            <div class="skill-category">
+                <h3>Software & Engines</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Maya</span>
+                    <span class="skill-tag">Unity</span>
+                    <span class="skill-tag">Unreal</span>
+                    <span class="skill-tag">CoD Engine</span>
+                    <span class="skill-tag">Perforce</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">Mercurial</span>
+                </div>
             </div>
-        </div>
-        
-        <div class="skill-category">
-            <h3>Core Competencies</h3>
-            <div class="skill-list">
-                <span class="skill-tag">Pipeline Development</span>
-                <span class="skill-tag">Performance Optimization</span>
-                <span class="skill-tag">Tool Creation</span>
-                <span class="skill-tag">Workflow Automation</span>
-                <span class="skill-tag">Technical Problem Solving</span>
+            
+            <div class="skill-category">
+                <h3>Programming Languages</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">C#</span>
+                    <span class="skill-tag">C++</span>
+                    <span class="skill-tag">JavaScript</span>
+                </div>
             </div>
-        </div>
-        
-        <div class="terminal-line">
-            <span class="prompt">user@portfolio:~/skills$</span>
-            <span class="command">cat skill_tree.txt | grep "mastery"</span>
-        </div>
-        <div class="output">
-            Expert understanding of performance optimization processes, content pipelines, and workflow automation.
+            
+            <div class="skill-category">
+                <h3>Core Competencies</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Pipeline Development</span>
+                    <span class="skill-tag">Performance Optimization</span>
+                    <span class="skill-tag">Tool Creation</span>
+                    <span class="skill-tag">Workflow Automation</span>
+                    <span class="skill-tag">Technical Problem Solving</span>
+                </div>
+            </div>
+            
+            <div class="terminal-line">
+                <span class="prompt">></span>
+                <span class="command">Expertise summary</span>
+            </div>
+            <div class="output">
+                Expert understanding of performance optimization processes, content pipelines, and workflow automation.
+            </div>
         </div>
     </section>
     
     <section id="portfolio">
-        <div class="section-header">
-            <h2>./projects --sort-by=recent</h2>
-        </div>
-        
-        <div class="projects-grid">
-            <!-- Project 1 -->
-            <div class="project-card">
-                <h3 class="project-header">Performance Testing Framework</h3>
-                <pre class="project-ascii">
- +-----------------+
- |  [][][][][]  |  |
- |  [][][][][]  |  |
- |  [][][][][]  |  |
- |     VR App      |
- +--------+--------+
-         ||
-         \/
- +--------+--------+
- |  +-----------+  |
- |  | Test Data |  |
- |  +-----------+  |
- | Performance Test |
- +--------+--------+
-         ||
-         \/
- +--------+--------+
- |  +-----------+  |
- |  |   Report  |  |
- |  +-----------+  |
- |    Analytics    |
- +-----------------+
-                </pre>
-                <p>Developed an automated framework for testing VR application performance across different scenarios and hardware configurations.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Data Visualization</span>
-                    <span class="project-tag">VR</span>
-                </div>
+        <div class="container">
+            <div class="section-header">
+                <h2>Project Portfolio</h2>
             </div>
             
-            <!-- Project 2 -->
-            <div class="project-card">
-                <h3 class="project-header">Performance Visualization Dashboard</h3>
-                <pre class="project-ascii">
- +------------------+
- |  FPS: █████████  |
- |  CPU: ████       |
- |  GPU: █████      |
- |  MEM: ███        |
- |                  |
- |  +------------+  |
- |  |/\/\/\/\/\/\|  |
- |  +------------+  |
- |                  |
- +------------------+
-                </pre>
-                <p>Created comprehensive dashboards to track and visualize performance metrics over time, helping teams identify trends.</p>
-                <div class="project-tags">
-                    <span class="project-tag">JavaScript</span>
-                    <span class="project-tag">Data Analysis</span>
-                    <span class="project-tag">Visualization</span>
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <h3 class="project-header">Performance Testing Framework</h3>
+                    <div class="project-icon">📊</div>
+                    <p class="project-description">Developed an automated framework for testing VR application performance across different scenarios and hardware configurations.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Data Visualization</span>
+                        <span class="project-tag">VR</span>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Project 3 -->
-            <div class="project-card">
-                <h3 class="project-header">Procedural Scene Generation</h3>
-                <pre class="project-ascii">
- +------------------+
- | def generate():  |
- |   scene = []     |
- |   for x in range:|
- |     obj = create()|
- |     scene.append()|
- |   return scene   |
- +------------------+
-    |           |
-    v           v
- +-----+     +-----+
- |scene|     |scene|
- |  1  |     |  2  |
- +-----+     +-----+
-                </pre>
-                <p>Developed an automated pipeline for generating synthetic scenes with controlled parameters for training computer vision models.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Maya</span>
-                    <span class="project-tag">Procedural</span>
+                
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <h3 class="project-header">Performance Visualization Dashboard</h3>
+                    <div class="project-icon">📈</div>
+                    <p class="project-description">Created comprehensive dashboards to track and visualize performance metrics over time, helping teams identify trends and prioritize optimization efforts.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">JavaScript</span>
+                        <span class="project-tag">Data Analysis</span>
+                        <span class="project-tag">Visualization</span>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Project 4 -->
-            <div class="project-card">
-                <h3 class="project-header">Asset QA Tool</h3>
-                <pre class="project-ascii">
- +-------------------+
- | Asset Validation  |
- +-------------------+
- | [✓] Poly Budget   |
- | [✓] Textures      |
- | [✓] Naming        |
- | [✗] UV Layout     |
- | [✓] Materials     |
- | [✓] Metadata      |
- +-------------------+
- | ERRORS FOUND: 1   |
- +-------------------+
-                </pre>
-                <p>Built a comprehensive QA tool that validates assets, scenes, and metadata against defined standards, catching common errors before production.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Validation</span>
-                    <span class="project-tag">Automation</span>
+                
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <h3 class="project-header">Procedural Scene Generation</h3>
+                    <div class="project-icon">🏙️</div>
+                    <p class="project-description">Developed an automated pipeline for generating synthetic scenes with controlled parameters for training computer vision models.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Maya</span>
+                        <span class="project-tag">Procedural</span>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Project 5 -->
-            <div class="project-card">
-                <h3 class="project-header">Maya Exporter Pipeline</h3>
-                <pre class="project-ascii">
- +--------+    +--------+
- |  Maya  | -> | Export |
- +--------+    +--------+
-                   |
-                   v
- +----------------+
- | Validation     |
- | - Geo Check    |
- | - UV Check     |
- | - Format Check |
- +----------------+
-        |
-        v
- +-------------+
- | Game Engine |
- +-------------+
-                </pre>
-                <p>Enhanced Maya exporters for game assets with extensive validation, optimization, and workflow improvements for artists and developers.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Maya</span>
-                    <span class="project-tag">Asset Pipeline</span>
+                
+                <!-- Project 4 -->
+                <div class="project-card">
+                    <h3 class="project-header">Asset Quality Assurance Tool</h3>
+                    <div class="project-icon">✅</div>
+                    <p class="project-description">Built a comprehensive QA tool that validates assets, scenes, and metadata against defined standards, catching common errors before production.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Validation</span>
+                        <span class="project-tag">Automation</span>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Project 6 -->
-            <div class="project-card">
-                <h3 class="project-header">Performance Optimization Toolkit</h3>
-                <pre class="project-ascii">
- +------------------+
- | Performance      |
- | Bottlenecks:     |
- |                  |
- | [||||||||]  CPU  |
- | [||||||  ]  GPU  |
- | [||||    ]  MEM  |
- | [||      ]  I/O  |
- +------------------+
-      |       |
-      v       v
- +------+ +------+
- |Before| |After |
- |30fps | |60fps |
- +------+ +------+
-                </pre>
-                <p>Created a suite of tools for identifying and resolving performance bottlenecks in game environments, enabling consistent 60fps on all platforms.</p>
-                <div class="project-tags">
-                    <span class="project-tag">C++</span>
-                    <span class="project-tag">Performance</span>
-                    <span class="project-tag">Optimization</span>
+                
+                <!-- Project 5 -->
+                <div class="project-card">
+                    <h3 class="project-header">Maya Exporter Pipeline</h3>
+                    <div class="project-icon">🔄</div>
+                    <p class="project-description">Enhanced Maya exporters for game assets with extensive validation, optimization, and workflow improvements for artists and developers.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Maya</span>
+                        <span class="project-tag">Asset Pipeline</span>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card">
+                    <h3 class="project-header">Performance Optimization Toolkit</h3>
+                    <div class="project-icon">⚡</div>
+                    <p class="project-description">Created a suite of tools for identifying and resolving performance bottlenecks in game environments, enabling consistent 60fps on all platforms.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">C++</span>
+                        <span class="project-tag">Performance</span>
+                        <span class="project-tag">Optimization</span>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     
     <section id="experience">
-        <div class="section-header">
-            <h2>./experience --view-timeline</h2>
-        </div>
-        
-        <div class="timeline">
-            <!-- Meta -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">Meta Platforms</h3>
-                <h4 class="timeline-subheader">Technical Artist - Horizon Worlds (VR) | 2020 - 2023</h4>
-                <div class="terminal-line">
-                    <span class="prompt">$</span>
-                    <span class="command">cat responsibilities.txt</span>
-                </div>
-                <div class="timeline-content">
-                    <ul>
-                        <li>Identified and resolved performance issues on mobile VR platforms</li>
-                        <li>Managed automated performance testing frameworks</li>
-                        <li>Developed comprehensive dashboards to visualize performance statistics</li>
-                    </ul>
-                </div>
+        <div class="container">
+            <div class="section-header">
+                <h2>Professional Experience</h2>
             </div>
             
-            <!-- Apple -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">Apple Inc.</h3>
-                <h4 class="timeline-subheader">Technical Artist - Synthetic Data | 2019 - 2020</h4>
-                <div class="terminal-line">
-                    <span class="prompt">$</span>
-                    <span class="command">cat responsibilities.txt</span>
+            <div class="timeline">
+                <!-- Meta -->
+                <div class="timeline-item">
+                    <h3 class="timeline-header">Meta Platforms</h3>
+                    <h4 class="timeline-subheader">Technical Artist - Horizon Worlds (VR) | 2020 - 2023</h4>
+                    <div class="timeline-content">
+                        <ul>
+                            <li>Identified and resolved performance issues on mobile VR platforms, ensuring optimal user experience while adhering to a tight release schedule</li>
+                            <li>Managed automated performance testing frameworks, enhancing efficiency and reliability of testing processes</li>
+                            <li>Developed comprehensive dashboards to visualize performance statistics over time, sorting trends by world, player count, and hitch frequency</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="timeline-content">
-                    <ul>
-                        <li>Spearheaded procedural scene generation and asset ingestion pipelines</li>
-                        <li>Developed QA tooling for assets, scenes, and metadata</li>
-                    </ul>
+                
+                <!-- Apple -->
+                <div class="timeline-item">
+                    <h3 class="timeline-header">Apple Inc.</h3>
+                    <h4 class="timeline-subheader">Technical Artist - Synthetic Data | 2019 - 2020</h4>
+                    <div class="timeline-content">
+                        <ul>
+                            <li>Spearheaded procedural scene generation and asset ingestion pipelines, maintaining high standards of consistency and quality</li>
+                            <li>Developed QA tooling for assets, scenes, and metadata, implementing checks for common errors</li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-            
-            <!-- Sledgehammer -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">Sledgehammer Games</h3>
-                <h4 class="timeline-subheader">Technical Artist - Call of Duty | 2014 - 2019</h4>
-                <div class="terminal-line">
-                    <span class="prompt">$</span>
-                    <span class="command">cat responsibilities.txt</span>
+                
+                <!-- Sledgehammer -->
+                <div class="timeline-item">
+                    <h3 class="timeline-header">Sledgehammer Games</h3>
+                    <h4 class="timeline-subheader">Technical Artist - Call of Duty | 2014 - 2019</h4>
+                    <div class="timeline-content">
+                        <ul>
+                            <li>Supported Maya, Photoshop, and Substance exporters, mesh modifiers, rigging tools, and level editors</li>
+                            <li>Collaborated with engineering and art teams to implement, test, and provide feedback on new features</li>
+                            <li>Played a key role in achieving consistent 60fps across all game modes and console platforms, troubleshooting CPU and GPU performance bottlenecks</li>
+                        </ul>
+                    </div>
                 </div>
-                <div class="timeline-content">
-                    <ul>
-                        <li>Supported Maya, Photoshop, and Substance exporters, mesh modifiers, rigging tools, and level editors</li>
-                        <li>Collaborated with engineering and art teams on new features</li>
-                        <li>Achieved consistent 60fps across all game modes and platforms</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Education -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">The Art Institute of Silicon Valley</h3>
-                <h4 class="timeline-subheader">Bachelor of Arts in Game Art & Design | 2009 - 2013</h4>
-                <div class="timeline-content">
-                    <p>Developed foundational skills in both artistic and technical aspects of game development.</p>
+                
+                <!-- Education -->
+                <div class="timeline-item">
+                    <h3 class="timeline-header">The Art Institute of Silicon Valley</h3>
+                    <h4 class="timeline-subheader">Bachelor of Arts in Game Art & Design | 2009 - 2013</h4>
+                    <div class="timeline-content">
+                        <p>Developed foundational skills in both artistic and technical aspects of game development.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
     
     <section id="contact">
-        <div class="section-header">
-            <h2>./contact --connect</h2>
-        </div>
-        
-        <div class="contact-grid">
-            <div class="contact-box">
-                <h3>Contact Information</h3>
-                
-                <div class="contact-item">
-                    <div class="contact-label">Email:</div>
-                    <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label">Phone:</div>
-                    <div><a href="tel:8084695433">808-469-5433</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label">LinkedIn:</div>
-                    <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label">Blog:</div>
-                    <div><a href="https://michaelkato.blogspot.com/" target="_blank">michaelkato.blogspot.com</a></div>
-                </div>
+        <div class="container">
+            <div class="section-header">
+                <h2>Contact Me</h2>
             </div>
             
-            <div class="contact-box">
-                <h3>Let's Collaborate</h3>
-                <pre>
- while (true) {
-   if (you.haveProject() && 
-       you.needTechnicalArtist()) {
-     me.contact();
-     break;
-   }
- }
-                </pre>
-                <p>I'm always open to discussing new projects, technical challenges, or opportunities to collaborate on innovative tools and pipelines.</p>
+            <div class="contact-grid">
+                <div class="contact-box">
+                    <h3>Get In Touch</h3>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Email:</div>
+                        <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Phone:</div>
+                        <div><a href="tel:8084695433">808-469-5433</a></div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">LinkedIn:</div>
+                        <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
+                    </div>
+                    
+                    <div class="contact-item">
+                        <div class="contact-label">Blog:</div>
+                        <div><a href="https://michaelkato.blogspot.com/" target="_blank">michaelkato.blogspot.com</a></div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="https://linkedin.com/in/michael-kato" target="_blank">in</a>
+                        <a href="https://github.com/michael-kato" target="_blank">gh</a>
+                    </div>
+                </div>
+                
+                <div class="contact-box">
+                    <h3>Let's Work Together</h3>
+                    <p>I'm always open to discussing new projects, technical challenges, or opportunities to collaborate on innovative tools and pipelines.</p>
+                    <p style="margin-top: 15px;">Whether you need help optimizing performance, streamlining your content pipeline, or developing custom tools for your team, feel free to reach out!</p>
+                    <div class="code-snippet">
+                        // Simple code example
+                        function connectWithMe() {
+                          return "Let's build something great together!";
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </section>
     
     <footer>
-        <div class="terminal-line">
-            <span class="prompt">user@portfolio:~$</span>
-            <span class="command">echo "© $(date +%Y) Michael Kato. All Rights Reserved."</span>
-        </div>
-        <div class="output">
-            © 2025 Michael Kato. All Rights Reserved.
-        </div>
-        <p>Technical Artist - Pipeline Development - Tool Creation</p>
+        <p>&copy; 2025 Michael Kato. All Rights Reserved.</p>
+        <p>Technical Artist | Pipeline Development | Tool Creation</p>
     </footer>
 </body>
 </html>
