@@ -1,11 +1,4 @@
-<div class="social-links">
-    <a href="https://linkedin.com/in/michael-kato" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-    </a>
-    <a href="https://github.com/RawMeat3000" target="_blank">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-    </a>
-</div><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -13,14 +6,15 @@
 <title>Michael Kato | Technical Artist</title>
 <style>
 :root {
---bg-color: #1a1a1a;
---text-color: #d8d8d8;
---accent-color: #5b9bd5;
---secondary-color: #8064a2;
---tertiary-color: #cccccc;
---card-bg: #2a2a2a;
---border-color: #4f4f4f;
---header-bg: #252525;
+--bg-color: #0d1117;
+--bg-pattern: #161b22;
+--text-color: #c9d1d9;
+--accent-color: #58a6ff; /* GitHub blue */
+--secondary-color: #f0883e; /* GitHub orange */
+--tertiary-color: #8b949e; /* GitHub muted */
+--card-bg: #21262d;
+--border-color: #30363d;
+--header-bg: #161b22;
 }
 
 * {
@@ -31,9 +25,13 @@ box-sizing: border-box;
 
 body {
 background-color: var(--bg-color);
+background-image: 
+linear-gradient(to right, var(--bg-pattern) 1px, transparent 1px),
+linear-gradient(to bottom, var(--bg-pattern) 1px, transparent 1px);
+background-size: 20px 20px;
 color: var(--text-color);
-font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-line-height: 1.6;
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+line-height: 1.5;
 padding: 0;
 max-width: 1200px;
 margin: 0 auto;
@@ -46,7 +44,6 @@ text-decoration: none;
 
 a:hover {
 text-decoration: underline;
-color: var(--secondary-color);
 }
 
 header {
@@ -58,8 +55,9 @@ border-bottom: 1px solid var(--border-color);
 
 .header-title {
 font-size: 2.5rem;
-color: var(--accent-color);
+color: var(--text-color);
 margin-bottom: 10px;
+font-weight: 600;
 }
 
 .header-subtitle {
@@ -67,6 +65,7 @@ font-size: 1.2rem;
 color: var(--tertiary-color);
 max-width: 600px;
 margin: 0 auto;
+font-weight: 400;
 }
 
 .command {
@@ -81,6 +80,7 @@ nav {
 background-color: var(--card-bg);
 padding: 15px 20px;
 margin: 0;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12);
 }
 
 nav ul {
@@ -98,23 +98,19 @@ margin: 5px 0;
 nav a {
 padding: 8px 15px;
 color: var(--text-color);
-border: 1px solid var(--border-color);
-border-radius: 5px;
-transition: all 0.3s;
+border-radius: 6px;
+transition: all 0.2s;
 font-weight: 500;
 }
 
 nav a:hover {
-background-color: var(--accent-color);
-color: #fff;
-border-color: var(--accent-color);
+background-color: var(--border-color);
 text-decoration: none;
 }
 
 section {
 margin: 40px 0;
 padding: 40px 20px;
-border-top: 1px solid var(--border-color);
 }
 
 .section-header {
@@ -125,9 +121,10 @@ text-align: center;
 .section-header h2 {
 display: inline-block;
 font-size: 1.8rem;
-color: var(--accent-color);
+color: var(--text-color);
 padding-bottom: 10px;
 border-bottom: 2px solid var(--secondary-color);
+font-weight: 600;
 }
 
 .skill-category {
@@ -138,7 +135,8 @@ margin-bottom: 30px;
 color: var(--accent-color);
 margin-bottom: 15px;
 padding-bottom: 5px;
-border-bottom: 1px dashed var(--border-color);
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
 }
 
 .skill-list {
@@ -151,19 +149,19 @@ gap: 10px;
 background-color: var(--card-bg);
 color: var(--text-color);
 padding: 6px 12px;
-border-radius: 5px;
+border-radius: 6px;
 font-size: 0.9rem;
 border: 1px solid var(--border-color);
 display: flex;
 align-items: center;
 gap: 8px;
 cursor: pointer;
-transition: background-color 0.3s, transform 0.2s;
+transition: background-color 0.2s, transform 0.2s;
 }
 
 .skill-tag:hover {
-background-color: var(--accent-color);
-color: white;
+background-color: var(--border-color);
+color: var(--text-color);
 transform: translateY(-2px);
 }
 
@@ -183,27 +181,29 @@ margin: 0 auto;
 .projects-grid {
 display: grid;
 grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-gap: 25px;
+gap: 20px;
 }
 
 .project-card {
 border: 1px solid var(--border-color);
 padding: 20px;
-border-radius: 8px;
+border-radius: 6px;
 background-color: var(--card-bg);
 transition: transform 0.2s, box-shadow 0.2s;
 cursor: pointer;
 }
 
 .project-card:hover {
-transform: translateY(-5px);
-box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+transform: translateY(-4px);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+border-color: var(--accent-color);
 }
 
 .project-header {
 color: var(--accent-color);
 margin-bottom: 15px;
 font-size: 1.3rem;
+font-weight: 600;
 }
 
 .project-icon {
@@ -215,6 +215,7 @@ text-align: center;
 
 .project-description {
 margin-bottom: 15px;
+color: var(--text-color);
 }
 
 .project-tags {
@@ -225,42 +226,48 @@ margin: 15px 0;
 }
 
 .project-tag {
-background-color: #333;
-color: var(--text-color);
+background-color: rgba(240, 136, 62, 0.2); /* GitHub orange with transparency */
+color: var(--secondary-color);
 padding: 4px 8px;
-border-radius: 4px;
+border-radius: 20px;
 font-size: 0.8rem;
+font-weight: 500;
 }
 
 .contact-grid {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-gap: 30px;
+grid-template-columns: repeat(2, 1fr);
+gap: 20px;
 }
 
 .contact-box {
 border: 1px solid var(--border-color);
-padding: 25px;
-border-radius: 8px;
+padding: 20px;
+border-radius: 6px;
 background-color: var(--card-bg);
+height: 100%;
 }
 
 .contact-box h3 {
 color: var(--accent-color);
 margin-bottom: 20px;
 padding-bottom: 10px;
-border-bottom: 1px dashed var(--border-color);
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
 }
 
 .contact-item {
 margin-bottom: 15px;
 display: flex;
+align-items: center;
 }
 
 .contact-label {
-color: var(--secondary-color);
+color: var(--tertiary-color);
 margin-right: 15px;
-min-width: 80px;
+min-width: 24px;
+display: flex;
+align-items: center;
 }
 
 .social-links {
@@ -270,23 +277,22 @@ margin-top: 20px;
 }
 
 .social-links a {
-width: 40px;
-height: 40px;
-background-color: var(--card-bg);
+width: 36px;
+height: 36px;
+background-color: rgba(88, 166, 255, 0.1); /* GitHub blue with transparency */
 color: var(--accent-color);
-border: 1px solid var(--accent-color);
 border-radius: 50%;
 display: flex;
 align-items: center;
 justify-content: center;
 text-decoration: none;
-transition: all 0.3s;
+transition: all 0.2s;
 font-size: 1.2rem;
 }
 
 .social-links a:hover {
-background-color: var(--accent-color);
-color: #fff;
+background-color: rgba(88, 166, 255, 0.2);
+transform: translateY(-2px);
 }
 
 footer {
@@ -295,15 +301,18 @@ padding: 30px 20px;
 background-color: var(--header-bg);
 color: var(--tertiary-color);
 border-top: 1px solid var(--border-color);
+margin-top: 40px;
 }
 
 .code-snippet {
-background-color: #252525;
+background-color: var(--bg-color);
 padding: 15px;
-border-radius: 5px;
+border-radius: 6px;
 margin: 15px 0;
-font-family: 'Courier New', monospace;
+font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 overflow-x: auto;
+font-size: 0.9rem;
+border: 1px solid var(--border-color);
 }
 
 /* Modal styles */
@@ -324,17 +333,18 @@ box-sizing: border-box;
 .modal-content {
 background-color: var(--card-bg);
 margin: 5% auto;
-padding: 30px;
+padding: 24px;
 border: 1px solid var(--border-color);
-border-radius: 10px;
+border-radius: 6px;
 width: 80%;
 max-width: 800px;
 position: relative;
-animation: modalFadeIn 0.3s;
+animation: modalFadeIn 0.2s;
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
 }
 
 @keyframes modalFadeIn {
-from {opacity: 0; transform: translateY(-50px);}
+from {opacity: 0; transform: translateY(-20px);}
 to {opacity: 1; transform: translateY(0);}
 }
 
@@ -342,11 +352,11 @@ to {opacity: 1; transform: translateY(0);}
 position: absolute;
 top: 15px;
 right: 20px;
-color: var(--accent-color);
-font-size: 28px;
+color: var(--tertiary-color);
+font-size: 24px;
 font-weight: bold;
 cursor: pointer;
-transition: color 0.3s;
+transition: color 0.2s;
 }
 
 .close-modal:hover {
@@ -357,7 +367,8 @@ color: var(--secondary-color);
 color: var(--accent-color);
 margin-bottom: 20px;
 padding-bottom: 10px;
-border-bottom: 1px dashed var(--border-color);
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
 }
 
 .modal-body {
@@ -373,18 +384,19 @@ margin: 20px 0;
 
 .modal-image {
 width: 100%;
-border-radius: 5px;
-transition: transform 0.3s;
+border-radius: 6px;
+transition: transform 0.2s;
+border: 1px solid var(--border-color);
 }
 
 .modal-image:hover {
-transform: scale(1.05);
+transform: scale(1.03);
 }
 
 .modal-video {
 width: 100%;
 height: 350px;
-border-radius: 5px;
+border-radius: 6px;
 margin: 20px 0;
 }
 
@@ -395,17 +407,19 @@ margin-top: 20px;
 .modal-details h4 {
 color: var(--secondary-color);
 margin-bottom: 10px;
+font-weight: 600;
 }
 
 .highlighted {
-background-color: var(--accent-color) !important;
-color: white !important;
+background-color: rgba(240, 136, 62, 0.3) !important;
+color: var(--text-color) !important;
+border-color: var(--secondary-color) !important;
 }
 
 @keyframes highlightPulse {
-0% { box-shadow: 0 0 0 0 rgba(91, 155, 213, 0.7); }
-70% { box-shadow: 0 0 0 10px rgba(91, 155, 213, 0); }
-100% { box-shadow: 0 0 0 0 rgba(91, 155, 213, 0); }
+0% { box-shadow: 0 0 0 0 rgba(240, 136, 62, 0.5); }
+70% { box-shadow: 0 0 0 8px rgba(240, 136, 62, 0); }
+100% { box-shadow: 0 0 0 0 rgba(240, 136, 62, 0); }
 }
 
 @media (max-width: 768px) {
@@ -442,7 +456,7 @@ grid-template-columns: 1fr;
 <body>
 <header>
 <h1 class="header-title">Michael Kato</h1>
-<p class="header-subtitle">Technical Artist specializing in Pipeline Development, Performance Optimization, and Tool Creation</p>
+<p class="header-subtitle">Technically an artist!</p>
 </header>
 
 <nav>
@@ -459,13 +473,13 @@ grid-template-columns: 1fr;
 <h2>About Me</h2>
 </div>
 
-<p style="margin-bottom: 20px;">I'm a Technical Artist with over 9 years of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
+<p style="margin-bottom: 20px;">I'm a Technical Artist with a decade of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
 
-<p style="margin-bottom: 20px;">As a bridge between art and engineering teams, I develop robust pipelines, optimize performance, and create tools that streamline content creation workflows. I excel at translating technical requirements between disciplines, helping engineers understand artistic needs and helping artists work effectively within technical constraints.</p>
+<p style="margin-bottom: 20px;">In a typical work day, I develop robust pipelines, optimize performance, and foster an environment of learning and collaboration. I excel at translating technical requirements between disciplines, helping engineers understand artistic needs and helping artists work effectively within technical constraints.</p>
 
-<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with project managers to identify and address technical challenges before they impact production milestones. My expertise in performance optimization processes, content pipelines, and workflow automation allows me to provide valuable technical leadership while maintaining a strong desire to help others succeed.</p>
+<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with team leads to identify and address technical challenges before they impact production milestones. My experience and expertise allows me to provide valuable technical leadership while maintaining a strong desire to help others succeed.</p>
 
-<p>Whether troubleshooting urgent issues, developing new tools, or implementing optimization strategies, I approach each challenge with a focus on both technical excellence and effective teamwork.</p>
+<p>I approach each challenge with a focus on both technical excellence and effective teamwork.</p>
 </div>
 </section>
 
@@ -493,7 +507,7 @@ grid-template-columns: 1fr;
 <div class="skill-list">
 <span class="skill-tag" data-skill="Python" onclick="scrollToProjects('Python')"><span class="skill-icon">🐍</span>Python</span>
 <span class="skill-tag" data-skill="C#" onclick="scrollToProjects('C#')"><span class="skill-icon">#</span>C#</span>
-<span class="skill-tag" data-skill="C++" onclick="scrollToProjects('C++')"><span class="skill-icon">++</span>C++</span>
+<span class="skill-tag" data-skill="C++" onclick="scrollToProjects('C++')"><span class="skill-icon">+</span>C++</span>
 <span class="skill-tag" data-skill="JavaScript" onclick="scrollToProjects('JavaScript')"><span class="skill-icon">JS</span>JavaScript</span>
 </div>
 </div>
@@ -632,10 +646,4 @@ grid-template-columns: 1fr;
 <h3>Let's Work Together</h3>
 <p>I'm always open to discussing new projects, technical challenges, or opportunities to collaborate on innovative tools and pipelines.</p>
 <p style="margin-top: 15px;">Whether you need help optimizing performance, streamlining your content pipeline, or developing custom tools for your team, I'm here to help.</p>
-<div class="code-snippet">
-    // Simple code example
-    function connectWithMe() {
-      return "Let's build something great together!";
-    }
-</div>
 </div>
