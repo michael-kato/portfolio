@@ -1,1130 +1,641 @@
-<!-- Project Modals -->
-<div id="projectModal" class="modal">
-    <div class="modal-content">
-        <span class="close-modal">&times;</span>
-        <h2 class="modal-header" id="modalTitle">Project Title</h2>
-        <div class="modal-body" id="modalBody">
-            <p id="modalDescription"></p>
-            <div class="modal-gallery" id="modalGallery">
-                <!-- Images will be dynamically added here -->
-            </div>
-            <div id="modalVideoContainer">
-                <!-- Video will be dynamically added here -->
-            </div>
-            <div class="modal-details">
-                <h4>Key Features</h4>
-                <ul id="modalFeatures">
-                    <!-- Features will be dynamically added here -->
-                </ul>
-                <h4>Technologies Used</h4>
-                <div class="project-tags" id="modalTechnologies">
-                    <!-- Technologies will be dynamically added here -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    // Project data
-    const projectData = {
-        "project-perf-framework": {
-            title: "Performance Testing Framework",
-            description: "A comprehensive automated framework developed for testing VR application performance. This framework enables systematic testing across different scenarios and hardware configurations, providing insights into performance bottlenecks and optimization opportunities.",
-            images: [
-                "/api/placeholder/600/350", 
-                "/api/placeholder/600/350"
-            ],
-            video: null,
-            features: [
-                "Automated testing of VR applications across multiple hardware configurations",
-                "Performance metric collection and analysis",
-                "Integration with continuous integration systems",
-                "Comparative analysis of performance across builds",
-                "Customizable test scenarios and parameters"
-            ],
-            technologies: ["Python", "Data Visualization", "VR", "Performance Testing", "Automation"]
-        },
-        "project-perf-dashboard": {
-            title: "Performance Visualization Dashboard",
-            description: "A real-time performance monitoring dashboard that aggregates and visualizes performance metrics from VR applications. This tool allows teams to identify performance trends, diagnose issues, and prioritize optimization efforts.",
-            images: [
-                "/api/placeholder/600/350"
-            ],
-            video: null,
-            features: [
-                "Real-time performance monitoring and visualization",
-                "Historical performance trend analysis",
-                "Customizable dashboards for different stakeholders",
-                "Alert system for performance regressions",
-                "Integration with performance testing framework"
-            ],
-            technologies: ["JavaScript", "Data Analysis", "Visualization", "Web Development", "React"]
-        },
-        "project-proc-scene": {
-            title: "Procedural Scene Generation Pipeline",
-            description: "A sophisticated pipeline for generating synthetic scenes with controlled parameters, designed specifically for training computer vision models. This system allows for the creation of diverse, realistic environments with precise control over scene composition and properties.",
-            images: [
-                "/api/placeholder/600/350",
-                "/api/placeholder/600/350",
-                "/api/placeholder/600/350"
-            ],
-            video: null,
-            features: [
-                "Parametric scene generation with controllable variables",
-                "Physics-based lighting and material simulation",
-                "Automated metadata generation for machine learning training",
-                "Batch rendering capabilities with distributed processing",
-                "Quality control and validation of generated scenes"
-            ],
-            technologies: ["Python", "Maya", "Computer Vision", "Procedural Generation", "Machine Learning"]
-        },
-        "project-qa-tool": {
-            title: "Asset Quality Assurance Tool",
-            description: "A comprehensive validation system that checks assets, scenes, and metadata against defined standards. This tool helps teams catch common errors before they enter production, improving workflow efficiency and ensuring consistent quality.",
-            images: [
-                "/api/placeholder/600/350"
-            ],
-            video: null,
-            features: [
-                "Automated validation of 3D assets against quality standards",
-                "Metadata integrity checking and validation",
-                "Integration with content creation tools like Maya",
-                "Customizable validation rules and standards",
-                "Detailed reporting and error visualization"
-            ],
-            technologies: ["Python", "Validation", "Automation", "Quality Assurance", "3D Modeling"]
-        },
-        "project-maya-exporter": {
-            title: "Maya Exporter Pipeline",
-            description: "An enhanced exporter system for Maya that streamlines the process of preparing and exporting game assets. This pipeline includes extensive validation, optimization, and workflow improvements for artists and developers.",
-            images: [
-                "/api/placeholder/600/350",
-                "/api/placeholder/600/350"
-            ],
-            video: null,
-            features: [
-                "Streamlined exporting of complex assets from Maya to game engines",
-                "Automated optimization of meshes, textures, and rigs",
-                "Validation of assets against game engine requirements",
-                "Custom UI for artist-friendly workflow",
-                "Batch processing capabilities for large asset sets"
-            ],
-            technologies: ["Python", "Maya", "Asset Pipeline", "MEL", "Game Development"]
-        },
-        "project-perf-toolkit": {
-            title: "Performance Optimization Toolkit",
-            description: "A comprehensive suite of tools for identifying and resolving performance bottlenecks in game environments. This toolkit helped achieve consistent 60fps across all game modes and console platforms for Call of Duty.",
-            images: [
-                "/api/placeholder/600/350"
-            ],
-            video: null,
-            features: [
-                "CPU and GPU performance profiling tools",
-                "Memory usage analysis and optimization",
-                "Asset-specific performance impact assessment",
-                "Level-specific optimization recommendations",
-                "Frame rate stability monitoring and analysis"
-            ],
-            technologies: ["C++", "Performance", "Optimization", "Game Development", "Console Development"]
-        }
-    };
-
-    // Get all project cards and modal elements
-    const projectCards = document.querySelectorAll('.project-card');
-    const modal = document.getElementById('projectModal');
-    const closeModal = document.querySelector('.close-modal');
-    const modalTitle = document.getElementById('modalTitle');
-    const modalDescription = document.getElementById('modalDescription');
-    const modalGallery = document.getElementById('modalGallery');
-    const modalVideoContainer = document.getElementById('modalVideoContainer');
-    const modalFeatures = document.getElementById('modalFeatures');
-    const modalTechnologies = document.getElementById('modalTechnologies');
-
-    // Add event listeners to project cards
-    projectCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const projectId = card.id;
-            const project = projectData[projectId];
-            
-            // Populate modal content
-            modalTitle.textContent = project.title;
-            modalDescription.textContent = project.description;
-            
-            // Clear previous content
-            modalGallery.innerHTML = '';
-            modalVideoContainer.innerHTML = '';
-            modalFeatures.innerHTML = '';
-            modalTechnologies.innerHTML = '';
-            
-            // Add images
-            if (project.images && project.images.length > 0) {
-                project.images.forEach(imgSrc => {
-                    const img = document.createElement('img');
-                    img.src = imgSrc;
-                    img.alt = project.title;
-                    img.className = 'modal-image';
-                    modalGallery.appendChild(img);
-                });
-            }
-            
-            // Add video if available
-            if (project.video) {
-                const video = document.createElement('iframe');
-                video.src = project.video;
-                video.className = 'modal-video';
-                video.allowFullscreen = true;
-                video.frameBorder = '0';
-                modalVideoContainer.appendChild(video);
-            }
-            
-            // Add features
-            project.features.forEach(feature => {
-                const li = document.createElement('li');
-                li.textContent = feature;
-                modalFeatures.appendChild(li);
-            });
-            
-            // Add technologies
-            project.technologies.forEach(tech => {
-                const span = document.createElement('span');
-                span.className = 'project-tag';
-                span.textContent = tech;
-                modalTechnologies.appendChild(span);
-            });
-            
-            // Show modal
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-        });
-    });
-    
-    // Close modal when clicking the close button
-    closeModal.addEventListener('click', () => {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Re-enable scrolling
-    });
-    
-    // Close modal when clicking outside of modal content
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-        }
-    });
-    
-    // Function to scroll to projects that match a skill
-    function scrollToProjects(skill) {
-        // First, remove any existing highlights
-        document.querySelectorAll('.project-card').forEach(card => {
-            card.classList.remove('highlighted');
-        });
-        
-        // Find projects that match the skill
-        const matchingProjects = [];
-        document.querySelectorAll('.project-card').forEach(card => {
-            const tags = card.getAttribute('data-tags').split(',');
-            
-            if (tags.some(tag => tag.includes(skill))) {
-                matchingProjects.push(card);
-                card.classList.add('highlighted');
-                
-                // Add a temporary highlight effect
-                card.style.animation = 'none';
-                setTimeout(() => {
-                    card.style.animation = 'highlightPulse 2s ease-in-out';
-                }, 10);
-            }
-        });
-        
-        // If matching projects were found, scroll to the first one
-        if (matchingProjects.length > 0) {
-            // Scroll to the portfolio section first
-            document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
-            
-            // Then, after a short delay, scroll to the specific project
-            setTimeout(() => {
-                matchingProjects[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 500);
-            
-            // Update skill tags to show which one is active
-            document.querySelectorAll('.skill-tag').forEach(tag => {
-                if (tag.getAttribute('data-skill') === skill) {
-                    tag.classList.add('highlighted');
-                } else {
-                    tag.classList.remove('highlighted');
-                }
-            });
-        }
-    }
-    
-    // Add keydown event listener to close modal with Escape key
-    document.addEventListener('keydown', (event) => {
-        if (event.key === 'Escape' && modal.style.display === 'block') {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Re-enable scrolling
-        }
-    });
-</script>
-
-<style>
-    @keyframes highlightPulse {
-        0% { box-shadow: 0 0 0 0 rgba(91, 155, 213, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(91, 155, 213, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(91, 155, 213, 0); }
-    }
-    
-    .highlighted {
-        border-color: var(--accent-color);
-        box-shadow: 0 0 15px rgba(91, 155, 213, 0.7);
-    }
-</style>        @media (max-width: 768px) {
-        nav ul {
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        nav li {
-            width: 100%;
-            text-align: center;
-        }
-        
-        .projects-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .contact-grid {
-            grid-template-columns: 1fr;
-        }
-        
-        .modal-content {
-            width: 95%;
-            margin: 10% auto;
-            padding: 15px;
-        }
-        
-        .modal-gallery {
-            grid-template-columns: 1fr;
-        }
-    }<!DOCTYPE html>
+<div class="social-links">
+    <a href="https://linkedin.com/in/michael-kato" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+    </a>
+    <a href="https://github.com/RawMeat3000" target="_blank">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+    </a>
+</div><!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Michael Kato | Technical Artist</title>
 <style>
-    :root {
-        --bg-color: #1a1a1a;
-        --text-color: #d8d8d8;
-        --accent-color: #5b9bd5;
-        --secondary-color: #8064a2;
-        --tertiary-color: #cccccc;
-        --card-bg: #2a2a2a;
-        --border-color: #4f4f4f;
-        --header-bg: #252525;
-    }
-    
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    
-    body {
-        background-color: var(--bg-color);
-        color: var(--text-color);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        line-height: 1.6;
-        padding: 0;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-    
-    a {
-        color: var(--accent-color);
-        text-decoration: none;
-    }
-    
-    a:hover {
-        text-decoration: underline;
-        color: var(--secondary-color);
-    }
-    
-    header {
-        background-color: var(--header-bg);
-        padding: 40px 20px;
-        text-align: center;
-        border-bottom: 1px solid var(--border-color);
-    }
-    
-    .header-title {
-        font-size: 2.5rem;
-        color: var(--accent-color);
-        margin-bottom: 10px;
-    }
-    
-    .header-subtitle {
-        font-size: 1.2rem;
-        color: var(--tertiary-color);
-        max-width: 600px;
-        margin: 0 auto;
-    }
-    
-    .terminal-line {
-        display: flex;
-        margin: 15px 0;
-        font-family: 'Courier New', monospace;
-        background-color: #252525;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    
-    .prompt {
-        color: var(--accent-color);
-        margin-right: 10px;
-    }
-    
-    .command {
-        color: var(--secondary-color);
-    }
-    
-    .output {
-        margin: 5px 0 15px 0;
-    }
-    
-    nav {
-        background-color: var(--card-bg);
-        padding: 15px 20px;
-        margin: 0;
-    }
-    
-    nav ul {
-        display: flex;
-        list-style-type: none;
-        justify-content: center;
-        flex-wrap: wrap;
-        gap: 20px;
-    }
-    
-    nav li {
-        margin: 5px 0;
-    }
-    
-    nav a {
-        padding: 8px 15px;
-        color: var(--text-color);
-        border: 1px solid var(--border-color);
-        border-radius: 5px;
-        transition: all 0.3s;
-        font-weight: 500;
-    }
-    
-    nav a:hover {
-        background-color: var(--accent-color);
-        color: #fff;
-        border-color: var(--accent-color);
-        text-decoration: none;
-    }
-    
-    section {
-        margin: 40px 0;
-        padding: 40px 20px;
-        border-top: 1px solid var(--border-color);
-    }
-    
-    .section-header {
-        margin-bottom: 30px;
-        text-align: center;
-    }
-    
-    .section-header h2 {
-        display: inline-block;
-        font-size: 1.8rem;
-        color: var(--accent-color);
-        padding-bottom: 10px;
-        border-bottom: 2px solid var(--secondary-color);
-    }
-    
-    .skill-category {
-        margin-bottom: 30px;
-    }
-    
-    .skill-category h3 {
-        color: var(--accent-color);
-        margin-bottom: 15px;
-        padding-bottom: 5px;
-        border-bottom: 1px dashed var(--border-color);
-    }
-    
-    .skill-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-    
-    .skill-tag {
-        background-color: var(--card-bg);
-        color: var(--text-color);
-        padding: 6px 12px;
-        border-radius: 5px;
-        font-size: 0.9rem;
-        border: 1px solid var(--border-color);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s, transform 0.2s;
-    }
-    
-    .skill-tag:hover {
-        background-color: var(--accent-color);
-        color: white;
-        transform: translateY(-2px);
-    }
-    
-    .skill-icon {
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .container {
-        max-width: 1000px;
-        margin: 0 auto;
-    }
-    
-    .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 25px;
-    }
-    
-    .project-card {
-        border: 1px solid var(--border-color);
-        padding: 20px;
-        border-radius: 8px;
-        background-color: var(--card-bg);
-        transition: transform 0.2s, box-shadow 0.2s;
-        cursor: pointer;
-    }
-    
-    .project-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    
-    .project-header {
-        color: var(--accent-color);
-        margin-bottom: 15px;
-        font-size: 1.3rem;
-    }
-    
-    .project-icon {
-        font-size: 2.5rem;
-        margin-bottom: 15px;
-        color: var(--secondary-color);
-        text-align: center;
-    }
-    
-    .project-description {
-        margin-bottom: 15px;
-    }
-    
-    .project-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin: 15px 0;
-    }
-    
-    .project-tag {
-        background-color: #333;
-        color: var(--text-color);
-        padding: 4px 8px;
-        border-radius: 4px;
-        font-size: 0.8rem;
-    }
-    
-    .timeline {
-        margin: 40px auto;
-        max-width: 800px;
-    }
-    
-    .timeline-item {
-        border-left: 2px solid var(--accent-color);
-        padding-left: 25px;
-        margin-bottom: 40px;
-        position: relative;
-    }
-    
-    .timeline-item::before {
-        content: '';
-        width: 15px;
-        height: 15px;
-        background-color: var(--accent-color);
-        position: absolute;
-        left: -8px;
-        top: 5px;
-        border-radius: 50%;
-    }
-    
-    .timeline-header {
-        color: var(--accent-color);
-        margin-bottom: 5px;
-        font-size: 1.3rem;
-    }
-    
-    .timeline-subheader {
-        color: var(--secondary-color);
-        margin-bottom: 15px;
-        font-size: 1.1rem;
-    }
-    
-    .timeline-content ul {
-        margin-left: 20px;
-        margin-top: 10px;
-    }
-    
-    .contact-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 30px;
-    }
-    
-    .contact-box {
-        border: 1px solid var(--border-color);
-        padding: 25px;
-        border-radius: 8px;
-        background-color: var(--card-bg);
-    }
-    
-    .contact-box h3 {
-        color: var(--accent-color);
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px dashed var(--border-color);
-    }
-    
-    .contact-item {
-        margin-bottom: 15px;
-        display: flex;
-    }
-    
-    .contact-label {
-        color: var(--secondary-color);
-        margin-right: 15px;
-        min-width: 80px;
-    }
-    
-    .social-links {
-        display: flex;
-        gap: 15px;
-        margin-top: 20px;
-    }
-    
-    .social-links a {
-        width: 40px;
-        height: 40px;
-        background-color: var(--card-bg);
-        color: var(--accent-color);
-        border: 1px solid var(--accent-color);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-        transition: all 0.3s;
-        font-size: 1.2rem;
-    }
-    
-    .social-links a:hover {
-        background-color: var(--accent-color);
-        color: #fff;
-    }
-    
-    footer {
-        text-align: center;
-        padding: 30px 20px;
-        background-color: var(--header-bg);
-        color: var(--tertiary-color);
-        border-top: 1px solid var(--border-color);
-    }
-    
-    .code-snippet {
-        background-color: #252525;
-        padding: 15px;
-        border-radius: 5px;
-        margin: 15px 0;
-        font-family: 'Courier New', monospace;
-        overflow-x: auto;
-    }
-    
-    .skillset-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 20px;
-        margin: 30px 0;
-    }
-    
-    .skillset-card {
-        border: 1px solid var(--border-color);
-        border-radius: 8px;
-        background-color: var(--card-bg);
-        padding: 20px;
-        transition: transform 0.2s, box-shadow 0.2s;
-        height: 100%;
-    }
-    
-    .skillset-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    }
-    
-    .skillset-card h3 {
-        color: var(--accent-color);
-        margin-bottom: 15px;
-        padding-bottom: 5px;
-        border-bottom: 1px dashed var(--border-color);
-        text-align: center;
-    }
-    
-    .skillset-card-icon {
-        font-size: 2rem;
-        text-align: center;
-        margin-bottom: 15px;
-        color: var(--secondary-color);
-    }
-    
-    .btn {
-        display: inline-block;
-        padding: 8px 16px;
-        background-color: var(--accent-color);
-        color: white;
-        border-radius: 5px;
-        margin-top: 15px;
-        transition: background-color 0.3s;
-    }
-    
-    .btn:hover {
-        background-color: var(--secondary-color);
-        text-decoration: none;
-    }
-    
-    .text-center {
-        text-align: center;
-    }
-    
-    /* Modal styles */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        overflow: auto;
-        padding: 20px;
-        box-sizing: border-box;
-    }
-    
-    .modal-content {
-        background-color: var(--card-bg);
-        margin: 5% auto;
-        padding: 30px;
-        border: 1px solid var(--border-color);
-        border-radius: 10px;
-        width: 80%;
-        max-width: 800px;
-        position: relative;
-        animation: modalFadeIn 0.3s;
-    }
-    
-    @keyframes modalFadeIn {
-        from {opacity: 0; transform: translateY(-50px);}
-        to {opacity: 1; transform: translateY(0);}
-    }
-    
-    .close-modal {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        color: var(--accent-color);
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-    
-    .close-modal:hover {
-        color: var(--secondary-color);
-    }
-    
-    .modal-header {
-        color: var(--accent-color);
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px dashed var(--border-color);
-    }
-    
-    .modal-body {
-        margin-bottom: 20px;
-    }
-    
-    .modal-gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
-        margin: 20px 0;
-    }
-    
-    .modal-image {
-        width: 100%;
-        border-radius: 5px;
-        transition: transform 0.3s;
-    }
-    
-    .modal-image:hover {
-        transform: scale(1.05);
-    }
-    
-    .modal-video {
-        width: 100%;
-        height: 350px;
-        border-radius: 5px;
-        margin: 20px 0;
-    }
-    
-    .modal-details {
-        margin-top: 20px;
-    }
-    
-    .modal-details h4 {
-        color: var(--secondary-color);
-        margin-bottom: 10px;
-    }
-    
-    .highlighted {
-        background-color: var(--accent-color) !important;
-        color: white !important;
-    }
+:root {
+--bg-color: #1a1a1a;
+--text-color: #d8d8d8;
+--accent-color: #5b9bd5;
+--secondary-color: #8064a2;
+--tertiary-color: #cccccc;
+--card-bg: #2a2a2a;
+--border-color: #4f4f4f;
+--header-bg: #252525;
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+background-color: var(--bg-color);
+color: var(--text-color);
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+line-height: 1.6;
+padding: 0;
+max-width: 1200px;
+margin: 0 auto;
+}
+
+a {
+color: var(--accent-color);
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+color: var(--secondary-color);
+}
+
+header {
+background-color: var(--header-bg);
+padding: 40px 20px;
+text-align: center;
+border-bottom: 1px solid var(--border-color);
+}
+
+.header-title {
+font-size: 2.5rem;
+color: var(--accent-color);
+margin-bottom: 10px;
+}
+
+.header-subtitle {
+font-size: 1.2rem;
+color: var(--tertiary-color);
+max-width: 600px;
+margin: 0 auto;
+}
+
+.command {
+color: var(--secondary-color);
+}
+
+.output {
+margin: 5px 0 15px 0;
+}
+
+nav {
+background-color: var(--card-bg);
+padding: 15px 20px;
+margin: 0;
+}
+
+nav ul {
+display: flex;
+list-style-type: none;
+justify-content: center;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+nav li {
+margin: 5px 0;
+}
+
+nav a {
+padding: 8px 15px;
+color: var(--text-color);
+border: 1px solid var(--border-color);
+border-radius: 5px;
+transition: all 0.3s;
+font-weight: 500;
+}
+
+nav a:hover {
+background-color: var(--accent-color);
+color: #fff;
+border-color: var(--accent-color);
+text-decoration: none;
+}
+
+section {
+margin: 40px 0;
+padding: 40px 20px;
+border-top: 1px solid var(--border-color);
+}
+
+.section-header {
+margin-bottom: 30px;
+text-align: center;
+}
+
+.section-header h2 {
+display: inline-block;
+font-size: 1.8rem;
+color: var(--accent-color);
+padding-bottom: 10px;
+border-bottom: 2px solid var(--secondary-color);
+}
+
+.skill-category {
+margin-bottom: 30px;
+}
+
+.skill-category h3 {
+color: var(--accent-color);
+margin-bottom: 15px;
+padding-bottom: 5px;
+border-bottom: 1px dashed var(--border-color);
+}
+
+.skill-list {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.skill-tag {
+background-color: var(--card-bg);
+color: var(--text-color);
+padding: 6px 12px;
+border-radius: 5px;
+font-size: 0.9rem;
+border: 1px solid var(--border-color);
+display: flex;
+align-items: center;
+gap: 8px;
+cursor: pointer;
+transition: background-color 0.3s, transform 0.2s;
+}
+
+.skill-tag:hover {
+background-color: var(--accent-color);
+color: white;
+transform: translateY(-2px);
+}
+
+.skill-icon {
+width: 20px;
+height: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.container {
+max-width: 1000px;
+margin: 0 auto;
+}
+
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 25px;
+}
+
+.project-card {
+border: 1px solid var(--border-color);
+padding: 20px;
+border-radius: 8px;
+background-color: var(--card-bg);
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: pointer;
+}
+
+.project-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.project-header {
+color: var(--accent-color);
+margin-bottom: 15px;
+font-size: 1.3rem;
+}
+
+.project-icon {
+font-size: 2.5rem;
+margin-bottom: 15px;
+color: var(--secondary-color);
+text-align: center;
+}
+
+.project-description {
+margin-bottom: 15px;
+}
+
+.project-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin: 15px 0;
+}
+
+.project-tag {
+background-color: #333;
+color: var(--text-color);
+padding: 4px 8px;
+border-radius: 4px;
+font-size: 0.8rem;
+}
+
+.contact-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+gap: 30px;
+}
+
+.contact-box {
+border: 1px solid var(--border-color);
+padding: 25px;
+border-radius: 8px;
+background-color: var(--card-bg);
+}
+
+.contact-box h3 {
+color: var(--accent-color);
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px dashed var(--border-color);
+}
+
+.contact-item {
+margin-bottom: 15px;
+display: flex;
+}
+
+.contact-label {
+color: var(--secondary-color);
+margin-right: 15px;
+min-width: 80px;
+}
+
+.social-links {
+display: flex;
+gap: 15px;
+margin-top: 20px;
+}
+
+.social-links a {
+width: 40px;
+height: 40px;
+background-color: var(--card-bg);
+color: var(--accent-color);
+border: 1px solid var(--accent-color);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+transition: all 0.3s;
+font-size: 1.2rem;
+}
+
+.social-links a:hover {
+background-color: var(--accent-color);
+color: #fff;
+}
+
+footer {
+text-align: center;
+padding: 30px 20px;
+background-color: var(--header-bg);
+color: var(--tertiary-color);
+border-top: 1px solid var(--border-color);
+}
+
+.code-snippet {
+background-color: #252525;
+padding: 15px;
+border-radius: 5px;
+margin: 15px 0;
+font-family: 'Courier New', monospace;
+overflow-x: auto;
+}
+
+/* Modal styles */
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.7);
+z-index: 1000;
+overflow: auto;
+padding: 20px;
+box-sizing: border-box;
+}
+
+.modal-content {
+background-color: var(--card-bg);
+margin: 5% auto;
+padding: 30px;
+border: 1px solid var(--border-color);
+border-radius: 10px;
+width: 80%;
+max-width: 800px;
+position: relative;
+animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+from {opacity: 0; transform: translateY(-50px);}
+to {opacity: 1; transform: translateY(0);}
+}
+
+.close-modal {
+position: absolute;
+top: 15px;
+right: 20px;
+color: var(--accent-color);
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+transition: color 0.3s;
+}
+
+.close-modal:hover {
+color: var(--secondary-color);
+}
+
+.modal-header {
+color: var(--accent-color);
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px dashed var(--border-color);
+}
+
+.modal-body {
+margin-bottom: 20px;
+}
+
+.modal-gallery {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 15px;
+margin: 20px 0;
+}
+
+.modal-image {
+width: 100%;
+border-radius: 5px;
+transition: transform 0.3s;
+}
+
+.modal-image:hover {
+transform: scale(1.05);
+}
+
+.modal-video {
+width: 100%;
+height: 350px;
+border-radius: 5px;
+margin: 20px 0;
+}
+
+.modal-details {
+margin-top: 20px;
+}
+
+.modal-details h4 {
+color: var(--secondary-color);
+margin-bottom: 10px;
+}
+
+.highlighted {
+background-color: var(--accent-color) !important;
+color: white !important;
+}
+
+@keyframes highlightPulse {
+0% { box-shadow: 0 0 0 0 rgba(91, 155, 213, 0.7); }
+70% { box-shadow: 0 0 0 10px rgba(91, 155, 213, 0); }
+100% { box-shadow: 0 0 0 0 rgba(91, 155, 213, 0); }
+}
+
+@media (max-width: 768px) {
+nav ul {
+flex-direction: column;
+align-items: center;
+}
+
+nav li {
+width: 100%;
+text-align: center;
+}
+
+.projects-grid {
+grid-template-columns: 1fr;
+}
+
+.contact-grid {
+grid-template-columns: 1fr;
+}
+
+.modal-content {
+width: 95%;
+margin: 10% auto;
+padding: 15px;
+}
+
+.modal-gallery {
+grid-template-columns: 1fr;
+}
+}
 </style>
 </head>
 <body>
 <header>
-    <h1 class="header-title">Michael Kato</h1>
-    <p class="header-subtitle">Technical Artist specializing in Pipeline Development, Performance Optimization, and Tool Creation</p>
+<h1 class="header-title">Michael Kato</h1>
+<p class="header-subtitle">Technical Artist specializing in Pipeline Development, Performance Optimization, and Tool Creation</p>
 </header>
 
 <nav>
-    <ul>
-        <li><a href="#about">About</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#skillsets">Skillsets</a></li>
-        <li><a href="#portfolio">Portfolio</a></li>
-        <li><a href="#experience">Experience</a></li>
-        <li><a href="#contact">Contact</a></li>
-    </ul>
+<ul>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#portfolio">Projects</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
 </nav>
 
 <section id="about">
-    <div class="container">
-        <div class="section-header">
-            <h2>About Me</h2>
-        </div>
-        
-        <p style="margin-bottom: 20px;">I'm a Technical Artist with over 9 years of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
-        
-        <div class="terminal-line">
-            <span class="prompt">></span>
-            <span class="command">My approach to technical art</span>
-        </div>
-        <div class="output">
-            I bridge the gap between art and engineering teams by developing robust pipelines, optimizing performance, and creating tools that streamline content creation workflows. I'm passionate about solving technical problems that enable artists to focus on creativity.
-        </div>
-    </div>
+<div class="container">
+<div class="section-header">
+<h2>About Me</h2>
+</div>
+
+<p style="margin-bottom: 20px;">I'm a Technical Artist with over 9 years of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
+
+<p style="margin-bottom: 20px;">As a bridge between art and engineering teams, I develop robust pipelines, optimize performance, and create tools that streamline content creation workflows. I excel at translating technical requirements between disciplines, helping engineers understand artistic needs and helping artists work effectively within technical constraints.</p>
+
+<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with project managers to identify and address technical challenges before they impact production milestones. My expertise in performance optimization processes, content pipelines, and workflow automation allows me to provide valuable technical leadership while maintaining a strong desire to help others succeed.</p>
+
+<p>Whether troubleshooting urgent issues, developing new tools, or implementing optimization strategies, I approach each challenge with a focus on both technical excellence and effective teamwork.</p>
+</div>
 </section>
 
 <section id="skills">
-    <div class="container">
-        <div class="section-header">
-            <h2>Technical Skills</h2>
-        </div>
-        
-        <div class="skill-category">
-            <h3>Software & Engines</h3>
-        <div class="skill-list">
-                <span class="skill-tag" data-skill="Maya" onclick="scrollToProjects('Maya')"><span class="skill-icon">🔷</span>Maya</span>
-                <span class="skill-tag" data-skill="Unity" onclick="scrollToProjects('Unity')"><span class="skill-icon">🎮</span>Unity</span>
-                <span class="skill-tag" data-skill="Unreal" onclick="scrollToProjects('Unreal')"><span class="skill-icon">🎯</span>Unreal</span>
-                <span class="skill-tag" data-skill="CoD Engine" onclick="scrollToProjects('CoD Engine')"><span class="skill-icon">🎖️</span>CoD Engine</span>
-                <span class="skill-tag" data-skill="Perforce" onclick="scrollToProjects('Perforce')"><span class="skill-icon">🔄</span>Perforce</span>
-                <span class="skill-tag" data-skill="Git" onclick="scrollToProjects('Git')"><span class="skill-icon">🔀</span>Git</span>
-                <span class="skill-tag" data-skill="Mercurial" onclick="scrollToProjects('Mercurial')"><span class="skill-icon">🔁</span>Mercurial</span>
-            </div>
-        </div>
-        
-        <div class="skill-category">
-            <h3>Programming Languages</h3>
-        <div class="skill-list">
-                <span class="skill-tag" data-skill="Python" onclick="scrollToProjects('Python')"><span class="skill-icon">🐍</span>Python</span>
-                <span class="skill-tag" data-skill="C#" onclick="scrollToProjects('C#')"><span class="skill-icon">#</span>C#</span>
-                <span class="skill-tag" data-skill="C++" onclick="scrollToProjects('C++')"><span class="skill-icon">++</span>C++</span>
-                <span class="skill-tag" data-skill="JavaScript" onclick="scrollToProjects('JavaScript')"><span class="skill-icon">JS</span>JavaScript</span>
-            </div>
-        </div>
-        
-        <div class="skill-category">
-            <h3>Core Competencies</h3>
-        <div class="skill-list">
-                <span class="skill-tag" data-skill="Pipeline Development" onclick="scrollToProjects('Pipeline')"><span class="skill-icon">🔧</span>Pipeline Development</span>
-                <span class="skill-tag" data-skill="Performance Optimization" onclick="scrollToProjects('Performance')"><span class="skill-icon">⚡</span>Performance Optimization</span>
-                <span class="skill-tag" data-skill="Tool Creation" onclick="scrollToProjects('Tool')"><span class="skill-icon">🛠️</span>Tool Creation</span>
-                <span class="skill-tag" data-skill="Workflow Automation" onclick="scrollToProjects('Workflow')"><span class="skill-icon">⚙️</span>Workflow Automation</span>
-                <span class="skill-tag" data-skill="Technical Problem Solving" onclick="scrollToProjects('Problem Solving')"><span class="skill-icon">🧩</span>Technical Problem Solving</span>
-            </div>
-        </div>
-        
-        <div class="terminal-line">
-            <span class="prompt">></span>
-            <span class="command">Expertise summary</span>
-        </div>
-        <div class="output">
-            Expert understanding of performance optimization processes, content pipelines, and workflow automation.
-        </div>
-    </div>
-</section>
+<div class="container">
+<div class="section-header">
+<h2>Technical Skills</h2>
+</div>
 
-<section id="skillsets">
-    <div class="container">
-        <div class="section-header">
-            <h2>Specialized Skillsets</h2>
-        </div>
-        
-        <p>With experience across multiple domains of technical art, I've developed specialized skillsets that enable me to tackle a wide range of challenges.</p>
-        
-        <div class="skillset-cards">
-            <div class="skillset-card">
-                <div class="skillset-card-icon">🔧</div>
-                <h3>Pipeline Development</h3>
-                <p>Creating robust asset pipelines that streamline the workflow from content creation to game integration.</p>
-                <div class="text-center">
-                    <a href="pipeline.html" class="btn">Learn More</a>
-                </div>
-            </div>
-            
-            <div class="skillset-card">
-                <div class="skillset-card-icon">⚡</div>
-                <h3>Performance Optimization</h3>
-                <p>Identifying bottlenecks and implementing solutions to achieve optimal performance across platforms.</p>
-                <div class="text-center">
-                    <a href="performance.html" class="btn">Learn More</a>
-                </div>
-            </div>
-            
-            <div class="skillset-card">
-                <div class="skillset-card-icon">🛠️</div>
-                <h3>Tool Development</h3>
-                <p>Building custom tools that empower artists and streamline complex technical processes.</p>
-                <div class="text-center">
-                    <a href="tools.html" class="btn">Learn More</a>
-                </div>
-            </div>
-            
-            <div class="skillset-card">
-                <div class="skillset-card-icon">📊</div>
-                <h3>Data Visualization</h3>
-                <p>Creating comprehensive dashboards and analytics systems for performance monitoring and optimization.</p>
-                <div class="text-center">
-                    <a href="visualization.html" class="btn">Learn More</a>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="skill-category">
+<h3>Software & Engines</h3>
+<div class="skill-list">
+<span class="skill-tag" data-skill="Maya" onclick="scrollToProjects('Maya')"><span class="skill-icon">🔷</span>Maya</span>
+<span class="skill-tag" data-skill="Unity" onclick="scrollToProjects('Unity')"><span class="skill-icon">🎮</span>Unity</span>
+<span class="skill-tag" data-skill="Unreal" onclick="scrollToProjects('Unreal')"><span class="skill-icon">🎯</span>Unreal</span>
+<span class="skill-tag" data-skill="CoD Engine" onclick="scrollToProjects('CoD Engine')"><span class="skill-icon">🎖️</span>CoD Engine</span>
+<span class="skill-tag" data-skill="Perforce" onclick="scrollToProjects('Perforce')"><span class="skill-icon">🔄</span>Perforce</span>
+<span class="skill-tag" data-skill="Git" onclick="scrollToProjects('Git')"><span class="skill-icon">🔀</span>Git</span>
+<span class="skill-tag" data-skill="Mercurial" onclick="scrollToProjects('Mercurial')"><span class="skill-icon">🔁</span>Mercurial</span>
+</div>
+</div>
+
+<div class="skill-category">
+<h3>Programming Languages</h3>
+<div class="skill-list">
+<span class="skill-tag" data-skill="Python" onclick="scrollToProjects('Python')"><span class="skill-icon">🐍</span>Python</span>
+<span class="skill-tag" data-skill="C#" onclick="scrollToProjects('C#')"><span class="skill-icon">#</span>C#</span>
+<span class="skill-tag" data-skill="C++" onclick="scrollToProjects('C++')"><span class="skill-icon">++</span>C++</span>
+<span class="skill-tag" data-skill="JavaScript" onclick="scrollToProjects('JavaScript')"><span class="skill-icon">JS</span>JavaScript</span>
+</div>
+</div>
+
+<div class="skill-category">
+<h3>Core Competencies</h3>
+<div class="skill-list">
+<span class="skill-tag" data-skill="Pipeline Development" onclick="scrollToProjects('Pipeline')"><span class="skill-icon">🔧</span>Pipeline Development</span>
+<span class="skill-tag" data-skill="Performance Optimization" onclick="scrollToProjects('Performance')"><span class="skill-icon">⚡</span>Performance Optimization</span>
+<span class="skill-tag" data-skill="Tool Creation" onclick="scrollToProjects('Tool')"><span class="skill-icon">🛠️</span>Tool Creation</span>
+<span class="skill-tag" data-skill="Workflow Automation" onclick="scrollToProjects('Workflow')"><span class="skill-icon">⚙️</span>Workflow Automation</span>
+<span class="skill-tag" data-skill="Technical Problem Solving" onclick="scrollToProjects('Problem Solving')"><span class="skill-icon">🧩</span>Technical Problem Solving</span>
+</div>
+</div>
+</div>
 </section>
 
 <section id="portfolio">
-    <div class="container">
-        <div class="section-header">
-            <h2>Project Portfolio</h2>
-        </div>
-        
-        <div class="projects-grid">
-            <!-- Project 1 -->
-            <div class="project-card" id="project-perf-framework" data-tags="Python,VR,Performance,Tool,Problem Solving">
-                <h3 class="project-header">Performance Testing Framework</h3>
-                <div class="project-icon">📊</div>
-                <p class="project-description">Developed an automated framework for testing VR application performance across different scenarios and hardware configurations.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Data Visualization</span>
-                    <span class="project-tag">VR</span>
-                </div>
-            </div>
-            
-            <!-- Project 2 -->
-            <div class="project-card" id="project-perf-dashboard" data-tags="JavaScript,Performance,Visualization,Problem Solving">
-                <h3 class="project-header">Performance Visualization Dashboard</h3>
-                <div class="project-icon">📈</div>
-                <p class="project-description">Created comprehensive dashboards to track and visualize performance metrics over time, helping teams identify trends and prioritize optimization efforts.</p>
-                <div class="project-tags">
-                    <span class="project-tag">JavaScript</span>
-                    <span class="project-tag">Data Analysis</span>
-                    <span class="project-tag">Visualization</span>
-                </div>
-            </div>
-            
-            <!-- Project 3 -->
-            <div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
-                <h3 class="project-header">Procedural Scene Generation</h3>
-                <div class="project-icon">🏙️</div>
-                <p class="project-description">Developed an automated pipeline for generating synthetic scenes with controlled parameters for training computer vision models.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Maya</span>
-                    <span class="project-tag">Procedural</span>
-                </div>
-            </div>
-            
-            <!-- Project 4 -->
-            <div class="project-card" id="project-qa-tool" data-tags="Python,Tool,Pipeline,Workflow,Problem Solving">
-                <h3 class="project-header">Asset Quality Assurance Tool</h3>
-                <div class="project-icon">✅</div>
-                <p class="project-description">Built a comprehensive QA tool that validates assets, scenes, and metadata against defined standards, catching common errors before production.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Validation</span>
-                    <span class="project-tag">Automation</span>
-                </div>
-            </div>
-            
-            <!-- Project 5 -->
-            <div class="project-card" id="project-maya-exporter" data-tags="Python,Maya,Pipeline,Tool,Workflow">
-                <h3 class="project-header">Maya Exporter Pipeline</h3>
-                <div class="project-icon">🔄</div>
-                <p class="project-description">Enhanced Maya exporters for game assets with extensive validation, optimization, and workflow improvements for artists and developers.</p>
-                <div class="project-tags">
-                    <span class="project-tag">Python</span>
-                    <span class="project-tag">Maya</span>
-                    <span class="project-tag">Asset Pipeline</span>
-                </div>
-            </div>
-            
-            <!-- Project 6 -->
-            <div class="project-card" id="project-perf-toolkit" data-tags="C++,Performance,Tool,CoD Engine,Problem Solving">
-                <h3 class="project-header">Performance Optimization Toolkit</h3>
-                <div class="project-icon">⚡</div>
-                <p class="project-description">Created a suite of tools for identifying and resolving performance bottlenecks in game environments, enabling consistent 60fps on all platforms.</p>
-                <div class="project-tags">
-                    <span class="project-tag">C++</span>
-                    <span class="project-tag">Performance</span>
-                    <span class="project-tag">Optimization</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+<div class="container">
+<div class="section-header">
+<h2>Projects</h2>
+</div>
 
-<section id="experience">
-    <div class="container">
-        <div class="section-header">
-            <h2>Professional Experience</h2>
-        </div>
-        
-        <div class="timeline">
-            <!-- Meta -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">Meta Platforms</h3>
-                <h4 class="timeline-subheader">Technical Artist - Horizon Worlds (VR) | 2020 - 2023</h4>
-                <div class="timeline-content">
-                    <ul>
-                        <li>Identified and resolved performance issues on mobile VR platforms, ensuring optimal user experience while adhering to a tight release schedule</li>
-                        <li>Managed automated performance testing frameworks, enhancing efficiency and reliability of testing processes</li>
-                        <li>Developed comprehensive dashboards to visualize performance statistics over time, sorting trends by world, player count, and hitch frequency</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Apple -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">Apple Inc.</h3>
-                <h4 class="timeline-subheader">Technical Artist - Synthetic Data | 2019 - 2020</h4>
-                <div class="timeline-content">
-                    <ul>
-                        <li>Spearheaded procedural scene generation and asset ingestion pipelines, maintaining high standards of consistency and quality</li>
-                        <li>Developed QA tooling for assets, scenes, and metadata, implementing checks for common errors</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Sledgehammer -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">Sledgehammer Games</h3>
-                <h4 class="timeline-subheader">Technical Artist - Call of Duty | 2014 - 2019</h4>
-                <div class="timeline-content">
-                    <ul>
-                        <li>Supported Maya, Photoshop, and Substance exporters, mesh modifiers, rigging tools, and level editors</li>
-                        <li>Collaborated with engineering and art teams to implement, test, and provide feedback on new features</li>
-                        <li>Played a key role in achieving consistent 60fps across all game modes and console platforms, troubleshooting CPU and GPU performance bottlenecks</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Education -->
-            <div class="timeline-item">
-                <h3 class="timeline-header">The Art Institute of Silicon Valley</h3>
-                <h4 class="timeline-subheader">Bachelor of Arts in Game Art & Design | 2009 - 2013</h4>
-                <div class="timeline-content">
-                    <p>Developed foundational skills in both artistic and technical aspects of game development.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="projects-grid">
+<!-- Project 1 -->
+<div class="project-card" id="project-perf-framework" data-tags="Python,VR,Performance,Tool,Problem Solving">
+<h3 class="project-header">Performance Testing Framework</h3>
+<div class="project-icon">📊</div>
+<p class="project-description">Developed an automated framework for testing VR application performance across different scenarios and hardware configurations.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Data Visualization</span>
+    <span class="project-tag">VR</span>
+</div>
+</div>
+
+<!-- Project 2 -->
+<div class="project-card" id="project-perf-dashboard" data-tags="JavaScript,Performance,Visualization,Problem Solving">
+<h3 class="project-header">Performance Visualization Dashboard</h3>
+<div class="project-icon">📈</div>
+<p class="project-description">Created comprehensive dashboards to track and visualize performance metrics over time, helping teams identify trends and prioritize optimization efforts.</p>
+<div class="project-tags">
+    <span class="project-tag">JavaScript</span>
+    <span class="project-tag">Data Analysis</span>
+    <span class="project-tag">Visualization</span>
+</div>
+</div>
+
+<!-- Project 3 -->
+<div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
+<h3 class="project-header">Procedural Scene Generation</h3>
+<div class="project-icon">🏙️</div>
+<p class="project-description">Developed an automated pipeline for generating synthetic scenes with controlled parameters for training computer vision models.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Maya</span>
+    <span class="project-tag">Procedural</span>
+</div>
+</div>
+
+<!-- Project 4 -->
+<div class="project-card" id="project-qa-tool" data-tags="Python,Tool,Pipeline,Workflow,Problem Solving">
+<h3 class="project-header">Asset Quality Assurance Tool</h3>
+<div class="project-icon">✅</div>
+<p class="project-description">Built a comprehensive QA tool that validates assets, scenes, and metadata against defined standards, catching common errors before production.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Validation</span>
+    <span class="project-tag">Automation</span>
+</div>
+</div>
+
+<!-- Project 5 -->
+<div class="project-card" id="project-maya-exporter" data-tags="Python,Maya,Pipeline,Tool,Workflow">
+<h3 class="project-header">Maya Exporter Pipeline</h3>
+<div class="project-icon">🔄</div>
+<p class="project-description">Enhanced Maya exporters for game assets with extensive validation, optimization, and workflow improvements for artists and developers.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Maya</span>
+    <span class="project-tag">Asset Pipeline</span>
+</div>
+</div>
+
+<!-- Project 6 -->
+<div class="project-card" id="project-perf-toolkit" data-tags="C++,Performance,Tool,CoD Engine,Problem Solving">
+<h3 class="project-header">Performance Optimization Toolkit</h3>
+<div class="project-icon">⚡</div>
+<p class="project-description">Created a suite of tools for identifying and resolving performance bottlenecks in game environments, enabling consistent 60fps on all platforms.</p>
+<div class="project-tags">
+    <span class="project-tag">C++</span>
+    <span class="project-tag">Performance</span>
+    <span class="project-tag">Optimization</span>
+</div>
+</div>
+</div>
+</div>
 </section>
 
 <section id="contact">
-    <div class="container">
-        <div class="section-header">
-            <h2>Contact Me</h2>
-        </div>
-        
-        <div class="contact-grid">
-            <div class="contact-box">
-                <h3>Get In Touch</h3>
-                
-                <div class="contact-item">
-                    <div class="contact-label">📧 Email:</div>
-                    <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label">📱 Phone:</div>
-                    <div><a href="tel:8084695433">808-469-5433</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
-                    <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
-                    <div><a href="https://github.com/RawMeat3000" target="_blank">github.com/RawMeat3000</a></div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FF5722"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg> Blog:</div>
-                    <div><a href="https://michaelkato.blogspot.com/" target="_blank">michaelkato.blogspot.com</a></div>
-                </div>
-                
-                <div class="social-links">
-                    <a href="https://linkedin.com/in/michael-kato" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                    </a>
-                    <a href="https://github.com/RawMeat3000" target="_blank">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    </a>
-                </div>
+<div class="container">
+<div class="section-header">
+<h2>Contact Me</h2>
+</div>
+
+<div class="contact-grid">
+<div class="contact-box">
+<h3>Get In Touch</h3>
+
+<div class="contact-item">
+    <div class="contact-label">📧 Email:</div>
+    <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label">📱 Phone:</div>
+    <div><a href="tel:8084695433">808-469-5433</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
+    <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
+    <div><a href="https://github.com/RawMeat3000" target="_blank">github.com/RawMeat3000</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FF5722"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg> Blog:</div>
+    <div><a href="https://michaelkato.blogspot.com/" target="_blank">michaelkato.blogspot.com</a></div>
+</div>
+
+<div class="contact-box">
+<h3>Let's Work Together</h3>
+<p>I'm always open to discussing new projects, technical challenges, or opportunities to collaborate on innovative tools and pipelines.</p>
+<p style="margin-top: 15px;">Whether you need help optimizing performance, streamlining your content pipeline, or developing custom tools for your team, I'm here to help.</p>
+<div class="code-snippet">
+    // Simple code example
+    function connectWithMe() {
+      return "Let's build something great together!";
+    }
+</div>
+</div>
