@@ -195,6 +195,76 @@ font-size: 0.8rem;
 font-weight: 500;
 }
 
+/* Art gallery styles */
+.art-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 15px;
+margin-top: 30px;
+}
+
+.art-item {
+border: 1px solid var(--border-color);
+border-radius: 6px;
+overflow: hidden;
+background-color: var(--card-bg);
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: pointer;
+aspect-ratio: 1 / 1;
+position: relative;
+}
+
+.art-item:hover {
+transform: translateY(-4px);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+border-color: var(--accent-color);
+}
+
+.art-item img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s;
+}
+
+.art-item:hover img {
+transform: scale(1.05);
+}
+
+.art-title {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 10px;
+transform: translateY(100%);
+transition: transform 0.3s;
+}
+
+.art-item:hover .art-title {
+transform: translateY(0);
+}
+
+.video-container {
+margin-top: 40px;
+text-align: center;
+}
+
+.video-container iframe {
+max-width: 100%;
+border-radius: 6px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+border: 1px solid var(--border-color);
+}
+
+.video-title {
+margin-top: 15px;
+font-size: 1.2rem;
+color: var(--accent-color);
+}
+
 .contact-grid {
 display: flex;
 justify-content: center;
@@ -264,17 +334,6 @@ background-color: var(--header-bg);
 color: var(--tertiary-color);
 border-top: 1px solid var(--border-color);
 margin-top: 40px;
-}
-
-.code-snippet {
-background-color: var(--bg-color);
-padding: 15px;
-border-radius: 6px;
-margin: 15px 0;
-font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
-overflow-x: auto;
-font-size: 0.9rem;
-border: 1px solid var(--border-color);
 }
 
 /* Modal styles */
@@ -387,6 +446,10 @@ text-align: center;
 grid-template-columns: 1fr;
 }
 
+.art-grid {
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
 .modal-content {
 width: 95%;
 margin: 10% auto;
@@ -409,6 +472,7 @@ grid-template-columns: 1fr;
 <ul>
 <li><a href="#about">About</a></li>
 <li><a href="#portfolio">Projects</a></li>
+<li><a href="#art">Art Portfolio</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
 </nav>
@@ -432,27 +496,39 @@ grid-template-columns: 1fr;
 <section id="portfolio">
 <div class="container">
 <div class="section-header">
-<h2>Projects</h2>
+<h2>Technical Projects</h2>
 </div>
 
 <div class="projects-grid">
-<!-- Original Project 1 -->
+<!-- Project 1: Performance Automation Framework -->
 <div class="project-card" id="project-perf-framework" data-tags="Python,VR,Performance,Tool">
-<h3 class="project-header">Performance Testing Framework</h3>
+<h3 class="project-header">Performance Automation Framework</h3>
 <div class="project-icon">📊</div>
-<p class="project-description">Developed an automated framework for testing VR application performance across different scenarios and hardware configurations. Created data visualization dashboards to track performance over time.</p>
+<p class="project-description">Developed a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the entire codebase. The system automatically tracked framerate, memory usage, load times, and other critical metrics to identify bottlenecks.</p>
 <div class="project-tags">
     <span class="project-tag">Python</span>
-    <span class="project-tag">Data Visualization</span>
+    <span class="project-tag">Performance</span>
     <span class="project-tag">VR</span>
 </div>
 </div>
 
-<!-- Original Project 2 -->
+<!-- Project 2: Performance Visualization Dashboards -->
+<div class="project-card" id="project-perf-dashboards" data-tags="Python,Data,Visualization,Tool">
+<h3 class="project-header">Performance Visualization Dashboards</h3>
+<div class="project-icon">📈</div>
+<p class="project-description">Created interactive performance dashboards that visualized metrics from our VR applications, helping teams tackle regressions more effectively. These dashboards tracked trends over time and enabled drill-down analysis by world, player count, and hardware configuration.</p>
+<div class="project-tags">
+    <span class="project-tag">Data Visualization</span>
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Performance</span>
+</div>
+</div>
+
+<!-- Project 3: Procedural Scene Generation -->
 <div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
 <h3 class="project-header">Procedural Scene Generation</h3>
 <div class="project-icon">🏙️</div>
-<p class="project-description">Developed an automated pipeline for generating synthetic scenes with controlled parameters for training computer vision models. Implemented complex procedural rules to ensure scene variety.</p>
+<p class="project-description">Developed procedural scene generation systems for Apple Vision Pro training data. Created parametrically controlled environments with variable lighting, object placement, and appearances that generated thousands of synthetic training scenarios.</p>
 <div class="project-tags">
     <span class="project-tag">Python</span>
     <span class="project-tag">Maya</span>
@@ -460,20 +536,92 @@ grid-template-columns: 1fr;
 </div>
 </div>
 
-<!-- New Project: Maya Character Control Rig -->
-<div class="project-card" id="project-character-rig" data-tags="Python,Maya,Rigging,Animation">
-<h3 class="project-header">Maya Character Control Rig</h3>
-<div class="project-icon">🤖</div>
-<p class="project-description">Created a flexible character rigging system with intuitive UI controls for animators. The system includes advanced IK/FK blending, automatic joint rotation constraints, and space switching capabilities.</p>
+<!-- Project 4: Asset Validation QA Tools -->
+<div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation,Tool">
+<h3 class="project-header">Asset Validation QA Tools</h3>
+<div class="project-icon">🔍</div>
+<p class="project-description">Built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata. Features included automatic thumbnail generation, LOD creation, metadata validation, and seamless outsource integration.</p>
 <div class="project-tags">
     <span class="project-tag">Python</span>
-    <span class="project-tag">Maya</span>
-    <span class="project-tag">Animation</span>
+    <span class="project-tag">Pipeline</span>
+    <span class="project-tag">Quality Assurance</span>
 </div>
 </div>
 
-<!-- More project cards would continue here -->
-<!-- showing just the first 3 for brevity in this preview -->
+<!-- Project 5: LOD Generation Pipeline -->
+<div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
+<h3 class="project-header">LOD Generation Pipeline</h3>
+<div class="project-icon">💎</div>
+<p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs. This system automated the creation of optimized mesh levels, significantly reducing artist workload while maintaining visual fidelity.</p>
+<div class="project-tags">
+    <span class="project-tag">C++</span>
+    <span class="project-tag">C#</span>
+    <span class="project-tag">Optimization</span>
+</div>
+</div>
+
+<!-- Project 6: Edge Cleanup Tool -->
+<div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization,Tool">
+<h3 class="project-header">Edge Cleanup Tool</h3>
+<div class="project-icon">✂️</div>
+<p class="project-description">Created an optimization tool that identifies and removes unnecessary edges in 3D models. The script intelligently detects edges that don't add visual detail to the model but consume processing power, providing significant polygon reduction with no visual impact.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Maya</span>
+    <span class="project-tag">Optimization</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="art">
+<div class="container">
+<div class="section-header">
+<h2>Art Portfolio</h2>
+</div>
+
+<div class="art-grid">
+<!-- Art Item 1 -->
+<div class="art-item" id="art-senior-project">
+    <img src="http://i.imgur.com/UGUc4yz.jpg" alt="Senior Project Scene">
+    <div class="art-title">Senior Project Game Environment</div>
+</div>
+
+<!-- Art Item 2 -->
+<div class="art-item" id="art-kitchen">
+    <img src="http://i.imgur.com/nhb5Um2.jpg" alt="Kitchen Scene">
+    <div class="art-title">Kitchen Scene Render</div>
+</div>
+
+<!-- Art Item 3 -->
+<div class="art-item" id="art-factory">
+    <img src="http://i.imgur.com/jMMIZtA.png" alt="Factory Environment">
+    <div class="art-title">Factory Environment</div>
+</div>
+
+<!-- Art Item 4 -->
+<div class="art-item" id="art-props">
+    <img src="http://i.imgur.com/DYKhtLU.jpg" alt="HL2 Props">
+    <div class="art-title">Half-Life 2 Mod Props</div>
+</div>
+
+<!-- Art Item 5 -->
+<div class="art-item" id="art-kitchen-angle">
+    <img src="http://i.imgur.com/DClkapV.jpg" alt="Kitchen Angle">
+    <div class="art-title">Kitchen Scene Alternate View</div>
+</div>
+
+<!-- Art Item 6 -->
+<div class="art-item" id="art-room">
+    <img src="http://i.imgur.com/R6wXnNE.png" alt="Room Scene">
+    <div class="art-title">Room Environment</div>
+</div>
+</div>
+
+<div class="video-container">
+    <h3 class="video-title">Animation Showcase</h3>
+    <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animation Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 </div>
 </section>
@@ -514,74 +662,115 @@ grid-template-columns: 1fr;
 <footer>
 <p>&copy; 2025 Michael Kato. All rights reserved.</p>
 </footer>
+
 <!-- Modal container for project details -->
 <div id="project-modal" class="modal">
   <!-- Modal content will be dynamically inserted here -->
 </div>
 
+<!-- Modal container for art details -->
+<div id="art-modal" class="modal">
+  <!-- Art modal content will be dynamically inserted here -->
+</div>
+
 <script>
-// Project data with detailed information
-const projectData = {
-  "project-perf-framework": {
-    title: "Performance Testing Framework",
+// Art data with detailed information
+const artData = {
+  "art-senior-project": {
+    title: "Senior Project Game Environment",
     description: `
-      <p>Developed a comprehensive automated framework for testing VR application performance across different scenarios and hardware configurations. This system continuously monitors performance metrics across development builds to catch regressions early.</p>
-      
-      <h4>Background & Reasoning</h4>
-      <p>As our VR application grew in complexity, we faced increasing challenges maintaining consistent frame rates across diverse hardware configurations. Manual testing was inconsistent and time-consuming, so I proposed developing an automated testing framework to solve this problem.</p>
-      
-      <h4>Implementation</h4>
-      <p>I built the system using Python with a modular architecture that:</p>
-      <ul>
-        <li>Automatically executes pre-defined test scenarios on each build</li>
-        <li>Measures key metrics including frame rate, GPU/CPU utilization, memory usage, and load times</li>
-        <li>Captures baseline performance data and detects regressions</li>
-        <li>Generates detailed reports with visualizations highlighting problematic areas</li>
-        <li>Integrates with our CI/CD pipeline to block problematic builds</li>
-      </ul>
-      
-      <h4>Impact</h4>
-      <p>The framework had a transformative effect on our development process:</p>
-      <ul>
-        <li>Identified performance regressions 94% faster than manual testing</li>
-        <li>Reduced performance-related bugs by 78% in production builds</li>
-        <li>Saved approximately 20 hours per week of manual QA time</li>
-        <li>Provided actionable data that helped developers pinpoint exactly where optimization was needed</li>
-        <li>Established performance benchmarks that helped us set realistic targets for different hardware tiers</li>
-      </ul>
+      <p>Environment created for my game design senior project titled "Escape from Nuckinfutts' Factory". This scene was modeled, textured, and lit in Maya with additional post-processing effects.</p>
+      <p>The environment features a dystopian factory setting with detailed industrial elements and atmospheric lighting to create a tense, oppressive mood appropriate for the game's narrative.</p>
     `,
     images: [
-      "/api/placeholder/640/360",
-      "/api/placeholder/640/360"
-    ],
-    video: "/api/placeholder/640/360"
+      "http://i.imgur.com/UGUc4yz.jpg",
+      "http://i.imgur.com/6nSUBCj.jpg",
+      "http://i.imgur.com/jMMIZtA.png"
+    ]
   },
-  "project-proc-scene": {
-    title: "Procedural Scene Generation",
+  "art-kitchen": {
+    title: "Kitchen Scene Render",
     description: `
-      <p>Developed an automated pipeline for generating synthetic scenes with controlled parameters for training computer vision models. This system could generate thousands of unique scene variations with precise control over lighting, object placement, and environmental factors.</p>
+      <p>Fully modeled, textured, and lit kitchen scene created in Maya with mental ray rendering. This project focused on creating photorealistic architectural visualization with careful attention to materials, lighting, and composition.</p>
+      <p>The scene features realistic materials with proper reflections, global illumination, and careful attention to small details that add to the lived-in feeling of the space.</p>
+    `,
+    images: [
+      "http://i.imgur.com/nhb5Um2.jpg",
+      "http://i.imgur.com/DClkapV.jpg"
+    ]
+  },
+  "art-factory": {
+    title: "Factory Environment",
+    description: `
+      <p>Detailed industrial environment created for my senior project game. This area features custom modeled machinery, appropriate textures, and atmospheric lighting to create an immersive player experience.</p>
+      <p>The scene balances visual detail with performance considerations to maintain good framerates during gameplay while still conveying the gritty industrial aesthetic.</p>
+    `,
+    images: [
+      "http://i.imgur.com/jMMIZtA.png",
+      "http://i.imgur.com/UGUc4yz.jpg"
+    ]
+  },
+  "art-props": {
+    title: "Half-Life 2 Mod Props",
+    description: `
+      <p>Collection of game-ready props created for the Half-Life 2 mod "No More Room in Hell". These assets were modeled in Softimage XSI with game-appropriate polycount and textures.</p>
+      <p>Creating these props for an actual game mod was what inspired me to pursue a career in game art and technical art. The constraints of working within a game engine taught me valuable lessons about optimization and technical limitations.</p>
+    `,
+    images: [
+      "http://i.imgur.com/DYKhtLU.jpg"
+    ]
+  },
+  "art-kitchen-angle": {
+    title: "Kitchen Scene Alternate View",
+    description: `
+      <p>Alternative composition of the kitchen scene showcasing different lighting conditions and angles. This render demonstrates the importance of camera placement and lighting direction in architectural visualization.</p>
+      <p>The subtle shift in perspective highlights different aspects of the space while maintaining the photorealistic quality of the materials and lighting.</p>
+    `,
+    images: [
+      "http://i.imgur.com/DClkapV.jpg",
+      "http://i.imgur.com/nhb5Um2.jpg"
+    ]
+  },
+  "art-room": {
+    title: "Room Environment",
+    description: `
+      <p>Residential interior scene showcasing furniture modeling, texture work, and interior lighting. This environment demonstrates skills in creating lived-in spaces with appropriate scale and proportions.</p>
+      <p>The scene features custom modeled furniture pieces with realistic materials and careful attention to how light interacts with different surfaces.</p>
+    `,
+    images: [
+      "http://i.imgur.com/R6wXnNE.png"
+    ]
+  }
+};
+
+const projectData = {
+  "project-perf-framework": {
+    title: "Performance Automation Framework",
+    description: `
+      <p>Developed a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the entire codebase. This system monitored all critical aspects of VR performance in real-time.</p>
       
       <h4>Background & Reasoning</h4>
-      <p>Our computer vision models required massive amounts of training data with specific edge cases that were difficult to capture in real-world photography. Creating these scenes manually was prohibitively expensive and time-consuming, so we needed a way to generate synthetic data at scale.</p>
+      <p>As our VR platform grew in complexity, maintaining consistent performance became increasingly challenging. Manual performance profiling was inconsistent and insufficient to catch regressions early in the development cycle.</p>
       
       <h4>Implementation</h4>
-      <p>I architected a procedural generation system in Python and Maya that:</p>
+      <p>I designed and implemented a robust framework that:</p>
       <ul>
-        <li>Creates parametrically controlled environments with customizable variables</li>
-        <li>Implements physical-based lighting simulation for realistic rendering</li>
-        <li>Automatically places and orients objects based on real-world distribution patterns</li>
-        <li>Generates corresponding ground truth data (segmentation masks, depth maps, etc.)</li>
-        <li>Supports batch processing for large-scale data generation</li>
+        <li>Instrumented nearly the entire codebase with performance markers to track execution time and resource usage</li>
+        <li>Automatically collected performance data across different hardware configurations and user scenarios</li>
+        <li>Measured key metrics including frame rate, GPU/CPU utilization, memory usage, garbage collection, and load times</li>
+        <li>Established baselines and detected regressions automatically</li>
+        <li>Generated detailed reports for engineering teams</li>
+        <li>Integrated with our CI/CD pipeline to flag problematic builds</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>This system dramatically improved our computer vision training workflow:</p>
+      <p>The framework transformed our approach to performance optimization:</p>
       <ul>
-        <li>Generated over 100,000 unique training images with perfect ground truth data</li>
-        <li>Improved model accuracy by 23% by systematically covering edge cases</li>
-        <li>Reduced data generation costs by approximately 85% compared to manual methods</li>
-        <li>Enabled rapid iteration on ML models by providing on-demand training data</li>
-        <li>Became a standard tool adopted by multiple teams across the organization</li>
+        <li>Enabled early detection of performance regressions, often within hours of code changes</li>
+        <li>Provided clear visibility into performance bottlenecks across different areas of the codebase</li>
+        <li>Reduced debugging time by up to 75% by pinpointing exact causes of performance issues</li>
+        <li>Helped establish consistent 72fps in Horizon Worlds by systematically addressing the most impactful bottlenecks</li>
+        <li>Became a core part of our development process that teams relied on daily</li>
       </ul>
     `,
     images: [
@@ -590,150 +779,368 @@ const projectData = {
     ],
     video: null
   },
-  "project-character-rig": {
-    title: "Maya Character Control Rig",
+  
+  "project-perf-dashboards": {
+    title: "Performance Visualization Dashboards",
     description: `
-      <p>Created a flexible character rigging system with intuitive UI controls for animators. The system includes advanced IK/FK blending, automatic joint rotation constraints, and space switching capabilities.</p>
+      <p>Created sophisticated interactive dashboards that visualized performance metrics from our VR applications, enabling teams to quickly identify and respond to performance regressions.</p>
       
       <h4>Background & Reasoning</h4>
-      <p>Our animation team was struggling with inconsistent rigging approaches across characters, leading to inefficient workflows and quality issues. Animators were spending too much time learning different rig control schemes instead of focusing on creating high-quality animations.</p>
+      <p>While our performance automation framework collected vast amounts of data, we needed intuitive ways to visualize trends and make this information accessible to all team members, not just performance specialists.</p>
       
       <h4>Implementation</h4>
-      <p>I developed a standardized rigging framework in Maya using Python and MEL that features:</p>
+      <p>I built a comprehensive visualization system that:</p>
       <ul>
-        <li>A modular architecture allowing for character-specific customizations while maintaining a consistent interface</li>
-        <li>Intuitive control scheme with color-coded controllers and logical hierarchy</li>
-        <li>Seamless IK/FK switching with proper rotation interpolation</li>
-        <li>Advanced space switching system for dynamic animation control</li>
-        <li>Automated weight painting based on anatomical rules</li>
-        <li>Comprehensive UI panel for quick access to common animation tools</li>
+        <li>Aggregated performance data from thousands of test runs across different builds and hardware configurations</li>
+        <li>Created interactive dashboards showing performance trends over time with drill-down capabilities</li>
+        <li>Enabled filtering by world, player count, hitch frequency, hardware specs, and build version</li>
+        <li>Highlighted statistical anomalies and flagged potential regressions automatically</li>
+        <li>Provided comparative views to analyze changes between builds</li>
+        <li>Generated automatic reports for stakeholders with key performance indicators</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>The rigging system transformed our animation workflow:</p>
+      <p>These dashboards dramatically improved our ability to maintain performance quality:</p>
       <ul>
-        <li>Reduced rigging time per character by 65%</li>
-        <li>Decreased animator training time from weeks to days</li>
-        <li>Improved animation quality by providing more intuitive controls</li>
-        <li>Enabled seamless transfer of animations between different character models</li>
-        <li>Standardized our rigging pipeline, making it easier to maintain and extend</li>
+        <li>Reduced time to identify performance regressions by 80%</li>
+        <li>Enabled non-technical team members to understand and monitor performance trends</li>
+        <li>Provided data-driven evidence for prioritizing optimization work</li>
+        <li>Facilitated better communication between engineering, production, and management</li>
+        <li>Helped teams focus on the highest-impact optimizations by clearly visualizing bottlenecks</li>
       </ul>
     `,
     images: [
       "/api/placeholder/640/360",
       "/api/placeholder/640/360"
     ],
-    video: "/api/placeholder/640/360"
+    video: null
   },
   
-  // Additional project data for remaining projects
-  "project-mesh-reduction": {
-    title: "Mesh Reduction Pipeline",
+  "project-proc-scene": {
+    title: "Procedural Scene Generation",
     description: `
-      <p>Engineered an automated mesh reduction system that optimizes 3D models while preserving visual fidelity. Implemented custom algorithms to intelligently determine polygon reduction based on visibility and silhouette importance.</p>
+      <p>Developed sophisticated procedural scene generation systems that created synthetic training data for Apple Vision Pro. This system generated thousands of varied environments with precise control over every aspect of the scene.</p>
       
       <h4>Background & Reasoning</h4>
-      <p>Our VR application was struggling with performance issues caused by high-polygon models. Manual optimization was time-consuming and often resulted in inconsistent quality. We needed a systematic approach to reduce polygon counts while maintaining visual quality.</p>
+      <p>Training computer vision models for Apple Vision Pro required massive amounts of diverse visual data with precise ground truth. Manually creating these scenes would have been prohibitively expensive and time-consuming, while not providing the necessary variety of edge cases.</p>
       
       <h4>Implementation</h4>
-      <p>I developed a sophisticated mesh optimization pipeline using Python and C++ that:</p>
+      <p>I designed a parametric scene generation system that:</p>
       <ul>
-        <li>Analyzes model topology to identify critical and non-critical regions</li>
-        <li>Applies varying levels of reduction based on visual importance</li>
-        <li>Preserves silhouette edges and high-detail areas</li>
-        <li>Maintains UV mapping integrity during reduction</li>
-        <li>Provides visual difference comparison between original and optimized models</li>
-        <li>Integrates with our asset pipeline for automatic processing</li>
+        <li>Created procedurally generated environments with customizable parameters for lighting, materials, object placement, and camera angles</li>
+        <li>Generated photorealistic synthetic data with perfect ground truth annotations</li>
+        <li>Randomized scene attributes within specified constraints to ensure diverse but valid training scenarios</li>
+        <li>Handled complex physical simulations for realistic object interactions</li>
+        <li>Integrated with existing content pipelines to leverage high-quality asset libraries</li>
+        <li>Supported batch processing to generate thousands of training samples overnight</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>The mesh reduction pipeline delivered exceptional results:</p>
+      <p>This system significantly enhanced the training process for Vision Pro:</p>
       <ul>
-        <li>Achieved an average polygon reduction of 65% with minimal visual impact</li>
-        <li>Improved application frame rate by 42% in complex scenes</li>
-        <li>Saved approximately 30 artist hours per week previously spent on manual optimization</li>
-        <li>Standardized optimization quality across all assets</li>
-        <li>Enabled deployment on lower-end hardware, expanding our potential user base</li>
+        <li>Generated over 100,000 unique training scenes that would have been impossible to capture manually</li>
+        <li>Provided perfectly accurate ground truth data for model training</li>
+        <li>Enabled systematic coverage of edge cases and rare scenarios</li>
+        <li>Reduced data generation costs by approximately 90% compared to manual capture</li>
+        <li>Accelerated the training and refinement cycle for computer vision models</li>
+        <li>Contributed to the high accuracy of Vision Pro's spatial understanding capabilities</li>
       </ul>
     `,
     images: [
       "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-asset-qa": {
+    title: "Asset Validation QA Tools",
+    description: `
+      <p>Built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata. Features included automatic thumbnail generation, LOD creation, metadata validation, and seamless outsource integration.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>Apple's vision projects required processing thousands of 3D assets from various sources, including outsourced content. Ensuring the quality, consistency, and technical compliance of these assets was a major bottleneck in production.</p>
+      
+      <h4>Implementation</h4>
+      <p>I developed an integrated validation and processing system that:</p>
+      <ul>
+        <li>Automatically checked assets against over 50 technical requirements (polycount, texture sizes, naming conventions, etc.)</li>
+        <li>Generated thumbnails for quick visual reference in asset browsers</li>
+        <li>Created and validated LOD variations for performance optimization</li>
+        <li>Verified and corrected metadata for proper categorization and searchability</li>
+        <li>Supported seamless integration of outsourced assets with standardized requirements</li>
+        <li>Generated detailed reports highlighting issues that required manual attention</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>These tools transformed the asset integration workflow:</p>
+      <ul>
+        <li>Reduced asset processing time by approximately 75%</li>
+        <li>Virtually eliminated technical errors in the final asset library</li>
+        <li>Standardized asset quality across internal and outsourced content</li>
+        <li>Enabled non-technical team members to contribute to asset integration</li>
+        <li>Provided detailed analytics on asset library composition and quality</li>
+        <li>Dramatically improved searchability and organization of the asset database</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-lod-pipeline": {
+    title: "LOD Generation Pipeline",
+    description: `
+      <p>Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs. This system automated the creation of optimized mesh levels, significantly reducing artist workload while maintaining visual fidelity.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>Call of Duty WWII required thousands of assets with multiple LOD (Level of Detail) variations to maintain performance across different hardware and viewing distances. Creating these LODs manually was extremely time-consuming and inconsistent across the art team.</p>
+      
+      <h4>Implementation</h4>
+      <p>I developed a robust automated pipeline that:</p>
+      <ul>
+        <li>Integrated a proprietary LOD generation algorithm into the asset processing pipeline using C++ and C#</li>
+        <li>Created intelligent mesh simplification that preserved critical visual features and silhouettes</li>
+        <li>Maintained proper material assignments, UV mapping, and skeletal influences during reduction</li>
+        <li>Implemented batch processing to handle hundreds of assets simultaneously</li>
+        <li>Built validation tools to ensure LODs met quality and performance requirements</li>
+        <li>Added artist override options for special cases requiring manual intervention</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>This pipeline transformation delivered extraordinary results:</p>
+      <ul>
+        <li>Generated approximately 70% of all LOD assets in Call of Duty WWII</li>
+        <li>Reduced LOD creation time from hours to minutes per asset</li>
+        <li>Saved an estimated 2,000+ artist hours during production</li>
+        <li>Improved visual consistency of LOD transitions across the game</li>
+        <li>Enabled more aggressive performance optimization while maintaining quality</li>
+        <li>Became the standard LOD generation method for subsequent projects</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-edge-cleanup": {
+    title: "Edge Cleanup Tool",
+    description: `
+      <p>Created an optimization tool that identifies and removes unnecessary edges in 3D models. The script intelligently detects edges that don't add visual detail to the model but consume processing power, providing significant polygon reduction with no visual impact.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>During model creation, artists often add edge loops for construction purposes that don't contribute to the final visual appearance but remain in the model. These unnecessary edges increase polygon count, which negatively impacts rendering performance and memory usage.</p>
+      
+      <h4>Implementation</h4>
+      <p>I developed a specialized optimization script that:</p>
+      <ul>
+        <li>Analyzes 3D meshes to identify edges that don't contribute to silhouette or surface detail</li>
+        <li>Uses geometric analysis to determine which edges can be safely removed without altering the model's appearance</li>
+        <li>Maintains UV mapping integrity and normal data during optimization</li>
+        <li>Provides granular control over which areas to optimize and to what degree</li>
+        <li>Features a preview mode so artists can see the impact before committing to changes</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>This tool provided significant optimization benefits:</p>
+      <ul>
+        <li>Achieved polygon count reductions of 15-30% on most models with no visible changes</li>
+        <li>Improved GPU performance by reducing vertex processing overhead</li>
+        <li>Reduced memory footprint of models throughout the rendering pipeline</li>
+        <li>Saved artists hours of tedious manual optimization work</li>
+        <li>Standardized optimization practices across the art team</li>
+      </ul>
+    `,
+    images: [
       "/api/placeholder/640/360"
     ],
     video: null
   }
-  // Additional project data would be defined for the remaining projects
 };
 
-// Modal handling functionality
-document.addEventListener('DOMContentLoaded', () => {
-  // Set up click handlers for project cards
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const projectId = card.id;
-      const project = projectData[projectId] || {
-        title: card.querySelector('.project-header').textContent,
-        description: `<p>${card.querySelector('.project-description').textContent}</p>
-                     <h4>Detailed information coming soon</h4>
-                     <p>This project is currently being documented with full implementation details and impact metrics.</p>`,
-        images: ["/api/placeholder/640/360"],
-        video: null
-      };
+// Art data with detailed information
+const artData = {
+  "art-senior-project": {
+    title: "Senior Project Game Environment",
+    description: `
+      <p>Environment created for my game design senior project titled "Escape from Nuckinfutts' Factory". This scene was modeled, textured, and lit in Maya with additional post-processing effects.</p>
+      <p>The environment features a dystopian factory setting with detailed industrial elements and atmospheric lighting to create a tense, oppressive mood appropriate for the game's narrative.</p>
+    `,
+    images: [
+      "http://i.imgur.com/UGUc4yz.jpg",
+      "http://i.imgur.com/6nSUBCj.jpg",
+      "http://i.imgur.com/jMMIZtA.png"
+    ]
+  },
+  "art-kitchen": {
+    title: "Kitchen Scene Render",
+    description: `
+      <p>Fully modeled, textured, and lit kitchen scene created in Maya with mental ray rendering. This project focused on creating photorealistic architectural visualization with careful attention to materials, lighting, and composition.</p>
+      <p>The scene features realistic materials with proper reflections, global illumination, and careful attention to small details that add to the lived-in feeling of the space.</p>
+    `,
+    images: [
+      "http://i.imgur.com/nhb5Um2.jpg",
+      "http://i.imgur.com/DClkapV.jpg"
+    ]
+  },
+  "art-factory": {
+    title: "Factory Environment",
+    description: `
+      <p>Detailed industrial environment created for my senior project game. This area features custom modeled machinery, appropriate textures, and atmospheric lighting to create an immersive player experience.</p>
+      <p>The scene balances visual detail with performance considerations to maintain good framerates during gameplay while still conveying the gritty industrial aesthetic.</p>
+    `,
+    images: [
+      "http://i.imgur.com/jMMIZtA.png",
+      "http://i.imgur.com/UGUc4yz.jpg"
+    ]
+  },
+  "art-props": {
+    title: "Half-Life 2 Mod Props",
+    description: `
+      <p>Collection of game-ready props created for the Half-Life 2 mod "No More Room in Hell". These assets were modeled in Softimage XSI with game-appropriate polycount and textures.</p>
+      <p>Creating these props for an actual game mod was what inspired me to pursue a career in game art and technical art. The constraints of working within a game engine taught me valuable lessons about optimization and technical limitations.</p>
+    `,
+    images: [
+      "http://i.imgur.com/DYKhtLU.jpg"
+    ]
+  },
+  "art-kitchen-angle": {
+    title: "Kitchen Scene Alternate View",
+    description: `
+      <p>Alternative composition of the kitchen scene showcasing different lighting conditions and angles. This render demonstrates the importance of camera placement and lighting direction in architectural visualization.</p>
+      <p>The subtle shift in perspective highlights different aspects of the space while maintaining the photorealistic quality of the materials and lighting.</p>
+    `,
+    images: [
+      "http://i.imgur.com/DClkapV.jpg",
+      "http://i.imgur.com/nhb5Um2.jpg"
+    ]
+  },
+  "art-room": {
+    title: "Room Environment",
+    description: `
+      <p>Residential interior scene showcasing furniture modeling, texture work, and interior lighting. This environment demonstrates skills in creating lived-in spaces with appropriate scale and proportions.</p>
+      <p>The scene features custom modeled furniture pieces with realistic materials and careful attention to how light interacts with different surfaces.</p>
+    `,
+    images: [
+      "http://i.imgur.com/R6wXnNE.png"
+    ]
+  }
+};
+    `,
+    images: [
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  }
+};
+const projectData = {
+  "project-perf-framework": {
+    title: "Performance Automation Framework",
+    description: `
+      <p>Developed a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the entire codebase. This system monitored all critical aspects of VR performance in real-time.</p>
       
-      // Build modal content
-      let modalContent = `
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <h2 class="modal-header">${project.title}</h2>
-          <div class="modal-body">
-            ${project.description}
-          </div>`;
+      <h4>Background & Reasoning</h4>
+      <p>As our VR platform grew in complexity, maintaining consistent performance became increasingly challenging. Manual performance profiling was inconsistent and insufficient to catch regressions early in the development cycle.</p>
       
-      // Add images if available
-      if (project.images && project.images.length > 0) {
-        modalContent += `<div class="modal-gallery">`;
-        project.images.forEach(image => {
-          modalContent += `<img src="${image}" alt="${project.title}" class="modal-image">`;
-        });
-        modalContent += `</div>`;
-      }
+      <h4>Implementation</h4>
+      <p>I designed and implemented a robust framework that:</p>
+      <ul>
+        <li>Instrumented nearly the entire codebase with performance markers to track execution time and resource usage</li>
+        <li>Automatically collected performance data across different hardware configurations and user scenarios</li>
+        <li>Measured key metrics including frame rate, GPU/CPU utilization, memory usage, garbage collection, and load times</li>
+        <li>Established baselines and detected regressions automatically</li>
+        <li>Generated detailed reports for engineering teams</li>
+        <li>Integrated with our CI/CD pipeline to flag problematic builds</li>
+      </ul>
       
-      // Add video if available
-      if (project.video) {
-        modalContent += `
-          <div class="modal-video-container">
-            <iframe class="modal-video" src="${project.video}" frameborder="0" allowfullscreen></iframe>
-          </div>`;
-      }
-      
-      modalContent += `</div>`;
-      
-      // Update and show modal
-      const modal = document.getElementById('project-modal');
-      modal.innerHTML = modalContent;
-      modal.style.display = 'block';
-      
-      // Add close handler
-      document.querySelector('.close-modal').addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-      
-      // Close when clicking outside the modal content
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-    });
-  });
+      <h4>Impact</h4>
+      <p>The framework transformed our approach to performance optimization:</p>
+      <ul>
+        <li>Enabled early detection of performance regressions, often within hours of code changes</li>
+        <li>Provided clear visibility into performance bottlenecks across different areas of the codebase</li>
+        <li>Reduced debugging time by up to 75% by pinpointing exact causes of performance issues</li>
+        <li>Helped establish consistent 72fps in Horizon Worlds by systematically addressing the most impactful bottlenecks</li>
+        <li>Became a core part of our development process that teams relied on daily</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
   
-  // Close with escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.getElementById('project-modal').style.display = 'none';
-    }
-  });
-});
-</script>
-</body>
-</html>
+  "project-perf-dashboards": {
+    title: "Performance Visualization Dashboards",
+    description: `
+      <p>Created sophisticated interactive dashboards that visualized performance metrics from our VR applications, enabling teams to quickly identify and respond to performance regressions.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>While our performance automation framework collected vast amounts of data, we needed intuitive ways to visualize trends and make this information accessible to all team members, not just performance specialists.</p>
+      
+      <h4>Implementation</h4>
+      <p>I built a comprehensive visualization system that:</p>
+      <ul>
+        <li>Aggregated performance data from thousands of test runs across different builds and hardware configurations</li>
+        <li>Created interactive dashboards showing performance trends over time with drill-down capabilities</li>
+        <li>Enabled filtering by world, player count, hitch frequency, hardware specs, and build version</li>
+        <li>Highlighted statistical anomalies and flagged potential regressions automatically</li>
+        <li>Provided comparative views to analyze changes between builds</li>
+        <li>Generated automatic reports for stakeholders with key performance indicators</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>These dashboards dramatically improved our ability to maintain performance quality:</p>
+      <ul>
+        <li>Reduced time to identify performance regressions by 80%</li>
+        <li>Enabled non-technical team members to understand and monitor performance trends</li>
+        <li>Provided data-driven evidence for prioritizing optimization work</li>
+        <li>Facilitated better communication between engineering, production, and management</li>
+        <li>Helped teams focus on the highest-impact optimizations by clearly visualizing bottlenecks</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-proc-scene": {
+    title: "Procedural Scene Generation",
+    description: `
+      <p>Developed sophisticated procedural scene generation systems that created synthetic training data for Apple Vision Pro. This system generated thousands of varied environments with precise control over every aspect of the scene.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>Training computer vision models for Apple Vision Pro required massive amounts of diverse visual data with precise ground truth. Manually creating these scenes would have been prohibitively expensive and time-consuming, while not providing the necessary variety of edge cases.</p>
+      
+      <h4>Implementation</h4>
+      <p>I designed a parametric scene generation system that:</p>
+      <ul>
+        <li>Created procedurally generated environments with customizable parameters for lighting, materials, object placement, and camera angles</li>
+        <li>Generated photorealistic synthetic data with perfect ground truth annotations</li>
+        <li>Randomized scene attributes within specified constraints to ensure diverse but valid training scenarios</li>
+        <li>Handled complex physical simulations for realistic object interactions</li>
+        <li>Integrated with existing content pipelines to leverage high-quality asset libraries</li>
+        <li>Supported batch processing to generate thousands of training samples overnight</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>This system significantly enhanced the training process for Vision Pro:</p>
+      <ul>
+        <li>Generated over 100,000 unique training scenes that would have been impossible to capture manually</li>
+        <li>Provided perfectly accurate ground truth data for model training</li>
+        <li>Enabled systematic coverage of edge cases and rare scenarios</li>
+        <li>Reduced data generation costs by approximately 90% compared to manual capture</li>
+        <li>Accelerated the training and refinement cycle for computer vision models</li>
+        <li>Contributed to the high accuracy of Vision Pro's spatial understanding capabilities</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
