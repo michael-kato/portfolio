@@ -1,22 +1,849 @@
-<h4>Implementation</h4>
-      <p>I architected a procedural generation system that:</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michael Kato | Technical Artist</title>
+<style>
+:root {
+--bg-color: #0d1117;
+--bg-pattern: #161b22;
+--text-color: #c9d1d9;
+--accent-color: #58a6ff; /* GitHub blue */
+--secondary-color: #f0883e; /* GitHub orange */
+--tertiary-color: #8b949e; /* GitHub muted */
+--card-bg: #21262d;
+--border-color: #30363d;
+--header-bg: #161b22;
+--section-header-bg: rgba(22, 27, 34, 0.3); /* Subtle background for section headers */
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+background-color: var(--bg-color);
+background-image: 
+linear-gradient(to right, var(--bg-pattern) 1px, transparent 1px),
+linear-gradient(to bottom, var(--bg-pattern) 1px, transparent 1px);
+background-size: 20px 20px;
+color: var(--text-color);
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+line-height: 1.5;
+padding: 0;
+max-width: 1200px;
+margin: 0 auto;
+}
+
+a {
+color: var(--accent-color);
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+header {
+background-color: var(--header-bg);
+padding: 40px 20px;
+text-align: center;
+border-bottom: 1px solid var(--border-color);
+}
+
+.header-title {
+font-size: 2.5rem;
+color: var(--text-color);
+margin-bottom: 10px;
+font-weight: 600;
+}
+
+.header-subtitle {
+font-size: 1.2rem;
+color: var(--tertiary-color);
+max-width: 600px;
+margin: 0 auto;
+font-weight: 400;
+}
+
+.command {
+color: var(--secondary-color);
+}
+
+.output {
+margin: 5px 0 15px 0;
+}
+
+nav {
+background-color: var(--card-bg);
+padding: 15px 20px;
+margin: 0;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+nav ul {
+display: flex;
+list-style-type: none;
+justify-content: center;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+nav li {
+margin: 5px 0;
+}
+
+nav a {
+padding: 8px 15px;
+color: var(--text-color);
+border-radius: 6px;
+transition: all 0.2s;
+font-weight: 500;
+}
+
+nav a:hover {
+background-color: var(--border-color);
+text-decoration: none;
+}
+
+section {
+margin: 40px 0;
+padding: 40px 20px;
+}
+
+.section-header {
+margin-bottom: 30px;
+text-align: center;
+}
+
+.section-header h2 {
+display: inline-block;
+font-size: 1.8rem;
+color: var(--text-color);
+padding: 10px 20px;
+border-bottom: 2px solid var(--secondary-color);
+font-weight: 600;
+background-color: var(--section-header-bg);
+border-radius: 6px;
+}
+
+.container {
+max-width: 1000px;
+margin: 0 auto;
+}
+
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+}
+
+.project-card {
+border: 1px solid var(--border-color);
+padding: 20px;
+border-radius: 6px;
+background-color: var(--card-bg);
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: pointer;
+height: 100%;
+display: flex;
+flex-direction: column;
+}
+
+.project-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+border-color: var(--accent-color);
+}
+
+.project-header {
+color: var(--accent-color);
+margin-bottom: 15px;
+font-size: 1.3rem;
+font-weight: 600;
+}
+
+.project-icon {
+font-size: 2.5rem;
+margin-bottom: 15px;
+color: var(--secondary-color);
+text-align: center;
+}
+
+.project-description {
+margin-bottom: 15px;
+color: var(--text-color);
+flex-grow: 1;
+}
+
+.project-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin: 15px 0;
+}
+
+.project-tag {
+background-color: rgba(240, 136, 62, 0.2); /* GitHub orange with transparency */
+color: var(--secondary-color);
+padding: 4px 8px;
+border-radius: 20px;
+font-size: 0.8rem;
+font-weight: 500;
+}
+
+/* Art gallery styles */
+.art-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 15px;
+margin-top: 30px;
+}
+
+.art-item {
+border: 1px solid var(--border-color);
+border-radius: 6px;
+overflow: hidden;
+background-color: var(--card-bg);
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: pointer;
+aspect-ratio: 1 / 1;
+position: relative;
+}
+
+.art-item:hover {
+transform: translateY(-4px);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+border-color: var(--accent-color);
+}
+
+.art-item img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s;
+}
+
+.art-item:hover img {
+transform: scale(1.05);
+}
+
+.art-title {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 10px;
+transform: translateY(100%);
+transition: transform 0.3s;
+}
+
+.art-item:hover .art-title {
+transform: translateY(0);
+}
+
+.video-container {
+margin-top: 40px;
+text-align: center;
+}
+
+.video-container iframe {
+max-width: 100%;
+border-radius: 6px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+border: 1px solid var(--border-color);
+}
+
+.video-title {
+margin-top: 15px;
+font-size: 1.2rem;
+color: var(--accent-color);
+}
+
+.contact-grid {
+display: flex;
+justify-content: center;
+}
+
+.contact-box {
+border: 1px solid var(--border-color);
+padding: 20px;
+border-radius: 6px;
+background-color: var(--card-bg);
+max-width: 500px;
+width: 100%;
+}
+
+.contact-box h3 {
+color: var(--accent-color);
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
+text-align: center;
+}
+
+.contact-item {
+margin-bottom: 15px;
+display: flex;
+align-items: center;
+}
+
+.contact-label {
+color: var(--tertiary-color);
+margin-right: 15px;
+min-width: 24px;
+display: flex;
+align-items: center;
+}
+
+.social-links {
+display: flex;
+gap: 15px;
+margin-top: 20px;
+}
+
+.social-links a {
+width: 36px;
+height: 36px;
+background-color: rgba(88, 166, 255, 0.1); /* GitHub blue with transparency */
+color: var(--accent-color);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+transition: all 0.2s;
+font-size: 1.2rem;
+}
+
+.social-links a:hover {
+background-color: rgba(88, 166, 255, 0.2);
+transform: translateY(-2px);
+}
+
+footer {
+text-align: center;
+padding: 30px 20px;
+background-color: var(--header-bg);
+color: var(--tertiary-color);
+border-top: 1px solid var(--border-color);
+margin-top: 40px;
+}
+
+/* Modal styles */
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.7);
+z-index: 1000;
+overflow: auto;
+padding: 20px;
+box-sizing: border-box;
+}
+
+.modal-content {
+background-color: var(--card-bg);
+margin: 5% auto;
+padding: 24px;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+width: 80%;
+max-width: 800px;
+position: relative;
+animation: modalFadeIn 0.2s;
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+@keyframes modalFadeIn {
+from {opacity: 0; transform: translateY(-20px);}
+to {opacity: 1; transform: translateY(0);}
+}
+
+.close-modal {
+position: absolute;
+top: 15px;
+right: 20px;
+color: var(--tertiary-color);
+font-size: 24px;
+font-weight: bold;
+cursor: pointer;
+transition: color 0.2s;
+}
+
+.close-modal:hover {
+color: var(--secondary-color);
+}
+
+.modal-header {
+color: var(--accent-color);
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
+}
+
+.modal-body {
+margin-bottom: 20px;
+}
+
+.modal-gallery {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+gap: 15px;
+margin: 20px 0;
+}
+
+.modal-image {
+width: 100%;
+border-radius: 6px;
+transition: transform 0.2s;
+border: 1px solid var(--border-color);
+}
+
+.modal-image:hover {
+transform: scale(1.03);
+}
+
+.modal-video {
+width: 100%;
+height: 350px;
+border-radius: 6px;
+margin: 20px 0;
+}
+
+.modal-details {
+margin-top: 20px;
+}
+
+.modal-details h4 {
+color: var(--secondary-color);
+margin-bottom: 10px;
+font-weight: 600;
+}
+
+@media (max-width: 768px) {
+nav ul {
+flex-direction: column;
+align-items: center;
+}
+
+nav li {
+width: 100%;
+text-align: center;
+}
+
+.projects-grid {
+grid-template-columns: 1fr;
+}
+
+.art-grid {
+grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+
+.modal-content {
+width: 95%;
+margin: 10% auto;
+padding: 15px;
+}
+
+.modal-gallery {
+grid-template-columns: 1fr;
+}
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="header-title">Michael Kato</h1>
+<p class="header-subtitle">Technically an artist!</p>
+</header>
+
+<nav>
+<ul>
+<li><a href="#about">About</a></li>
+<li><a href="#portfolio">Projects</a></li>
+<li><a href="#art">Art Portfolio</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+</nav>
+
+<section id="about">
+<div class="container">
+<div class="section-header">
+<h2>About Me</h2>
+</div>
+
+<p style="margin-bottom: 20px;">I'm a Technical Artist with a decade of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
+
+<p style="margin-bottom: 20px;">In a typical work day, I develop robust pipelines, optimize performance, and foster an environment of learning and collaboration. I excel at translating technical requirements between disciplines, helping engineers understand artistic needs and helping artists work effectively within technical constraints.</p>
+
+<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with team leads to identify and address technical challenges before they impact production milestones. My experience and expertise allows me to provide valuable technical leadership which fuels my primary goal of helping others succeed.</p>
+
+<p>I approach each challenge with a focus on both technical excellence and effective teamwork.</p>
+</div>
+</section>
+
+<section id="portfolio">
+<div class="container">
+<div class="section-header">
+<h2>Technical Projects</h2>
+</div>
+
+<div class="projects-grid">
+<!-- Project 1: Performance Automation Framework -->
+<div class="project-card" id="project-perf-framework" data-tags="Python,VR,Performance,Tool">
+<h3 class="project-header">Performance Automation Framework</h3>
+<div class="project-icon">📊</div>
+<p class="project-description">Developed a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the entire codebase. The system automatically tracked framerate, memory usage, load times, and other critical metrics to identify bottlenecks.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Performance</span>
+    <span class="project-tag">VR</span>
+</div>
+</div>
+
+<!-- Project 2: Performance Visualization Dashboards -->
+<div class="project-card" id="project-perf-dashboards" data-tags="Python,Data,Visualization,Tool">
+<h3 class="project-header">Performance Visualization Dashboards</h3>
+<div class="project-icon">📈</div>
+<p class="project-description">Created interactive performance dashboards that visualized metrics from our VR applications, helping teams tackle regressions more effectively. These dashboards tracked trends over time and enabled drill-down analysis by world, player count, and hardware configuration.</p>
+<div class="project-tags">
+    <span class="project-tag">Data Visualization</span>
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Performance</span>
+</div>
+</div>
+
+<!-- Project 3: Procedural Scene Generation -->
+<div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
+<h3 class="project-header">Procedural Scene Generation</h3>
+<div class="project-icon">🏙️</div>
+<p class="project-description">Developed procedural scene generation systems for Apple Vision Pro training data. Created parametrically controlled environments with variable lighting, object placement, and appearances that generated thousands of synthetic training scenarios.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Maya</span>
+    <span class="project-tag">Procedural</span>
+</div>
+</div>
+
+<!-- Project 4: Asset Validation QA Tools -->
+<div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation,Tool">
+<h3 class="project-header">Asset Validation QA Tools</h3>
+<div class="project-icon">🔍</div>
+<p class="project-description">Built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata. Features included automatic thumbnail generation, LOD creation, metadata validation, and seamless outsource integration.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Pipeline</span>
+    <span class="project-tag">Quality Assurance</span>
+</div>
+</div>
+
+<!-- Project 5: LOD Generation Pipeline -->
+<div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
+<h3 class="project-header">LOD Generation Pipeline</h3>
+<div class="project-icon">💎</div>
+<p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs. This system automated the creation of optimized mesh levels, significantly reducing artist workload while maintaining visual fidelity.</p>
+<div class="project-tags">
+    <span class="project-tag">C++</span>
+    <span class="project-tag">C#</span>
+    <span class="project-tag">Optimization</span>
+</div>
+</div>
+
+<!-- Project 6: Edge Cleanup Tool -->
+<div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization,Tool">
+<h3 class="project-header">Edge Cleanup Tool</h3>
+<div class="project-icon">✂️</div>
+<p class="project-description">Created an optimization tool that identifies and removes unnecessary edges in 3D models. The script intelligently detects edges that don't add visual detail to the model but consume processing power, providing significant polygon reduction with no visual impact.</p>
+<div class="project-tags">
+    <span class="project-tag">Python</span>
+    <span class="project-tag">Maya</span>
+    <span class="project-tag">Optimization</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section id="art">
+<div class="container">
+<div class="section-header">
+<h2>Art Portfolio</h2>
+</div>
+
+<div class="art-grid">
+<!-- Art Item 1 -->
+<div class="art-item" id="art-senior-project">
+    <img src="http://i.imgur.com/UGUc4yz.jpg" alt="Senior Project Scene">
+    <div class="art-title">Senior Project Game Environment</div>
+</div>
+
+<!-- Art Item 2 -->
+<div class="art-item" id="art-kitchen">
+    <img src="http://i.imgur.com/nhb5Um2.jpg" alt="Kitchen Scene">
+    <div class="art-title">Kitchen Scene Render</div>
+</div>
+
+<!-- Art Item 3 -->
+<div class="art-item" id="art-factory">
+    <img src="http://i.imgur.com/jMMIZtA.png" alt="Factory Environment">
+    <div class="art-title">Factory Environment</div>
+</div>
+
+<!-- Art Item 4 -->
+<div class="art-item" id="art-props">
+    <img src="http://i.imgur.com/DYKhtLU.jpg" alt="HL2 Props">
+    <div class="art-title">Half-Life 2 Mod Props</div>
+</div>
+
+<!-- Art Item 5 -->
+<div class="art-item" id="art-kitchen-angle">
+    <img src="http://i.imgur.com/DClkapV.jpg" alt="Kitchen Angle">
+    <div class="art-title">Kitchen Scene Alternate View</div>
+</div>
+
+<!-- Art Item 6 -->
+<div class="art-item" id="art-room">
+    <img src="http://i.imgur.com/R6wXnNE.png" alt="Room Scene">
+    <div class="art-title">Room Environment</div>
+</div>
+</div>
+
+<div class="video-container">
+    <h3 class="video-title">Animation Showcase</h3>
+    <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animation Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+</div>
+</section>
+
+<section id="contact">
+<div class="container">
+<div class="section-header">
+<h2>Contact Me</h2>
+</div>
+
+<div class="contact-grid">
+<div class="contact-box">
+<h3>Get In Touch</h3>
+
+<div class="contact-item">
+    <div class="contact-label">📧 Email:</div>
+    <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
+    <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
+    <div><a href="https://github.com/RawMeat3000" target="_blank">github.com/RawMeat3000</a></div>
+</div>
+
+<div class="contact-item">
+    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FF5722"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg> Blog:</div>
+    <div><a href="https://michaelkato.blogspot.com/" target="_blank">michaelkato.blogspot.com</a></div>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<p>&copy; 2025 Michael Kato. All rights reserved.</p>
+</footer>
+
+<!-- Modal container for project details -->
+<div id="project-modal" class="modal">
+  <!-- Modal content will be dynamically inserted here -->
+</div>
+
+<!-- Modal container for art details -->
+<div id="art-modal" class="modal">
+  <!-- Art modal content will be dynamically inserted here -->
+</div>
+
+<script>
+// Art data with detailed information
+const artData = {
+  "art-senior-project": {
+    title: "Senior Project Game Environment",
+    description: `
+      <p>Environment created for my game design senior project titled "Escape from Nuckinfutts' Factory". This scene was modeled, textured, and lit in Maya with additional post-processing effects.</p>
+      <p>The environment features a dystopian factory setting with detailed industrial elements and atmospheric lighting to create a tense, oppressive mood appropriate for the game's narrative.</p>
+    `,
+    images: [
+      "http://i.imgur.com/UGUc4yz.jpg",
+      "http://i.imgur.com/6nSUBCj.jpg",
+      "http://i.imgur.com/jMMIZtA.png"
+    ]
+  },
+  "art-kitchen": {
+    title: "Kitchen Scene Render",
+    description: `
+      <p>Fully modeled, textured, and lit kitchen scene created in Maya with mental ray rendering. This project focused on creating photorealistic architectural visualization with careful attention to materials, lighting, and composition.</p>
+      <p>The scene features realistic materials with proper reflections, global illumination, and careful attention to small details that add to the lived-in feeling of the space.</p>
+    `,
+    images: [
+      "http://i.imgur.com/nhb5Um2.jpg",
+      "http://i.imgur.com/DClkapV.jpg"
+    ]
+  },
+  "art-factory": {
+    title: "Factory Environment",
+    description: `
+      <p>Detailed industrial environment created for my senior project game. This area features custom modeled machinery, appropriate textures, and atmospheric lighting to create an immersive player experience.</p>
+      <p>The scene balances visual detail with performance considerations to maintain good framerates during gameplay while still conveying the gritty industrial aesthetic.</p>
+    `,
+    images: [
+      "http://i.imgur.com/jMMIZtA.png",
+      "http://i.imgur.com/UGUc4yz.jpg"
+    ]
+  },
+  "art-props": {
+    title: "Half-Life 2 Mod Props",
+    description: `
+      <p>Collection of game-ready props created for the Half-Life 2 mod "No More Room in Hell". These assets were modeled in Softimage XSI with game-appropriate polycount and textures.</p>
+      <p>Creating these props for an actual game mod was what inspired me to pursue a career in game art and technical art. The constraints of working within a game engine taught me valuable lessons about optimization and technical limitations.</p>
+    `,
+    images: [
+      "http://i.imgur.com/DYKhtLU.jpg"
+    ]
+  },
+  "art-kitchen-angle": {
+    title: "Kitchen Scene Alternate View",
+    description: `
+      <p>Alternative composition of the kitchen scene showcasing different lighting conditions and angles. This render demonstrates the importance of camera placement and lighting direction in architectural visualization.</p>
+      <p>The subtle shift in perspective highlights different aspects of the space while maintaining the photorealistic quality of the materials and lighting.</p>
+    `,
+    images: [
+      "http://i.imgur.com/DClkapV.jpg",
+      "http://i.imgur.com/nhb5Um2.jpg"
+    ]
+  },
+  "art-room": {
+    title: "Room Environment",
+    description: `
+      <p>Residential interior scene showcasing furniture modeling, texture work, and interior lighting. This environment demonstrates skills in creating lived-in spaces with appropriate scale and proportions.</p>
+      <p>The scene features custom modeled furniture pieces with realistic materials and careful attention to how light interacts with different surfaces.</p>
+    `,
+    images: [
+      "http://i.imgur.com/R6wXnNE.png"
+    ]
+  }
+};
+
+const projectData = {
+  "project-perf-framework": {
+    title: "Performance Automation Framework",
+    description: `
+      <p>Developed a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the entire codebase. This system monitored all critical aspects of VR performance in real-time.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>As our VR platform grew in complexity, maintaining consistent performance became increasingly challenging. Manual performance profiling was inconsistent and insufficient to catch regressions early in the development cycle.</p>
+      
+      <h4>Implementation</h4>
+      <p>I designed and implemented a robust framework that:</p>
       <ul>
-        <li>Created parametrically controlled environments with customizable variables for lighting, materials, and object placement</li>
-        <li>Generated scenes with varying complexity, lighting conditions, and object compositions</li>
-        <li>Automatically produced accurate ground truth data including depth maps, segmentation masks, and object boundaries</li>
-        <li>Implemented physically-based lighting and materials for photorealistic rendering</li>
-        <li>Supported batch processing for large-scale data generation</li>
-        <li>Included controls for systematically exploring edge cases and rare scenarios</li>
+        <li>Instrumented nearly the entire codebase with performance markers to track execution time and resource usage</li>
+        <li>Automatically collected performance data across different hardware configurations and user scenarios</li>
+        <li>Measured key metrics including frame rate, GPU/CPU utilization, memory usage, garbage collection, and load times</li>
+        <li>Established baselines and detected regressions automatically</li>
+        <li>Generated detailed reports for engineering teams</li>
+        <li>Integrated with our CI/CD pipeline to flag problematic builds</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>This system revolutionized our training data pipeline:</p>
+      <p>The framework transformed our approach to performance optimization:</p>
       <ul>
-        <li>Generated over 200,000 unique training images with perfect ground truth data</li>
-        <li>Improved model accuracy by 27% by covering a wider range of scenarios and edge cases</li>
-        <li>Reduced data generation costs by approximately 90% compared to manual or outsourced methods</li>
-        <li>Enabled rapid iteration of ML models by providing on-demand custom training data</li>
-        <li>Became a standard tool adopted by multiple computer vision teams</li>
+        <li>Enabled early detection of performance regressions, often within hours of code changes</li>
+        <li>Provided clear visibility into performance bottlenecks across different areas of the codebase</li>
+        <li>Reduced debugging time by up to 75% by pinpointing exact causes of performance issues</li>
+        <li>Helped establish consistent 72fps in Horizon Worlds by systematically addressing the most impactful bottlenecks</li>
+        <li>Became a core part of our development process that teams relied on daily</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-perf-dashboards": {
+    title: "Performance Visualization Dashboards",
+    description: `
+      <p>Created sophisticated interactive dashboards that visualized performance metrics from our VR applications, enabling teams to quickly identify and respond to performance regressions.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>While our performance automation framework collected vast amounts of data, we needed intuitive ways to visualize trends and make this information accessible to all team members, not just performance specialists.</p>
+      
+      <h4>Implementation</h4>
+      <p>I built a comprehensive visualization system that:</p>
+      <ul>
+        <li>Aggregated performance data from thousands of test runs across different builds and hardware configurations</li>
+        <li>Created interactive dashboards showing performance trends over time with drill-down capabilities</li>
+        <li>Enabled filtering by world, player count, hitch frequency, hardware specs, and build version</li>
+        <li>Highlighted statistical anomalies and flagged potential regressions automatically</li>
+        <li>Provided comparative views to analyze changes between builds</li>
+        <li>Generated automatic reports for stakeholders with key performance indicators</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>These dashboards dramatically improved our ability to maintain performance quality:</p>
+      <ul>
+        <li>Reduced time to identify performance regressions by 80%</li>
+        <li>Enabled non-technical team members to understand and monitor performance trends</li>
+        <li>Provided data-driven evidence for prioritizing optimization work</li>
+        <li>Facilitated better communication between engineering, production, and management</li>
+        <li>Helped teams focus on the highest-impact optimizations by clearly visualizing bottlenecks</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-proc-scene": {
+    title: "Procedural Scene Generation",
+    description: `
+      <p>Developed sophisticated procedural scene generation systems that created synthetic training data for Apple Vision Pro. This system generated thousands of varied environments with precise control over every aspect of the scene.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>Training computer vision models for Apple Vision Pro required massive amounts of diverse visual data with precise ground truth. Manually creating these scenes would have been prohibitively expensive and time-consuming, while not providing the necessary variety of edge cases.</p>
+      
+      <h4>Implementation</h4>
+      <p>I designed a parametric scene generation system that:</p>
+      <ul>
+        <li>Created procedurally generated environments with customizable parameters for lighting, materials, object placement, and camera angles</li>
+        <li>Generated photorealistic synthetic data with perfect ground truth annotations</li>
+        <li>Randomized scene attributes within specified constraints to ensure diverse but valid training scenarios</li>
+        <li>Handled complex physical simulations for realistic object interactions</li>
+        <li>Integrated with existing content pipelines to leverage high-quality asset libraries</li>
+        <li>Supported batch processing to generate thousands of training samples overnight</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>This system significantly enhanced the training process for Vision Pro:</p>
+      <ul>
+        <li>Generated over 100,000 unique training scenes that would have been impossible to capture manually</li>
+        <li>Provided perfectly accurate ground truth data for model training</li>
+        <li>Enabled systematic coverage of edge cases and rare scenarios</li>
+        <li>Reduced data generation costs by approximately 90% compared to manual capture</li>
+        <li>Accelerated the training and refinement cycle for computer vision models</li>
+        <li>Contributed to the high accuracy of Vision Pro's spatial understanding capabilities</li>
       </ul>
     `,
     images: [
@@ -29,35 +856,34 @@
   "project-asset-qa": {
     title: "Asset Validation QA Tools",
     description: `
-      <p>Built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata before they entered the pipeline.</p>
+      <p>Built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata. Features included automatic thumbnail generation, LOD creation, metadata validation, and seamless outsource integration.</p>
       
       <h4>Background & Reasoning</h4>
-      <p>Our asset pipeline processed thousands of 3D models from both internal teams and external vendors. Quality issues with these assets frequently caused pipeline failures, wasting valuable time and resources. We needed automated tools to catch problems early.</p>
+      <p>Apple's vision projects required processing thousands of 3D assets from various sources, including outsourced content. Ensuring the quality, consistency, and technical compliance of these assets was a major bottleneck in production.</p>
       
       <h4>Implementation</h4>
-      <p>I developed a suite of asset validation tools that:</p>
+      <p>I developed an integrated validation and processing system that:</p>
       <ul>
-        <li>Automatically validated geometry for common issues like non-manifold edges, inverted normals, and bad UVs</li>
-        <li>Verified textures for correct dimensions, formats, and compression settings</li>
-        <li>Cross-checked metadata against our database schema to ensure completeness</li>
-        <li>Generated automatic thumbnails for visual verification</li>
-        <li>Created LODs when required using our standardized algorithms</li>
-        <li>Provided detailed error reports with specific remediation steps</li>
-        <li>Integrated with our asset management system for seamless workflow</li>
+        <li>Automatically checked assets against over 50 technical requirements (polycount, texture sizes, naming conventions, etc.)</li>
+        <li>Generated thumbnails for quick visual reference in asset browsers</li>
+        <li>Created and validated LOD variations for performance optimization</li>
+        <li>Verified and corrected metadata for proper categorization and searchability</li>
+        <li>Supported seamless integration of outsourced assets with standardized requirements</li>
+        <li>Generated detailed reports highlighting issues that required manual attention</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>These QA tools dramatically improved our pipeline efficiency:</p>
+      <p>These tools transformed the asset integration workflow:</p>
       <ul>
-        <li>Reduced asset integration failures by 85%</li>
-        <li>Decreased turnaround time for fixing asset issues from days to hours</li>
-        <li>Standardized quality across all assets, regardless of source</li>
-        <li>Enabled scaling our asset production by 3x without increasing QA headcount</li>
-        <li>Provided better feedback to external vendors, improving their first-time submission quality</li>
+        <li>Reduced asset processing time by approximately 75%</li>
+        <li>Virtually eliminated technical errors in the final asset library</li>
+        <li>Standardized asset quality across internal and outsourced content</li>
+        <li>Enabled non-technical team members to contribute to asset integration</li>
+        <li>Provided detailed analytics on asset library composition and quality</li>
+        <li>Dramatically improved searchability and organization of the asset database</li>
       </ul>
     `,
     images: [
-      "/api/placeholder/640/360",
       "/api/placeholder/640/360"
     ],
     video: null
@@ -66,34 +892,34 @@
   "project-lod-pipeline": {
     title: "LOD Generation Pipeline",
     description: `
-      <p>Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs with automatically generated ones that preserved visual fidelity while drastically reducing polygon counts.</p>
+      <p>Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs. This system automated the creation of optimized mesh levels, significantly reducing artist workload while maintaining visual fidelity.</p>
       
       <h4>Background & Reasoning</h4>
-      <p>Creating multiple levels of detail (LODs) for the thousands of assets in Call of Duty WWII was a massive undertaking that consumed significant artist resources. The manual process was inconsistent and often resulted in LODs that either lost too much detail or didn't reduce polygon counts enough.</p>
+      <p>Call of Duty WWII required thousands of assets with multiple LOD (Level of Detail) variations to maintain performance across different hardware and viewing distances. Creating these LODs manually was extremely time-consuming and inconsistent across the art team.</p>
       
       <h4>Implementation</h4>
-      <p>I integrated and customized a proprietary mesh simplification algorithm into our pipeline that:</p>
+      <p>I developed a robust automated pipeline that:</p>
       <ul>
-        <li>Analyzed each model to identify visually important features that needed preservation</li>
-        <li>Generated multiple LOD levels automatically with appropriate polygon reduction ratios</li>
-        <li>Maintained silhouette edges and high-detail regions based on visual importance</li>
-        <li>Preserved UV mapping and material boundaries</li>
-        <li>Integrated seamlessly with our existing asset processing pipeline</li>
-        <li>Allowed for artist overrides when necessary for specific assets</li>
+        <li>Integrated a proprietary LOD generation algorithm into the asset processing pipeline using C++ and C#</li>
+        <li>Created intelligent mesh simplification that preserved critical visual features and silhouettes</li>
+        <li>Maintained proper material assignments, UV mapping, and skeletal influences during reduction</li>
+        <li>Implemented batch processing to handle hundreds of assets simultaneously</li>
+        <li>Built validation tools to ensure LODs met quality and performance requirements</li>
+        <li>Added artist override options for special cases requiring manual intervention</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>The automated LOD system transformed our asset production process:</p>
+      <p>This pipeline transformation delivered extraordinary results:</p>
       <ul>
+        <li>Generated approximately 70% of all LOD assets in Call of Duty WWII</li>
         <li>Reduced LOD creation time from hours to minutes per asset</li>
-        <li>Freed up approximately 30% of environment artist time for more creative tasks</li>
-        <li>Improved overall performance by enabling more aggressive LOD strategies</li>
-        <li>Resulted in more consistent visual quality across LOD transitions</li>
-        <li>Enabled rapid iteration on environments without manually redoing LODs</li>
+        <li>Saved an estimated 2,000+ artist hours during production</li>
+        <li>Improved visual consistency of LOD transitions across the game</li>
+        <li>Enabled more aggressive performance optimization while maintaining quality</li>
+        <li>Became the standard LOD generation method for subsequent projects</li>
       </ul>
     `,
     images: [
-      "/api/placeholder/640/360",
       "/api/placeholder/640/360"
     ],
     video: null
@@ -102,35 +928,32 @@
   "project-edge-cleanup": {
     title: "Edge Cleanup Tool",
     description: `
-      <p>Created an optimization tool that identifies and removes unnecessary edges in 3D models, significantly reducing polygon counts without affecting visual quality.</p>
+      <p>Created an optimization tool that identifies and removes unnecessary edges in 3D models. The script intelligently detects edges that don't add visual detail to the model but consume processing power, providing significant polygon reduction with no visual impact.</p>
       
       <h4>Background & Reasoning</h4>
-      <p>During the modeling process, artists often create additional edges for construction purposes that don't contribute to the final visual appearance. These unnecessary edges increase polygon counts and processing overhead without adding value to the final asset.</p>
+      <p>During model creation, artists often add edge loops for construction purposes that don't contribute to the final visual appearance but remain in the model. These unnecessary edges increase polygon count, which negatively impacts rendering performance and memory usage.</p>
       
       <h4>Implementation</h4>
-      <p>I developed a Maya tool using Python that:</p>
+      <p>I developed a specialized optimization script that:</p>
       <ul>
-        <li>Analyzes mesh topology to identify redundant edges that don't affect silhouette or surface curvature</li>
-        <li>Uses advanced algorithms to determine the visual impact of removing each edge</li>
-        <li>Provides a preview mode to visualize before/after results</li>
-        <li>Offers adjustable thresholds for controlling optimization aggressiveness</li>
-        <li>Maintains UV mapping and material boundaries during optimization</li>
-        <li>Can be run in batch mode for processing multiple assets</li>
-        <li>Generates detailed logs of changes made to each model</li>
+        <li>Analyzes 3D meshes to identify edges that don't contribute to silhouette or surface detail</li>
+        <li>Uses geometric analysis to determine which edges can be safely removed without altering the model's appearance</li>
+        <li>Maintains UV mapping integrity and normal data during optimization</li>
+        <li>Provides granular control over which areas to optimize and to what degree</li>
+        <li>Features a preview mode so artists can see the impact before committing to changes</li>
       </ul>
       
       <h4>Impact</h4>
-      <p>The Edge Cleanup Tool delivered impressive results:</p>
+      <p>This tool provided significant optimization benefits:</p>
       <ul>
-        <li>Reduced polygon counts by 15-30% on average with no visible quality loss</li>
-        <li>Improved runtime performance, especially on models used in background scenes</li>
-        <li>Saved artists hours of tedious manual cleanup work</li>
-        <li>Standardized optimization levels across all assets</li>
-        <li>Became a standard part of our asset finalization process</li>
+        <li>Achieved polygon count reductions of 15-30% on most models with no visible changes</li>
+        <li>Improved GPU performance by reducing vertex processing overhead</li>
+        <li>Reduced memory footprint of models throughout the rendering pipeline</li>
+        <li>Saved artists hours of tedious manual optimization work</li>
+        <li>Standardized optimization practices across the art team</li>
       </ul>
     `,
     images: [
-      "/api/placeholder/640/360",
       "/api/placeholder/640/360"
     ],
     video: null
@@ -142,264 +965,182 @@ const artData = {
   "art-senior-project": {
     title: "Senior Project Game Environment",
     description: `
-      <p>A detailed game environment created for my senior project titled "Escape from Nuckinfutts' Factory". This was the main environment for a first-person adventure game built in Unity.</p>
-      
-      <h4>Process</h4>
-      <p>I designed and modeled this industrial environment with an emphasis on gameplay flow and visual storytelling. The space needed to communicate its function while guiding players through the level in an intuitive way.</p>
-      <p>Key aspects of the creation process included:</p>
-      <ul>
-        <li>Initial blockout focused on gameplay pathing and sightlines</li>
-        <li>Modular asset creation for efficient environment building</li>
-        <li>Custom textures created in Photoshop with multiple detail passes</li>
-        <li>Careful lighting setup to guide player attention and create atmosphere</li>
-        <li>Performance optimization to maintain consistent framerates</li>
-      </ul>
+      <p>Environment created for my game design senior project titled "Escape from Nuckinfutts' Factory". This scene was modeled, textured, and lit in Maya with additional post-processing effects.</p>
+      <p>The environment features a dystopian factory setting with detailed industrial elements and atmospheric lighting to create a tense, oppressive mood appropriate for the game's narrative.</p>
     `,
     images: [
       "http://i.imgur.com/UGUc4yz.jpg",
       "http://i.imgur.com/6nSUBCj.jpg",
       "http://i.imgur.com/jMMIZtA.png"
-    ],
-    video: null
+    ]
   },
   "art-kitchen": {
     title: "Kitchen Scene Render",
     description: `
-      <p>A detailed kitchen environment created as a lighting and materials study. This scene was modeled, textured and lit using Maya, mental ray, and Photoshop.</p>
-      
-      <h4>Process</h4>
-      <p>This project focused on creating a photorealistic interior with careful attention to lighting and material properties. I wanted to capture the subtle interactions between different surface types and light sources.</p>
-      <p>The creation process involved:</p>
-      <ul>
-        <li>Reference gathering and mood board creation</li>
-        <li>Detailed modeling with proper scale relationships</li>
-        <li>Creation of physically accurate materials with subsurface scattering for organic elements</li>
-        <li>Complex lighting setup with multiple bounce lighting</li>
-        <li>Post-processing in Photoshop to enhance the final image</li>
-      </ul>
+      <p>Fully modeled, textured, and lit kitchen scene created in Maya with mental ray rendering. This project focused on creating photorealistic architectural visualization with careful attention to materials, lighting, and composition.</p>
+      <p>The scene features realistic materials with proper reflections, global illumination, and careful attention to small details that add to the lived-in feeling of the space.</p>
     `,
     images: [
       "http://i.imgur.com/nhb5Um2.jpg",
       "http://i.imgur.com/DClkapV.jpg"
-    ],
-    video: null
+    ]
   },
   "art-factory": {
     title: "Factory Environment",
     description: `
-      <p>Another view of the factory environment from my senior project, showing the detailed industrial aesthetic and atmospheric lighting.</p>
-      
-      <h4>Details</h4>
-      <p>This particular area of the factory was designed to convey a sense of industrial decay and abandonment. The environment tells a story through its details and worn appearance.</p>
-      <p>Notable features include:</p>
-      <ul>
-        <li>Modular pipe systems that could be reconfigured throughout the level</li>
-        <li>Custom decals for signage and warning labels</li>
-        <li>Carefully placed props to suggest narrative elements</li>
-        <li>Volumetric lighting to enhance atmosphere</li>
-        <li>Multiple material layers to convey age and wear</li>
-      </ul>
+      <p>Detailed industrial environment created for my senior project game. This area features custom modeled machinery, appropriate textures, and atmospheric lighting to create an immersive player experience.</p>
+      <p>The scene balances visual detail with performance considerations to maintain good framerates during gameplay while still conveying the gritty industrial aesthetic.</p>
     `,
     images: [
       "http://i.imgur.com/jMMIZtA.png",
       "http://i.imgur.com/UGUc4yz.jpg"
-    ],
-    video: null
+    ]
   },
   "art-props": {
     title: "Half-Life 2 Mod Props",
     description: `
-      <p>A collection of props I created for the Half-Life 2 mod "No More Room in Hell". These assets were modeled in Softimage XSI and textured to match the game's aesthetic.</p>
-      
-      <h4>Background</h4>
-      <p>This project was my introduction to game asset creation and what inspired me to pursue a career in technical art. Working within the constraints of the Source engine provided valuable experience in optimization and efficient texturing.</p>
-      <p>Each prop required:</p>
-      <ul>
-        <li>Low-poly modeling appropriate for the game's performance requirements</li>
-        <li>UV mapping optimized for texture space efficiency</li>
-        <li>Hand-painted textures that matched the game's visual style</li>
-        <li>Proper collision setup for gameplay interaction</li>
-        <li>LOD creation for distant viewing</li>
-      </ul>
-      <p>This mod was eventually released on Steam and has been played by thousands of people.</p>
+      <p>Collection of game-ready props created for the Half-Life 2 mod "No More Room in Hell". These assets were modeled in Softimage XSI with game-appropriate polycount and textures.</p>
+      <p>Creating these props for an actual game mod was what inspired me to pursue a career in game art and technical art. The constraints of working within a game engine taught me valuable lessons about optimization and technical limitations.</p>
     `,
     images: [
       "http://i.imgur.com/DYKhtLU.jpg"
-    ],
-    video: null
+    ]
   },
   "art-kitchen-angle": {
     title: "Kitchen Scene Alternate View",
     description: `
-      <p>An alternate angle of the kitchen scene showing different lighting conditions and material interactions. This view emphasizes the reflective properties of the countertops and appliances.</p>
-      
-      <h4>Technical Details</h4>
-      <p>This render required particular attention to reflection and refraction for the metallic and glass elements. The scene features:</p>
-      <ul>
-        <li>High-definition reflection maps for the stainless steel surfaces</li>
-        <li>Physically accurate glass shader with proper refraction</li>
-        <li>Global illumination for realistic bounce lighting</li>
-        <li>Environment lighting to create subtle reflections</li>
-        <li>Depth of field to enhance photorealism</li>
-      </ul>
+      <p>Alternative composition of the kitchen scene showcasing different lighting conditions and angles. This render demonstrates the importance of camera placement and lighting direction in architectural visualization.</p>
+      <p>The subtle shift in perspective highlights different aspects of the space while maintaining the photorealistic quality of the materials and lighting.</p>
     `,
     images: [
       "http://i.imgur.com/DClkapV.jpg",
       "http://i.imgur.com/nhb5Um2.jpg"
-    ],
-    video: null
+    ]
   },
   "art-room": {
     title: "Room Environment",
     description: `
-      <p>A detailed interior room environment demonstrating lighting, texturing, and prop placement skills. This scene was created as a study in interior design and atmospheric lighting.</p>
-      
-      <h4>Approach</h4>
-      <p>For this environment, I focused on creating a lived-in space with personality. Each element was carefully chosen to suggest information about the occupant and the room's purpose.</p>
-      <p>The scene includes:</p>
-      <ul>
-        <li>Custom furniture models with appropriate wear and tear</li>
-        <li>Detailed props to add narrative interest</li>
-        <li>Layered texturing to convey material properties</li>
-        <li>Natural lighting supplemented with interior light sources</li>
-        <li>Careful composition to draw the eye through the space</li>
-      </ul>
+      <p>Residential interior scene showcasing furniture modeling, texture work, and interior lighting. This environment demonstrates skills in creating lived-in spaces with appropriate scale and proportions.</p>
+      <p>The scene features custom modeled furniture pieces with realistic materials and careful attention to how light interacts with different surfaces.</p>
     `,
     images: [
       "http://i.imgur.com/R6wXnNE.png"
+    ]
+  }
+};
+    `,
+    images: [
+      "/api/placeholder/640/360"
     ],
     video: null
   }
 };
-
-// Modal handling functionality
-document.addEventListener('DOMContentLoaded', () => {
-  // Set up click handlers for project cards
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const projectId = card.id;
-      const project = projectData[projectId] || {
-        title: card.querySelector('.project-header').textContent,
-        description: `<p>${card.querySelector('.project-description').textContent}</p>
-                     <h4>Detailed information coming soon</h4>
-                     <p>This project is currently being documented with full implementation details and impact metrics.</p>`,
-        images: ["/api/placeholder/640/360"],
-        video: null
-      };
+const projectData = {
+  "project-perf-framework": {
+    title: "Performance Automation Framework",
+    description: `
+      <p>Developed a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the entire codebase. This system monitored all critical aspects of VR performance in real-time.</p>
       
-      // Build modal content
-      let modalContent = `
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <h2 class="modal-header">${project.title}</h2>
-          <div class="modal-body">
-            ${project.description}
-          </div>`;
+      <h4>Background & Reasoning</h4>
+      <p>As our VR platform grew in complexity, maintaining consistent performance became increasingly challenging. Manual performance profiling was inconsistent and insufficient to catch regressions early in the development cycle.</p>
       
-      // Add images if available
-      if (project.images && project.images.length > 0) {
-        modalContent += `<div class="modal-gallery">`;
-        project.images.forEach(image => {
-          modalContent += `<img src="${image}" alt="${project.title}" class="modal-image">`;
-        });
-        modalContent += `</div>`;
-      }
+      <h4>Implementation</h4>
+      <p>I designed and implemented a robust framework that:</p>
+      <ul>
+        <li>Instrumented nearly the entire codebase with performance markers to track execution time and resource usage</li>
+        <li>Automatically collected performance data across different hardware configurations and user scenarios</li>
+        <li>Measured key metrics including frame rate, GPU/CPU utilization, memory usage, garbage collection, and load times</li>
+        <li>Established baselines and detected regressions automatically</li>
+        <li>Generated detailed reports for engineering teams</li>
+        <li>Integrated with our CI/CD pipeline to flag problematic builds</li>
+      </ul>
       
-      // Add video if available
-      if (project.video) {
-        modalContent += `
-          <div class="modal-video-container">
-            <iframe class="modal-video" src="${project.video}" frameborder="0" allowfullscreen></iframe>
-          </div>`;
-      }
-      
-      modalContent += `</div>`;
-      
-      // Update and show modal
-      const modal = document.getElementById('project-modal');
-      modal.innerHTML = modalContent;
-      modal.style.display = 'block';
-      
-      // Add close handler
-      document.querySelector('.close-modal').addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-      
-      // Close when clicking outside the modal content
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-    });
-  });
+      <h4>Impact</h4>
+      <p>The framework transformed our approach to performance optimization:</p>
+      <ul>
+        <li>Enabled early detection of performance regressions, often within hours of code changes</li>
+        <li>Provided clear visibility into performance bottlenecks across different areas of the codebase</li>
+        <li>Reduced debugging time by up to 75% by pinpointing exact causes of performance issues</li>
+        <li>Helped establish consistent 72fps in Horizon Worlds by systematically addressing the most impactful bottlenecks</li>
+        <li>Became a core part of our development process that teams relied on daily</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
   
-  // Set up click handlers for art items
-  document.querySelectorAll('.art-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const artId = item.id;
-      const art = artData[artId] || {
-        title: item.querySelector('.art-title').textContent,
-        description: `<p>Detailed information about this artwork is coming soon.</p>`,
-        images: [item.querySelector('img').src],
-        video: null
-      };
+  "project-perf-dashboards": {
+    title: "Performance Visualization Dashboards",
+    description: `
+      <p>Created sophisticated interactive dashboards that visualized performance metrics from our VR applications, enabling teams to quickly identify and respond to performance regressions.</p>
       
-      // Build modal content
-      let modalContent = `
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <h2 class="modal-header">${art.title}</h2>
-          <div class="modal-body">
-            ${art.description}
-          </div>`;
+      <h4>Background & Reasoning</h4>
+      <p>While our performance automation framework collected vast amounts of data, we needed intuitive ways to visualize trends and make this information accessible to all team members, not just performance specialists.</p>
       
-      // Add images if available
-      if (art.images && art.images.length > 0) {
-        modalContent += `<div class="modal-gallery">`;
-        art.images.forEach(image => {
-          modalContent += `<img src="${image}" alt="${art.title}" class="modal-image">`;
-        });
-        modalContent += `</div>`;
-      }
+      <h4>Implementation</h4>
+      <p>I built a comprehensive visualization system that:</p>
+      <ul>
+        <li>Aggregated performance data from thousands of test runs across different builds and hardware configurations</li>
+        <li>Created interactive dashboards showing performance trends over time with drill-down capabilities</li>
+        <li>Enabled filtering by world, player count, hitch frequency, hardware specs, and build version</li>
+        <li>Highlighted statistical anomalies and flagged potential regressions automatically</li>
+        <li>Provided comparative views to analyze changes between builds</li>
+        <li>Generated automatic reports for stakeholders with key performance indicators</li>
+      </ul>
       
-      // Add video if available
-      if (art.video) {
-        modalContent += `
-          <div class="modal-video-container">
-            <iframe class="modal-video" src="${art.video}" frameborder="0" allowfullscreen></iframe>
-          </div>`;
-      }
-      
-      modalContent += `</div>`;
-      
-      // Update and show modal
-      const modal = document.getElementById('art-modal');
-      modal.innerHTML = modalContent;
-      modal.style.display = 'block';
-      
-      // Add close handler
-      document.querySelector('.close-modal').addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-      
-      // Close when clicking outside the modal content
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
-    });
-  });
+      <h4>Impact</h4>
+      <p>These dashboards dramatically improved our ability to maintain performance quality:</p>
+      <ul>
+        <li>Reduced time to identify performance regressions by 80%</li>
+        <li>Enabled non-technical team members to understand and monitor performance trends</li>
+        <li>Provided data-driven evidence for prioritizing optimization work</li>
+        <li>Facilitated better communication between engineering, production, and management</li>
+        <li>Helped teams focus on the highest-impact optimizations by clearly visualizing bottlenecks</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
   
-  // Close with escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.getElementById('project-modal').style.display = 'none';
-      document.getElementById('art-modal').style.display = 'none';
-    }
-  });
-});
-</script>
-</body>
-</html>
+  "project-proc-scene": {
+    title: "Procedural Scene Generation",
+    description: `
+      <p>Developed sophisticated procedural scene generation systems that created synthetic training data for Apple Vision Pro. This system generated thousands of varied environments with precise control over every aspect of the scene.</p>
+      
+      <h4>Background & Reasoning</h4>
+      <p>Training computer vision models for Apple Vision Pro required massive amounts of diverse visual data with precise ground truth. Manually creating these scenes would have been prohibitively expensive and time-consuming, while not providing the necessary variety of edge cases.</p>
+      
+      <h4>Implementation</h4>
+      <p>I designed a parametric scene generation system that:</p>
+      <ul>
+        <li>Created procedurally generated environments with customizable parameters for lighting, materials, object placement, and camera angles</li>
+        <li>Generated photorealistic synthetic data with perfect ground truth annotations</li>
+        <li>Randomized scene attributes within specified constraints to ensure diverse but valid training scenarios</li>
+        <li>Handled complex physical simulations for realistic object interactions</li>
+        <li>Integrated with existing content pipelines to leverage high-quality asset libraries</li>
+        <li>Supported batch processing to generate thousands of training samples overnight</li>
+      </ul>
+      
+      <h4>Impact</h4>
+      <p>This system significantly enhanced the training process for Vision Pro:</p>
+      <ul>
+        <li>Generated over 100,000 unique training scenes that would have been impossible to capture manually</li>
+        <li>Provided perfectly accurate ground truth data for model training</li>
+        <li>Enabled systematic coverage of edge cases and rare scenarios</li>
+        <li>Reduced data generation costs by approximately 90% compared to manual capture</li>
+        <li>Accelerated the training and refinement cycle for computer vision models</li>
+        <li>Contributed to the high accuracy of Vision Pro's spatial understanding capabilities</li>
+      </ul>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
