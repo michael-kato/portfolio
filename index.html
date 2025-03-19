@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Michael Kato | Technical Artist</title>
 <style>
+/* Complete CSS for the portfolio site with properly implemented art expansion */
+
 :root {
 --bg-color: #0d1117;
 --bg-pattern: #161b22;
@@ -195,12 +197,13 @@ font-size: 0.8rem;
 font-weight: 500;
 }
 
-/* Art gallery styles */
+/* Art gallery and expanded view styles */
 .art-grid {
 display: grid;
 grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 gap: 15px;
 margin-top: 30px;
+width: 100%;
 }
 
 .art-item {
@@ -245,6 +248,197 @@ transition: transform 0.3s;
 
 .art-item:hover .art-title {
 transform: translateY(0);
+}
+
+/* Expanded art item styles */
+.art-item.expanded {
+grid-column: 1 / -1; /* Span all columns */
+width: 100%;
+max-width: 100%;
+height: auto !important; /* Override any height constraints */
+min-height: auto !important;
+aspect-ratio: auto !important; /* Remove aspect ratio constraint */
+transition: all 0.3s ease;
+position: relative !important;
+display: block !important;
+z-index: 2;
+animation: expandArt 0.3s ease forwards;
+overflow: visible !important; /* Reset any overflow constraints */
+}
+
+@keyframes expandArt {
+from {
+  opacity: 0.7;
+  transform: scale(0.97);
+}
+to {
+  opacity: 1;
+  transform: scale(1);
+}
+}
+
+/* Container for all expanded content */
+.expanded-art-container {
+background-color: var(--card-bg);
+border: 1px solid var(--border-color);
+border-radius: 6px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+overflow: hidden;
+width: 100%;
+display: flex;
+flex-direction: column;
+}
+
+/* Header for expanded art with title and collapse button */
+/* Make entire header clickable */
+.expanded-art-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  cursor: pointer; /* Add cursor pointer to show it's clickable */
+  transition: background-color 0.2s ease;
+}
+
+.expanded-art-header:hover {
+  background-color: var(--card-bg); /* Slightly change background on hover */
+}
+
+.expanded-art-header h3 {
+color: var(--accent-color);
+margin: 0;
+font-size: 1.5rem;
+font-weight: 600;
+}
+
+.collapse-button {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--tertiary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: none; /* Let clicks pass through to the header */
+}
+
+.collapse-button:hover {
+background-color: rgba(255, 255, 255, 0.1);
+color: var(--secondary-color);
+}
+
+.collapse-button svg {
+width: 20px;
+height: 20px;
+transition: transform 0.2s ease;
+}
+
+.collapse-button:hover svg {
+transform: translateY(-2px);
+}
+
+/* Description section */
+.expanded-art-description {
+padding: 20px 20px 10px 20px;
+color: var(--text-color);
+line-height: 1.6;
+max-width: 900px;
+margin: 0 auto;
+width: 100%;
+}
+
+/* Gallery grid within expanded view - UPDATED FOR LARGER THUMBNAILS */
+.expanded-art-gallery {
+  display: grid;
+  /* Larger thumbnails with fewer columns */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 0 20px 20px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.expanded-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  cursor: zoom-in;
+  transition: transform 0.2s, box-shadow 0.2s;
+  aspect-ratio: 1 / 1;
+  /* Larger max-width for thumbnails */
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.expanded-image-container:hover {
+transform: translateY(-4px);
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.expanded-image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s ease;
+}
+
+.expanded-image-container:hover .expanded-image {
+transform: scale(1.05);
+}
+
+.expanded-image-caption {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 8px;
+font-size: 0.8rem; /* Smaller font for thumbnails */
+transform: translateY(100%);
+transition: transform 0.3s ease;
+}
+
+.expanded-image-container:hover .expanded-image-caption {
+transform: translateY(0);
+}
+
+/* Video section */
+.expanded-art-videos {
+padding: 0 20px 20px 20px;
+max-width: 900px;
+margin: 0 auto;
+width: 100%;
+}
+
+.expanded-video-container {
+width: 100%;
+position: relative;
+padding-bottom: 56.25%; /* 16:9 aspect ratio */
+height: 0;
+overflow: hidden;
+border-radius: 6px;
+border: 1px solid var(--border-color);
+margin-bottom: 16px;
+}
+
+.expanded-video {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
 }
 
 .video-container {
@@ -583,7 +777,43 @@ font-size: 0.9rem;
     font-size: 0.8rem;
     padding: 5px;
   }
+  
+  /* Responsive adjustments for expanded art view */
+  .expanded-art-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  
+  .expanded-image-container {
+    max-width: 220px;
+  }
+  
+  .expanded-art-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .expanded-art-description {
+    padding: 16px 16px 10px 16px;
+  }
+  
+  .expanded-art-videos {
+    padding: 0 16px 16px 16px;
+  }
 }
+
+/* For smaller screens, reduce number of columns */
+@media (max-width: 480px) {
+  .expanded-art-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  
+  .expanded-image-container {
+    max-width: 160px;
+  }
+}
+
+
 </style>
 </head>
 <body>
@@ -819,43 +1049,39 @@ const artData = {
     images: [
       {
         src: "http://i.imgur.com/UGUc4yz.jpg",
-        caption: "Factory room overview showing various modular elements and lighting"
-      },
-      {
-        src: "http://i.imgur.com/6nSUBCj.jpg",
-        caption: "Main character model with detailed textures and rigging"
-      },
-      {
-        src: "http://i.imgur.com/jMMIZtA.png",
-        caption: "Control panels and interactive elements with emissive materials"
-      },
-      {
-        src: "https://i.imgur.com/xYiN3ho.jpg",
-        caption: "Factory exterior with atmospheric fog effects"
-      },
-      {
-        src: "https://i.imgur.com/UlNQaO3.jpg",
-        caption: "Enemy character model with texture variants"
-      },
-      {
-        src: "https://i.imgur.com/lOccZy0.jpg",
-        caption: "Environmental props and machinery"
+        caption: "Factory room overview, hero shot."
       },
       {
         src: "https://i.imgur.com/3lby5.jpg",
-        caption: "Detailed machinery components and textures"
+        caption: "Closeup of the crane, which was rigged and animated, part of the final boss fight"
       },
       {
-        src: "https://i.imgur.com/hGK34.jpg",
-        caption: "Character close-up showing facial detail"
+        src: "http://i.imgur.com/6nSUBCj.jpg",
+        caption: "Level 01, this a recycling facility where the player, a robot, is discarded into."
+      },
+      {
+        src: "http://i.imgur.com/jMMIZtA.png",
+        caption: "Nuckinfutts at his workbench, assembling who knows what."
+      },
+      {
+        src: "https://i.imgur.com/UlNQaO3.jpg",
+        caption: "Boss fight room, showing the fire traps in the ground"
+      },
+      {
+        src: "https://i.imgur.com/lOccZy0.jpg",
+        caption: "Boss fight room, showing the crusher traps in the ceiling"
       },
       {
         src: "https://i.imgur.com/PmVOx.jpg",
-        caption: "Weapon model with normal mapping and specular highlights"
+        caption: "Corridors"
+      },
+      {
+        src: "https://i.imgur.com/hGK34.jpg",
+        caption: "Corridors to the boss fight room"
       },
       {
         src: "https://i.imgur.com/woft3Rd.png",
-        caption: "UI elements and game interface design"
+        caption: "Nuckinfutts rigged"
       }
     ],
     video: "https://www.youtube.com/watch?v=UBwfiO89y6c"
@@ -863,48 +1089,48 @@ const artData = {
   "art-mod-props": {
     title: "Half-Life 2 Mod Props",
     description: `
-      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. This project introduced me to game asset creation and sparked my interest in technical art. Working within the Source engine's constraints taught me valuable lessons in optimization and texturing, low-poly modeling, efficient UV mapping, and hand-painted textures.</p>
+      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. Working within the Source engine's constraints taught me valuable lessons in optimization and texturing, low-poly modeling, efficient UV mapping, and hand-painted textures.</p>
     `,
     images: [
       {
         src: "http://i.imgur.com/DYKhtLU.jpg",
-        caption: "Collection of weapons and props created for the mod"
-      },
-      {
-        src: "https://i.imgur.com/vzDNH.png",
-        caption: "First-person view of a crowbar showing texture details"
-      },
-      {
-        src: "https://i.imgur.com/fkiQQ.png",
-        caption: "Fire extinguisher model with damage variants"
+        caption: "Collage of some of the props I made"
       },
       {
         src: "https://i.imgur.com/UOpEx.jpg",
-        caption: "In-game screenshot of environmental props"
+        caption: "AO renders were my go to for showing off models back then"
+      },
+      {
+        src: "https://i.imgur.com/vzDNH.png",
+        caption: "Lexus IS 300"
+      },
+      {
+        src: "https://i.imgur.com/fkiQQ.png",
+        caption: "Crashed version"
       },
       {
         src: "https://i.imgur.com/9p3N6.jpg",
-        caption: "Knife model with detailed grip texturing"
+        caption: "Color variant in-engine"
       },
       {
         src: "https://i.imgur.com/bTzPY.png",
-        caption: "Modern axe design with normal mapping"
+        caption: "Hydrant!"
       },
       {
         src: "https://i.imgur.com/4QiuN.jpg",
-        caption: "First-person melee weapon view in-game"
-      },
-      {
-        src: "https://i.imgur.com/pcnr7.png",
-        caption: "Sledgehammer model with wear and damage details"
+        caption: "Popcorn!"
       },
       {
         src: "https://i.imgur.com/f2njW.png",
-        caption: "Pistol model with accurate mechanical details"
+        caption: "Smaller variant of the shelves"
       },
       {
         src: "https://i.imgur.com/bs6Bc.png",
-        caption: "Environmental clutter objects for level design"
+        caption: "Let there be floodlight"
+      },
+      {
+        src: "https://i.imgur.com/pcnr7.png",
+        caption: "Basic hand truck, minimal texture detail"
       }
     ],
     video: null
@@ -912,41 +1138,54 @@ const artData = {
   "art-school-work": {
     title: "Misc School Work",
     description: `
-      <p>Various projects completed during my time at The Art Institute of Silicon Valley, showcasing my development in modeling, texturing, and environment design. These pieces represent my journey learning 3D art fundamentals and technical skills that formed the foundation of my career.</p>
+      <p>Various projects from my time at The Art Institute of Sunnyvale (closed). I wish I still had the source files for these, most of my best work from this time was lost due to a hard drive failure. Massive bummer.</p>
     `,
     images: [
       {
         src: "http://i.imgur.com/DClkapV.jpg",
-        caption: "Final year environment project with dynamic lighting"
+        caption: "Kitchen render in Maya with mental ray"
       },
       {
         src: "http://i.imgur.com/nhb5Um2.jpg",
-        caption: "Character modeling study with detailed facial features"
+        caption: "Kitchen render alt"
       },
       {
         src: "https://i.imgur.com/R6wXnNE.png",
-        caption: "Sci-fi environment concept with custom materials"
+        caption: "Zbrush tactical glove"
       },
       {
         src: "https://i.imgur.com/n6MVQ2g.jpg",
-        caption: "Modeling assignment focusing on hard-surface techniques"
+        caption: "AK-74"
       },
       {
         src: "https://i.imgur.com/0mRUG.png",
-        caption: "Early lighting study with atmospheric effects"
+        caption: "Soviet 2s7 Pion"
       },
       {
         src: "https://i.imgur.com/lWwi2.png",
-        caption: "Texture mapping exercise with baked ambient occlusion"
+        caption: "Soviet 2s7 Pion"
       },
       {
         src: "https://i.imgur.com/ZwzAT.png",
-        caption: "Environment design with custom modular pieces"
+        caption: "WIP Notre Dame cathedral"
       },
       {
         src: "https://i.imgur.com/DaRyA.jpg",
-        caption: "Character animation pose test"
+        caption: "Laser cube from Portal 2"
+      },
+      {
+        src: "https://i.imgur.com/bMGks.jpg",
+        caption: "Test chamber from Portal 2. The finished version was lost."
+      },
+      {
+        src: "https://i.imgur.com/0OXOc92.png",
+        caption: "Lizard thing."
+      },
+      {
+        src: "https://i.imgur.com/JmRB0.jpg",
+        caption: "Character from Star Wars: Clone Wars. I modelled, texture, rigged, and animated this character but the files are lost :(("
       }
+      
     ],
     video: "https://www.youtube.com/watch?v=2k-cztTwVzU"
   },
@@ -994,35 +1233,35 @@ const artData = {
     images: [
       {
         src: "https://i.imgur.com/tiUt0.png",
-        caption: "Sci-fi gun completed in 2 hours with basic texturing"
+        caption: "Conker from the N64 game. This took me about 5 hours start to finish. The challenge prompt was 'Plush'"
       },
       {
         src: "https://i.imgur.com/fkg1b.png",
-        caption: "Fantasy sword design with simple material work"
+        caption: "Texture"
       },
       {
         src: "https://i.imgur.com/OI2t7.png",
-        caption: "Steampunk-inspired gadget with brass materials"
+        caption: "Challenge prompt was 'Land Vehicles' so I figured I'd zig while everyone else zagged."
       },
       {
         src: "https://i.imgur.com/xkucH.jpg",
-        caption: "Medieval helmet with basic material definition"
+        caption: "Garage"
       },
       {
         src: "https://i.imgur.com/dHQ1c.png",
-        caption: "Futuristic melee weapon concept"
+        caption: "Prompt was 'Intelligence'"
       },
       {
         src: "https://i.imgur.com/YJjhJ.png",
-        caption: "Sci-fi rifle with glowing energy elements"
+        caption: "Just some trash"
       },
       {
         src: "https://i.imgur.com/NJVA8.png",
-        caption: "Fantasy staff with crystal details"
+        caption: "Giant person headphones"
       },
       {
         src: "https://i.imgur.com/UVkBb.png",
-        caption: "Simple environment piece created in under 2 hours"
+        caption: "2 hour modelling challenge"
       }
     ],
     video: null
@@ -1127,8 +1366,7 @@ const projectData = {
     video: null
   }
 };
-
-// Portfolio site JavaScript with fixed modal, lightbox and event handling
+// Portfolio site JavaScript with fixed expansion for art projects
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize all event handlers
   setupProjectCards();
@@ -1138,8 +1376,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Convert YouTube watch URLs to embed URLs
- * @param {string|string[]} url - YouTube URL or array of URLs
- * @return {string|string[]} - Converted embed URL(s)
  */
 function getYouTubeEmbedUrl(url) {
   if (!url) return null;
@@ -1168,8 +1404,6 @@ function getYouTubeEmbedUrl(url) {
 
 /**
  * Normalize image data to consistent format
- * @param {(string|Object)[]} images - Array of image URLs or objects
- * @return {Object[]} - Normalized array of image objects
  */
 function normalizeImageData(images) {
   if (!images) return [];
@@ -1204,7 +1438,6 @@ function setupProjectCards() {
 
 /**
  * Open project modal with specified project data
- * @param {Object} project - Project data to display
  */
 function openProjectModal(project) {
   const projectModal = document.getElementById('project-modal');
@@ -1265,8 +1498,7 @@ function openProjectModal(project) {
     });
   });
   
-  // Add close handler (we do this here even though we have global handlers
-  // because we need to attach to the newly created close button)
+  // Add close handler
   const closeBtn = projectModal.querySelector('.close-modal');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
@@ -1278,101 +1510,173 @@ function openProjectModal(project) {
 /**
  * Set up event handlers for art items
  */
-function setupArtItems() {
-  const artModal = document.getElementById('art-modal');
+/**
+ * Update the click handler for art items to make entire header clickable
+ */
+ function setupArtItems() {
+  // First make sure any existing expanded items are collapsed
+  collapseAllArtItems();
   
   document.querySelectorAll('.art-item').forEach(item => {
-    item.addEventListener('click', () => {
-      const artId = item.id;
-      const art = artData[artId] || {
-        title: item.querySelector('.art-title').textContent,
-        description: `<p>Detailed information about this artwork is coming soon.</p>`,
-        images: [{
-          src: item.querySelector('img').src,
-          caption: item.querySelector('.art-title').textContent
-        }],
-        video: null
-      };
+    // Store original dimensions for restoration
+    if (!item.dataset.originalWidth) {
+      item.dataset.originalWidth = item.offsetWidth + 'px';
+      item.dataset.originalHeight = item.offsetHeight + 'px';
+    }
+    
+    // Store original content for restoration
+    if (!item.dataset.originalContent) {
+      item.dataset.originalContent = item.innerHTML;
+    }
+    
+    // Add click handler
+    item.addEventListener('click', function(e) {
+      // Check if we're clicking on an already expanded item
+      if (this.classList.contains('expanded')) {
+        // If clicking on the header, collapse the item
+        if (e.target.closest('.expanded-art-header')) {
+          collapseArtItem(this);
+          return;
+        }
+        
+        // If clicking on an image in the expanded view, handle lightbox
+        if (e.target.closest('.expanded-image-container')) {
+          const container = e.target.closest('.expanded-image-container');
+          const artId = this.id;
+          const art = artData[artId];
+          const processedImages = normalizeImageData(art.images);
+          const imageIndex = parseInt(container.dataset.index);
+          openLightbox(processedImages, imageIndex);
+        }
+        return;
+      }
       
-      openArtModal(art);
+      // First, collapse any already expanded items
+      collapseAllArtItems();
+      
+      // Now expand this item
+      expandArtItem(this);
     });
   });
 }
 
+
 /**
- * Open art modal with specified art data
- * @param {Object} art - Art data to display
+ * Expand an art item with detailed content
  */
-function openArtModal(art) {
-  const artModal = document.getElementById('art-modal');
+function expandArtItem(item) {
+  const artId = item.id;
+  const art = artData[artId] || {
+    title: item.querySelector('.art-title').textContent,
+    description: `<p>Detailed information about this artwork is coming soon.</p>`,
+    images: [{
+      src: item.querySelector('img').src,
+      caption: item.querySelector('.art-title').textContent
+    }],
+    video: null
+  };
   
-  // Convert image formats if needed
   const processedImages = normalizeImageData(art.images);
   
-  // Build modal content
-  let modalContent = `
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 class="modal-header">${art.title}</h2>
-      <div class="modal-body">
+  // Build expanded content
+  let expandedContent = `
+    <div class="expanded-art-container">
+      <div class="expanded-art-header">
+        <h3>${art.title}</h3>
+        <button class="collapse-button" aria-label="Collapse">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+          </svg>
+        </button>
+      </div>
+      <div class="expanded-art-description">
         ${art.description}
-      </div>`;
+      </div>
+      <div class="expanded-art-gallery">`;
   
-  // Add images if available
-  if (processedImages && processedImages.length > 0) {
-    modalContent += `<div class="modal-gallery">`;
-    processedImages.forEach((image, index) => {
-      modalContent += `
-        <div class="modal-image-container" data-index="${index}">
-          <img src="${image.src}" alt="${art.title}" class="modal-image" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
-          ${image.caption ? `<div class="modal-image-caption">${image.caption}</div>` : ''}
-        </div>`;
-    });
-    modalContent += `</div>`;
-  }
+  // Add images
+  processedImages.forEach((image, index) => {
+    expandedContent += `
+      <div class="expanded-image-container" data-index="${index}">
+        <img src="${image.src}" alt="${art.title}" class="expanded-image" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
+        ${image.caption ? `<div class="expanded-image-caption">${image.caption}</div>` : ''}
+      </div>`;
+  });
+  
+  expandedContent += `</div>`;
   
   // Add video if available
   if (art.video) {
     const embedUrl = getYouTubeEmbedUrl(art.video);
+    expandedContent += `<div class="expanded-art-videos">`;
+    
     if (Array.isArray(embedUrl)) {
       // Multiple videos
       embedUrl.forEach(url => {
-        modalContent += `
-          <div class="modal-video-container">
-            <iframe class="modal-video" src="${url}" frameborder="0" allowfullscreen></iframe>
+        expandedContent += `
+          <div class="expanded-video-container">
+            <iframe class="expanded-video" src="${url}" frameborder="0" allowfullscreen></iframe>
           </div>`;
       });
     } else if (embedUrl) {
       // Single video
-      modalContent += `
-        <div class="modal-video-container">
-          <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+      expandedContent += `
+        <div class="expanded-video-container">
+          <iframe class="expanded-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
         </div>`;
     }
+    
+    expandedContent += `</div>`;
   }
   
-  modalContent += `</div>`;
+  expandedContent += `</div>`;
   
-  // Update and show modal
-  artModal.innerHTML = modalContent;
-  artModal.style.display = 'block';
-  artModal.dataset.currentArt = art.title; // For reference
+  // Update content and add expanded class
+  item.innerHTML = expandedContent;
   
-  // Add image click handlers for lightbox
-  artModal.querySelectorAll('.modal-image-container').forEach(container => {
-    container.addEventListener('click', () => {
-      const imageIndex = parseInt(container.dataset.index);
-      openLightbox(processedImages, imageIndex);
-    });
+  // Need to set some explicit styles to ensure expansion works correctly
+  item.style.position = 'relative';
+  item.style.gridColumn = '1 / -1';
+  item.style.width = '100%';
+  item.style.height = 'auto';
+  item.style.aspectRatio = 'auto';
+  
+  // Add expanded class last to trigger animations
+  item.classList.add('expanded');
+  
+  // Scroll to make sure expanded item is visible
+  setTimeout(() => {
+    item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+/**
+ * Collapse all expanded art items
+ */
+ function collapseAllArtItems() {
+  document.querySelectorAll('.art-item.expanded').forEach(item => {
+    collapseArtItem(item);
   });
-  
-  // Add close handler
-  const closeBtn = artModal.querySelector('.close-modal');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      artModal.style.display = 'none';
-    });
+}
+
+/**
+ * Collapse an expanded art item back to its original state
+ */
+function collapseArtItem(item) {
+  // Restore original content
+  if (item.dataset.originalContent) {
+    item.innerHTML = item.dataset.originalContent;
   }
+  
+  // Remove inline styles
+  item.style.position = '';
+  item.style.gridColumn = '';
+  item.style.width = '';
+  item.style.height = '';
+  item.style.aspectRatio = '';
+  
+  // Remove expanded class
+  item.classList.remove('expanded');
 }
 
 /**
@@ -1380,28 +1684,21 @@ function openArtModal(art) {
  */
 function setupModalHandlers() {
   const projectModal = document.getElementById('project-modal');
-  const artModal = document.getElementById('art-modal');
   const lightbox = document.getElementById('lightbox-container');
-  const closeButtons = document.querySelectorAll('.close-modal, .lightbox-close');
   
   // Close modals when clicking outside content
   window.addEventListener('click', (e) => {
     if (e.target === projectModal) projectModal.style.display = 'none';
-    if (e.target === artModal) artModal.style.display = 'none';
     if (e.target === lightbox) lightbox.style.display = 'none';
   });
   
   // Global keyboard navigation
   window.addEventListener('keydown', (e) => {
-    // Only handle keys if at least one modal is visible
-    if (projectModal.style.display === 'block' || 
-        artModal.style.display === 'block' || 
-        lightbox.style.display === 'block') {
-      
+    // Only handle keys if a modal is visible
+    if (projectModal.style.display === 'block' || lightbox.style.display === 'block') {
       if (e.key === 'Escape') {
         // Close all modals
         projectModal.style.display = 'none';
-        artModal.style.display = 'none';
         lightbox.style.display = 'none';
       } else if (e.key === 'ArrowLeft' && lightbox.style.display === 'block') {
         // Previous image in lightbox
@@ -1418,8 +1715,6 @@ function setupModalHandlers() {
 
 /**
  * Open lightbox to display images at specified index
- * @param {Object[]} images - Array of image objects with src and caption
- * @param {number} startIndex - Index of image to show first
  */
 function openLightbox(images, startIndex = 0) {
   const lightbox = document.getElementById('lightbox-container');
