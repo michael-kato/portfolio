@@ -501,10 +501,10 @@ grid-template-columns: 1fr;
 
 <div class="projects-grid">
 <!-- Project 1: Performance Automation Framework -->
-<div class="project-card" id="project-perf-framework" data-tags="Python,VR,Performance,Tool">
+<div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance">
     <h3 class="project-header">Performance Automation Framework</h3>
     <div class="project-icon">📊</div>
-    <p class="project-description">Collaborated with lead engineers to develop a comprehensive instrumentation and automation framework for VR applications that captured performance metrics across the codebase. The system automatically tracked framerate, memory usage, load times, and other critical metrics to identify bottlenecks.</p>
+    <p class="project-description">Collaborated with lead engineers to develop a comprehensive instrumentation and automation framework for Horizon Worlds that captured a wide variety of performance metrics.</p>
     <div class="project-tags">
         <span class="project-tag">Python</span>
         <span class="project-tag">Performance</span>
@@ -513,10 +513,10 @@ grid-template-columns: 1fr;
 </div>
 
 <!-- Project 2: Performance Visualization Dashboards -->
-<div class="project-card" id="project-perf-dashboards" data-tags="Python,Data,Visualization,Tool">
+<div class="project-card" id="project-perf-dashboards" data-tags="SQL,Data,Visualization">
     <h3 class="project-header">Performance Visualization Dashboards</h3>
     <div class="project-icon">📈</div>
-    <p class="project-description">Created interactive performance dashboards displaying Horizon Worlds live production, automationg, and internal testing data, helping teams tackle regressions more effectively. These dashboards tracked trends over time and enabled drill-down analysis by world, player count, and code subsystem.</p>
+    <p class="project-description">Created interactive performance dashboards displaying Horizon Worlds live production, automation, and internal testing data, helping teams tackle regressions more effectively.</p>
     <div class="project-tags">
         <span class="project-tag">Data Visualization</span>
         <span class="project-tag">Python</span>
@@ -537,10 +537,10 @@ grid-template-columns: 1fr;
 </div>
 
 <!-- Project 4: Asset Validation QA Tools -->
-<div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation,Tool">
+<div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation">
 <h3 class="project-header">Asset Validation QA Tools</h3>
 <div class="project-icon">🔍</div>
-<p class="project-description">Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets that accelerated integration speed by validating models, textures, and metadata. Features included automatic thumbnail generation, LOD creation, metadata validation, and seamless outsource integration.</p>
+<p class="project-description">Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets that accelerated integration speed by validating models, textures, and metadata.</p>
 <div class="project-tags">
     <span class="project-tag">Python</span>
     <span class="project-tag">Pipeline</span>
@@ -552,7 +552,7 @@ grid-template-columns: 1fr;
 <div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
 <h3 class="project-header">LOD Generation Pipeline</h3>
 <div class="project-icon">💎</div>
-<p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty: WWII, replacing the need for (almost) any manually authored LODs. This system significantly reducing artist workload, while maintaining visual fidelity and improved performance.</p>
+<p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty: WWII, replacing the need for (almost) any manually authored LODs.</p>
 <div class="project-tags">
     <span class="project-tag">C++</span>
     <span class="project-tag">C#</span>
@@ -561,10 +561,10 @@ grid-template-columns: 1fr;
 </div>
 
 <!-- Project 6: Edge Cleanup Tool -->
-<div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization,Tool">
+<div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization">
 <h3 class="project-header">Edge Cleanup Tool</h3>
 <div class="project-icon">✂️</div>
-<p class="project-description">Created a Maya tool that identifies and removes unnecessary edges in 3D models. The script intelligently detects edges/vertices that don't add visual detail to the model but hurt performance. The tool also softens normals where approriate which helps reduce vertex counts, in certain edge cases.</p>
+<p class="project-description">Created a Maya tool that detects non-optimal edges/vertices in regards to performance. The tool focuses on edges that can be removed or softened without affecting the look of the model.</p>
 <div class="project-tags">
     <span class="project-tag">Python</span>
     <span class="project-tag">Maya</span>
@@ -776,67 +776,111 @@ const projectData = {
 // Art data with detailed information
 const artData = {
   "art-senior-project": {
-    title: "Senior Project Game Environment",
+    title: "Senior Project Game",
     description: `
-      <p>A detailed game environment created for my senior project "Escape from Nuckinfutts' Factory." I designed this industrial space with a focus on gameplay flow and visual storytelling, carefully balancing architectural storytelling with player guidance. The environment features modular asset creation, custom textures, and strategic lighting to create atmosphere while maintaining performance for the Unity-based first-person adventure.</p>
+      <p>Assets created for my senior project "Escape from Nuckinfutts' Factory." I created this as a solo project, so I modelled, texture, rigged, animation, scripted, did the VFX and lighting for everything in this project. It was quite the undertaking and parts of it remained unfinished, but I'm still proud of what I was able to achieve alone.</p>
     `,
     images: [
       "http://i.imgur.com/UGUc4yz.jpg",
       "http://i.imgur.com/6nSUBCj.jpg",
-      "http://i.imgur.com/jMMIZtA.png"
-    ],
-    video: null
-  },
-  "art-kitchen": {
-    title: "Kitchen Scene Render",
-    description: `
-      <p>A photorealistic kitchen environment created as a lighting and materials study using Maya, mental ray, and Photoshop. This project focused on achieving realistic material interactions and lighting, with particular attention to surface properties and natural light behavior. The scene incorporates physically accurate materials with subsurface scattering for organic elements and a complex lighting setup that captures realistic bounce illumination.</p>
-    `,
-    images: [
-      "http://i.imgur.com/nhb5Um2.jpg",
-      "http://i.imgur.com/DClkapV.jpg"
-    ],
-    video: null
-  },
-  "art-factory": {
-    title: "Factory Environment",
-    description: `
-      <p>Another perspective of my senior project's factory environment showcasing the industrial aesthetic and atmospheric lighting. This area was crafted to convey abandonment and decay through carefully selected details. The space features modular pipe systems, custom signage decals, narrative-enhancing props, and volumetric lighting that work together to create an immersive player experience while telling a visual story through environmental details.</p>
-    `,
-    images: [
       "http://i.imgur.com/jMMIZtA.png",
-      "http://i.imgur.com/UGUc4yz.jpg"
+      "https://i.imgur.com/xYiN3ho.jpg",
+      "https://i.imgur.com/UlNQaO3.jpg",
+      "https://i.imgur.com/lOccZy0.jpg",
+      "https://i.imgur.com/3lby5.jpg",
+      "https://i.imgur.com/hGK34.jpg",
+      "https://i.imgur.com/PmVOx.jpg",
+      "https://i.imgur.com/woft3Rd.png"
     ],
-    video: null
+    video: "https://www.youtube.com/watch?v=UBwfiO89y6c"
   },
   "art-props": {
     title: "Half-Life 2 Mod Props",
     description: `
-      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. This project introduced me to game asset creation and sparked my interest in technical art. Working within the Source engine's constraints taught me valuable lessons in optimization and efficient texturing, requiring low-poly modeling, space-efficient UV mapping, and hand-painted textures that matched the game's established visual style.</p>
+      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. This project introduced me to game asset creation and sparked my interest in technical art. Working within the Source engine's constraints taught me valuable lessons in optimization and texturing, low-poly modeling, efficient UV mapping, and hand-painted textures.</p>
     `,
     images: [
-      "http://i.imgur.com/DYKhtLU.jpg"
+      "http://i.imgur.com/DYKhtLU.jpg",
+      "https://i.imgur.com/vzDNH.png",
+      "https://i.imgur.com/fkiQQ.png",
+      "https://i.imgur.com/UOpEx.jpg",
+      "https://i.imgur.com/9p3N6.jpg",
+      "https://i.imgur.com/bTzPY.png",
+      "https://i.imgur.com/4QiuN.jpg",
+      "https://i.imgur.com/pcnr7.png",
+      "https://i.imgur.com/f2njW.png",
+      "https://i.imgur.com/bs6Bc.png",
+      "https://i.imgur.com/9wueN.png",
+      "https://i.imgur.com/1gRU6.png",
+      "https://i.imgur.com/djeW1.jpg",
+      "https://i.imgur.com/n3Trq.jpg",
+      "https://i.imgur.com/TOQZ0.jpg",
+      "https://i.imgur.com/r7Fyo.jpg",
+      "https://i.imgur.com/nUE2O.jpg",
+      "https://i.imgur.com/SRvjw.png",
+      "https://i.imgur.com/x6oRo.png"
     ],
     video: null
   },
-  "art-kitchen-angle": {
-    title: "Kitchen Scene Alternate View",
+  "art-school-work": {
+    title: "Misc School Work",
     description: `
-      <p>An alternate angle of the kitchen scene emphasizing reflective surface properties and material interactions. This render required particular attention to reflection and refraction in the metallic and glass elements. The scene utilizes high-definition reflection maps for stainless steel surfaces, physically accurate glass shaders, global illumination for bounce lighting, and subtle depth of field to enhance the photorealistic qualities.</p>
+      <p>Miscellanious work from college.</p>
     `,
     images: [
       "http://i.imgur.com/DClkapV.jpg",
-      "http://i.imgur.com/nhb5Um2.jpg"
+      "http://i.imgur.com/nhb5Um2.jpg",
+      "https://i.imgur.com/R6wXnNE.png",
+      "https://i.imgur.com/n6MVQ2g.jpg",
+      "https://i.imgur.com/0mRUG.png",
+      "https://i.imgur.com/lWwi2.png",
+      "https://i.imgur.com/ZwzAT.png",
+      "https://i.imgur.com/DaRyA.jpg",
+      "https://i.imgur.com/XWsCm.jpg",
+      "https://i.imgur.com/bMGks.jpg",
+      "https://i.imgur.com/1kJiT.jpg",
+      "https://i.imgur.com/0OXOc92.png",
+      "https://i.imgur.com/JmRB0.jpg"
+
     ],
-    video: null
+    video: "https://www.youtube.com/watch?v=2k-cztTwVzU"
   },
-  "art-room": {
-    title: "Room Environment",
+  "art-personal": {
+    title: "Misc Personal Work",
     description: `
-      <p>A detailed interior environment created as a study in interior design and atmospheric lighting. I focused on crafting a lived-in space with personality, where each element suggests information about the occupant. The scene combines custom furniture models with appropriate wear, narrative-enhancing props, layered texturing for material depth, and carefully composed lighting that guides the viewer's eye through the environment.</p>
+      <p>Random stuff I do in my free time occasionally.</p>
     `,
     images: [
-      "http://i.imgur.com/R6wXnNE.png"
+      "http://i.imgur.com/R6wXnNE.png",
+      "https://i.imgur.com/AKTrC.png",
+      "https://i.imgur.com/NINiT.jpg",
+      "https://i.imgur.com/zcL8d.png",
+      "https://i.imgur.com/xSTlO.jpg",
+      "https://i.imgur.com/gS3Ak.jpg",
+    ],
+    video: [
+      "https://www.youtube.com/watch?v=Ks5aLLREdqA",
+      "https://www.youtube.com/watch?v=9AEscHkULjU"
+    ]
+  },
+  "art-speed-challenge": {
+    title: "2-Hour Speed Challenges",
+    description: `
+      <p>Timed challenges, part of a competition I used to run years and years ago. Most of them were done in 2 hours although some special challenges allowed more time.</p>
+    `,
+    images: [
+      "https://i.imgur.com/xkucH.jpg",
+      "https://i.imgur.com/dHQ1c.png",
+      "https://i.imgur.com/YJjhJ.png",
+      "https://i.imgur.com/NJVA8.png",
+      "https://i.imgur.com/UVkBb.png",
+      "https://i.imgur.com/lM9pF.png",
+      "https://i.imgur.com/tiUt0.png",
+      "https://i.imgur.com/fkg1b.png",
+      "https://i.imgur.com/bP6i3.jpg",
+      "https://i.imgur.com/QcLAR.png",
+      "https://i.imgur.com/OI2t7.png"
+
     ],
     video: null
   }
