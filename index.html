@@ -396,69 +396,193 @@ font-weight: 600;
 margin-bottom: 20px;
 }
 
+/* New styles for enhanced art gallery experience */
 .modal-gallery {
 display: grid;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 gap: 15px;
 margin: 20px 0;
 }
 
-.modal-image {
-width: 100%;
+.modal-image-container {
+position: relative;
+overflow: hidden;
 border-radius: 6px;
-transition: transform 0.2s;
+cursor: zoom-in;
 border: 1px solid var(--border-color);
+transition: transform 0.2s;
 }
 
-.modal-image:hover {
-transform: scale(1.03);
+.modal-image-container:hover {
+transform: translateY(-5px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s;
+aspect-ratio: 1 / 1;
+}
+
+.modal-image-container:hover .modal-image {
+transform: scale(1.05);
+}
+
+.modal-image-caption {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 8px;
+font-size: 0.9rem;
+transform: translateY(100%);
+transition: transform 0.3s;
+}
+
+.modal-image-container:hover .modal-image-caption {
+transform: translateY(0);
+}
+
+/* Better video embedding */
+.modal-video-container {
+width: 100%;
+margin: 20px 0;
+position: relative;
+padding-bottom: 56.25%; /* 16:9 aspect ratio */
+height: 0;
+overflow: hidden;
 }
 
 .modal-video {
+position: absolute;
+top: 0;
+left: 0;
 width: 100%;
-height: 350px;
+height: 100%;
 border-radius: 6px;
-margin: 20px 0;
+border: 1px solid var(--border-color);
 }
 
-.modal-details {
+/* Lightbox styles */
+.lightbox {
+display: none;
+position: fixed;
+z-index: 2000;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.9);
+padding: 20px;
+box-sizing: border-box;
+}
+
+.lightbox-content {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100%;
+max-width: 90%;
+margin: 0 auto;
+position: relative;
+}
+
+.lightbox-image {
+max-height: 85vh;
+max-width: 100%;
+object-fit: contain;
+border: 1px solid var(--border-color);
+box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.lightbox-close {
+position: absolute;
+top: -40px;
+right: 0;
+color: #fff;
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+z-index: 2010;
+}
+
+.lightbox-caption {
+color: #fff;
+margin-top: 15px;
+text-align: center;
+max-width: 80%;
+font-size: 1rem;
+}
+
+.lightbox-nav {
+display: flex;
+align-items: center;
 margin-top: 20px;
 }
 
-.modal-details h4 {
-color: var(--secondary-color);
-margin-bottom: 10px;
-font-weight: 600;
+.lightbox-prev, .lightbox-next {
+background: rgba(0,0,0,0.5);
+border: 1px solid var(--border-color);
+color: #fff;
+padding: 8px 16px;
+margin: 0 20px;
+cursor: pointer;
+font-size: 18px;
+border-radius: 4px;
 }
 
+.lightbox-counter {
+color: #fff;
+font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-nav ul {
-flex-direction: column;
-align-items: center;
-}
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
 
-nav li {
-width: 100%;
-text-align: center;
-}
+  nav li {
+    width: 100%;
+    text-align: center;
+  }
 
-.projects-grid {
-grid-template-columns: 1fr;
-}
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
 
-.art-grid {
-grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-}
+  .art-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
 
-.modal-content {
-width: 95%;
-margin: 10% auto;
-padding: 15px;
-}
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+    padding: 15px;
+  }
 
-.modal-gallery {
-grid-template-columns: 1fr;
-}
+  .modal-gallery {
+    grid-template-columns: 1fr;
+  }
+  
+  .lightbox-content {
+    max-width: 100%;
+  }
+  
+  .lightbox-image {
+    max-height: 70vh;
+  }
+  
+  .modal-image-caption {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
 }
 </style>
 </head>
@@ -669,8 +793,254 @@ grid-template-columns: 1fr;
   <!-- Art modal content will be dynamically inserted here -->
 </div>
 
-<script>
+<!-- Lightbox container for fullscreen images -->
+<div id="lightbox-container" class="lightbox">
+  <div class="lightbox-content">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-image" class="lightbox-image">
+    <div class="lightbox-caption"></div>
+    <div class="lightbox-nav">
+      <button class="lightbox-prev">←</button>
+      <span class="lightbox-counter"></span>
+      <button class="lightbox-next">→</button>
+    </div>
+  </div>
+</div>
 
+<script>
+// Convert YouTube watch URLs to embed URLs
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+  // Handle array of videos
+  if (Array.isArray(url)) {
+    return url.map(getYouTubeEmbedUrl);
+  }
+  
+  const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+  return videoId ? `https://www.youtube.com/embed/${videoId[1]}` : url;
+}
+
+// Art data with detailed information
+const artData = {
+  "art-senior-project": {
+    title: "Senior Project Game",
+    description: `
+      <p>Assets created for my senior project "Escape from Nuckinfutts' Factory." I created this as a solo project, so I modelled, textured, rigged, animated, scripted, did the VFX and lighting for everything in this project. It was quite the undertaking and parts of it remained unfinished, but I'm still proud of what I was able to achieve alone.</p>
+    `,
+    images: [
+      {
+        src: "http://i.imgur.com/UGUc4yz.jpg",
+        caption: "Factory room overview showing various modular elements and lighting"
+      },
+      {
+        src: "http://i.imgur.com/6nSUBCj.jpg",
+        caption: "Main character model with detailed textures and rigging"
+      },
+      {
+        src: "http://i.imgur.com/jMMIZtA.png",
+        caption: "Control panels and interactive elements with emissive materials"
+      },
+      {
+        src: "https://i.imgur.com/xYiN3ho.jpg",
+        caption: "Factory exterior with atmospheric fog effects"
+      },
+      {
+        src: "https://i.imgur.com/UlNQaO3.jpg",
+        caption: "Enemy character model with texture variants"
+      },
+      {
+        src: "https://i.imgur.com/lOccZy0.jpg",
+        caption: "Environmental props and machinery"
+      },
+      {
+        src: "https://i.imgur.com/3lby5.jpg",
+        caption: "Detailed machinery components and textures"
+      },
+      {
+        src: "https://i.imgur.com/hGK34.jpg",
+        caption: "Character close-up showing facial detail"
+      },
+      {
+        src: "https://i.imgur.com/PmVOx.jpg",
+        caption: "Weapon model with normal mapping and specular highlights"
+      },
+      {
+        src: "https://i.imgur.com/woft3Rd.png",
+        caption: "UI elements and game interface design"
+      }
+    ],
+    video: "https://www.youtube.com/watch?v=UBwfiO89y6c"
+  },
+  "art-mod-props": {
+    title: "Half-Life 2 Mod Props",
+    description: `
+      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. This project introduced me to game asset creation and sparked my interest in technical art. Working within the Source engine's constraints taught me valuable lessons in optimization and texturing, low-poly modeling, efficient UV mapping, and hand-painted textures.</p>
+    `,
+    images: [
+      {
+        src: "http://i.imgur.com/DYKhtLU.jpg",
+        caption: "Collection of weapons and props created for the mod"
+      },
+      {
+        src: "https://i.imgur.com/vzDNH.png",
+        caption: "First-person view of a crowbar showing texture details"
+      },
+      {
+        src: "https://i.imgur.com/fkiQQ.png",
+        caption: "Fire extinguisher model with damage variants"
+      },
+      {
+        src: "https://i.imgur.com/UOpEx.jpg",
+        caption: "In-game screenshot of environmental props"
+      },
+      {
+        src: "https://i.imgur.com/9p3N6.jpg",
+        caption: "Knife model with detailed grip texturing"
+      },
+      {
+        src: "https://i.imgur.com/bTzPY.png",
+        caption: "Modern axe design with normal mapping"
+      },
+      {
+        src: "https://i.imgur.com/4QiuN.jpg",
+        caption: "First-person melee weapon view in-game"
+      },
+      {
+        src: "https://i.imgur.com/pcnr7.png",
+        caption: "Sledgehammer model with wear and damage details"
+      },
+      {
+        src: "https://i.imgur.com/f2njW.png",
+        caption: "Pistol model with accurate mechanical details"
+      },
+      {
+        src: "https://i.imgur.com/bs6Bc.png",
+        caption: "Environmental clutter objects for level design"
+      }
+    ],
+    video: null
+  },
+  "art-school-work": {
+    title: "Misc School Work",
+    description: `
+      <p>Various projects completed during my time at The Art Institute of Silicon Valley, showcasing my development in modeling, texturing, and environment design. These pieces represent my journey learning 3D art fundamentals and technical skills that formed the foundation of my career.</p>
+    `,
+    images: [
+      {
+        src: "http://i.imgur.com/DClkapV.jpg",
+        caption: "Final year environment project with dynamic lighting"
+      },
+      {
+        src: "http://i.imgur.com/nhb5Um2.jpg",
+        caption: "Character modeling study with detailed facial features"
+      },
+      {
+        src: "https://i.imgur.com/R6wXnNE.png",
+        caption: "Sci-fi environment concept with custom materials"
+      },
+      {
+        src: "https://i.imgur.com/n6MVQ2g.jpg",
+        caption: "Modeling assignment focusing on hard-surface techniques"
+      },
+      {
+        src: "https://i.imgur.com/0mRUG.png",
+        caption: "Early lighting study with atmospheric effects"
+      },
+      {
+        src: "https://i.imgur.com/lWwi2.png",
+        caption: "Texture mapping exercise with baked ambient occlusion"
+      },
+      {
+        src: "https://i.imgur.com/ZwzAT.png",
+        caption: "Environment design with custom modular pieces"
+      },
+      {
+        src: "https://i.imgur.com/DaRyA.jpg",
+        caption: "Character animation pose test"
+      }
+    ],
+    video: "https://www.youtube.com/watch?v=2k-cztTwVzU"
+  },
+  "art-personal": {
+    title: "Misc Personal Work",
+    description: `
+      <p>Creative explorations and passion projects I've worked on in my spare time, ranging from character concepts to abstract pieces. These represent my artistic interests outside of professional constraints.</p>
+    `,
+    images: [
+      {
+        src: "https://i.imgur.com/AKTrC.png",
+        caption: "Personal character design with detailed armor"
+      },
+      {
+        src: "https://i.imgur.com/NINiT.jpg",
+        caption: "Environmental concept art exploring lighting techniques"
+      },
+      {
+        src: "https://i.imgur.com/zcL8d.png",
+        caption: "Experimental texturing using procedural methods"
+      },
+      {
+        src: "https://i.imgur.com/xSTlO.jpg",
+        caption: "Abstract composition exploring form and color"
+      },
+      {
+        src: "https://i.imgur.com/gS3Ak.jpg",
+        caption: "Character portrait with stylized lighting"
+      },
+      {
+        src: "https://i.imgur.com/7RAEA.png",
+        caption: "Sci-fi prop design concept"
+      }
+    ],
+    video: [
+      "https://www.youtube.com/watch?v=Ks5aLLREdqA",
+      "https://www.youtube.com/watch?v=9AEscHkULjU"
+    ]
+  },
+  "art-speed-challenge": {
+    title: "2-Hour Speed Challenges",
+    description: `
+      <p>Models created during timed challenges I used to run, typically completed within a strict 2-hour timeframe. These exercises helped sharpen my efficiency, problem-solving skills, and ability to focus on the most important visual elements within tight constraints.</p>
+    `,
+    images: [
+      {
+        src: "https://i.imgur.com/tiUt0.png",
+        caption: "Sci-fi gun completed in 2 hours with basic texturing"
+      },
+      {
+        src: "https://i.imgur.com/fkg1b.png",
+        caption: "Fantasy sword design with simple material work"
+      },
+      {
+        src: "https://i.imgur.com/OI2t7.png",
+        caption: "Steampunk-inspired gadget with brass materials"
+      },
+      {
+        src: "https://i.imgur.com/xkucH.jpg",
+        caption: "Medieval helmet with basic material definition"
+      },
+      {
+        src: "https://i.imgur.com/dHQ1c.png",
+        caption: "Futuristic melee weapon concept"
+      },
+      {
+        src: "https://i.imgur.com/YJjhJ.png",
+        caption: "Sci-fi rifle with glowing energy elements"
+      },
+      {
+        src: "https://i.imgur.com/NJVA8.png",
+        caption: "Fantasy staff with crystal details"
+      },
+      {
+        src: "https://i.imgur.com/UVkBb.png",
+        caption: "Simple environment piece created in under 2 hours"
+      }
+    ],
+    video: null
+  }
+};
+
+// Project data with detailed information
 const projectData = {
   "project-perf-framework": {
     title: "Performance Automation Framework",
@@ -769,119 +1139,6 @@ const projectData = {
   }
 };
 
-// Art data with detailed information
-const artData = {
-  "art-senior-project": {
-    title: "Senior Project Game",
-    description: `
-      <p>Assets created for my senior project "Escape from Nuckinfutts' Factory." I created this as a solo project, so I modelled, textured, rigged, animated, scripted, did the VFX and lighting for everything in this project. It was quite the undertaking and parts of it remained unfinished, but I'm still proud of what I was able to achieve alone.</p>
-    `,
-    images: [
-      "http://i.imgur.com/UGUc4yz.jpg",
-      "http://i.imgur.com/6nSUBCj.jpg",
-      "http://i.imgur.com/jMMIZtA.png",
-      "https://i.imgur.com/xYiN3ho.jpg",
-      "https://i.imgur.com/UlNQaO3.jpg",
-      "https://i.imgur.com/lOccZy0.jpg",
-      "https://i.imgur.com/3lby5.jpg",
-      "https://i.imgur.com/hGK34.jpg",
-      "https://i.imgur.com/PmVOx.jpg",
-      "https://i.imgur.com/woft3Rd.png"
-    ],
-    video: "https://www.youtube.com/watch?v=UBwfiO89y6c"
-  },
-  "art-mod-props": {
-    title: "Half-Life 2 Mod Props",
-    description: `
-      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. This project introduced me to game asset creation and sparked my interest in technical art. Working within the Source engine's constraints taught me valuable lessons in optimization and texturing, low-poly modeling, efficient UV mapping, and hand-painted textures.</p>
-    `,
-    images: [
-      "http://i.imgur.com/DYKhtLU.jpg",
-      "https://i.imgur.com/vzDNH.png",
-      "https://i.imgur.com/fkiQQ.png",
-      "https://i.imgur.com/UOpEx.jpg",
-      "https://i.imgur.com/9p3N6.jpg",
-      "https://i.imgur.com/bTzPY.png",
-      "https://i.imgur.com/4QiuN.jpg",
-      "https://i.imgur.com/pcnr7.png",
-      "https://i.imgur.com/f2njW.png",
-      "https://i.imgur.com/bs6Bc.png",
-      "https://i.imgur.com/9wueN.png",
-      "https://i.imgur.com/1gRU6.png",
-      "https://i.imgur.com/djeW1.jpg",
-      "https://i.imgur.com/n3Trq.jpg",
-      "https://i.imgur.com/TOQZ0.jpg",
-      "https://i.imgur.com/r7Fyo.jpg",
-      "https://i.imgur.com/nUE2O.jpg",
-      "https://i.imgur.com/SRvjw.png",
-      "https://i.imgur.com/x6oRo.png"
-    ],
-    video: null
-  },
-  "art-school-work": {
-    title: "Misc School Work",
-    description: `
-      <p>Miscellanious work from college.</p>
-    `,
-    images: [
-      "http://i.imgur.com/DClkapV.jpg",
-      "http://i.imgur.com/nhb5Um2.jpg",
-      "https://i.imgur.com/R6wXnNE.png",
-      "https://i.imgur.com/n6MVQ2g.jpg",
-      "https://i.imgur.com/0mRUG.png",
-      "https://i.imgur.com/lWwi2.png",
-      "https://i.imgur.com/ZwzAT.png",
-      "https://i.imgur.com/DaRyA.jpg",
-      "https://i.imgur.com/XWsCm.jpg",
-      "https://i.imgur.com/bMGks.jpg",
-      "https://i.imgur.com/1kJiT.jpg",
-      "https://i.imgur.com/0OXOc92.png",
-      "https://i.imgur.com/JmRB0.jpg"
-
-    ],
-    video: "https://www.youtube.com/watch?v=2k-cztTwVzU"
-  },
-  "art-personal": {
-    title: "Misc Personal Work",
-    description: `
-      <p>Random stuff I do in my free time occasionally.</p>
-    `,
-    images: [
-      "https://i.imgur.com/AKTrC.png",
-      "https://i.imgur.com/NINiT.jpg",
-      "https://i.imgur.com/zcL8d.png",
-      "https://i.imgur.com/xSTlO.jpg",
-      "https://i.imgur.com/gS3Ak.jpg",
-      "https://i.imgur.com/7RAEA.png",
-    ],
-    video: [
-      "https://www.youtube.com/watch?v=Ks5aLLREdqA",
-      "https://www.youtube.com/watch?v=9AEscHkULjU"
-    ]
-  },
-  "art-speed-challenge": {
-    title: "2-Hour Speed Challenges",
-    description: `
-      <p>Timed challenges, part of a competition I used to run years and years ago. Most of them were done in 2 hours although some special challenges allowed more time.</p>
-    `,
-    images: [
-      "https://i.imgur.com/tiUt0.png",
-      "https://i.imgur.com/fkg1b.png",
-      "https://i.imgur.com/OI2t7.png",
-      "https://i.imgur.com/xkucH.jpg",
-      "https://i.imgur.com/dHQ1c.png",
-      "https://i.imgur.com/YJjhJ.png",
-      "https://i.imgur.com/NJVA8.png",
-      "https://i.imgur.com/UVkBb.png",
-      "https://i.imgur.com/lM9pF.png",
-      "https://i.imgur.com/bP6i3.jpg",
-      "https://i.imgur.com/QcLAR.png"
-    ],
-    video: null
-  }
-};
-
-// Modal handling functionality
 document.addEventListener('DOMContentLoaded', () => {
   // Set up click handlers for project cards
   document.querySelectorAll('.project-card').forEach(card => {
@@ -916,9 +1173,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       // Add video if available
       if (project.video) {
+        const embedUrl = getYouTubeEmbedUrl(project.video);
         modalContent += `
           <div class="modal-video-container">
-            <iframe class="modal-video" src="${project.video}" frameborder="0" allowfullscreen></iframe>
+            <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
           </div>`;
       }
       
@@ -950,9 +1208,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const art = artData[artId] || {
         title: item.querySelector('.art-title').textContent,
         description: `<p>Detailed information about this artwork is coming soon.</p>`,
-        images: [item.querySelector('img').src],
+        images: [{
+          src: item.querySelector('img').src,
+          caption: item.querySelector('.art-title').textContent
+        }],
         video: null
       };
+      
+      // Convert image formats if needed
+      const processedImages = art.images.map(img => {
+        return typeof img === 'string' ? { src: img, caption: '' } : img;
+      });
       
       // Build modal content
       let modalContent = `
@@ -964,20 +1230,36 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>`;
       
       // Add images if available
-      if (art.images && art.images.length > 0) {
+      if (processedImages && processedImages.length > 0) {
         modalContent += `<div class="modal-gallery">`;
-        art.images.forEach(image => {
-          modalContent += `<img src="${image}" alt="${art.title}" class="modal-image">`;
+        processedImages.forEach((image, index) => {
+          modalContent += `
+            <div class="modal-image-container" data-index="${index}">
+              <img src="${image.src}" alt="${art.title}" class="modal-image">
+              ${image.caption ? `<div class="modal-image-caption">${image.caption}</div>` : ''}
+            </div>`;
         });
         modalContent += `</div>`;
       }
       
       // Add video if available
       if (art.video) {
-        modalContent += `
-          <div class="modal-video-container">
-            <iframe class="modal-video" src="${art.video}" frameborder="0" allowfullscreen></iframe>
-          </div>`;
+        const embedUrl = getYouTubeEmbedUrl(art.video);
+        if (Array.isArray(embedUrl)) {
+          // Multiple videos
+          embedUrl.forEach(url => {
+            modalContent += `
+              <div class="modal-video-container">
+                <iframe class="modal-video" src="${url}" frameborder="0" allowfullscreen></iframe>
+              </div>`;
+          });
+        } else {
+          // Single video
+          modalContent += `
+            <div class="modal-video-container">
+              <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+            </div>`;
+        }
       }
       
       modalContent += `</div>`;
@@ -986,6 +1268,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const modal = document.getElementById('art-modal');
       modal.innerHTML = modalContent;
       modal.style.display = 'block';
+      
+      // Store current art data for lightbox
+      modal.dataset.currentArt = artId;
+      
+      // Add click event for images to open in lightbox
+      modal.querySelectorAll('.modal-image-container').forEach(container => {
+        container.addEventListener('click', () => {
+          const imageIndex = parseInt(container.dataset.index);
+          openLightbox(processedImages, imageIndex);
+        });
+      });
       
       // Add close handler
       document.querySelector('.close-modal').addEventListener('click', () => {
@@ -1001,14 +1294,82 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   
+  // Lightbox functionality
+  function openLightbox(images, startIndex) {
+    const lightbox = document.getElementById('lightbox-container');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+    const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+    const prevButton = lightbox.querySelector('.lightbox-prev');
+    const nextButton = lightbox.querySelector('.lightbox-next');
+    const closeButton = lightbox.querySelector('.lightbox-close');
+    
+    let currentIndex = startIndex || 0;
+    
+    // Function to update lightbox content
+    function updateLightbox() {
+      lightboxImage.src = images[currentIndex].src;
+      lightboxCaption.textContent = images[currentIndex].caption || '';
+      lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+      
+      // Update buttons state
+      prevButton.disabled = currentIndex === 0;
+      nextButton.disabled = currentIndex === images.length - 1;
+    }
+    
+    // Set up navigation
+    prevButton.onclick = () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        updateLightbox();
+      }
+    };
+    
+    nextButton.onclick = () => {
+      if (currentIndex < images.length - 1) {
+        currentIndex++;
+        updateLightbox();
+      }
+    };
+    
+    // Close lightbox when clicking X
+    closeButton.onclick = () => {
+      lightbox.style.display = 'none';
+    };
+    
+    // Close lightbox when clicking outside the image
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) {
+        lightbox.style.display = 'none';
+      }
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (lightbox.style.display === 'block') {
+        if (e.key === 'ArrowLeft' && currentIndex > 0) {
+          currentIndex--;
+          updateLightbox();
+        } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
+          currentIndex++;
+          updateLightbox();
+        } else if (e.key === 'Escape') {
+          lightbox.style.display = 'none';
+        }
+      }
+    });
+    
+    // Show lightbox with current image
+    updateLightbox();
+    lightbox.style.display = 'block';
+  }
+  
   // Close with escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.getElementById('project-modal').style.display = 'none';
       document.getElementById('art-modal').style.display = 'none';
+      document.getElementById('lightbox-container').style.display = 'none';
     }
   });
 });
-</script>
-</body>
-</html>
