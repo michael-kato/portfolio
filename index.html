@@ -807,19 +807,8 @@ font-size: 0.9rem;
   </div>
 </div>
 
-<script>
-// Convert YouTube watch URLs to embed URLs
-function getYouTubeEmbedUrl(url) {
-  if (!url) return null;
-  // Handle array of videos
-  if (Array.isArray(url)) {
-    return url.map(getYouTubeEmbedUrl);
-  }
-  
-  const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
-  return videoId ? `https://www.youtube.com/embed/${videoId[1]}` : url;
-}
 
+<script>
 // Art data with detailed information
 const artData = {
   "art-senior-project": {
@@ -1139,8 +1128,63 @@ const projectData = {
   }
 };
 
+// Portfolio site JavaScript with fixed modal, lightbox and event handling
 document.addEventListener('DOMContentLoaded', () => {
-  // Set up click handlers for project cards
+  // Initialize all event handlers
+  setupProjectCards();
+  setupArtItems();
+  setupModalHandlers();
+});
+
+/**
+ * Convert YouTube watch URLs to embed URLs
+ * @param {string|string[]} url - YouTube URL or array of URLs
+ * @return {string|string[]} - Converted embed URL(s)
+ */
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+  
+  // Handle array of videos
+  if (Array.isArray(url)) {
+    return url.map(u => getYouTubeEmbedUrl(u)).filter(Boolean);
+  }
+  
+  // Handle various YouTube URL formats
+  const regexPatterns = [
+    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
+    /^([^"&?\/\s]{11})$/ // Direct video ID
+  ];
+  
+  for (const pattern of regexPatterns) {
+    const match = url.match(pattern);
+    if (match && match[1]) {
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+  }
+  
+  console.warn('Could not parse YouTube URL:', url);
+  return url; // Return original if can't be parsed
+}
+
+/**
+ * Normalize image data to consistent format
+ * @param {(string|Object)[]} images - Array of image URLs or objects
+ * @return {Object[]} - Normalized array of image objects
+ */
+function normalizeImageData(images) {
+  if (!images) return [];
+  return images.map(img => {
+    if (typeof img === 'string') return { src: img, caption: '' };
+    return img;
+  });
+}
+
+/**
+ * Set up event handlers for project cards
+ */
+function setupProjectCards() {
+  const projectModal = document.getElementById('project-modal');
+  
   document.querySelectorAll('.project-card').forEach(card => {
     card.addEventListener('click', () => {
       const projectId = card.id;
@@ -1153,55 +1197,90 @@ document.addEventListener('DOMContentLoaded', () => {
         video: null
       };
       
-      // Build modal content
-      let modalContent = `
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <h2 class="modal-header">${project.title}</h2>
-          <div class="modal-body">
-            ${project.description}
-          </div>`;
-      
-      // Add images if available
-      if (project.images && project.images.length > 0) {
-        modalContent += `<div class="modal-gallery">`;
-        project.images.forEach(image => {
-          modalContent += `<img src="${image}" alt="${project.title}" class="modal-image">`;
-        });
-        modalContent += `</div>`;
-      }
-      
-      // Add video if available
-      if (project.video) {
-        const embedUrl = getYouTubeEmbedUrl(project.video);
+      openProjectModal(project);
+    });
+  });
+}
+
+/**
+ * Open project modal with specified project data
+ * @param {Object} project - Project data to display
+ */
+function openProjectModal(project) {
+  const projectModal = document.getElementById('project-modal');
+  
+  // Build modal content
+  let modalContent = `
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="modal-header">${project.title}</h2>
+      <div class="modal-body">
+        ${project.description}
+      </div>`;
+  
+  // Add images if available
+  if (project.images && project.images.length > 0) {
+    modalContent += `<div class="modal-gallery">`;
+    project.images.forEach((image, index) => {
+      modalContent += `
+        <div class="modal-image-container" data-index="${index}">
+          <img src="${image}" alt="${project.title}" class="modal-image" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
+        </div>`;
+    });
+    modalContent += `</div>`;
+  }
+  
+  // Add video if available
+  if (project.video) {
+    const embedUrl = getYouTubeEmbedUrl(project.video);
+    if (Array.isArray(embedUrl)) {
+      // Multiple videos
+      embedUrl.forEach(url => {
         modalContent += `
           <div class="modal-video-container">
-            <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+            <iframe class="modal-video" src="${url}" frameborder="0" allowfullscreen></iframe>
           </div>`;
-      }
-      
-      modalContent += `</div>`;
-      
-      // Update and show modal
-      const modal = document.getElementById('project-modal');
-      modal.innerHTML = modalContent;
-      modal.style.display = 'block';
-      
-      // Add close handler
-      document.querySelector('.close-modal').addEventListener('click', () => {
-        modal.style.display = 'none';
       });
-      
-      // Close when clicking outside the modal content
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
+    } else if (embedUrl) {
+      // Single video
+      modalContent += `
+        <div class="modal-video-container">
+          <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+        </div>`;
+    }
+  }
+  
+  modalContent += `</div>`;
+  
+  // Update and show modal
+  projectModal.innerHTML = modalContent;
+  projectModal.style.display = 'block';
+  
+  // Add image click handlers for lightbox
+  projectModal.querySelectorAll('.modal-image-container').forEach(container => {
+    container.addEventListener('click', () => {
+      const images = project.images.map(src => ({ src, caption: '' }));
+      const imageIndex = parseInt(container.dataset.index);
+      openLightbox(images, imageIndex);
     });
   });
   
-  // Set up click handlers for art items
+  // Add close handler (we do this here even though we have global handlers
+  // because we need to attach to the newly created close button)
+  const closeBtn = projectModal.querySelector('.close-modal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      projectModal.style.display = 'none';
+    });
+  }
+}
+
+/**
+ * Set up event handlers for art items
+ */
+function setupArtItems() {
+  const artModal = document.getElementById('art-modal');
+  
   document.querySelectorAll('.art-item').forEach(item => {
     item.addEventListener('click', () => {
       const artId = item.id;
@@ -1215,161 +1294,188 @@ document.addEventListener('DOMContentLoaded', () => {
         video: null
       };
       
-      // Convert image formats if needed
-      const processedImages = art.images.map(img => {
-        return typeof img === 'string' ? { src: img, caption: '' } : img;
-      });
-      
-      // Build modal content
-      let modalContent = `
-        <div class="modal-content">
-          <span class="close-modal">&times;</span>
-          <h2 class="modal-header">${art.title}</h2>
-          <div class="modal-body">
-            ${art.description}
+      openArtModal(art);
+    });
+  });
+}
+
+/**
+ * Open art modal with specified art data
+ * @param {Object} art - Art data to display
+ */
+function openArtModal(art) {
+  const artModal = document.getElementById('art-modal');
+  
+  // Convert image formats if needed
+  const processedImages = normalizeImageData(art.images);
+  
+  // Build modal content
+  let modalContent = `
+    <div class="modal-content">
+      <span class="close-modal">&times;</span>
+      <h2 class="modal-header">${art.title}</h2>
+      <div class="modal-body">
+        ${art.description}
+      </div>`;
+  
+  // Add images if available
+  if (processedImages && processedImages.length > 0) {
+    modalContent += `<div class="modal-gallery">`;
+    processedImages.forEach((image, index) => {
+      modalContent += `
+        <div class="modal-image-container" data-index="${index}">
+          <img src="${image.src}" alt="${art.title}" class="modal-image" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
+          ${image.caption ? `<div class="modal-image-caption">${image.caption}</div>` : ''}
+        </div>`;
+    });
+    modalContent += `</div>`;
+  }
+  
+  // Add video if available
+  if (art.video) {
+    const embedUrl = getYouTubeEmbedUrl(art.video);
+    if (Array.isArray(embedUrl)) {
+      // Multiple videos
+      embedUrl.forEach(url => {
+        modalContent += `
+          <div class="modal-video-container">
+            <iframe class="modal-video" src="${url}" frameborder="0" allowfullscreen></iframe>
           </div>`;
-      
-      // Add images if available
-      if (processedImages && processedImages.length > 0) {
-        modalContent += `<div class="modal-gallery">`;
-        processedImages.forEach((image, index) => {
-          modalContent += `
-            <div class="modal-image-container" data-index="${index}">
-              <img src="${image.src}" alt="${art.title}" class="modal-image">
-              ${image.caption ? `<div class="modal-image-caption">${image.caption}</div>` : ''}
-            </div>`;
-        });
-        modalContent += `</div>`;
-      }
-      
-      // Add video if available
-      if (art.video) {
-        const embedUrl = getYouTubeEmbedUrl(art.video);
-        if (Array.isArray(embedUrl)) {
-          // Multiple videos
-          embedUrl.forEach(url => {
-            modalContent += `
-              <div class="modal-video-container">
-                <iframe class="modal-video" src="${url}" frameborder="0" allowfullscreen></iframe>
-              </div>`;
-          });
-        } else {
-          // Single video
-          modalContent += `
-            <div class="modal-video-container">
-              <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
-            </div>`;
-        }
-      }
-      
-      modalContent += `</div>`;
-      
-      // Update and show modal
-      const modal = document.getElementById('art-modal');
-      modal.innerHTML = modalContent;
-      modal.style.display = 'block';
-      
-      // Store current art data for lightbox
-      modal.dataset.currentArt = artId;
-      
-      // Add click event for images to open in lightbox
-      modal.querySelectorAll('.modal-image-container').forEach(container => {
-        container.addEventListener('click', () => {
-          const imageIndex = parseInt(container.dataset.index);
-          openLightbox(processedImages, imageIndex);
-        });
       });
-      
-      // Add close handler
-      document.querySelector('.close-modal').addEventListener('click', () => {
-        modal.style.display = 'none';
-      });
-      
-      // Close when clicking outside the modal content
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
-      });
+    } else if (embedUrl) {
+      // Single video
+      modalContent += `
+        <div class="modal-video-container">
+          <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
+        </div>`;
+    }
+  }
+  
+  modalContent += `</div>`;
+  
+  // Update and show modal
+  artModal.innerHTML = modalContent;
+  artModal.style.display = 'block';
+  artModal.dataset.currentArt = art.title; // For reference
+  
+  // Add image click handlers for lightbox
+  artModal.querySelectorAll('.modal-image-container').forEach(container => {
+    container.addEventListener('click', () => {
+      const imageIndex = parseInt(container.dataset.index);
+      openLightbox(processedImages, imageIndex);
     });
   });
   
-  // Lightbox functionality
-  function openLightbox(images, startIndex) {
-    const lightbox = document.getElementById('lightbox-container');
-    const lightboxImage = document.getElementById('lightbox-image');
-    const lightboxCaption = lightbox.querySelector('.lightbox-caption');
-    const lightboxCounter = lightbox.querySelector('.lightbox-counter');
-    const prevButton = lightbox.querySelector('.lightbox-prev');
-    const nextButton = lightbox.querySelector('.lightbox-next');
-    const closeButton = lightbox.querySelector('.lightbox-close');
-    
-    let currentIndex = startIndex || 0;
-    
-    // Function to update lightbox content
-    function updateLightbox() {
-      lightboxImage.src = images[currentIndex].src;
-      lightboxCaption.textContent = images[currentIndex].caption || '';
-      lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
+  // Add close handler
+  const closeBtn = artModal.querySelector('.close-modal');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      artModal.style.display = 'none';
+    });
+  }
+}
+
+/**
+ * Set up global modal and lightbox handlers
+ */
+function setupModalHandlers() {
+  const projectModal = document.getElementById('project-modal');
+  const artModal = document.getElementById('art-modal');
+  const lightbox = document.getElementById('lightbox-container');
+  const closeButtons = document.querySelectorAll('.close-modal, .lightbox-close');
+  
+  // Close modals when clicking outside content
+  window.addEventListener('click', (e) => {
+    if (e.target === projectModal) projectModal.style.display = 'none';
+    if (e.target === artModal) artModal.style.display = 'none';
+    if (e.target === lightbox) lightbox.style.display = 'none';
+  });
+  
+  // Global keyboard navigation
+  window.addEventListener('keydown', (e) => {
+    // Only handle keys if at least one modal is visible
+    if (projectModal.style.display === 'block' || 
+        artModal.style.display === 'block' || 
+        lightbox.style.display === 'block') {
       
-      // Update buttons state
-      prevButton.disabled = currentIndex === 0;
-      nextButton.disabled = currentIndex === images.length - 1;
+      if (e.key === 'Escape') {
+        // Close all modals
+        projectModal.style.display = 'none';
+        artModal.style.display = 'none';
+        lightbox.style.display = 'none';
+      } else if (e.key === 'ArrowLeft' && lightbox.style.display === 'block') {
+        // Previous image in lightbox
+        const prevBtn = lightbox.querySelector('.lightbox-prev');
+        if (prevBtn && !prevBtn.disabled) prevBtn.click();
+      } else if (e.key === 'ArrowRight' && lightbox.style.display === 'block') {
+        // Next image in lightbox
+        const nextBtn = lightbox.querySelector('.lightbox-next');
+        if (nextBtn && !nextBtn.disabled) nextBtn.click();
+      }
     }
-    
-    // Set up navigation
-    prevButton.onclick = () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        updateLightbox();
-      }
+  });
+}
+
+/**
+ * Open lightbox to display images at specified index
+ * @param {Object[]} images - Array of image objects with src and caption
+ * @param {number} startIndex - Index of image to show first
+ */
+function openLightbox(images, startIndex = 0) {
+  const lightbox = document.getElementById('lightbox-container');
+  const lightboxImage = document.getElementById('lightbox-image');
+  const lightboxCaption = lightbox.querySelector('.lightbox-caption');
+  const lightboxCounter = lightbox.querySelector('.lightbox-counter');
+  const prevButton = lightbox.querySelector('.lightbox-prev');
+  const nextButton = lightbox.querySelector('.lightbox-next');
+  const closeButton = lightbox.querySelector('.lightbox-close');
+  
+  let currentIndex = startIndex || 0;
+  
+  // Function to update lightbox content
+  function updateLightbox() {
+    // Set image with fallback
+    lightboxImage.src = images[currentIndex].src;
+    lightboxImage.onerror = function() {
+      this.src = '/api/placeholder/640/360';
+      this.onerror = null;
     };
     
-    nextButton.onclick = () => {
-      if (currentIndex < images.length - 1) {
-        currentIndex++;
-        updateLightbox();
-      }
-    };
+    // Update caption and counter
+    lightboxCaption.textContent = images[currentIndex].caption || '';
+    lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
     
-    // Close lightbox when clicking X
+    // Update buttons state
+    prevButton.disabled = currentIndex === 0;
+    nextButton.disabled = currentIndex === images.length - 1;
+  }
+  
+  // Set up navigation
+  prevButton.onclick = () => {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateLightbox();
+    }
+  };
+  
+  nextButton.onclick = () => {
+    if (currentIndex < images.length - 1) {
+      currentIndex++;
+      updateLightbox();
+    }
+  };
+  
+  // Close lightbox when clicking X
+  if (closeButton) {
     closeButton.onclick = () => {
       lightbox.style.display = 'none';
     };
-    
-    // Close lightbox when clicking outside the image
-    lightbox.addEventListener('click', function(e) {
-      if (e.target === lightbox) {
-        lightbox.style.display = 'none';
-      }
-    });
-    
-    // Keyboard navigation
-    document.addEventListener('keydown', function(e) {
-      if (lightbox.style.display === 'block') {
-        if (e.key === 'ArrowLeft' && currentIndex > 0) {
-          currentIndex--;
-          updateLightbox();
-        } else if (e.key === 'ArrowRight' && currentIndex < images.length - 1) {
-          currentIndex++;
-          updateLightbox();
-        } else if (e.key === 'Escape') {
-          lightbox.style.display = 'none';
-        }
-      }
-    });
-    
-    // Show lightbox with current image
-    updateLightbox();
-    lightbox.style.display = 'block';
   }
   
-  // Close with escape key
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      document.getElementById('project-modal').style.display = 'none';
-      document.getElementById('art-modal').style.display = 'none';
-      document.getElementById('lightbox-container').style.display = 'none';
-    }
-  });
-});
+  // Show lightbox with current image
+  updateLightbox();
+  lightbox.style.display = 'block';
+}
+
+</script>
+</body>
