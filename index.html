@@ -71,6 +71,52 @@ margin: 0 auto;
 font-weight: 400;
 }
 
+/* Updated header styles */
+#dynamic-header {
+  position: relative;
+  padding: 60px 20px;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--header-bg);
+}
+
+.header-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15; /* Subtle opacity to ensure text is readable */
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+.header-subtitle {
+  font-size: 1.2rem;
+  color: var(--tertiary-color);
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 400;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+
 .command {
 color: var(--secondary-color);
 }
@@ -112,7 +158,7 @@ text-decoration: none;
 }
 
 section {
-margin: 40px 0;
+margin: 10px 0;
 padding: 40px 20px;
 }
 
@@ -818,6 +864,14 @@ font-size: 0.9rem;
     text-align: center;
   }
 
+  #dynamic-header {
+    padding: 40px 20px;
+  }
+  
+  .header-title {
+    font-size: 2rem;
+  }
+
   .projects-grid {
     grid-template-columns: 1fr;
   }
@@ -974,9 +1028,12 @@ font-size: 0.9rem;
 </style>
 </head>
 <body>
-<header>
-<h1 class="header-title">Michael Kato</h1>
-<p class="header-subtitle">Technically an artist!</p>
+<header id="dynamic-header">
+  <div class="header-background"></div>
+  <div class="header-content">
+    <h1 class="header-title">Michael Kato</h1>
+    <p class="header-subtitle">Technically an artist!</p>
+  </div>
 </header>
 
 <nav>
@@ -1013,7 +1070,7 @@ font-size: 0.9rem;
 <div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance,Unity">
     <h3 class="project-header">Performance Automation Framework</h3>
     <div class="project-icon">📊</div>
-    <p class="project-description">Collaborated with lead engineers to develop a comprehensive instrumentation and automation framework for Horizon Worlds that captured a wide variety of performance metrics.</p>
+    <p class="project-description">Collaborated with lead engineers to develop an instrumentation and automation framework for tracking performance in Horizon Worlds.</p>
     <div class="project-tags">
         <span class="project-tag">Python</span>
         <span class="project-tag">Performance</span>
@@ -1025,7 +1082,7 @@ font-size: 0.9rem;
 <div class="project-card" id="project-perf-dashboards" data-tags="SQL,Data,Visualization">
     <h3 class="project-header">Performance Visualization Dashboards</h3>
     <div class="project-icon">📈</div>
-    <p class="project-description">Created interactive performance dashboards displaying Horizon Worlds live production, automation, and internal testing data, helping teams tackle regressions more effectively.</p>
+    <p class="project-description">Created configurable performance dashboards displaying Horizon Worlds live production, automation, and internal testing data, which helped teams tackle regressions more effectively.</p>
     <div class="project-tags">
         <span class="project-tag">Data Visualization</span>
         <span class="project-tag">Python</span>
@@ -1147,7 +1204,7 @@ font-size: 0.9rem;
 
 <div class="video-container">
     <h3 class="video-title">Animations</h3>
-    <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animation Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animations" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 </div>
 </div>
 </section>
@@ -1217,37 +1274,17 @@ const projectData = {
   "project-perf-framework": {
     title: "Performance Automation",
     description: `
-      <div class="project-section">
-        <h3 class="project-section-title">The Challenge</h3>
-        <p>Unlike traditional video games with infrequent release schedules, <strong>Horizon Worlds</strong> was a constantly evolving live application with weekly updates. This rapid development cycle made tracking performance regressions an ongoing and complex challenge.</p>
-      </div>
-
-      <div class="project-section">
-        <h3 class="project-section-title">My Contribution</h3>
-        <p>I collaborated closely with lead engineers to develop a comprehensive performance monitoring solution that included:</p>
-        
-        <ul class="project-list">
-          <li><strong>Automated benchmarking</strong> that ran both on a scheduled cadence and triggered by code submissions</li>
-          <li><strong>Strategic instrumentation</strong> of dozens of high and low-level code regions identified as potential hot spots</li>
-          <li><strong>Real-time monitoring</strong> systems that detected performance degradation and automatically alerted relevant teams</li>
-        </ul>
-      </div>
-      
-      <div class="project-section">
-        <h3 class="project-section-title">Evolution</h3>
-        <p>What began as my solo effort to maintain the legacy automation system eventually expanded into a dedicated performance team initiative. With additional resources, we were able to significantly enhance the framework's capabilities and coverage.</p>
-      </div>
-      
-      <div class="project-section">
-        <h3 class="project-section-title">Impact</h3>
-        <p>The framework became an essential part of the development pipeline, enabling us to:</p>
-        <ul class="project-list">
-          <li>Detect performance issues within hours of code changes</li>
-          <li>Provide detailed profiling data pinpointing exact causes of regressions</li>
-          <li>Maintain consistent performance targets despite the rapid pace of development</li>
-          <li>Proactively address issues before they affected the user experience</li>
-        </ul>
-      </div>
+<div class="project-section">
+  <p>I collaborated with lead engineers to develop a comprehensive performance monitoring solution for Horizon Worlds' rapid weekly release schedule. What began as my solo effort evolved into a dedicated performance team initiative.</p>
+  
+  <p>The framework enabled us to:</p>
+  <ul class="project-list">
+    <li>Track dozens of high and low-level code subsystems like physics, script, and rendering</li>
+    <li>Run automated benchmarks on a scheduled cadence and to test new code submissions</li>
+    <li>Detect issues within hours of code changes and provide profiler artifacts as a downloadable file</li>
+    <li>Proactively address performance problems before weekly releases went live</li>
+  </ul>
+</div>
     `,
     images: null,
     video: null
@@ -1256,40 +1293,17 @@ const projectData = {
 "project-perf-dashboards": {
   title: "Performance Visualization Dashboards",
   description: `
-    <div class="project-section">
-      <h3 class="project-section-title">The Challenge</h3>
-      <p>Horizon Worlds generated massive amounts of performance data from instrumentation, automation, internal playtests, and live production. We needed intuitive ways to visualize trends, isolate test cases, and make this information accessible to all team members, not just performance specialists.</p>
-    </div>
-
-    <div class="project-section">
-      <h3 class="project-section-title">My Contribution</h3>
-      <p>I developed interactive dashboards that:</p>
-      
-      <ul class="project-list">
-        <li><strong>Visualized performance metrics</strong> from multiple data sources in a unified interface</li>
-        <li><strong>Implemented powerful filtering capabilities</strong> for world, player count, hitch frequency, hardware specs, and build version</li>
-        <li><strong>Automated regression detection</strong> with flagging of new performance issues</li>
-        <li><strong>Created customizable views</strong> allowing teams to focus on metrics relevant to their work</li>
-        <li><strong>Provided before/after comparisons</strong> to highlight optimization successes</li>
-      </ul>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Evolution</h3>
-      <p>What began as basic charting of performance metrics evolved into a comprehensive visualization platform. As we gathered more metrics and identified more use cases, the dashboards expanded to cover CPU, GPU, memory, network, and asset loading performance across all supported devices.</p>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Impact</h3>
-      <p>These visualization dashboards transformed our performance workflow:</p>
-      <ul class="project-list">
-        <li>Dramatically improved our ability to identify and respond to regressions quickly</li>
-        <li>Provided data-driven evidence for prioritizing optimization work</li>
-        <li>Enabled non-technical stakeholders to understand performance trends</li>
-        <li>Helped teams demonstrate the impact of their optimization efforts</li>
-        <li>Focused development resources on the highest-impact performance issues</li>
-      </ul>
-    </div>
+<div class="project-section">
+  <p>Horizon Worlds generated massive performance data from multiple sources—instrumentation, automation, playtests, and production. To make this information accessible to all team members, I developed interactive dashboards that transformed our performance workflow.</p>
+  
+  <p>These visualization tools:</p>
+  <ul class="project-list">
+    <li>Enabled users to drill down in many performance dimensions including world, player count, device type, time of day, etc.</li>
+    <li>Automatically detected regressions and emailed alerts to relevant stakeholders</li>
+    <li>Enabled data-driven prioritization of optimizations and helped teams demonstrate impact of performance work</li>
+    <li>Helped non-technical stakeholders understand and share performance trends</li>
+  </ul>
+</div>
   `,
   images: [
     "resources/hitch_dashboard.PNG",
@@ -1297,42 +1311,20 @@ const projectData = {
   ],
   video: null
 },
-  
-"project-proc-scene": {
-  title: "Procedural Scene Generation",
-  description: `
-    <div class="project-section">
-      <h3 class="project-section-title">The Challenge</h3>
-      <p>Creating synthetic training data for Apple Vision Pro required massive amounts of diverse visual scenes with precise ground truth data. Manually creating these scenes would have been prohibitively expensive and time-consuming while not providing enough variety for edge cases and rare scenarios.</p>
-    </div>
 
-    <div class="project-section">
-      <h3 class="project-section-title">My Contribution</h3>
-      <p>I architected a procedural generation system that created parametrically controlled environments with:</p>
-      
-      <ul class="project-list">
-        <li><strong>Dynamic scene composition</strong> with customizable variables for lighting, materials, and object placement</li>
-        <li><strong>Automatic ground truth generation</strong> including depth maps, segmentation masks, and precise object boundaries</li>
-        <li><strong>Physically-based rendering</strong> for photorealistic results that matched real-world lighting conditions</li>
-        <li><strong>Batch processing capabilities</strong> for large-scale data generation with minimal supervision</li>
-      </ul>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Evolution</h3>
-      <p>What began as a targeted solution for one team's ML data needs eventually expanded into a platform adopted by multiple computer vision teams at Apple, with continual improvements to scene complexity and rendering capabilities.</p>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Impact</h3>
-      <p>The procedural generation system delivered significant benefits:</p>
-      <ul class="project-list">
-        <li>Generated over 200,000 unique training images with perfect ground truth data</li>
-        <li>Improved model accuracy by 27% through covering a wider range of scenarios</li>
-        <li>Reduced data generation costs by approximately 90% compared to manual methods</li>
-        <li>Enabled rapid ML model iteration with on-demand, custom training data</li>
-      </ul>
-    </div>
+"project-asset-qa": {
+  title: "Asset Validation QA Tools",
+  description: `
+<div class="project-section">
+  <p>At Apple, we processed thousands of 3D models from internal teams and external vendors. Quality issues frequently caused pipeline failures, wasting resources during training data generation. I developed validation tools that transformed our asset pipeline.</p>
+  
+  <p>These QA tools:</p>
+  <ul class="project-list">
+    <li>Checked for a host of common asset importation errors such as abnormal size, missing textures, improper material settings, etc.</li>
+    <li>Generated thumbnail images automatically for use the asset browser</li>
+    <li>Standardized quality and saved artists time</li>
+  </ul>
+</div>
   `,
   images: [
     "/api/placeholder/640/360",
@@ -1341,43 +1333,17 @@ const projectData = {
   video: null
 },
 
-"project-asset-qa": {
-  title: "Asset Validation QA Tools",
+"project-proc-scene": {
+  title: "Procedural Scene Generation",
   description: `
-    <div class="project-section">
-      <h3 class="project-section-title">The Challenge</h3>
-      <p>Our asset pipeline at Apple processed thousands of 3D models from both internal teams and external vendors. Quality issues with these assets frequently caused pipeline failures, wasting valuable time and resources during training data generation.</p>
-    </div>
-
-    <div class="project-section">
-      <h3 class="project-section-title">My Contribution</h3>
-      <p>I developed a comprehensive suite of validation tools that:</p>
-      
-      <ul class="project-list">
-        <li><strong>Automatically validated geometry</strong> for common issues like non-manifold edges, inverted normals, and UV problems</li>
-        <li><strong>Verified textures</strong> for correct dimensions, formats, and compression settings</li>
-        <li><strong>Cross-checked metadata</strong> against our database schema to ensure completeness</li>
-        <li><strong>Generated thumbnails</strong> for quick visual verification by artists and engineers</li>
-        <li><strong>Provided detailed error reports</strong> with specific remediation steps for identified issues</li>
-      </ul>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Evolution</h3>
-      <p>The initial tool focused on basic geometry validation, but expanded to include texture, material, and metadata validation as we identified more common failure points. The system eventually integrated directly with our asset management platform for seamless workflow.</p>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Impact</h3>
-      <p>These QA tools transformed our asset pipeline:</p>
-      <ul class="project-list">
-        <li>Reduced asset integration failures by 85%</li>
-        <li>Decreased turnaround time for fixing asset issues from days to hours</li>
-        <li>Standardized quality across all assets regardless of source</li>
-        <li>Enabled scaling our asset production by 3x without increasing QA headcount</li>
-        <li>Provided better feedback to external vendors, significantly improving first-time submission quality</li>
-      </ul>
-    </div>
+<div class="project-section">
+  <p>Apple Vision Pro required massive amounts of diverse visual scenes to train it's visual recognition capability. I architected a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
+  
+  <p>The system:</p>
+  <ul class="project-list">
+    <li>Proceedurally modified the floorplan of existing interior scenes and dynamically extruded new walls, then deleted assets clipping through the space, and saved incremental files for offline rendering</li>
+  </ul>
+</div>
   `,
   images: [
     "/api/placeholder/640/360",
@@ -1389,41 +1355,17 @@ const projectData = {
 "project-lod-pipeline": {
   title: "LOD Generation Pipeline",
   description: `
-    <div class="project-section">
-      <h3 class="project-section-title">The Challenge</h3>
-      <p>Creating multiple levels of detail (LODs) for thousands of assets in Call of Duty: WWII was a massive undertaking that consumed significant artist resources. Manual LOD creation often produced inconsistent results that either lost too much detail or didn't reduce polygon counts enough for performance targets.</p>
-    </div>
-
-    <div class="project-section">
-      <h3 class="project-section-title">My Contribution</h3>
-      <p>I integrated and customized a proprietary LOD generation system that:</p>
-      
-      <ul class="project-list">
-        <li><strong>Analyzed each model</strong> to identify visually important features that needed preservation</li>
-        <li><strong>Generated multiple LOD levels</strong> automatically with appropriate polygon reduction ratios</li>
-        <li><strong>Maintained silhouette edges and high-detail regions</strong> based on visual importance</li>
-        <li><strong>Preserved UV mapping and material boundaries</strong> during simplification</li>
-        <li><strong>Allowed for artist overrides</strong> when necessary for specific assets</li>
-      </ul>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Evolution</h3>
-      <p>What began as a specialized tool for environment assets eventually expanded to handle characters, weapons, vehicles, and other asset types. We continually refined the algorithms to better handle edge cases and specialized geometry types.</p>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Impact</h3>
-      <p>The automated LOD system transformed our asset production:</p>
-      <ul class="project-list">
-        <li>Reduced LOD creation time from hours to minutes per asset</li>
-        <li>Freed up approximately 30% of environment artist time for more creative tasks</li>
-        <li>Improved overall game performance by enabling more aggressive LOD strategies</li>
-        <li>Resulted in more consistent visual quality across LOD transitions</li>
-        <li>Enabled rapid iteration on environments without manually redoing LODs each time</li>
-        <li>Helped achieve consistent 60fps across all game modes and console platforms</li>
-      </ul>
-    </div>
+<div class="project-section">
+  <p>For Call of Duty: WWII, creating multiple LODs for thousands of assets consumed significant artist resources with inconsistent results. I integrated and customized a proprietary LOD generation system that saved hundreds, possibly thousands of hours of artist time.</p>
+  
+  <p>This automated system:</p>
+  <ul class="project-list">
+    <li>Reduced LOD creation time from hours to minutes per asset, so much so that I was able to effectively add LODs to nearly the entire game</li>
+    <li>Enabled more consistent and aggressive LODs compared to what artists typically author manually</li>
+    <li>Maintained consistent visual quality across LOD transitions, often better than manually authored</li>
+    <li>Helped achieve 60fps across all game modes and console platforms</li>
+  </ul>
+</div>
   `,
   images: [
     "/api/placeholder/640/360",
@@ -1435,52 +1377,21 @@ const projectData = {
 "project-edge-cleanup": {
   title: "Edge Cleanup Tool",
   description: `
-    <div class="project-section">
-      <h3 class="project-section-title">The Challenge</h3>
-      <p>During the modeling process, artists often create additional edges for construction purposes that don't contribute to the final visual appearance. These unnecessary edges increase polygon counts and processing overhead without adding value, negatively impacting performance.</p>
-    </div>
-
-    <div class="project-section">
-      <h3 class="project-section-title">My Contribution</h3>
-      <p>I developed a Maya tool using Python that:</p>
-      
-      <ul class="project-list">
-        <li><strong>Analyzes mesh topology</strong> to identify redundant edges that don't affect silhouette or surface curvature</li>
-        <li><strong>Uses advanced algorithms</strong> to determine the visual impact of removing each edge</li>
-        <li><strong>Provides a preview mode</strong> to visualize before/after results</li>
-        <li><strong>Offers adjustable thresholds</strong> for controlling optimization aggressiveness</li>
-        <li><strong>Maintains UV mapping and material boundaries</strong> during optimization</li>
-        <li><strong>Can be run in batch mode</strong> for processing multiple assets</li>
-      </ul>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Evolution</h3>
-      <p>The tool started as a simple edge detection script but grew to include more sophisticated analysis of surface curvature and visual impact. I eventually released it on GitHub as "Edge Optimizer" for the broader technical art community to use and extend.</p>
-    </div>
-    
-    <div class="project-section">
-      <h3 class="project-section-title">Impact</h3>
-      <p>The Edge Cleanup Tool delivered impressive results:</p>
-      <ul class="project-list">
-        <li>Reduced polygon counts by 15-30% on average with no visible quality loss</li>
-        <li>Improved runtime performance, especially on models used in background scenes</li>
-        <li>Saved artists hours of tedious manual cleanup work</li>
-        <li>Standardized optimization levels across all assets</li>
-        <li>Became a standard part of our asset finalization process</li>
-      </ul>
-    </div>
-    
-    <div class="project-workflow">
-      <img src="http://i.imgur.com/2.PNG" alt="Before edge optimization" class="workflow-image">
-      <p class="workflow-caption">Before: Model with construction edges that don't contribute to visual detail</p>
-      <img src="http://i.imgur.com/3.PNG" alt="After edge optimization" class="workflow-image">
-      <p class="workflow-caption">After: Optimized model with unnecessary edges removed, preserving visual appearance</p>
-    </div>
+<div class="project-section">
+  <p>During modeling, artists often create additional edges for construction that don't contribute to the final appearance but increase polygon counts, and in our engine there was an issue where tangents would be explicitly imported in a broken state due to data moving between programs, which caused vertex counts to massively inflate. I developed a Maya Python tool that analyzes mesh topology to identify redundant edges.</p>
+  
+  <p>This optimization tool:</p>
+  <ul class="project-list">
+    <li>Automatically smoothed normals which resulted in lower verted counts in engine, while our engineers figured out a more permanent solution</li>
+    <li>Uses adjustable thresholds to determine which edges to remove</li>
+    <li>Maintains UV mapping and material boundaries during optimization</li>
+    <li>Became a standard part of our asset export process</li>
+  </ul>
+</div>
   `,
   images: [
-    "http://i.imgur.com/2.PNG",
-    "http://i.imgur.com/3.PNG"
+    "https://lh5.googleusercontent.com/1Q15n_Eyxk7RXPCthwuFvqyC_ft8RIm3ck0GY4xiK1JibG90slSW-vA8LJOwcp75kZ17NjMkCX9MFC6Pqgb1VbnJxP7bsbj6djgqvwdn9H3jHrYDnQPD2KUrP55MYmSOeMB37CHH",
+    "https://lh3.googleusercontent.com/pKYtVNI01Qr9OcI4gQvu0w_j_8lqGlx6iVZIW3JHJdVTIDT9OtAZbM8iaFV4sun43ve0_4CAaZ-9muuxgQkyyeSzGkhRVI78GPVcLW08G-khNAhlZrzA9qOlvcTwqiJHIj591a14"
   ],
   video: null
 }
@@ -1537,7 +1448,7 @@ const artData = {
   "art-mod-props": {
     title: "Half-Life 2 Mod Props",
     description: `
-      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. Working within the Source engine's constraints taught me valuable lessons in low-poly modeling, efficient UV mapping, texturing, and collaboration within a team.</p>
+      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. Was done in the Source engine and was my first time collaborating within a team.</p>
     `,
     images: [
       {
@@ -1590,7 +1501,7 @@ const artData = {
   "art-school-work": {
     title: "Misc School Work",
     description: `
-      <p>Various projects from my time at The Art Institute of Sunnyvale (closed). I wish I still had the source files for these, most of my best work from this time was lost due to at least one hard drive failure. Massive bummer.</p>
+      <p>Various projects from my time at The Art Institute of Sunnyvale (closed). I wish I still had the source files for these, most of my best work from this time was lost due to hard drive failures and network wipes. Massive bummer.</p>
     `,
     images: [
       {
@@ -1644,7 +1555,7 @@ const artData = {
   "art-personal": {
     title: "Misc Personal Work",
     description: `
-      <p>Creative explorations and fun projects I've worked on in my spare time. These represent my artistic interests outside of the professional realm.</p>
+      <p>Creative explorations and fun projects I've worked on in my spare time.</p>
     `,
     images: [
       {
@@ -1680,7 +1591,7 @@ const artData = {
   "art-speed-challenge": {
     title: "2-Hour Speed Challenges",
     description: `
-      <p>Models created during timed challenges I used to run, typically completed within a strict 2-hour timeframe. These exercises helped movtivate me way before I ever entered college.</p>
+      <p>Models created during timed challenges I used to run on a HL2 forum, typically completed within a strict 2-hour timeframe.</p>
     `,
     images: [
       {
@@ -2133,6 +2044,79 @@ function openLightbox(images, startIndex = 0) {
   // Show lightbox with current image
   updateLightbox();
   lightbox.style.display = 'block';
+}
+
+
+
+initDynamicBackground();
+
+// Function to collect all image URLs from art data or DOM
+function collectGalleryImages() {
+  const imageUrls = [];
+  
+  // First try to get images from artData if available
+  if (typeof artData !== 'undefined') {
+    Object.values(artData).forEach(artProject => {
+      if (artProject.images && artProject.images.length > 0) {
+        artProject.images.forEach(image => {
+          const imageUrl = typeof image === 'string' ? image : image.src;
+          if (imageUrl && !imageUrl.includes('/api/placeholder/') && !imageUrl.includes('placeholder')) {
+            imageUrls.push(imageUrl);
+          }
+        });
+      }
+    });
+  }
+  
+  // If no images found in artData or artData is undefined, get images from DOM
+  if (imageUrls.length === 0) {
+    document.querySelectorAll('.art-item img').forEach(img => {
+      if (img.src && !img.src.includes('/api/placeholder/') && !img.src.includes('placeholder')) {
+        imageUrls.push(img.src);
+      }
+    });
+  }
+  
+  return imageUrls;
+}
+
+// Function to set a random background image
+function setRandomHeaderBackground() {
+  const headerBackground = document.querySelector('.header-background');
+  if (!headerBackground) return;
+  
+  // Get all gallery images
+  const galleryImages = collectGalleryImages();
+  
+  // Select a random image
+  const randomIndex = Math.floor(Math.random() * galleryImages.length);
+  const selectedImage = galleryImages[randomIndex];
+  
+  // Fade out current background
+  headerBackground.style.opacity = 0;
+  
+  // After fade-out, set new background and fade in
+  setTimeout(() => {
+    headerBackground.style.backgroundImage = `url(${selectedImage})`;
+    headerBackground.style.opacity = 0.15;
+  }, 500);
+}
+
+// Function to initialize the dynamic background
+function initDynamicBackground() {
+  // Set initial background
+  setRandomHeaderBackground();
+  
+  // Change background every 10 seconds
+  setInterval(setRandomHeaderBackground, 10000);
+}
+
+// Run on DOM content loaded
+document.addEventListener('DOMContentLoaded', implementDynamicHeader);
+
+// If DOM is already loaded, run immediately
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(implementDynamicHeader, 0);
 }
 
 </script>
