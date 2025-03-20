@@ -197,6 +197,77 @@ font-size: 0.8rem;
 font-weight: 500;
 }
 
+.project-section {
+  margin-bottom: 1.5rem;
+}
+
+.project-section-title {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(88, 166, 255, 0.2);
+  padding-bottom: 0.5rem;
+}
+
+.project-list {
+  list-style-type: none;
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+.project-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.project-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+}
+
+.project-workflow {
+  margin-top: 2rem;
+  background-color: rgba(33, 38, 45, 0.5);
+  border-radius: 6px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.workflow-image {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  margin: 0.5rem 0;
+}
+
+.workflow-caption {
+  text-align: center;
+  color: var(--tertiary-color);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Modal specific styling */
+.modal-content .project-section {
+  max-width: 100%;
+}
+
+/* Improved modal body spacing */
+.modal-body {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+
 /* Art gallery and expanded view styles */
 .art-grid {
 display: grid;
@@ -765,6 +836,14 @@ font-size: 0.9rem;
     grid-template-columns: 1fr;
   }
   
+  .project-section-title {
+    font-size: 1.1rem;
+  }
+  
+  .project-list li {
+    padding-left: 1.25rem;
+  }
+
   .lightbox-content {
     max-width: 100%;
   }
@@ -814,6 +893,84 @@ font-size: 0.9rem;
 }
 
 
+<!-- CSS for GitHub Link Section -->
+<style>
+.github-link-container {
+  margin: 30px auto 0;
+  text-align: center;
+  max-width: 600px;
+}
+
+.github-link {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: transform 0.2s;
+}
+
+.github-link:hover {
+  transform: translateY(-3px);
+  text-decoration: none;
+}
+
+.github-link-content {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.github-link:hover .github-link-content {
+  border-color: var(--accent-color);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.github-icon {
+  color: var(--accent-color);
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.github-link-text {
+  flex: 1;
+  text-align: left;
+}
+
+.github-link-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 4px;
+}
+
+.github-link-description {
+  font-size: 14px;
+  color: var(--tertiary-color);
+}
+
+.github-arrow {
+  color: var(--accent-color);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.github-link:hover .github-arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .github-link-container {
+    padding: 0 16px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -824,9 +981,8 @@ font-size: 0.9rem;
 
 <nav>
 <ul>
-<li><a href="#about">About</a></li>
-<li><a href="#portfolio">Projects</a></li>
-<li><a href="#art">Art Portfolio</a></li>
+<li><a href="#tech">Tech</a></li>
+<li><a href="#art">Art</a></li>
 <li><a href="#contact">Contact</a></li>
 </ul>
 </nav>
@@ -837,25 +993,24 @@ font-size: 0.9rem;
 <h2>About Me</h2>
 </div>
 
-<p style="margin-bottom: 20px;">I'm a Technical Artist with a decade of industry experience across gaming and XR technologies. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient workflows and solving complex technical challenges to empower creative teams and deliver exceptional user experiences.</p>
+<p style="margin-bottom: 20px;">I'm a Technical Artist with a decade of industry experience across gaming, AR/VR, and ML tech stacks. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient pipelines to help artist workflows and fill the gaps in engineering where small nudges can have outsized impacts.</p>
 
-<p style="margin-bottom: 20px;">In a typical work day, I develop robust pipelines, optimize performance, and foster an environment of learning and collaboration. I excel at translating technical requirements between disciplines, helping engineers understand artistic needs and helping artists work effectively within technical constraints.</p>
+<p style="margin-bottom: 20px;">In a typical work day, I develop robust pipelines, optimize performance, and foster an environment of learning and collaboration. I'm good at translating technical lingo between disciplines, and helping projects achieve long and short term milestones.</p>
 
-<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with team leads to identify and address technical challenges before they impact production milestones. My experience and expertise allows me to provide valuable technical leadership which fuels my primary goal of helping others succeed.</p>
+<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with team leads to identify and address technical challenges before they impact production. My experience and expertise allows me to provide valuable technical leadership which fuels my primary goal of helping others succeed.</p>
 
-<p>I approach each challenge with a focus on both technical excellence and effective teamwork.</p>
 </div>
 </section>
 
-<section id="portfolio">
+<section id="tech">
 <div class="container">
 <div class="section-header">
-<h2>Technical Projects</h2>
+<h2>Tech</h2>
 </div>
 
 <div class="projects-grid">
 <!-- Project 1: Performance Automation Framework -->
-<div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance">
+<div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance,Unity">
     <h3 class="project-header">Performance Automation Framework</h3>
     <div class="project-icon">📊</div>
     <p class="project-description">Collaborated with lead engineers to develop a comprehensive instrumentation and automation framework for Horizon Worlds that captured a wide variety of performance metrics.</p>
@@ -927,12 +1082,33 @@ font-size: 0.9rem;
 </div>
 </div>
 </div>
+
+<section>
+<!-- GitHub Link Section HTML -->
+<div class="github-link-container">
+  <a href="https://github.com/michael-kato" target="_blank" class="github-link">
+    <div class="github-link-content">
+      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <div class="github-link-text">
+        <span class="github-link-title">More Projects</span>
+        <span class="github-link-description">Check out additional technical projects on my GitHub</span>
+      </div>
+      <svg class="github-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </div>
+  </a>
+</div>
+
 </section>
 
 <section id="art">
 <div class="container">
 <div class="section-header">
-<h2>Art Portfolio</h2>
+<h2>Art</h2>
 </div>
 
 <div class="art-grid">
@@ -998,13 +1174,9 @@ font-size: 0.9rem;
 
 <div class="contact-item">
     <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
-    <div><a href="https://github.com/RawMeat3000" target="_blank">github.com/RawMeat3000</a></div>
+    <div><a href="https://github.com/michael-kato" target="_blank">github.com/michael-kato</a></div>
 </div>
 
-<div class="contact-item">
-    <div class="contact-label"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#FF5722"><path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/></svg> Blog:</div>
-    <div><a href="https://michaelkato.blogspot.com/" target="_blank">michaelkato.blogspot.com</a></div>
-</div>
 </div>
 </div>
 </section>
@@ -1039,6 +1211,130 @@ font-size: 0.9rem;
 
 
 <script>
+
+// Project data with detailed information
+const projectData = {
+  "project-perf-framework": {
+    title: "Performance Automation",
+    description: `
+      <div class="project-section">
+        <h3 class="project-section-title">The Challenge</h3>
+        <p>Unlike traditional video games with infrequent release schedules, <strong>Horizon Worlds</strong> was a constantly evolving live application with weekly updates. This rapid development cycle made tracking performance regressions an ongoing and complex challenge.</p>
+      </div>
+
+      <div class="project-section">
+        <h3 class="project-section-title">My Contribution</h3>
+        <p>I collaborated closely with lead engineers to develop a comprehensive performance monitoring solution that included:</p>
+        
+        <ul class="project-list">
+          <li><strong>Automated benchmarking</strong> that ran both on a scheduled cadence and triggered by code submissions</li>
+          <li><strong>Strategic instrumentation</strong> of dozens of high and low-level code regions identified as potential hot spots</li>
+          <li><strong>Real-time monitoring</strong> systems that detected performance degradation and automatically alerted relevant teams</li>
+        </ul>
+      </div>
+      
+      <div class="project-section">
+        <h3 class="project-section-title">Evolution</h3>
+        <p>What began as my solo effort to maintain the legacy automation system eventually expanded into a dedicated performance team initiative. With additional resources, we were able to significantly enhance the framework's capabilities and coverage.</p>
+      </div>
+      
+      <div class="project-section">
+        <h3 class="project-section-title">Impact</h3>
+        <p>The framework became an essential part of the development pipeline, enabling us to:</p>
+        <ul class="project-list">
+          <li>Detect performance issues within hours of code changes</li>
+          <li>Provide detailed profiling data pinpointing exact causes of regressions</li>
+          <li>Maintain consistent performance targets despite the rapid pace of development</li>
+          <li>Proactively address issues before they affected the user experience</li>
+        </ul>
+      </div>
+    `,
+    images: null,
+    video: null
+  },
+  
+  "project-perf-dashboards": {
+    title: "Performance Visualization Dashboards",
+    description: `
+      <p>I created interactive dashboards that visualized performance metrics in Horizon Worlds. A large percentage of the actionable data came from the instrumentation I added to our codebase. We gathered data from internal playtests, automation, and live production traffic, enabling teams to quickly identify and respond to performance issues. How best to utilize the huge amount of data we sampled to improve performance metrics was always an open question, we needed intuitive ways to visualize trends, isolate test cases, and make this information accessible to all team members, not just performance specialists.</p>
+      
+      <p>The interactive dashboards I built showed performance trends over time with filters for world, player count, hitch frequency, hardware specs, build version, and automatic flagging of new regressions. The system also helped team members to highlight their optimizations' successes.</p>
+      
+      <p>These dashboards dramatically improved our ability to respond to regressions and track fixes, and provided data-driven evidence for prioritizing optimization work, helping us to focus on the highest impact optimizations available.</p>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-proc-scene": {
+    title: "Procedural Scene Generation",
+    description: `
+      <p>I developed sophisticated procedural scene generation systems that created synthetic training data for Apple Vision Pro. Training computer vision models required massive amounts of diverse visual data with precise ground truth, and manually creating these scenes would have been prohibitively expensive and time-consuming while not providing enough variety for edge cases.</p>
+      
+      <p>The procedural generation system I architected created parametrically controlled environments with customizable variables for lighting, materials, and object placement. It generated scenes with varying complexity, lighting conditions, and object compositions while automatically producing accurate ground truth data including depth maps, segmentation masks, and object boundaries. The system implemented physically-based lighting and materials for photorealistic rendering, supported batch processing for large-scale data generation, and included controls for systematically exploring edge cases and rare scenarios.</p>
+      
+      <p>This system revolutionized our training data pipeline by generating over 200,000 unique training images with perfect ground truth data. It improved model accuracy by 27% through covering a wider range of scenarios and edge cases, reduced data generation costs by approximately 90% compared to manual or outsourced methods, and enabled rapid iteration of ML models by providing on-demand custom training data. The tool was eventually adopted as a standard across multiple computer vision teams at Apple.</p>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-asset-qa": {
+    title: "Asset Validation QA Tools",
+    description: `
+      <p>I built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata before they entered the pipeline. Our asset pipeline processed thousands of 3D models from both internal teams and external vendors, and quality issues with these assets frequently caused pipeline failures that wasted valuable time and resources.</p>
+      
+      <p>The suite of asset validation tools I developed automatically validated geometry for common issues like non-manifold edges, inverted normals, and bad UVs, while verifying textures for correct dimensions, formats, and compression settings. The system cross-checked metadata against our database schema to ensure completeness, generated automatic thumbnails for visual verification, and created LODs when required using our standardized algorithms. It provided detailed error reports with specific remediation steps and integrated seamlessly with our asset management system for an uninterrupted workflow.</p>
+      
+      <p>These QA tools dramatically improved our pipeline efficiency by reducing asset integration failures by 85% and decreasing turnaround time for fixing asset issues from days to hours. They standardized quality across all assets regardless of source and enabled scaling our asset production by 3x without increasing QA headcount. The tools also provided better feedback to external vendors, which significantly improved their first-time submission quality and reduced rework.</p>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-lod-pipeline": {
+    title: "LOD Generation Pipeline",
+    description: `
+      <p>I integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs with automatically generated ones. Creating multiple levels of detail for the thousands of assets in the game had been a massive undertaking that consumed significant artist resources, with inconsistent results that often either lost too much detail or didn't reduce polygon counts enough.</p>
+      
+      <p>The system I integrated and customized analyzed each model to identify visually important features that needed preservation, then generated multiple LOD levels automatically with appropriate polygon reduction ratios. It maintained silhouette edges and high-detail regions based on visual importance while preserving UV mapping and material boundaries. The system integrated seamlessly with our existing asset processing pipeline and allowed for artist overrides when necessary for specific assets.</p>
+      
+      <p>This automated LOD system transformed our asset production process by reducing LOD creation time from hours to minutes per asset and freeing up approximately 30% of environment artist time for more creative tasks. It improved overall game performance by enabling more aggressive LOD strategies and resulted in more consistent visual quality across LOD transitions. The system also enabled rapid iteration on environments without manually redoing LODs each time, dramatically accelerating our level design workflow.</p>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  },
+  
+  "project-edge-cleanup": {
+    title: "Edge Cleanup Tool",
+    description: `
+      <p>I created an optimization tool that identifies and removes unnecessary edges in 3D models, significantly reducing polygon counts without affecting visual quality. During the modeling process, artists often create additional edges for construction purposes that don't contribute to the final visual appearance but increase polygon counts and processing overhead without adding value.</p>
+      
+      <p>The Maya tool I developed using Python analyzes mesh topology to identify redundant edges that don't affect silhouette or surface curvature. It uses advanced algorithms to determine the visual impact of removing each edge and provides a preview mode to visualize before/after results. The tool offers adjustable thresholds for controlling optimization aggressiveness while maintaining UV mapping and material boundaries during optimization. It can be run in batch mode for processing multiple assets and generates detailed logs of changes made to each model.</p>
+      
+      <p>The Edge Cleanup Tool delivered impressive results, reducing polygon counts by 15-30% on average with no visible quality loss and improving runtime performance, especially on models used in background scenes. It saved artists hours of tedious manual cleanup work, standardized optimization levels across all assets, and became a standard part of our asset finalization process that significantly improved overall game performance.</p>
+    `,
+    images: [
+      "/api/placeholder/640/360",
+      "/api/placeholder/640/360"
+    ],
+    video: null
+  }
+};
+
+
 // Art data with detailed information
 const artData = {
   "art-senior-project": {
@@ -1268,104 +1564,7 @@ const artData = {
   }
 };
 
-// Project data with detailed information
-const projectData = {
-  "project-perf-framework": {
-    title: "Performance Automation Framework",
-    description: `
-        <p>I collaborated closely with lead engineers to develop a comprehensive instrumentation and automation framework for VR applications that tracked real-time performance metrics across our codebase. As our VR platform grew more complex, maintaining consistent performance became a significant challenge, with manual profiling proving inadequate for catching early regressions.</p>
-        
-        <p>Working as part of a dedicated performance team, I contributed significantly to the framework that automatically collected performance data across different hardware configurations and user scenarios. Together, we built systems to measure key metrics like frame rate, GPU/CPU utilization, memory usage, garbage collection frequencies, and load times. I helped implement the components that established performance baselines, detected regressions automatically, and generated detailed reports that integrated with our CI/CD pipeline to immediately flag problematic builds.</p>
-        
-        <p>This collaborative effort transformed our approach to performance optimization by enabling us to detect regressions within hours of code changes and providing clear visibility into bottlenecks across the codebase. Our framework reduced debugging time by up to 75% and helped establish consistent 72fps in Horizon Worlds. I took particular pride in how this system became an essential part of the daily development process that teams came to rely on for maintaining VR performance standards.</p>
-    `,
-    images: [
-        "/api/placeholder/640/360",
-        "/api/placeholder/640/360"
-    ],
-    video: null
-  },
-  
-  "project-perf-dashboards": {
-    title: "Performance Visualization Dashboards",
-    description: `
-      <p>I created sophisticated interactive dashboards that visualized performance metrics from Horizon Worlds in internal playtests, automationg, and live builds, enabling teams to quickly identify and respond to performance issues. Utilizing the huge amount of data we sampled to improve performance metrics was always an open question, we needed intuitive ways to visualize trends, isolate test cases, and make this information accessible to all team members, not just performance specialists.</p>
-      
-      <p>The interactive dashboards I built showed performance trends over time with comprehensive drill-down capabilities, filters for world, player count, hitch frequency, hardware specs, and build version, and automatic flagging of potential regressions. The system also helped team members to highlight their optimizations' successes.</p>
-      
-      <p>These dashboards dramatically improved our ability to maintain performance quality, reducing the time needed to identify regressions and enabling non-technical team members to understand and monitor performance trends. They provided data-driven evidence for prioritizing optimization work, and helped us focus on the highest impact optimizations available.</p>
-    `,
-    images: [
-      "/api/placeholder/640/360",
-      "/api/placeholder/640/360"
-    ],
-    video: null
-  },
-  
-  "project-proc-scene": {
-    title: "Procedural Scene Generation",
-    description: `
-      <p>I developed sophisticated procedural scene generation systems that created synthetic training data for Apple Vision Pro. Training computer vision models required massive amounts of diverse visual data with precise ground truth, and manually creating these scenes would have been prohibitively expensive and time-consuming while not providing enough variety for edge cases.</p>
-      
-      <p>The procedural generation system I architected created parametrically controlled environments with customizable variables for lighting, materials, and object placement. It generated scenes with varying complexity, lighting conditions, and object compositions while automatically producing accurate ground truth data including depth maps, segmentation masks, and object boundaries. The system implemented physically-based lighting and materials for photorealistic rendering, supported batch processing for large-scale data generation, and included controls for systematically exploring edge cases and rare scenarios.</p>
-      
-      <p>This system revolutionized our training data pipeline by generating over 200,000 unique training images with perfect ground truth data. It improved model accuracy by 27% through covering a wider range of scenarios and edge cases, reduced data generation costs by approximately 90% compared to manual or outsourced methods, and enabled rapid iteration of ML models by providing on-demand custom training data. The tool was eventually adopted as a standard across multiple computer vision teams at Apple.</p>
-    `,
-    images: [
-      "/api/placeholder/640/360",
-      "/api/placeholder/640/360"
-    ],
-    video: null
-  },
-  
-  "project-asset-qa": {
-    title: "Asset Validation QA Tools",
-    description: `
-      <p>I built comprehensive QA tooling for Apple that accelerated asset integration by validating models, textures, and metadata before they entered the pipeline. Our asset pipeline processed thousands of 3D models from both internal teams and external vendors, and quality issues with these assets frequently caused pipeline failures that wasted valuable time and resources.</p>
-      
-      <p>The suite of asset validation tools I developed automatically validated geometry for common issues like non-manifold edges, inverted normals, and bad UVs, while verifying textures for correct dimensions, formats, and compression settings. The system cross-checked metadata against our database schema to ensure completeness, generated automatic thumbnails for visual verification, and created LODs when required using our standardized algorithms. It provided detailed error reports with specific remediation steps and integrated seamlessly with our asset management system for an uninterrupted workflow.</p>
-      
-      <p>These QA tools dramatically improved our pipeline efficiency by reducing asset integration failures by 85% and decreasing turnaround time for fixing asset issues from days to hours. They standardized quality across all assets regardless of source and enabled scaling our asset production by 3x without increasing QA headcount. The tools also provided better feedback to external vendors, which significantly improved their first-time submission quality and reduced rework.</p>
-    `,
-    images: [
-      "/api/placeholder/640/360",
-      "/api/placeholder/640/360"
-    ],
-    video: null
-  },
-  
-  "project-lod-pipeline": {
-    title: "LOD Generation Pipeline",
-    description: `
-      <p>I integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty WWII, replacing manually authored LODs with automatically generated ones. Creating multiple levels of detail for the thousands of assets in the game had been a massive undertaking that consumed significant artist resources, with inconsistent results that often either lost too much detail or didn't reduce polygon counts enough.</p>
-      
-      <p>The system I integrated and customized analyzed each model to identify visually important features that needed preservation, then generated multiple LOD levels automatically with appropriate polygon reduction ratios. It maintained silhouette edges and high-detail regions based on visual importance while preserving UV mapping and material boundaries. The system integrated seamlessly with our existing asset processing pipeline and allowed for artist overrides when necessary for specific assets.</p>
-      
-      <p>This automated LOD system transformed our asset production process by reducing LOD creation time from hours to minutes per asset and freeing up approximately 30% of environment artist time for more creative tasks. It improved overall game performance by enabling more aggressive LOD strategies and resulted in more consistent visual quality across LOD transitions. The system also enabled rapid iteration on environments without manually redoing LODs each time, dramatically accelerating our level design workflow.</p>
-    `,
-    images: [
-      "/api/placeholder/640/360",
-      "/api/placeholder/640/360"
-    ],
-    video: null
-  },
-  
-  "project-edge-cleanup": {
-    title: "Edge Cleanup Tool",
-    description: `
-      <p>I created an optimization tool that identifies and removes unnecessary edges in 3D models, significantly reducing polygon counts without affecting visual quality. During the modeling process, artists often create additional edges for construction purposes that don't contribute to the final visual appearance but increase polygon counts and processing overhead without adding value.</p>
-      
-      <p>The Maya tool I developed using Python analyzes mesh topology to identify redundant edges that don't affect silhouette or surface curvature. It uses advanced algorithms to determine the visual impact of removing each edge and provides a preview mode to visualize before/after results. The tool offers adjustable thresholds for controlling optimization aggressiveness while maintaining UV mapping and material boundaries during optimization. It can be run in batch mode for processing multiple assets and generates detailed logs of changes made to each model.</p>
-      
-      <p>The Edge Cleanup Tool delivered impressive results, reducing polygon counts by 15-30% on average with no visible quality loss and improving runtime performance, especially on models used in background scenes. It saved artists hours of tedious manual cleanup work, standardized optimization levels across all assets, and became a standard part of our asset finalization process that significantly improved overall game performance.</p>
-    `,
-    images: [
-      "/api/placeholder/640/360",
-      "/api/placeholder/640/360"
-    ],
-    video: null
-  }
-};
+
 // Portfolio site JavaScript with fixed expansion for art projects
 document.addEventListener('DOMContentLoaded', () => {
   // Initialize all event handlers

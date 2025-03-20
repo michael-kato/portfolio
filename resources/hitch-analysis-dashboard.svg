@@ -1,0 +1,116 @@
+<svg viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="500" fill="#1c2128" rx="10" ry="10"/>
+  
+  <!-- Dashboard header -->
+  <g transform="translate(20, 20)">
+    <text x="0" y="10" font-family="Arial" font-size="18" fill="#ffffff" font-weight="bold">Horizon Worlds: CPU Hitch Analysis</text>
+    <text x="0" y="30" font-family="Arial" font-size="12" fill="#8b949e">Last 14 days | Quest 2 | Build 1.245.2 | All Worlds</text>
+  </g>
+  
+  <!-- Chart area -->
+  <rect x="160" y="60" width="590" height="370" fill="#21262d" rx="5" ry="5"/>
+  
+  <!-- X-axis labels (time in milliseconds) -->
+  <g transform="translate(160, 440)" font-family="Arial" font-size="12" fill="#8b949e">
+    <text x="0" y="10" text-anchor="middle">0</text>
+    <text x="118" y="10" text-anchor="middle">10</text>
+    <text x="236" y="10" text-anchor="middle">20</text>
+    <text x="354" y="10" text-anchor="middle">30</text>
+    <text x="472" y="10" text-anchor="middle">40</text>
+    <text x="590" y="10" text-anchor="middle">50</text>
+  </g>
+  
+  <text x="450" y="470" font-family="Arial" font-size="14" fill="#ffffff" text-anchor="middle">Total Time Spent in Hitches (ms)</text>
+  
+  <!-- X-axis gridlines -->
+  <g stroke="#30363d" stroke-width="1" stroke-dasharray="4">
+    <line x1="160" y1="430" x2="160" y2="60"/>
+    <line x1="278" y1="430" x2="278" y2="60"/>
+    <line x1="396" y1="430" x2="396" y2="60"/>
+    <line x1="514" y1="430" x2="514" y2="60"/>
+    <line x1="632" y1="430" x2="632" y2="60"/>
+    <line x1="750" y1="430" x2="750" y2="60"/>
+  </g>
+  
+  <!-- Critical threshold line -->
+  <g>
+    <line x1="396" y1="60" x2="396" y2="430" stroke="#cf222e" stroke-width="2" stroke-dasharray="8"/>
+    <text x="400" y="50" font-family="Arial" font-size="12" fill="#cf222e" font-weight="bold">Critical Threshold (30ms)</text>
+  </g>
+  
+  <!-- Bar chart data -->
+  <!-- Each bar is 30px height with 10px spacing -->
+  
+  <!-- Physics -->
+  <g transform="translate(160, 80)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Physics</text>
+    <rect x="0" y="0" width="451" height="30" fill="#cf222e" rx="3" ry="3" opacity="0.9"/>
+    <text x="456" y="20" font-family="Arial" font-size="12" fill="#ffffff">38.2ms</text>
+  </g>
+  
+  <!-- Animation -->
+  <g transform="translate(160, 120)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Animation</text>
+    <rect x="0" y="0" width="398" height="30" fill="#f0883e" rx="3" ry="3" opacity="0.9"/>
+    <text x="403" y="20" font-family="Arial" font-size="12" fill="#ffffff">33.7ms</text>
+  </g>
+  
+  <!-- Garbage Collection -->
+  <g transform="translate(160, 160)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Garbage Collection</text>
+    <rect x="0" y="0" width="380" height="30" fill="#8957e5" rx="3" ry="3" opacity="0.9"/>
+    <text x="385" y="20" font-family="Arial" font-size="12" fill="#ffffff">32.2ms</text>
+  </g>
+  
+  <!-- Rendering -->
+  <g transform="translate(160, 200)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Rendering</text>
+    <rect x="0" y="0" width="295" height="30" fill="#1f6feb" rx="3" ry="3" opacity="0.9"/>
+    <text x="300" y="20" font-family="Arial" font-size="12" fill="#ffffff">25.0ms</text>
+  </g>
+  
+  <!-- Network -->
+  <g transform="translate(160, 240)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Network</text>
+    <rect x="0" y="0" width="283" height="30" fill="#2ea043" rx="3" ry="3" opacity="0.9"/>
+    <text x="288" y="20" font-family="Arial" font-size="12" fill="#ffffff">24.0ms</text>
+  </g>
+  
+  <!-- Avatar Loading -->
+  <g transform="translate(160, 280)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Avatar Loading</text>
+    <rect x="0" y="0" width="236" height="30" fill="#bf8700" rx="3" ry="3" opacity="0.9"/>
+    <text x="241" y="20" font-family="Arial" font-size="12" fill="#ffffff">20.0ms</text>
+  </g>
+  
+  <!-- Audio -->
+  <g transform="translate(160, 320)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">Audio</text>
+    <rect x="0" y="0" width="189" height="30" fill="#58a6ff" rx="3" ry="3" opacity="0.9"/>
+    <text x="194" y="20" font-family="Arial" font-size="12" fill="#ffffff">16.0ms</text>
+  </g>
+  
+  <!-- UI -->
+  <g transform="translate(160, 360)">
+    <text x="-10" y="15" font-family="Arial" font-size="12" fill="#ffffff" text-anchor="end">UI</text>
+    <rect x="0" y="0" width="130" height="30" fill="#7ee787" rx="3" ry="3" opacity="0.9"/>
+    <text x="135" y="20" font-family="Arial" font-size="12" fill="#ffffff">11.0ms</text>
+  </g>
+  
+  <!-- Analysis summary -->
+  <g transform="translate(580, 120)">
+    <rect x="0" y="0" width="180" height="90" fill="#2d333b" rx="5" ry="5"/>
+    <text x="10" y="20" font-family="Arial" font-size="12" fill="#ffffff" font-weight="bold">Key Findings:</text>
+    <text x="10" y="40" font-family="Arial" font-size="11" fill="#ffffff">● Physics hitches increased 18% since</text>
+    <text x="15" y="55" font-family="Arial" font-size="11" fill="#ffffff">last build (v1.245.0)</text>
+    <text x="10" y="75" font-family="Arial" font-size="11" fill="#ffffff">● Animation cost linked to skeleton</text>
+    <text x="15" y="90" font-family="Arial" font-size="11" fill="#ffffff">complexity in Plaza world</text>
+  </g>
+  
+  <!-- Meta logo -->
+  <g transform="translate(730, 20)">
+    <rect width="50" height="20" fill="none" rx="3" ry="3"/>
+    <text x="25" y="15" font-family="Arial" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">Meta</text>
+  </g>
+</svg>
