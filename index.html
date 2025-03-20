@@ -872,8 +872,25 @@ font-size: 0.9rem;
     font-size: 2rem;
   }
 
+  .tech-category-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .tech-projects {
+    grid-template-columns: 1fr;
+  }
+  
+  .tech-video-container,
+  .tech-projects {
+    padding: 16px;
+  }
+
   .projects-grid {
     grid-template-columns: 1fr;
+  }
+
+  .github-link-container {
+    padding: 0 16px;
   }
 
   .art-grid {
@@ -932,6 +949,7 @@ font-size: 0.9rem;
   .expanded-art-videos {
     padding: 0 16px 16px 16px;
   }
+  
 }
 
 /* For smaller screens, reduce number of columns */
@@ -947,7 +965,6 @@ font-size: 0.9rem;
 }
 
 
-<!-- CSS for GitHub Link Section -->
 <style>
 .github-link-container {
   margin: 30px auto 0;
@@ -1019,10 +1036,112 @@ font-size: 0.9rem;
   transform: translateX(4px);
 }
 
-@media (max-width: 768px) {
-  .github-link-container {
-    padding: 0 16px;
-  }
+
+/* Tech Section Collapsible Styles */
+.tech-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+
+
+/* Add this new style for a visual separator */
+.tech-category:not(:last-child)::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border-color),
+    transparent
+  );
+  position: relative;
+  bottom: -12px; /* Half of the gap for centered positioning */
+}
+
+.tech-category:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tech-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.2s ease;
+}
+
+.tech-category-header:hover {
+  background-color: rgba(88, 166, 255, 0.05);
+}
+
+.tech-category-header h3 {
+  color: var(--accent-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.toggle-icon {
+  color: var(--accent-color);
+  transition: transform 0.3s ease;
+}
+
+.tech-category.active .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.tech-category-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.tech-category.active .tech-category-content {
+  max-height: 1500px; /* Large enough to accommodate content */
+}
+
+.tech-category.active .tech-category-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tech-video-container {
+  padding: 24px 24px 0;
+}
+
+.tech-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 24px;
+}
+
+
+/* Animation for content */
+.tech-category-header {
+  position: relative;
+}
+
+.tech-category-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.tech-category-header:hover::after,
+.tech-category.active .tech-category-header::after {
+  width: 100%;
 }
 
 </style>
@@ -1060,82 +1179,137 @@ font-size: 0.9rem;
 </section>
 
 <section id="tech">
-<div class="container">
-<div class="section-header">
-<h2>Tech</h2>
-</div>
-
-<div class="projects-grid">
-<!-- Project 1: Performance Automation Framework -->
-<div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance,Unity">
-    <h3 class="project-header">Performance Automation Framework</h3>
-    <div class="project-icon">📊</div>
-    <p class="project-description">Collaborated with lead engineers to develop an instrumentation and automation framework for tracking performance in Horizon Worlds.</p>
-    <div class="project-tags">
-        <span class="project-tag">Python</span>
-        <span class="project-tag">Performance</span>
-        <span class="project-tag">VR</span>
+  <div class="container">
+    <div class="section-header">
+      <h2>Tech</h2>
     </div>
-</div>
+  
+    <!-- Collapsible Tech Categories -->
+    <div class="tech-categories">
+      <!-- Category 1: Performance Tools -->
+      <div class="tech-category">
+        <div class="tech-category-header">
+          <h3>Meta Horizon Worlds</h3>
+          <div class="toggle-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="tech-category-content">
+          <div class="tech-video-container">
+            <iframe width="100%" height="350" src="https://www.youtube.com/embed/02kCEurWkqU" title="Horizon Worlds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="tech-projects">
+              <!-- Project 1: Performance Automation Framework -->
+              <div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance,Unity">
+                  <h3 class="project-header">Performance Automation Framework</h3>
+                  <div class="project-icon">📊</div>
+                  <p class="project-description">Collaborated with lead engineers to develop an instrumentation and automation framework for tracking performance in Horizon Worlds.</p>
+                  <div class="project-tags">
+                      <span class="project-tag">Python</span>
+                      <span class="project-tag">Performance</span>
+                      <span class="project-tag">VR</span>
+                  </div>
+              </div>
+              
+              <!-- Project 2: Performance Visualization Dashboards -->
+              <div class="project-card" id="project-perf-dashboards" data-tags="SQL,Data,Visualization">
+                  <h3 class="project-header">Performance Visualization Dashboards</h3>
+                  <div class="project-icon">📈</div>
+                  <p class="project-description">Created configurable performance dashboards displaying Horizon Worlds live production, automation, and internal testing data, which helped teams tackle regressions more effectively.</p>
+                  <div class="project-tags">
+                      <span class="project-tag">Data Visualization</span>
+                      <span class="project-tag">Python</span>
+                      <span class="project-tag">Performance</span>
+                  </div>
+              </div>
+          </div>
+        </div>
+          
+  
+      <div class="tech-category">
+        <div class="tech-category-header">
+          <h3>Apple - Synthetic Data</h3>
+          <div class="toggle-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="tech-category-content">
+          <div class="tech-video-container">
+            <iframe width="100%" height="350" src="https://www.youtube.com/embed/TX9qSaGXFyg" title="Apple Vision Pro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="tech-projects">
+            <!-- Project 3: Procedural Scene Generation -->
+            <div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
+              <h3 class="project-header">Procedural Scene Generation</h3>
+              <div class="project-icon">🏙️</div>
+              <p class="project-description">Developed procedural scene generation systems for Apple Vision Pro training data. Created semi-randomized variations of prebuilt scenes to generate hundreds of unique training sets.</p>
+              <div class="project-tags">
+                  <span class="project-tag">Python</span>
+                  <span class="project-tag">Maya</span>
+                  <span class="project-tag">Procedural</span>
+              </div>
+            </div>
 
-<!-- Project 2: Performance Visualization Dashboards -->
-<div class="project-card" id="project-perf-dashboards" data-tags="SQL,Data,Visualization">
-    <h3 class="project-header">Performance Visualization Dashboards</h3>
-    <div class="project-icon">📈</div>
-    <p class="project-description">Created configurable performance dashboards displaying Horizon Worlds live production, automation, and internal testing data, which helped teams tackle regressions more effectively.</p>
-    <div class="project-tags">
-        <span class="project-tag">Data Visualization</span>
-        <span class="project-tag">Python</span>
-        <span class="project-tag">Performance</span>
+            <!-- Project 4: Asset Validation QA Tools -->
+            <div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation">
+            <h3 class="project-header">Asset Validation QA Tools</h3>
+            <div class="project-icon">🔍</div>
+            <p class="project-description">Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets that accelerated integration speed by validating models, textures, and metadata.</p>
+            <div class="project-tags">
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Pipeline</span>
+              <span class="project-tag">Quality Assurance</span>
+            </div>
+            </div>
+          </div>
+        </div>
+
+  
+      <div class="tech-category">
+        <div class="tech-category-header">
+          <h3>Sledgehammer Games</h3>
+          <div class="toggle-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </div>
+        <div class="tech-category-content">
+          <div class="tech-video-container">
+            <iframe width="100%" height="350" src="https://www.youtube.com/embed/D4Q_XYVescc" title="Call of Duty: WWII" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe width="100%" height="350" src="https://www.youtube.com/embed/bj3-RsyJKfA" title="Call of Duty: Advanced Warfare" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="tech-projects">
+            <!-- Project 5: LOD Generation Pipeline -->
+            <div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
+              <h3 class="project-header">LOD Generation Pipeline</h3>
+              <div class="project-icon">💎</div>
+              <p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty: WWII, replacing the need for (almost) any manually authored LODs.</p>
+              <div class="project-tags">
+                  <span class="project-tag">C++</span>
+                  <span class="project-tag">C#</span>
+                  <span class="project-tag">Optimization</span>
+              </div>
+              </div>
+              
+              <!-- Project 6: Edge Cleanup Tool -->
+              <div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization">
+              <h3 class="project-header">Edge Cleanup Tool</h3>
+              <div class="project-icon">✂️</div>
+              <p class="project-description">Created a Maya tool that detects non-optimal edges/vertices in regards to performance. The tool focuses on edges that can be removed or softened without affecting the look of the model.</p>
+              <div class="project-tags">
+                  <span class="project-tag">Python</span>
+                  <span class="project-tag">Maya</span>
+                  <span class="project-tag">Optimization</span>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-
-<!-- Project 3: Procedural Scene Generation -->
-<div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
-    <h3 class="project-header">Procedural Scene Generation</h3>
-    <div class="project-icon">🏙️</div>
-    <p class="project-description">Developed procedural scene generation systems for Apple Vision Pro training data. Created semi-randomized variations of prebuilt scenes to generate hundreds of unique training sets.</p>
-    <div class="project-tags">
-        <span class="project-tag">Python</span>
-        <span class="project-tag">Maya</span>
-        <span class="project-tag">Procedural</span>
-    </div>
-</div>
-
-<!-- Project 4: Asset Validation QA Tools -->
-<div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation">
-<h3 class="project-header">Asset Validation QA Tools</h3>
-<div class="project-icon">🔍</div>
-<p class="project-description">Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets that accelerated integration speed by validating models, textures, and metadata.</p>
-<div class="project-tags">
-    <span class="project-tag">Python</span>
-    <span class="project-tag">Pipeline</span>
-    <span class="project-tag">Quality Assurance</span>
-</div>
-</div>
-
-<!-- Project 5: LOD Generation Pipeline -->
-<div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
-<h3 class="project-header">LOD Generation Pipeline</h3>
-<div class="project-icon">💎</div>
-<p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty: WWII, replacing the need for (almost) any manually authored LODs.</p>
-<div class="project-tags">
-    <span class="project-tag">C++</span>
-    <span class="project-tag">C#</span>
-    <span class="project-tag">Optimization</span>
-</div>
-</div>
-
-<!-- Project 6: Edge Cleanup Tool -->
-<div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization">
-<h3 class="project-header">Edge Cleanup Tool</h3>
-<div class="project-icon">✂️</div>
-<p class="project-description">Created a Maya tool that detects non-optimal edges/vertices in regards to performance. The tool focuses on edges that can be removed or softened without affecting the look of the model.</p>
-<div class="project-tags">
-    <span class="project-tag">Python</span>
-    <span class="project-tag">Maya</span>
-    <span class="project-tag">Optimization</span>
-</div>
+  </div>
 </div>
 </div>
 </div>
@@ -2048,7 +2222,6 @@ function openLightbox(images, startIndex = 0) {
 
 
 
-initDynamicBackground();
 
 // Function to collect all image URLs from art data or DOM
 function collectGalleryImages() {
@@ -2111,12 +2284,44 @@ function initDynamicBackground() {
   setInterval(setRandomHeaderBackground, 4000);
 }
 
-// Run on DOM content loaded
-document.addEventListener('DOMContentLoaded', implementDynamicHeader);
+
+// Function to initialize tech section collapsible functionality
+function initTechSection() {
+  // Find all tech categories
+  const techCategories = document.querySelectorAll('.tech-category');
+  
+  // Add click handlers to toggle content visibility
+  techCategories.forEach((category, index) => {
+    const header = category.querySelector('.tech-category-header');
+    
+    header.addEventListener('click', () => {
+      // Toggle active class
+      category.classList.toggle('active');
+      
+      // If opening this category, close others (accordion style)
+      if (category.classList.contains('active')) {
+        techCategories.forEach((otherCategory, otherIndex) => {
+          if (index !== otherIndex) {
+            otherCategory.classList.remove('active');
+          }
+        });
+      }
+    });
+  });
+  
+  // Open the first category by default
+  if (techCategories.length > 0) {
+    techCategories[0].classList.add('active');
+  }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initTechSection);
 
 // If DOM is already loaded, run immediately
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  setTimeout(implementDynamicHeader, 0);
+  setTimeout(initTechSection, 0);
+  setTimeout(initDynamicBackground, 0)
 }
 
 </script>
