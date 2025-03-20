@@ -2099,7 +2099,7 @@ function setRandomHeaderBackground() {
   setTimeout(() => {
     headerBackground.style.backgroundImage = `url(${selectedImage})`;
     headerBackground.style.opacity = 0.15;
-  }, 500);
+  }, 300);
 }
 
 // Function to initialize the dynamic background
@@ -2108,7 +2108,7 @@ function initDynamicBackground() {
   setRandomHeaderBackground();
   
   // Change background every 10 seconds
-  setInterval(setRandomHeaderBackground, 10000);
+  setInterval(setRandomHeaderBackground, 4000);
 }
 
 // Run on DOM content loaded
