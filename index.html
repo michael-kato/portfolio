@@ -2269,7 +2269,8 @@ function initDynamicBackground() {
   // Change background every 10 seconds
   setInterval(setRandomHeaderBackground, 4000);
 }
-
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initDynamicBackground);
 
 // Function to initialize tech section collapsible functionality
 function initTechSection() {
