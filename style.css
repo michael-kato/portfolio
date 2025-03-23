@@ -1,0 +1,1130 @@
+/* Complete CSS for the portfolio site with properly implemented art expansion */
+
+:root {
+--bg-color: #0d1117;
+--bg-pattern: #161b22;
+--text-color: #c9d1d9;
+--accent-color: #58a6ff; /* GitHub blue */
+--secondary-color: #f0883e; /* GitHub orange */
+--tertiary-color: #8b949e; /* GitHub muted */
+--card-bg: #21262d;
+--border-color: #30363d;
+--header-bg: #161b22;
+--section-header-bg: rgba(22, 27, 34, 0.3); /* Subtle background for section headers */
+}
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+}
+
+body {
+background-color: var(--bg-color);
+background-image: 
+linear-gradient(to right, var(--bg-pattern) 1px, transparent 1px),
+linear-gradient(to bottom, var(--bg-pattern) 1px, transparent 1px);
+background-size: 20px 20px;
+color: var(--text-color);
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+line-height: 1.5;
+padding: 0;
+max-width: 1200px;
+margin: 0 auto;
+}
+
+a {
+color: var(--accent-color);
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+header {
+background-color: var(--header-bg);
+padding: 40px 20px;
+text-align: center;
+border-bottom: 1px solid var(--border-color);
+}
+
+.header-title {
+font-size: 2.5rem;
+color: var(--text-color);
+margin-bottom: 10px;
+font-weight: 600;
+}
+
+.header-subtitle {
+font-size: 1.2rem;
+color: var(--tertiary-color);
+max-width: 600px;
+margin: 0 auto;
+font-weight: 400;
+}
+
+/* Updated header styles */
+#dynamic-header {
+  position: relative;
+  padding: 60px 20px;
+  text-align: center;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--header-bg);
+}
+
+.header-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15; /* Subtle opacity to ensure text is readable */
+  transition: opacity 0.5s ease;
+  z-index: 0;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.header-title {
+  font-size: 2.5rem;
+  color: var(--text-color);
+  margin-bottom: 10px;
+  font-weight: 600;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+.header-subtitle {
+  font-size: 1.2rem;
+  color: var(--tertiary-color);
+  max-width: 600px;
+  margin: 0 auto;
+  font-weight: 400;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); /* Text shadow for better readability */
+}
+
+
+.command {
+color: var(--secondary-color);
+}
+
+.output {
+margin: 5px 0 15px 0;
+}
+
+nav {
+background-color: var(--card-bg);
+padding: 15px 20px;
+margin: 0;
+box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+}
+
+nav ul {
+display: flex;
+list-style-type: none;
+justify-content: center;
+flex-wrap: wrap;
+gap: 20px;
+}
+
+nav li {
+margin: 5px 0;
+}
+
+nav a {
+padding: 8px 15px;
+color: var(--text-color);
+border-radius: 6px;
+transition: all 0.2s;
+font-weight: 500;
+}
+
+nav a:hover {
+background-color: var(--border-color);
+text-decoration: none;
+}
+
+section {
+margin: 10px 0;
+padding: 40px 20px;
+}
+
+.section-header {
+margin-bottom: 30px;
+text-align: center;
+}
+
+.section-header h2 {
+display: inline-block;
+font-size: 1.8rem;
+color: var(--text-color);
+padding: 10px 20px;
+border-bottom: 2px solid var(--secondary-color);
+font-weight: 600;
+background-color: var(--section-header-bg);
+border-radius: 6px;
+}
+
+.container {
+max-width: 1000px;
+margin: 0 auto;
+}
+
+.projects-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+gap: 20px;
+}
+
+.project-card {
+border: 1px solid var(--border-color);
+padding: 20px;
+border-radius: 6px;
+background-color: var(--card-bg);
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: pointer;
+height: 100%;
+display: flex;
+flex-direction: column;
+}
+
+.project-card:hover {
+transform: translateY(-4px);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+border-color: var(--accent-color);
+}
+
+.project-header {
+color: var(--accent-color);
+margin-bottom: 15px;
+font-size: 1.3rem;
+font-weight: 600;
+}
+
+.project-description {
+margin-bottom: 15px;
+color: var(--text-color);
+flex-grow: 1;
+}
+
+.project-tags {
+display: flex;
+flex-wrap: wrap;
+gap: 8px;
+margin: 15px 0;
+}
+
+.project-tag {
+background-color: rgba(240, 136, 62, 0.2); /* GitHub orange with transparency */
+color: var(--secondary-color);
+padding: 4px 8px;
+border-radius: 20px;
+font-size: 0.8rem;
+font-weight: 500;
+}
+
+.project-section {
+  margin-bottom: 1.5rem;
+}
+
+.project-section-title {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(88, 166, 255, 0.2);
+  padding-bottom: 0.5rem;
+}
+
+.project-list {
+  list-style-type: none;
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+.project-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.project-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: var(--secondary-color);
+  border-radius: 50%;
+}
+
+.project-workflow {
+  margin-top: 2rem;
+  background-color: rgba(33, 38, 45, 0.5);
+  border-radius: 6px;
+  padding: 1rem;
+  border: 1px solid var(--border-color);
+}
+
+.workflow-image {
+  width: 100%;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  margin: 0.5rem 0;
+}
+
+.workflow-caption {
+  text-align: center;
+  color: var(--tertiary-color);
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+/* Modal specific styling */
+.modal-content .project-section {
+  max-width: 100%;
+}
+
+/* Improved modal body spacing */
+.modal-body {
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+
+/* Art gallery and expanded view styles */
+.art-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+gap: 15px;
+margin-top: 30px;
+width: 100%;
+}
+
+.art-item {
+border: 1px solid var(--border-color);
+border-radius: 6px;
+overflow: hidden;
+background-color: var(--card-bg);
+transition: transform 0.2s, box-shadow 0.2s;
+cursor: pointer;
+aspect-ratio: 1 / 1;
+position: relative;
+}
+
+.art-item:hover {
+transform: translateY(-4px);
+box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+border-color: var(--accent-color);
+}
+
+.art-item img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s;
+}
+
+.art-item:hover img {
+transform: scale(1.05);
+}
+
+.art-title {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 10px;
+transform: translateY(100%);
+transition: transform 0.3s;
+}
+
+.art-item:hover .art-title {
+transform: translateY(0);
+}
+
+/* Expanded art item styles */
+.art-item.expanded {
+grid-column: 1 / -1; /* Span all columns */
+width: 100%;
+max-width: 100%;
+height: auto !important; /* Override any height constraints */
+min-height: auto !important;
+aspect-ratio: auto !important; /* Remove aspect ratio constraint */
+transition: all 0.3s ease;
+position: relative !important;
+display: block !important;
+z-index: 2;
+animation: expandArt 0.3s ease forwards;
+overflow: visible !important; /* Reset any overflow constraints */
+}
+
+@keyframes expandArt {
+from {
+  opacity: 0.7;
+  transform: scale(0.97);
+}
+to {
+  opacity: 1;
+  transform: scale(1);
+}
+}
+
+/* Container for all expanded content */
+.expanded-art-container {
+background-color: var(--card-bg);
+border: 1px solid var(--border-color);
+border-radius: 6px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+overflow: hidden;
+width: 100%;
+display: flex;
+flex-direction: column;
+}
+
+/* Header for expanded art with title and collapse button */
+/* Make entire header clickable */
+.expanded-art-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background-color: var(--header-bg);
+  border-bottom: 1px solid var(--border-color);
+  width: 100%;
+  cursor: pointer; /* Add cursor pointer to show it's clickable */
+  transition: background-color 0.2s ease;
+}
+
+.expanded-art-header:hover {
+  background-color: var(--card-bg); /* Slightly change background on hover */
+}
+
+.expanded-art-header h3 {
+color: var(--accent-color);
+margin: 0;
+font-size: 1.5rem;
+font-weight: 600;
+}
+
+.collapse-button {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: var(--tertiary-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: none; /* Let clicks pass through to the header */
+}
+
+.collapse-button:hover {
+background-color: rgba(255, 255, 255, 0.1);
+color: var(--secondary-color);
+}
+
+.collapse-button svg {
+width: 20px;
+height: 20px;
+transition: transform 0.2s ease;
+}
+
+.collapse-button:hover svg {
+transform: translateY(-2px);
+}
+
+/* Description section */
+.expanded-art-description {
+padding: 20px 20px 10px 20px;
+color: var(--text-color);
+line-height: 1.6;
+max-width: 900px;
+margin: 0 auto;
+width: 100%;
+}
+
+/* Gallery grid within expanded view - UPDATED FOR LARGER THUMBNAILS */
+.expanded-art-gallery {
+  display: grid;
+  /* Larger thumbnails with fewer columns */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  padding: 0 20px 20px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.expanded-image-container {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  cursor: zoom-in;
+  transition: transform 0.2s, box-shadow 0.2s;
+  aspect-ratio: 1 / 1;
+  /* Larger max-width for thumbnails */
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.expanded-image-container:hover {
+transform: translateY(-4px);
+box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.expanded-image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s ease;
+}
+
+.expanded-image-container:hover .expanded-image {
+transform: scale(1.05);
+}
+
+.expanded-image-caption {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 8px;
+font-size: 0.8rem; /* Smaller font for thumbnails */
+transform: translateY(100%);
+transition: transform 0.3s ease;
+}
+
+.expanded-image-container:hover .expanded-image-caption {
+transform: translateY(0);
+}
+
+/* Video section */
+.expanded-art-videos {
+padding: 0 20px 20px 20px;
+max-width: 900px;
+margin: 0 auto;
+width: 100%;
+}
+
+.expanded-video-container {
+width: 100%;
+position: relative;
+padding-bottom: 56.25%; /* 16:9 aspect ratio */
+height: 0;
+overflow: hidden;
+border-radius: 6px;
+border: 1px solid var(--border-color);
+margin-bottom: 16px;
+}
+
+.expanded-video {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+}
+
+.video-container {
+margin-top: 40px;
+text-align: center;
+}
+
+.video-container iframe {
+max-width: 100%;
+border-radius: 6px;
+box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+border: 1px solid var(--border-color);
+}
+
+.video-title {
+margin-top: 15px;
+font-size: 1.2rem;
+color: var(--accent-color);
+}
+
+.contact-grid {
+display: flex;
+justify-content: center;
+}
+
+.contact-box {
+border: 1px solid var(--border-color);
+padding: 20px;
+border-radius: 6px;
+background-color: var(--card-bg);
+max-width: 500px;
+width: 100%;
+}
+
+.contact-box h3 {
+color: var(--accent-color);
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
+text-align: center;
+}
+
+.contact-item {
+margin-bottom: 15px;
+display: flex;
+align-items: left;
+}
+
+.contact-label {
+color: var(--tertiary-color);
+margin-right: 15px;
+min-width: 24px;
+display: flex;
+align-items: center;
+}
+
+.social-links {
+display: flex;
+gap: 15px;
+margin-top: 20px;
+}
+
+.social-links a {
+width: 36px;
+height: 36px;
+background-color: rgba(88, 166, 255, 0.1); /* GitHub blue with transparency */
+color: var(--accent-color);
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+text-decoration: none;
+transition: all 0.2s;
+font-size: 1.2rem;
+}
+
+.social-links a:hover {
+background-color: rgba(88, 166, 255, 0.2);
+transform: translateY(-2px);
+}
+
+footer {
+text-align: center;
+padding: 30px 20px;
+background-color: var(--header-bg);
+color: var(--tertiary-color);
+border-top: 1px solid var(--border-color);
+margin-top: 40px;
+}
+
+/* Modal styles */
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.7);
+z-index: 1000;
+overflow: auto;
+padding: 20px;
+box-sizing: border-box;
+}
+
+.modal-content {
+background-color: var(--card-bg);
+margin: 5% auto;
+padding: 24px;
+border: 1px solid var(--border-color);
+border-radius: 6px;
+width: 80%;
+max-width: 800px;
+position: relative;
+animation: modalFadeIn 0.2s;
+box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+@keyframes modalFadeIn {
+from {opacity: 0; transform: translateY(-20px);}
+to {opacity: 1; transform: translateY(0);}
+}
+
+.close-modal {
+position: absolute;
+top: 15px;
+right: 20px;
+color: var(--tertiary-color);
+font-size: 24px;
+font-weight: bold;
+cursor: pointer;
+transition: color 0.2s;
+}
+
+.close-modal:hover {
+color: var(--secondary-color);
+}
+
+.modal-header {
+color: var(--accent-color);
+margin-bottom: 20px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(--border-color);
+font-weight: 600;
+}
+
+.modal-body {
+margin-bottom: 20px;
+}
+
+/* New styles for enhanced art gallery experience */
+.modal-gallery {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 15px;
+margin: 20px 0;
+}
+
+.modal-image-container {
+position: relative;
+overflow: hidden;
+border-radius: 6px;
+cursor: zoom-in;
+border: 1px solid var(--border-color);
+transition: transform 0.2s;
+}
+
+.modal-image-container:hover {
+transform: translateY(-5px);
+box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-image {
+width: 100%;
+height: 100%;
+object-fit: cover;
+transition: transform 0.3s;
+aspect-ratio: 1 / 1;
+}
+
+.modal-image-container:hover .modal-image {
+transform: scale(1.05);
+}
+
+.modal-image-caption {
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+background-color: rgba(13, 17, 23, 0.8);
+color: var(--text-color);
+padding: 8px;
+font-size: 0.9rem;
+transform: translateY(100%);
+transition: transform 0.3s;
+}
+
+.modal-image-container:hover .modal-image-caption {
+transform: translateY(0);
+}
+
+/* Better video embedding */
+.modal-video-container {
+width: 100%;
+margin: 20px 0;
+position: relative;
+padding-bottom: 56.25%; /* 16:9 aspect ratio */
+height: 0;
+overflow: hidden;
+}
+
+.modal-video {
+position: absolute;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+border-radius: 6px;
+border: 1px solid var(--border-color);
+}
+
+/* Lightbox styles */
+.lightbox {
+display: none;
+position: fixed;
+z-index: 2000;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.9);
+padding: 20px;
+box-sizing: border-box;
+}
+
+.lightbox-content {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+height: 100%;
+max-width: 90%;
+margin: 0 auto;
+position: relative;
+}
+
+.lightbox-image {
+max-height: 85vh;
+max-width: 100%;
+object-fit: contain;
+border: 1px solid var(--border-color);
+box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.lightbox-close {
+position: absolute;
+top: -40px;
+right: 0;
+color: #fff;
+font-size: 28px;
+font-weight: bold;
+cursor: pointer;
+z-index: 2010;
+}
+
+.lightbox-caption {
+color: #fff;
+margin-top: 15px;
+text-align: center;
+max-width: 80%;
+font-size: 1rem;
+}
+
+.lightbox-nav {
+display: flex;
+align-items: center;
+margin-top: 20px;
+}
+
+.lightbox-prev, .lightbox-next {
+background: rgba(0,0,0,0.5);
+border: 1px solid var(--border-color);
+color: #fff;
+padding: 8px 16px;
+margin: 0 20px;
+cursor: pointer;
+font-size: 18px;
+border-radius: 4px;
+}
+
+.lightbox-counter {
+color: #fff;
+font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav li {
+    width: 100%;
+    text-align: center;
+  }
+
+  #dynamic-header {
+    padding: 40px 20px;
+  }
+  
+  .header-title {
+    font-size: 2rem;
+  }
+
+  .tech-category-header h3 {
+    font-size: 1.1rem;
+  }
+  
+  .tech-projects {
+    grid-template-columns: 1fr;
+  }
+  
+  .tech-video-container,
+  .tech-projects {
+    padding: 16px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .github-link-container {
+    padding: 0 16px;
+  }
+
+  .art-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+    padding: 15px;
+  }
+
+  .modal-gallery {
+    grid-template-columns: 1fr;
+  }
+  
+  .project-section-title {
+    font-size: 1.1rem;
+  }
+  
+  .project-list li {
+    padding-left: 1.25rem;
+  }
+
+  .lightbox-content {
+    max-width: 100%;
+  }
+  
+  .lightbox-image {
+    max-height: 70vh;
+  }
+  
+  .modal-image-caption {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
+  
+  /* Responsive adjustments for expanded art view */
+  .expanded-art-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  
+  .expanded-image-container {
+    max-width: 220px;
+  }
+  
+  .expanded-art-header h3 {
+    font-size: 1.3rem;
+  }
+  
+  .expanded-art-description {
+    padding: 16px 16px 10px 16px;
+  }
+  
+  .expanded-art-videos {
+    padding: 0 16px 16px 16px;
+  }
+  
+}
+
+/* For smaller screens, reduce number of columns */
+@media (max-width: 480px) {
+  .expanded-art-gallery {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  
+  .expanded-image-container {
+    max-width: 160px;
+  }
+}
+
+
+<style>
+.github-link-container {
+  margin: 30px auto 0;
+  text-align: center;
+  max-width: 600px;
+}
+
+.github-link {
+  display: inline-block;
+  width: 100%;
+  text-decoration: none;
+  color: var(--text-color);
+  transition: transform 0.2s;
+}
+
+.github-link:hover {
+  transform: translateY(-3px);
+  text-decoration: none;
+}
+
+.github-link-content {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.github-link:hover .github-link-content {
+  border-color: var(--accent-color);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+}
+
+.github-icon {
+  color: var(--accent-color);
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+}
+
+.github-link-text {
+  flex: 1;
+  text-align: left;
+}
+
+.github-link-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin-bottom: 4px;
+}
+
+.github-link-description {
+  font-size: 14px;
+  color: var(--tertiary-color);
+}
+
+.github-arrow {
+  color: var(--accent-color);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.github-link:hover .github-arrow {
+  transform: translateX(4px);
+}
+
+
+/* Tech Section Collapsible Styles */
+.tech-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+
+/* Add this new style for a visual separator */
+.tech-category:not(:last-child)::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--border-color),
+    transparent
+  );
+  position: relative;
+  bottom: -12px; /* Half of the gap for centered positioning */
+}
+
+.tech-category:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tech-category-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: background-color 0.2s ease;
+}
+
+.tech-category-header:hover {
+  background-color: rgba(88, 166, 255, 0.05);
+}
+
+.tech-category-header h3 {
+  color: var(--accent-color);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.toggle-icon {
+  color: var(--accent-color);
+  transition: transform 0.3s ease;
+}
+
+.tech-category.active .toggle-icon {
+  transform: rotate(180deg);
+}
+
+.tech-category-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+
+.tech-category.active .tech-category-content {
+  max-height: 1500px; /* Large enough to accommodate content */
+}
+
+.tech-category.active .tech-category-header {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tech-video-container {
+  padding: 24px 24px 0;
+}
+
+.tech-projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 24px;
+}
+
+
+/* Animation for content */
+.tech-category-header {
+  position: relative;
+}
+
+.tech-category-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.tech-category-header:hover::after,
+.tech-category.active .tech-category-header::after {
+  width: 100%;
+}
