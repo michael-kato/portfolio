@@ -952,7 +952,7 @@ font-size: 0.9rem;
 
 
 .github-link-container {
-  margin: 30px auto 0;
+  margin: 10px auto 0;
   text-align: center;
   max-width: 600px;
 }
@@ -1130,9 +1130,6 @@ font-size: 0.9rem;
 
 
 @import url("https://webgl2fundamentals.org/webgl/resources/webgl-tutorials.css");
-body {
-  margin: 0;
-}
 canvas {
   width: 50vw;
   height: 50vh;
