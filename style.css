@@ -951,7 +951,6 @@ font-size: 0.9rem;
 }
 
 
-<style>
 .github-link-container {
   margin: 30px auto 0;
   text-align: center;
@@ -1127,4 +1126,15 @@ font-size: 0.9rem;
 .tech-category-header:hover::after,
 .tech-category.active .tech-category-header::after {
   width: 100%;
+}
+
+
+@import url("https://webgl2fundamentals.org/webgl/resources/webgl-tutorials.css");
+body {
+  margin: 0;
+}
+canvas {
+  width: 50vw;
+  height: 50vh;
+  display: block;
 }
