@@ -9,10 +9,11 @@
  * Many thanks to the authors for their hard work.
  */
 
-function main() {
+
+function initShaders() {
   // Get A WebGL context
   /** @type {HTMLCanvasElement} */
-  const canvas = document.querySelectorAll("#canvas");
+  const canvas = document.getElementById("canvas1");
   const gl = canvas.getContext("webgl2");
   if (!gl) {
     return;
@@ -157,4 +158,5 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ){
   requestAnimationFrame(render);
 }
 
-main();
+// Export the function so it can be used in other files
+window.initShaders = initShaders;
