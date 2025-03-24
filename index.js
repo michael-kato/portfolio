@@ -363,12 +363,12 @@ const projectData = {
     "art-shaders": {
       title: "Shaders",
       description: `
-        <p>Demo shaders copied from shadertoy.com, while I continue learning how to make my own. The embedding in a website is kinda cool though!</p>
+        <p>This is just an implementation of a shader from shadertoy.com, while I continue learning to make my own. Embedding it in a website is kinda cool though!</p>
       `,
       images: null,
       video: null,
       shaders: [
-        `<canvas id="canvas1" height="100" width="100" style="border:1px solid #000000;"></canvas>`]
+        `<canvas id="canvas1" height=100% width=100% style="border:1px solid #000000;"></canvas>`]
     }
 
   };
@@ -559,6 +559,8 @@ const projectData = {
         expandArtItem(this);
       });
     });
+    // redraw shaders (there can be only 1!)
+    initShaders();
   }
   
   
