@@ -363,7 +363,7 @@ const projectData = {
     "art-shaders": {
       title: "Shaders",
       description: `
-        <p>This is just an implementation of a shader from shadertoy.com, while I continue learning to make my own. Embedding it in a website is kinda cool though!</p>
+        <p>This is just an implementation of a shader by <a href=https://www.pouet.net/prod.php?which=57245]>Danilo Guanabara</a>, while I continue learning to fill this gallery with my own. Embedding it dyanmically in a website is pretty cool though!</p>
       `,
       images: null,
       video: null,
