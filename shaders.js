@@ -21,50 +21,44 @@ function initShaders() {
     }
 
     const vs = `#version 300 es
-     // an attribute is an input (in) to a vertex shader.
-     // It will receive data from a buffer
-     in vec4 a_position;
+    // an attribute is an input (in) to a vertex shader.
+    // It will receive data from a buffer
+    in vec4 a_position;
 
-     // all shaders have a main function
-     void main() {
-
-       // gl_Position is a special variable a vertex shader
-       // is responsible for setting
-       gl_Position = a_position;
-     }
-   `;
+    void main() {
+        // gl_Position is a special variable a vertex shader
+        // is responsible for setting
+        gl_Position = a_position;
+    }
+    `;
 
     const fs = `#version 300 es
-   precision highp float;
+    precision highp float;
 
-   uniform vec2 iResolution;
-   uniform vec2 iMouse;
-   uniform float iTime;
-#define t iTime
-#define r iResolution.xy
+    uniform vec2 iResolution;
+    uniform vec2 iMouse;
+    uniform float iTime;
+    #define t iTime
+    #define r iResolution.xy
 
-void mainImage( out vec4 fragColor, in vec2 fragCoord ){
-	vec3 c;
-	float l,z=t;
-	for(int i=0;i<3;i++) {
-		vec2 uv,p=fragCoord.xy/r;
-		uv=p;
-		p-=.5;
-		p.x*=r.x/r.y;
-		z+=.07;
-		l=length(p);
-		uv+=p/l*(sin(z)+1.)*abs(sin(l*9.-z-z));
-		c[i]=.01/length(mod(uv,1.)-.5);
-	}
-	fragColor=vec4(c/l,t);
-}
+    out vec4 outColor;
 
-   out vec4 outColor;
-
-   void main() {
-     mainImage(outColor, gl_FragCoord.xy);
-   }
-   `;
+    void main() {
+        vec3 c;
+        float l,z=t;
+        for(int i=0;i<3;i++) {
+            vec2 uv,p=gl_FragCoord.xy/r;
+            uv=p;
+            p-=.5;
+            p.x*=r.x/r.y;
+            z+=.07;
+            l=length(p);
+            uv+=p/l*(sin(z)+1.)*abs(sin(l*9.-z-z));
+            c[i]=.01/length(mod(uv,1.)-.5);
+        }
+        outColor=vec4(c/l,t);
+    }
+    `;
 
     // setup GLSL program
     const program = webglUtils.createProgramFromSources(gl, [vs, fs]);
