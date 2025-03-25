@@ -354,19 +354,6 @@ const projectData = {
       ],
       video: null
     }
-
-    ,
-    "art-shaders": {
-      title: "Shaders",
-      description: `
-        <p>This is just an implementation of a shader by <a href=https://www.pouet.net/prod.php?which=57245]>Danilo Guanabara</a>, while I continue learning to fill this gallery with my own. Embedding it dyanmically in a website is pretty cool though!</p>
-      `,
-      images: null,
-      video: null,
-      shaders: [
-        `<canvas id="canvas1" height=100% width=100% style="border:1px solid #000000;"></canvas>`]
-    }
-
   };
   
   

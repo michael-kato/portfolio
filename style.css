@@ -1135,3 +1135,11 @@ canvas {
   height: 50vh;
   display: block;
 }
+
+.canvas-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Adjust as needed */
+  width: 100%; /* Adjust as needed */
+}
