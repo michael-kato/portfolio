@@ -1,315 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href='style.css' rel='stylesheet' />
-<title>Michael Kato | Technical Artist</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Kato | Technical Artist</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<header id="dynamic-header">
-  <div class="header-background"></div>
-  <div class="header-content">
-    <h1 class="header-title">Michael Kato</h1>
-    <p class="header-subtitle">Technically an artist!</p>
-  </div>
-</header>
-
-<nav>
-<ul>
-<li><a href="#tech">Tech</a></li>
-<li><a href="#art">Art</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-</nav>
-
-<section id="about">
-<div class="container">
-<div class="section-header">
-<h2>About Me</h2>
-</div>
-
-<p style="margin-bottom: 20px;">I'm a Technical Artist with a decade of industry experience across gaming, AR/VR, and ML tech stacks. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient pipelines to help artist workflows and fill the gaps in engineering where small nudges can have outsized impacts.</p>
-
-<p style="margin-bottom: 20px;">In a typical work day, I develop robust pipelines, optimize performance, and foster an environment of learning and collaboration. I'm good at translating technical lingo between disciplines, and helping projects achieve long and short term milestones.</p>
-
-<p style="margin-bottom: 20px;">I'm passionate about collaborative problem-solving and work closely with team leads to identify and address technical challenges before they impact production. My experience and expertise allows me to provide valuable technical leadership which fuels my primary goal of helping others succeed.</p>
-
-</div>
-</section>
-
-<section id="tech">
-  <div class="container">
-    <div class="section-header">
-      <h2>Tech</h2>
+  <header id="dynamic-header">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <h1 class="header-title">Michael Kato</h1>
+      <p class="header-subtitle">Technical Artist</p>
     </div>
-  
-    <!-- Collapsible Tech Categories -->
-    <div class="tech-categories">
-      <!-- Category 1: Performance Tools -->
-      <div class="tech-category">
-        <div class="tech-category-header">
-          <h3>Meta Horizon Worlds</h3>
-          <div class="toggle-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="#tech">Tech</a></li>
+      <li><a href="#art">Art</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="about">
+      <div class="container">
+        <div class="section-header">
+          <h2>About Me</h2>
         </div>
-        <div class="tech-category-content">
-          <div class="tech-video-container">
-            <iframe width="100%" height="350" src="https://www.youtube.com/embed/02kCEurWkqU" title="Horizon Worlds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="tech-projects">
-              <!-- Project 1: Performance Automation Framework -->
-              <div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance,Unity">
+        <div class="about-content">
+          <p>I'm a Technical Artist with a decade of industry experience across gaming, AR/VR, and ML tech stacks. Throughout my career at Meta, Apple, and Sledgehammer Games, I've focused on creating efficient pipelines to help artist workflows and fill the gaps in engineering where small nudges can have outsized impacts.</p>
+          <p>In a typical work day, I develop robust pipelines, optimize performance, and foster an environment of learning and collaboration. I'm good at translating technical lingo between disciplines, and helping projects achieve long and short term milestones.</p>
+          <p>I'm passionate about collaborative problem-solving and work closely with team leads to identify and address technical challenges before they impact production. My experience and expertise allows me to provide valuable technical leadership which fuels my primary goal of helping others succeed.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="tech">
+      <div class="container">
+        <div class="section-header">
+          <h2>Tech</h2>
+        </div>
+        
+        <div class="tech-categories">
+          <!-- Meta Horizon Worlds -->
+          <div class="tech-category">
+            <div class="tech-category-header">
+              <h3>Meta Horizon Worlds</h3>
+              <div class="toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="tech-category-content">
+              <div class="tech-video-container">
+                <iframe width="100%" height="350" src="https://www.youtube.com/embed/02kCEurWkqU" title="Horizon Worlds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div class="tech-projects">
+                <div class="project-card" id="project-perf-framework" data-tags="Python,C#,Performance,Unity">
                   <h3 class="project-header">Performance Automation Framework</h3>
                   <p class="project-description">Collaborated with lead engineers to develop an instrumentation and automation framework for tracking performance in Horizon Worlds.</p>
                   <div class="project-tags">
-                      <span class="project-tag">Python</span>
-                      <span class="project-tag">Performance</span>
-                      <span class="project-tag">VR</span>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Performance</span>
+                    <span class="project-tag">VR</span>
                   </div>
-              </div>
-              
-              <!-- Project 2: Performance Visualization Dashboards -->
-              <div class="project-card" id="project-perf-dashboards" data-tags="SQL,Data,Visualization">
+                </div>
+                
+                <div class="project-card" id="project-perf-dashboards" data-tags="SQL,Data,Visualization">
                   <h3 class="project-header">Performance Visualization Dashboards</h3>
                   <p class="project-description">Created configurable performance dashboards displaying Horizon Worlds live production, automation, and internal testing data, which helped teams tackle regressions more effectively.</p>
                   <div class="project-tags">
-                      <span class="project-tag">Data Visualization</span>
-                      <span class="project-tag">Python</span>
-                      <span class="project-tag">Performance</span>
+                    <span class="project-tag">Data Visualization</span>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Performance</span>
                   </div>
+                </div>
               </div>
+            </div>
+          </div>
+
+          <!-- Apple - Synthetic Data -->
+          <div class="tech-category">
+            <div class="tech-category-header">
+              <h3>Apple - Synthetic Data</h3>
+              <div class="toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="tech-category-content">
+              <div class="tech-video-container">
+                <iframe width="100%" height="350" src="https://www.youtube.com/embed/TX9qSaGXFyg" title="Apple Vision Pro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div class="tech-projects">
+                <div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
+                  <h3 class="project-header">Procedural Scene Generation</h3>
+                  <p class="project-description">Developed procedural scene generation systems for Apple Vision Pro training data. Created semi-randomized variations of prebuilt scenes to generate hundreds of unique training sets.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Maya</span>
+                    <span class="project-tag">Procedural</span>
+                  </div>
+                </div>
+
+                <div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation">
+                  <h3 class="project-header">Asset Validation QA Tools</h3>
+                  <p class="project-description">Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets that accelerated integration speed by validating models, textures, and metadata.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Pipeline</span>
+                    <span class="project-tag">Quality Assurance</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sledgehammer Games -->
+          <div class="tech-category">
+            <div class="tech-category-header">
+              <h3>Sledgehammer Games</h3>
+              <div class="toggle-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </div>
+            </div>
+            <div class="tech-category-content">
+              <div class="tech-video-container">
+                <iframe width="100%" height="350" src="https://www.youtube.com/embed/D4Q_XYVescc" title="Call of Duty: WWII" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+              <div class="tech-projects">
+                <div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
+                  <h3 class="project-header">LOD Generation Pipeline</h3>
+                  <p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty: WWII, replacing the need for (almost) any manually authored LODs.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">C++</span>
+                    <span class="project-tag">C#</span>
+                    <span class="project-tag">Optimization</span>
+                  </div>
+                </div>
+                
+                <div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization">
+                  <h3 class="project-header">Edge Cleanup Tool</h3>
+                  <p class="project-description">Created a Maya tool that detects non-optimal edges/vertices in regards to performance. The tool focuses on edges that can be removed or softened without affecting the look of the model.</p>
+                  <div class="project-tags">
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Maya</span>
+                    <span class="project-tag">Optimization</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-          
-  
-      <div class="tech-category">
-        <div class="tech-category-header">
-          <h3>Apple - Synthetic Data</h3>
-          <div class="toggle-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
+
+        <!-- GitHub Link -->
+        <div class="github-link-container">
+          <a href="https://github.com/michael-kato" target="_blank" class="github-link">
+            <div class="github-link-content">
+              <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              <div class="github-link-text">
+                <span class="github-link-title">More Projects</span>
+                <span class="github-link-description">Check out my GitHub!</span>
+              </div>
+              <svg class="github-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="art">
+      <div class="container">
+        <div class="section-header">
+          <h2>Art</h2>
+        </div>
+
+        <div class="art-grid">
+          <div class="art-item" id="art-escape-game">
+            <img src="http://i.imgur.com/UGUc4yz.jpg" alt="Escape Game">
+            <div class="art-title">Escape From Nuckinfutts Factory</div>
+          </div>
+
+          <div class="art-item" id="art-mod-props">
+            <img src="http://i.imgur.com/DYKhtLU.jpg" alt="No More Room in Hell">
+            <div class="art-title">No More Room in Hell</div>
+          </div>
+
+          <div class="art-item" id="art-school-work">
+            <img src="http://i.imgur.com/DClkapV.jpg" alt="School Work">
+            <div class="art-title">School Projects</div>
+          </div>
+
+          <div class="art-item" id="art-personal">
+            <img src="https://i.imgur.com/AKTrC.png" alt="Personal Work">
+            <div class="art-title">Personal Work</div>
+          </div>
+
+          <div class="art-item" id="art-speed-challenge">
+            <img src="https://i.imgur.com/tiUt0.png" alt="Speed Modelling">
+            <div class="art-title">Timed Modelling Challenges</div>
           </div>
         </div>
-        <div class="tech-category-content">
-          <div class="tech-video-container">
-            <iframe width="100%" height="350" src="https://www.youtube.com/embed/TX9qSaGXFyg" title="Apple Vision Pro" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="tech-projects">
-            <!-- Project 3: Procedural Scene Generation -->
-            <div class="project-card" id="project-proc-scene" data-tags="Python,Maya,Pipeline,Workflow">
-              <h3 class="project-header">Procedural Scene Generation</h3>
-              <p class="project-description">Developed procedural scene generation systems for Apple Vision Pro training data. Created semi-randomized variations of prebuilt scenes to generate hundreds of unique training sets.</p>
-              <div class="project-tags">
-                  <span class="project-tag">Python</span>
-                  <span class="project-tag">Maya</span>
-                  <span class="project-tag">Procedural</span>
-              </div>
+
+        <div class="video-container">
+          <h3 class="video-title">Animations</h3>
+          <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animations" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-header">
+          <h2>Contact Me</h2>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-box">
+            <h3>Get In Touch</h3>
+
+            <div class="contact-item">
+              <div class="contact-label">📧 Email:</div>
+              <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
             </div>
 
-            <!-- Project 4: Asset Validation QA Tools -->
-            <div class="project-card" id="project-asset-qa" data-tags="Python,Pipeline,Automation">
-            <h3 class="project-header">Asset Validation QA Tools</h3>
-            <p class="project-description">Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets that accelerated integration speed by validating models, textures, and metadata.</p>
-            <div class="project-tags">
-              <span class="project-tag">Python</span>
-              <span class="project-tag">Pipeline</span>
-              <span class="project-tag">Quality Assurance</span>
+            <div class="contact-item">
+              <div class="contact-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
+              <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
             </div>
-            </div>
-          </div>
-        </div>
 
-  
-      <div class="tech-category">
-        <div class="tech-category-header">
-          <h3>Sledgehammer Games</h3>
-          <div class="toggle-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </div>
-        </div>
-        <div class="tech-category-content">
-          <div class="tech-video-container">
-            <iframe width="100%" height="350" src="https://www.youtube.com/embed/D4Q_XYVescc" title="Call of Duty: WWII" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            <iframe width="100%" height="350" src="https://www.youtube.com/embed/bj3-RsyJKfA" title="Call of Duty: Advanced Warfare" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div class="tech-projects">
-            <!-- Project 5: LOD Generation Pipeline -->
-            <div class="project-card" id="project-lod-pipeline" data-tags="C++,C#,Pipeline,Optimization">
-              <h3 class="project-header">LOD Generation Pipeline</h3>
-              <p class="project-description">Integrated a proprietary LOD generation algorithm into Sledgehammer Games' asset pipeline for Call of Duty: WWII, replacing the need for (almost) any manually authored LODs.</p>
-              <div class="project-tags">
-                  <span class="project-tag">C++</span>
-                  <span class="project-tag">C#</span>
-                  <span class="project-tag">Optimization</span>
-              </div>
-              </div>
-              
-              <!-- Project 6: Edge Cleanup Tool -->
-              <div class="project-card" id="project-edge-cleanup" data-tags="Python,Maya,Optimization">
-              <h3 class="project-header">Edge Cleanup Tool</h3>
-              <p class="project-description">Created a Maya tool that detects non-optimal edges/vertices in regards to performance. The tool focuses on edges that can be removed or softened without affecting the look of the model.</p>
-              <div class="project-tags">
-                  <span class="project-tag">Python</span>
-                  <span class="project-tag">Maya</span>
-                  <span class="project-tag">Optimization</span>
+            <div class="contact-item">
+              <div class="contact-label">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
+              <div><a href="https://github.com/michael-kato" target="_blank">github.com/michael-kato</a></div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-</div>
-</div>
+    </section>
 
-<!-- GitHub Link Section HTML -->
-<div class="github-link-container">
-  <a href="https://github.com/michael-kato" target="_blank" class="github-link">
-    <div class="github-link-content">
-      <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-      </svg>
-      <div class="github-link-text">
-        <span class="github-link-title">More Projects</span>
-        <span class="github-link-description">Check out my GitHub!</span>
+  </main>
+
+  <!--
+  <div class="section-header">
+    <a href="test.html">Test</a>
+  </div>
+  -->
+
+  <footer>
+    <p>&copy; 2025 Michael Kato. All rights reserved.</p>
+  </footer>
+
+  <!-- Modal container for project details -->
+  <div id="project-modal" class="modal">
+    <!-- Modal content will be dynamically inserted here -->
+  </div>
+
+  <!-- Modal container for art details -->
+  <div id="art-modal" class="modal">
+    <!-- Art modal content will be dynamically inserted here -->
+  </div>
+
+  <!-- Lightbox container for fullscreen images -->
+  <div id="lightbox-container" class="lightbox">
+    <div class="lightbox-content">
+      <span class="lightbox-close">&times;</span>
+      <img id="lightbox-image" class="lightbox-image">
+      <div class="lightbox-caption"></div>
+      <div class="lightbox-nav">
+        <button class="lightbox-prev">←</button>
+        <span class="lightbox-counter"></span>
+        <button class="lightbox-next">→</button>
       </div>
-      <svg class="github-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12"></line>
-        <polyline points="12 5 19 12 12 19"></polyline>
-      </svg>
-    </div>
-  </a>
-</div>
-
-
-<section id="art">
-<div class="container">
-<div class="section-header">
-<h2>Art</h2>
-</div>
-
-<div class="art-grid">
-  <!-- Art Item 1 -->
-  <div class="art-item" id="art-escape-game">
-      <img src="http://i.imgur.com/UGUc4yz.jpg" alt="Escape Game">
-      <div class="art-title">Escape From Nuckinfutts Factory</div>
-  </div>
-
-  <!-- Art Item 2 -->
-  <div class="art-item" id="art-mod-props">
-      <img src="http://i.imgur.com/DYKhtLU.jpg" alt="No More Room in Hell">
-      <div class="art-title">No More Room in Hell</div>
-  </div>
-
-  <!-- Art Item 3 -->
-  <div class="art-item" id="art-school-work">
-      <img src="http://i.imgur.com/DClkapV.jpg" alt="School Work">
-      <div class="art-title">School Projects</div>
-  </div>
-
-  <!-- Art Item 4 -->
-  <div class="art-item" id="art-personal">
-      <img src="https://i.imgur.com/AKTrC.png" alt="Personal Work">
-      <div class="art-title">Personal Work</div>
-  </div>
-
-  <!-- Art Item 5 -->
-  <div class="art-item" id="art-speed-challenge">
-      <img src="https://i.imgur.com/tiUt0.png" alt="Speed Modelling">
-      <div class="art-title">Timed Modelling Challenges</div>
-  </div>
-
-  <!-- Art Item 6 shaders -->
-
-</div>
-
-<div class="video-container">
-    <h3 class="video-title">Animations</h3>
-    <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animations" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-</div>
-</div>
-</section>
-
-<section id="contact">
-<div class="container">
-<div class="section-header">
-<h2>Contact Me</h2>
-</div>
-
-<div class="contact-grid">
-<div class="contact-box">
-<h3>Get In Touch</h3>
-
-<div class="contact-item">
-    <div class="contact-label">📧 Email:</div>
-    <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
-</div>
-
-<div class="contact-item">
-    <div class="contact-label">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
-    <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
-</div>
-
-<div class="contact-item">
-    <div class="contact-label">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
-    <div><a href="https://github.com/michael-kato" target="_blank">github.com/michael-kato</a></div>
-</div>
-
-</div>
-</div>
-</section>
-
-
-<div class="section-header" >
-  <p>Just a cool shader for your viewing pleasure called Protean clouds. Created by <a href=https://www.shadertoy.com/view/3l23Rh]> nimitz (twitter: @stormoid)</a>.</p>
-  <p>Embedding shaders dynamically in a website is pretty cool so I had to try it!</p>
-  <div class="canvas-container">
-    <canvas id="canvas1" height=100% width=100% style="border:1px solid #000000;" justify-content: center align-items: center></canvas>
-  </div>
-</div>
-
-<footer>
-<p>&copy; 2025 Michael Kato. All rights reserved.</p>
-</footer>
-
-<!-- Modal container for project details -->
-<div id="project-modal" class="modal">
-  <!-- Modal content will be dynamically inserted here -->
-</div>
-
-<!-- Modal container for art details -->
-<div id="art-modal" class="modal">
-  <!-- Art modal content will be dynamically inserted here -->
-</div>
-
-<!-- Lightbox container for fullscreen images -->
-<div id="lightbox-container" class="lightbox">
-  <div class="lightbox-content">
-    <span class="lightbox-close">&times;</span>
-    <img id="lightbox-image" class="lightbox-image">
-    <div class="lightbox-caption"></div>
-    <div class="lightbox-nav">
-      <button class="lightbox-prev">←</button>
-      <span class="lightbox-counter"></span>
-      <button class="lightbox-next">→</button>
     </div>
   </div>
-</div>
 
-
+  <!-- Scripts -->
+  <script src="portfolio-data.js"></script>
+  <script src="shaders.js"></script>
+  <script src="index.js"></script>
 </body>
-
-
-<!-- Scripts! -->
-<script src="https://webgl2fundamentals.org/webgl/resources/webgl-utils.js"></script>
-<script src="shaders.js"></script>
-<script src='index.js'></script>
+</html>
