@@ -324,10 +324,6 @@ const projectData = {
           caption: "Texture"
         },
         {
-          src: "https://i.imgur.com/OI2t7.png",
-          caption: "Challenge prompt was 'Land Vehicles' so I figured I'd zig while everyone else zagged."
-        },
-        {
           src: "https://i.imgur.com/xkucH.jpg",
           caption: "Garage"
         },
