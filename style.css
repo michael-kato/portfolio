@@ -20,7 +20,7 @@
 
 body {
   background-color: var(--bg-color);
-  background-image: 
+  background-image:
     linear-gradient(to right, var(--bg-pattern) 1px, transparent 1px),
     linear-gradient(to bottom, var(--bg-pattern) 1px, transparent 1px);
   background-size: 20px 20px;
@@ -102,7 +102,7 @@ nav {
   background-color: var(--card-bg);
   padding: 15px 20px;
   margin: 0;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -182,12 +182,10 @@ section {
   display: block;
   width: 100%;
   height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    var(--border-color),
-    transparent
-  );
+  background: linear-gradient(to right,
+      transparent,
+      var(--border-color),
+      transparent);
   position: relative;
   bottom: -12px;
 }
@@ -280,7 +278,7 @@ section {
 
 .project-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border-color: var(--accent-color);
 }
 
@@ -346,7 +344,7 @@ section {
 
 .github-link:hover .github-link-content {
   border-color: var(--accent-color);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .github-icon {
@@ -405,7 +403,7 @@ section {
 
 .art-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   border-color: var(--accent-color);
 }
 
@@ -454,6 +452,7 @@ section {
     opacity: 0.7;
     transform: scale(0.97);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -609,7 +608,7 @@ section {
 .video-container iframe {
   max-width: 100%;
   border-radius: 6px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   border: 1px solid var(--border-color);
 }
 
@@ -659,20 +658,23 @@ section {
 
 /* ===== Shader Demo Section ===== */
 .canvas-container {
-  width: 100%;
+
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
 
-#shader-canvas {
+.code {
+  max-width: 100%;
+  overflow-x: auto;
+  background-color: var(--card-bg);
   border-radius: 6px;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 14px;
   border: 1px solid var(--border-color);
-  width: 100%;
-  max-width: 800px;
-  aspect-ratio: 16 / 9;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
+
 
 /* ===== Modal & Lightbox ===== */
 .modal {
@@ -699,12 +701,19 @@ section {
   max-width: 800px;
   position: relative;
   animation: modalFadeIn 0.2s;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 @keyframes modalFadeIn {
-  from {opacity: 0; transform: translateY(-20px);}
-  to {opacity: 1; transform: translateY(0);}
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .close-modal {
@@ -753,7 +762,7 @@ section {
 
 .modal-image-container:hover {
   transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
 .modal-image {
@@ -794,7 +803,7 @@ section {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.9);
+  background-color: rgba(0, 0, 0, 0.9);
   padding: 20px;
   box-sizing: border-box;
 }
@@ -815,7 +824,7 @@ section {
   max-width: 100%;
   object-fit: contain;
   border: 1px solid var(--border-color);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .lightbox-close {
@@ -843,8 +852,9 @@ section {
   margin-top: 20px;
 }
 
-.lightbox-prev, .lightbox-next {
-  background: rgba(0,0,0,0.5);
+.lightbox-prev,
+.lightbox-next {
+  background: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border-color);
   color: #fff;
   padding: 8px 16px;
@@ -884,7 +894,7 @@ footer {
   #dynamic-header {
     padding: 40px 20px;
   }
-  
+
   .header-title {
     font-size: 2rem;
   }
@@ -892,11 +902,11 @@ footer {
   .tech-category-header h3 {
     font-size: 1.1rem;
   }
-  
+
   .tech-projects {
     grid-template-columns: 1fr;
   }
-  
+
   .art-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   }
@@ -910,26 +920,40 @@ footer {
   .modal-gallery {
     grid-template-columns: 1fr;
   }
-  
+
   .lightbox-content {
     max-width: 100%;
   }
-  
+
   .lightbox-image {
     max-height: 70vh;
   }
-  
+
   .expanded-art-gallery {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 12px;
   }
-  
+
   .expanded-image-container {
     max-width: 220px;
   }
-  
+
   .expanded-art-header h3 {
     font-size: 1.3rem;
+  }
+
+  .shader-layout {
+    flex-direction: column;
+  }
+
+  #tutorial-shader-canvas {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+  }
+
+  .code {
+    font-size: 12px;
   }
 }
 
@@ -938,12 +962,9 @@ footer {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 10px;
   }
-  
+
   .expanded-image-container {
     max-width: 160px;
   }
-  
-  #shader-canvas {
-    aspect-ratio: 4 / 3;
-  }
+
 }
