@@ -12,7 +12,7 @@ const projectData = {
   
   <p>The framework enabled us to:</p>
   <ul class="project-list">
-    <li>Track dozens of high and low-level code subsystems like physics, script, and rendering</li>
+    <li>Track dozens of high and low-level code subsystems like physics, script, animation, rendering, etc.</li>
     <li>Run automated benchmarks on a scheduled cadence and to test new code submissions</li>
     <li>Detect issues within hours of code changes and provide profiler artifacts as a downloadable file</li>
     <li>Proactively address performance problems before weekly releases went live</li>
@@ -22,19 +22,19 @@ const projectData = {
     images: null,
     video: null
   },
-  
+
   "project-perf-dashboards": {
     title: "Performance Visualization Dashboards",
     description: `
 <div class="project-section">
-  <p>Horizon Worlds generated massive performance data from multiple sources—instrumentation, automation, playtests, and production. To make this information accessible to all team members, I developed interactive dashboards that transformed our performance workflow.</p>
+  <p>Horizon Worlds collected a massive amount of performance data from multiple sources—automation, developer testing, and production. To make this information accessible to all team members, I created lots of dashboards showing performance trends.</p>
   
-  <p>These visualization tools:</p>
+  <p>These dashboards:</p>
   <ul class="project-list">
-    <li>Enabled users to drill down in many performance dimensions including world, player count, device type, time of day, etc.</li>
+    <li>Enabled users to filter down performance queries including by world, player count, device type, time of day, etc.</li>
     <li>Automatically detected regressions and emailed alerts to relevant stakeholders</li>
-    <li>Enabled data-driven prioritization of optimizations and helped teams demonstrate impact of performance work</li>
     <li>Helped non-technical stakeholders understand and share performance trends</li>
+    <li>Enabled data-driven prioritization of optimizations and helped teams demonstrate impact of performance work</li>
   </ul>
 </div>
   `,
@@ -44,12 +44,12 @@ const projectData = {
     ],
     video: null
   },
-  
+
   "project-asset-qa": {
     title: "Asset Validation QA Tools",
     description: `
 <div class="project-section">
-  <p>At Apple, we processed thousands of 3D models from internal teams and external vendors. Quality issues frequently caused pipeline failures, wasting resources during training data generation. I developed validation tools that transformed our asset pipeline.</p>
+  <p>At Apple, we processed thousands of 3D models from internal teams and external vendors. Quality issues frequently caused pipeline failures, wasting resources during training data generation and artist time. Together with the TA team, we developed validation tools that helped smooth things out.</p>
   
   <p>These QA tools:</p>
   <ul class="project-list">
@@ -62,12 +62,12 @@ const projectData = {
     images: null,
     video: null
   },
-  
+
   "project-proc-scene": {
     title: "Procedural Scene Generation",
     description: `
 <div class="project-section">
-  <p>Apple Vision Pro required massive amounts of diverse visual scenes to train it's visual recognition capability. I architected a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
+  <p>Apple Vision Pro required massive amounts of photoreal images to train it's visual recognition. With guidance from a senior TA, I developed a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
   
   <p>The system:</p>
   <ul class="project-list">
@@ -78,16 +78,16 @@ const projectData = {
     images: null,
     video: null
   },
-  
+
   "project-lod-pipeline": {
     title: "LOD Generation Pipeline",
     description: `
 <div class="project-section">
-  <p>For Call of Duty: WWII, creating multiple LODs for thousands of assets consumed significant artist resources with inconsistent results. I integrated and customized a proprietary LOD generation system that saved hundreds, possibly thousands of hours of artist time.</p>
+  <p>For Call of Duty: WWII, creating multiple LODs for thousands of assets consumed significant amounts of time for artists and is a supremely unfun thing to do. I integrated and customized a proprietary LOD generation system developed by our central technology group that saved hundreds, possibly thousands of hours of artists' lives and enabled them to go home to their families with their sanity intact.</p>
   
-  <p>This automated system:</p>
+  <p>This LOD system:</p>
   <ul class="project-list">
-    <li>Reduced LOD creation time from hours to minutes per asset, so much so that I was able to effectively add LODs to nearly the entire game</li>
+    <li>Reduced LOD creation time from hours to minutes per asset, so much so that by myself I was able to effectively add LODs the majority of an entire AAA game, with time to spare</li>
     <li>Enabled more consistent and aggressive LODs compared to what artists typically author manually</li>
     <li>Maintained consistent visual quality across LOD transitions, often better than manually authored</li>
     <li>Helped achieve 60fps across all game modes and console platforms</li>
@@ -97,7 +97,7 @@ const projectData = {
     images: null,
     video: null
   },
-  
+
   "project-edge-cleanup": {
     title: "Edge Cleanup Tool",
     description: `
@@ -106,7 +106,7 @@ const projectData = {
   
   <p>This optimization tool:</p>
   <ul class="project-list">
-    <li>Automatically smoothed normals which resulted in lower vertex counts in engine, while our engineers figured out a more permanent solution</li>
+    <li>Automatically smooths normals which results in lower vertex counts on the GPU</li>
     <li>Uses adjustable thresholds to determine which edges to remove</li>
     <li>Maintains UV mapping and material boundaries during optimization</li>
     <li>Became a standard part of our asset export process</li>
@@ -167,7 +167,7 @@ const artData = {
     ],
     video: "https://www.youtube.com/watch?v=UBwfiO89y6c"
   },
-  
+
   "art-mod-props": {
     title: "Half-Life 2 Mod Props",
     description: `
@@ -221,7 +221,7 @@ const artData = {
     ],
     video: null
   },
-  
+
   "art-school-work": {
     title: "Misc School Work",
     description: `
@@ -275,7 +275,7 @@ const artData = {
     ],
     video: "https://www.youtube.com/watch?v=2k-cztTwVzU"
   },
-  
+
   "art-personal": {
     title: "Misc Personal Work",
     description: `
@@ -312,7 +312,7 @@ const artData = {
       "https://www.youtube.com/watch?v=9AEscHkULjU"
     ]
   },
-  
+
   "art-speed-challenge": {
     title: "2-Hour Speed Challenges",
     description: `
