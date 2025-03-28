@@ -29,48 +29,46 @@
         <div class="section-header">
           <h2>Shaders</h2>
           <p></p>
-          <p>Baby's first shader - <a href="https://www.shadertoy.com/view/WXfGD7">View on Shadertoy</a></p>
-          <p>Entirely math-driven, no textures or external assets</p>
+          <p><a href="https://www.shadertoy.com/view/WXfGD7">My first shader!</a></p>
+          <p>Entirely math-driven, code below and at the link.</p>
         </div>
-
         <div class="canvas-container">
-          <canvas id="tutorial-shader-canvas" height="400" width="700"></canvas>
+          <canvas id="tutorial-shader-canvas"></canvas>
         </div>
-
         <div class="code">
           <pre><code>
-              void mainImage( out vec4 fragColor, in vec2 fragCoord )
-              {
-                  // Normalized pixel coordinates (from 0 to 1)
-                  vec2 uv = fragCoord/iResolution.xy;
-                  vec2 q = uv - vec2(0.3, 0.7);
-              
-                  // background
-                  vec3 col = mix(vec3(1.0, 0.4, 0.1), vec3(1.0, 0.8, 0.3), sqrt(uv.y));
-                  
-                  float petals = 0.1*cos(atan(q.x, q.y) * 9. + 30.0*q.x+sin(iTime));
-                  float ro = 0.2 + petals;
-                  col.r -= .5 - smoothstep(ro, ro+0.01, length(q));
-                  // trunk
-                  ro = 0.015;
-                  ro += 0.002*cos(120.0*q.y);
-                  ro += exp(-28.0*uv.y);
-                  col *= 1.0 - (1.0-smoothstep(ro, ro+0.005, abs(q.x+-0.25*sin(2.0*q.y)))) * (1.0 - smoothstep(-0.2,0.0,q.y));
-              
-                  // look I'm shading!
-                  vec2 sun = uv - vec2(0.9,0.9);
-                  sun.y *= 0.7;
-                  ro = smoothstep(0.2, 0.2, length(sun));
-                  col /= ro;
-                  
-                  // water
-                  vec2 w = uv - vec2(.5, 0.5);
-                  float wave = sin(iTime) * cos(sin(w.x+10.0)+sin(10.0) * w.x);
-                  col.b /= 1.0 - (1.0-smoothstep(wave,wave, w.y)) / (1.0 - smoothstep(sin(-0.4),sin(-0.4),w.y));
-              
-                  // Output to screen
-                  fragColor = vec4(col,1.0);
-              }
+  void mainImage( out vec4 fragColor, in vec2 fragCoord )
+  {
+      // Normalized pixel coordinates (from 0 to 1)
+      vec2 uv = fragCoord/iResolution.xy;
+      vec2 q = uv - vec2(0.3, 0.7);
+
+      // background
+      vec3 col = mix(vec3(1.0, 0.4, 0.1), vec3(1.0, 0.8, 0.3), sqrt(uv.y));
+      
+      float petals = 0.1*cos(atan(q.x, q.y) * 9. + 30.0*q.x+sin(iTime));
+      float ro = 0.2 + petals;
+      col.r -= .5 - smoothstep(ro, ro+0.01, length(q));
+      // trunk
+      ro = 0.015;
+      ro += 0.002*cos(120.0*q.y);
+      ro += exp(-28.0*uv.y);
+      col *= 1.0 - (1.0-smoothstep(ro, ro+0.005, abs(q.x+-0.25*sin(2.0*q.y)))) * (1.0 - smoothstep(-0.2,0.0,q.y));
+
+      // look I'm shading!
+      vec2 sun = uv - vec2(0.9,0.9);
+      sun.y *= 0.7;
+      ro = smoothstep(0.2, 0.2, length(sun));
+      col /= ro;
+      
+      // water
+      vec2 w = uv - vec2(.5, 0.5);
+      float wave = sin(iTime) * cos(sin(w.x+10.0)+sin(10.0) * w.x);
+      col.b /= 1.0 - (1.0-smoothstep(wave,wave, w.y)) / (1.0 - smoothstep(sin(-0.4),sin(-0.4),w.y));
+
+      // Output to screen
+      fragColor = vec4(col,1.0);
+  }
             </code></pre>
         </div>
       </div>

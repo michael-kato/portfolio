@@ -658,18 +658,25 @@ section {
 
 /* ===== Shader Demo Section ===== */
 .canvas-container {
-
   display: flex;
   justify-content: center;
   margin: 20px 0;
 }
+
+
+#tutorial-shader-canvas {
+  width: 700px;
+  height: auto;
+  aspect-ratio: 16/9;
+  border: 1px solid var(--border-color);
+}
+
 
 .code {
   max-width: 100%;
   overflow-x: auto;
   background-color: var(--card-bg);
   border-radius: 6px;
-  padding: 15px;
   margin-top: 20px;
   font-size: 14px;
   border: 1px solid var(--border-color);
@@ -940,20 +947,6 @@ footer {
 
   .expanded-art-header h3 {
     font-size: 1.3rem;
-  }
-
-  .shader-layout {
-    flex-direction: column;
-  }
-
-  #tutorial-shader-canvas {
-    width: 100%;
-    height: auto;
-    aspect-ratio: 16/9;
-  }
-
-  .code {
-    font-size: 12px;
   }
 }
 
