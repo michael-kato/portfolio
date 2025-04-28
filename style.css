@@ -962,3 +962,36 @@ footer {
   }
 
 }
+
+.resume-download {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: var(--accent-color);
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);
+}
+
+.download-button:hover {
+  background-color: #7ab5ff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(88, 166, 255, 0.4);
+  text-decoration: none;
+}
+
+.download-button svg {
+  transition: transform 0.2s ease;
+}
+
+.download-button:hover svg {
+  transform: translateY(2px);
+}
