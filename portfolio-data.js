@@ -67,11 +67,13 @@ const projectData = {
     title: "Procedural Scene Generation",
     description: `
 <div class="project-section">
-  <p>Apple Vision Pro required massive amounts of photoreal images to train it's visual recognition. With guidance from a senior TA, I developed a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
+  <p>Apple Vision Pro required massive amounts of photoreal images to train it's visual recognition. Working with a lead TA, I developed a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
   
   <p>The system:</p>
   <ul class="project-list">
-    <li>Procedurally modified the floorplan of existing interior scenes and dynamically extruded new walls, then deleted assets clipping through the space, and saved incremental files for offline rendering</li>
+    <li>Procedurally modified the floorplan of existing interior scenes and dynamically extruded new walls, windows, and crevices</li>
+    <li>Randomly repositioned furniture and props to create new arrangements</li>
+    <li>Automatically submitted to perforce, Deadline for rendering, and an email announcement to key stakeholders</li>
   </ul>
 </div>
   `,
@@ -87,10 +89,9 @@ const projectData = {
   
   <p>This LOD system:</p>
   <ul class="project-list">
-    <li>Reduced LOD creation time from hours to minutes per asset, so much so that by myself I was able to effectively add LODs the majority of an entire AAA game, with time to spare</li>
-    <li>Enabled more consistent and aggressive LODs compared to what artists typically author manually</li>
-    <li>Maintained consistent visual quality across LOD transitions, often better than manually authored</li>
-    <li>Helped achieve 60fps across all game modes and console platforms</li>
+    <li>Reduced LOD creation time from hours to minutes per asset, it was so effective I was able to effectively add and tune LODs for the majority of a Call of Duty game single handedly</li>
+    <li>Enabled more consistent and aggressive LODs compared to what artists typically authored manually</li>
+    <li>Helped achieve 60fps across all game modes and console generations</li>
   </ul>
 </div>
   `,
@@ -106,9 +107,9 @@ const projectData = {
   
   <p>This optimization tool:</p>
   <ul class="project-list">
-    <li>Automatically smooths normals which results in lower vertex counts on the GPU</li>
     <li>Uses adjustable thresholds to determine which edges to remove</li>
-    <li>Maintains UV mapping and material boundaries during optimization</li>
+    <li>Maintains UV mapping and vertex color boundaries during optimization</li>
+    <li>Automatically smooths normals, if possible, which can result in lower vertex counts on the GPU in edge cases</li>
     <li>Became a standard part of our asset export process</li>
   </ul>
 </div>
@@ -125,7 +126,7 @@ const artData = {
   "art-escape-game": {
     title: "Escape From Nuckinfutts Factory",
     description: `
-      <p>Assets created for my Unity game "Escape from Nuckinfutts Factory". I created this as a solo project, so I modelled, textured, rigged, animated, scripted, did the VFX and lighting for everything in this project. It was quite the undertaking and parts of it remained unfinished, but I'm still proud of what I was able to achieve alone while learning Unity for the first time.</p>
+      <p>Assets created for my Unity game "Escape from Nuckinfutts Factory" (2013). I created this as a solo project, so I modelled, textured, rigged, animated, scripted, did the VFX and lighting for everything in this project. It was quite the undertaking and even though it was never fully fleshed out, I'm still proud of what I was able to achieve solo while learning so many new concepts for the first time.</p>
     `,
     images: [
       {
@@ -171,7 +172,7 @@ const artData = {
   "art-mod-props": {
     title: "Half-Life 2 Mod Props",
     description: `
-      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell," modeled in Softimage XSI. Was done in the Source engine and was my first time collaborating within a team.</p>
+      <p>A collection of props created for the Half-Life 2 mod "No More Room in Hell" (2012) modeled in Softimage XSI. Was done in the Source engine and was my first time collaborating within a team.</p>
     `,
     images: [
       {
@@ -223,9 +224,9 @@ const artData = {
   },
 
   "art-school-work": {
-    title: "Misc School Work",
+    title: "College Work",
     description: `
-      <p>Various projects from my time at The Art Institute of Sunnyvale (closed). I wish I still had the source files for these, most of my best work from this time was lost due to hard drive failures and network wipes. Massive bummer.</p>
+      <p>Various projects from my time at The Art Institute of Sunnyvale (2010-2013). I wish I still had the source files for these, most of my best work from this time was lost due to hard drive failures and network wipes (and the school closing). Massive bummer.</p>
     `,
     images: [
       {
@@ -279,7 +280,7 @@ const artData = {
   "art-personal": {
     title: "Misc Personal Work",
     description: `
-      <p>Creative explorations and fun projects I've worked on in my spare time.</p>
+      <p>Creative explorations and fun projects I've worked on in my spare time. (2009-2012)</p>
     `,
     images: [
       {
@@ -316,7 +317,7 @@ const artData = {
   "art-speed-challenge": {
     title: "2-Hour Speed Challenges",
     description: `
-      <p>Models created during timed challenges I used to run on a HL2 forum, typically completed within a strict 2-hour timeframe.</p>
+      <p>Models created during timed competitions I used to run on a HL2 forum. (2009-2012)</p>
     `,
     images: [
       {
