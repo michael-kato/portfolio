@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael Kato | Portfolio - Temp Page</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header id="dynamic-header">
+    <div class="header-background"></div>
+    <div class="header-content">
+      <h1 class="header-title">Media for Arthur</h1>
+    </div>
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="index.html">Back to Portfolio</a></li>
+    </ul>
+  </nav>
+
+  <main>
+    <section id="media-top">
+      <div class="container">
+        <div class="section-header">
+          <h2>Elecric Whale in Blender</h2>
+        </div>
+          <p style="text-align: center">I created an effect to transform any 3D model into a set of connected colorful dots with lighting</p>
+          <div class="single-video">
+            <video controls>
+              <source src="resources/electric_whale.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="media-item">
+              <div class="text-content">
+              <p style="text-align: center">The geometry node setup in Blender</p>
+            </div>
+            <img src="resources/geo_nodes.PNG" alt="Placeholder Image">
+          </div>
+      </div>
+    </section>
+
+
+    <section id="video-bottom">
+      <div class="container">
+        <div class="section-header">
+          <h2>Unreal Niagara FX Beam</h2>
+        </div>
+        <p style="text-align: center">Leaning Unreal VFX for an unannounced game project</p>
+        <div class="single-video">
+          <video controls>
+            <source src="resources/beam_vfx.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="single-video">
+          <video controls>
+            <source src="resources/gun_updates.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </section>
+
+    <section id="video-bottom">
+      <div class="container">
+        <div class="section-header">
+          <h2>Untiy Gunship Project</h2>
+        </div>
+        <p style="text-align: center">Personal Unity project because I think the Clone gunship from Star Wars is one of the coolest scifi vehicles ever. </p>
+        <div class="single-video">
+          <video controls>
+            <source src="resources/gunship.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Michael Kato. All rights reserved.</p>
+  </footer>
+
+  <style>
+    .media-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .media-item {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      padding: 15px;
+    }
+
+    .media-item img,
+    .media-item video {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .text-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .text-content p {
+      margin-bottom: 15px;
+    }
+
+    .single-video {
+      max-width: 800px;
+      margin: 30px auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      padding: 15px;
+    }
+
+    .single-video video {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+  </style>
+</body>
+
+</html>
