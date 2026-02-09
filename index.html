@@ -33,20 +33,7 @@
           <h2>About Me</h2>
         </div>
         <div class="about-content" style="max-width: 600px; margin: 0 auto;">
-          <p style="text-align: center">I'm a Technical Artist with a decade of industry experience in AAA games, metaverse apps, and synthetic data pipelines. I love absorbing new technologies, building tools to empower my team, and feel right at home in the general chaos of production.</p>
-          <p style="text-align: center">If that sounds like someone you'd want on your team then reach out!</p>
-        </div>
-
-        <!-- Resume download button -->
-        <div class="resume-download">
-          <a href="https://michael-kato.github.io/portfolio/resources/Michael_Kato_Resume.pdf" class="download-button" download>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Download Resume
-          </a>
+          <p style="text-align: center">Technical Artist with 10+ years in AAA games, metaverse apps, and synthetic data pipelines. I specialize in automation, pipeline tools, and thrive in fast-paced production environments.</p>
         </div>
         
       </div>
@@ -236,30 +223,26 @@
           <h2>Games</h2>
         </div>
         
-        <div class="text-content" style="max-width: 800px; margin: 20px auto; padding: 20px;">
-          <h1>Memory Match Game - Unity 2D</h1>
-          <p>Interactive card-matching game demonstrating technical art implementation of VFX, animation, and procedural systems.</p>
-          
+        <div class="text-content" style="max-width: 800px; margin: 20px auto; padding: 20px; text-align: center;">
+          <h1>Match 2 Game - Unity 2D</h1>
+          <p>Demonstration of 2D VFX, shaders, animation, and procedural systems.</p>
+          <div class="video-container">
+            <video controls style="border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);" onloadedmetadata="this.volume = 0.3;">
+              <source src="resources/2d_game_02.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
           <h2>Highlights:</h2>
           <section>
-              <ul>
-                  <li>Dynamic grid generation with procedural shuffling and sprite allocation</li>
-                  <li>Skeletal tentacle deformation using Unity 2D Animation package (SpriteSkin, IK Solver 2D)</li>
-                  <li>Custom particle systems for card flip, match, and mismatch effects using Shiruken</li>
-                  <li>Mouse-driven multi-layer parallax system with smooth interpolation and clamped motion boundaries</li>
+              <ul style="display: inline-block; text-align: left;">
+                  <li>Dynamic tentacles seek out and eat loot drops</li>
+                  <li>Several custom shaders such as dissolve, fog swirl, and god rays</li>
+                  <li>Custom particle systems using Shiruken</li>
                   <li>Sprite-based card flip sequences with state machine control</li>
                   <li>Event-driven animation triggers for gameplay feedback (idle, click, flip, reset)</li>
-                  <li>Coroutine-based animation sequencing with precise timing control</li>
               </ul>
           </section>
-          <p><strong>Tools:</strong> Unity 2D, C#, Unity Particle System, Unity Animation, 2D IK</p>
-        </div>
-
-        <div class="video-container">
-          <video controls style="max-width: 100%; border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);">
-            <source src="resources/2d_game.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
+          <p><strong>Tools:</strong> Unity 2D, C#, Shader Graph, Shiruken, IK</p>
         </div>
 
 
@@ -277,12 +260,15 @@
       </div>
     </section>
 
+
+
     <section id="contact">
       <div class="container">
         <div class="section-header">
           <h2>Contact Me</h2>
         </div>
 
+        
         <div class="contact-grid">
           <div class="contact-box">
             <h3>Get In Touch</h3>
@@ -306,8 +292,21 @@
           </div>
         </div>
       </div>
-    </section>
 
+        <!-- Resume download button -->
+        <div class="resume-download">
+          <a href="https://michael-kato.github.io/portfolio/resources/Michael_Kato_Resume.pdf" class="download-button" download>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            Download Resume
+          </a>
+        </div>
+
+    </section>
+    
   </main>
 
 
