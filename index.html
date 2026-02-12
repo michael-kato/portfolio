@@ -182,6 +182,59 @@
       </div>
     </section>
 
+    <section id="games">
+      <div class="container">
+        <div class="section-header">
+          <h2>Games</h2>
+        </div>
+        
+        <div class="text-content" style="max-width: 800px; margin: 20px auto; padding: 20px; text-align: center;">
+          <h1>Match 2 Game - Unity 2D</h1>
+          <p>Demonstration of 2D VFX, shaders, animation, and procedural systems.</p>
+          <div class="video-container">
+            <video controls style="border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);" onloadedmetadata="this.volume = 0.3;">
+              <source src="resources/2d_game_03.mp4" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <h2>Highlights:</h2>
+          <section>
+              <ul style="display: inline-block; text-align: left;">
+                  <li>Dynamic tentacles seek out and eat loot drops</li>
+                  <li>Several custom shaders such as dissolve, fog swirl, and god rays</li>
+                  <li>Custom particle systems using Shiruken</li>
+                  <li>Sprite-based card flip sequences with state machine control</li>
+                  <li>Event-driven animation triggers for gameplay feedback (idle, click, flip, reset)</li>
+              </ul>
+          </section>
+          <p><strong>Tools:</strong> Unity 2D, C#, Shader Graph, Shiruken, IK</p>
+        </div>
+
+
+      </div>
+    </section>
+
+<section id="media-top">
+      <div class="container">
+        <div class="section-header">
+          <h2>Elecric Outline Effect (Blender)</h2>
+        </div>
+          <p style="text-align: center">I created an effect to transform any 3D model into a set of colorful dots connected by lighting</p>
+          <div class="single-video">
+            <video controls>
+              <source src="resources/electric_whale.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="media-item" style="display: block; text-align: center;">
+              <div class="text-content">
+              <p style="text-align: center">The geometry node setup in Blender. It starts by converting the mesh into a point cloud, connects the points to their closest neighbors with a spline, subdivides the spline and apply random noise to it, then extrude a cylinder along the path for the visual geo. A color ramp is applied along the Z axis and each point is assigned a color as an attribute. This color is later applied in the shader by extracting the attribute into the emissive property</p>
+            </div>
+            <img src="resources/geo_nodes.PNG" alt="Placeholder Image" style="max-width: 100%;">
+          </div>
+      </div>
+    </section>
+
+
     <section id="art">
       <div class="container">
         <div class="section-header">
@@ -217,37 +270,6 @@
       </div>
     </section>
 
-    <section id="games">
-      <div class="container">
-        <div class="section-header">
-          <h2>Games</h2>
-        </div>
-        
-        <div class="text-content" style="max-width: 800px; margin: 20px auto; padding: 20px; text-align: center;">
-          <h1>Match 2 Game - Unity 2D</h1>
-          <p>Demonstration of 2D VFX, shaders, animation, and procedural systems.</p>
-          <div class="video-container">
-            <video controls style="border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);" onloadedmetadata="this.volume = 0.3;">
-              <source src="resources/2d_game_03.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <h2>Highlights:</h2>
-          <section>
-              <ul style="display: inline-block; text-align: left;">
-                  <li>Dynamic tentacles seek out and eat loot drops</li>
-                  <li>Several custom shaders such as dissolve, fog swirl, and god rays</li>
-                  <li>Custom particle systems using Shiruken</li>
-                  <li>Sprite-based card flip sequences with state machine control</li>
-                  <li>Event-driven animation triggers for gameplay feedback (idle, click, flip, reset)</li>
-              </ul>
-          </section>
-          <p><strong>Tools:</strong> Unity 2D, C#, Shader Graph, Shiruken, IK</p>
-        </div>
-
-
-      </div>
-    </section>
 
     <section id="animations">
       <div class="container">

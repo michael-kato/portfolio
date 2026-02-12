@@ -317,7 +317,7 @@ const artData = {
   "art-speed-challenge": {
     title: "2-Hour Speed Challenges",
     description: `
-      <p>Models created during timed competitions I used to run on a HL2 forum. (2009-2012)</p>
+      <p>Models created for a speed modelling competition I used to run on a modding forum. Usually a 2 hour time limit. (2009-2012)</p>
     `,
     images: [
       {
