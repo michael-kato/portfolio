@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XCWCCCTYB4"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XCWCCCTYB4');
+  </script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electric Outline Effect in Blender | Michael Kato</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body data-header-title="Michael Kato" data-header-subtitle="Notebooks" data-header-link="../index.html">
+
+  <main>
+    <article class="blog-post">
+      <div class="container">
+        <a href="../notebook.html" class="blog-back-link">← Back to Notebooks</a>
+
+        <div class="blog-post-header">
+          <div class="blog-card-meta">
+            <span class="blog-tag">Blender</span>
+            <span class="blog-tag">Geometry Nodes</span>
+            <span class="blog-tag">VFX</span>
+            <span class="blog-date">April 14, 2026</span>
+          </div>
+          <h1 class="blog-post-title">Electric Outline Effect in Blender</h1>
+          <p class="blog-post-subtitle">Transforming any 3D model into colorful dots connected by lightning — entirely with Geometry Nodes.</p>
+        </div>
+
+        <div class="blog-post-body">
+
+          <div class="single-video">
+            <video controls>
+              <source src="../resources/electric_whale.mp4" type="video/mp4">
+            </video>
+          </div>
+
+          <p>
+            I wanted to create an effect that could take any arbitrary mesh and convert it into something that looked like an electrical schematic come to life — points of light connected by arcing, noisy lightning bolts, all wrapped in a color gradient.
+          </p>
+
+          <p>
+            The entire effect is non-destructive and works on any mesh. Swap the input model and the effect regenerates instantly.
+          </p>
+
+          <h2>How It Works</h2>
+
+          <p>
+            The pipeline is built entirely in Blender's Geometry Nodes. Here's the breakdown:
+          </p>
+
+          <ol>
+            <li><strong>Mesh to Point Cloud</strong> — The input mesh is converted to a point cloud, distributing points across the surface.</li>
+            <li><strong>Nearest-Neighbor Connections</strong> — Each point connects to its closest neighbors via splines, forming the "wiring" structure.</li>
+            <li><strong>Subdivide + Noise</strong> — The splines are subdivided and random noise is applied to each control point, creating the jagged lightning look.</li>
+            <li><strong>Cylinder Extrusion</strong> — A small cylinder profile is extruded along each spline path to create the visible geometry.</li>
+            <li><strong>Color Ramp</strong> — A color gradient is applied along the Z axis. Each point samples its position and stores the color as an attribute.</li>
+            <li><strong>Shader Hookup</strong> — In the material, the stored color attribute is extracted and piped into the emissive channel for a glowing, self-lit appearance.</li>
+          </ol>
+
+          <h2>The Node Graph</h2>
+
+          <div class="media-item" style="display: block; text-align: center;">
+            <img src="../resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" style="max-width: 100%;">
+          </div>
+
+          <p>
+            The geometry node setup above shows the full pipeline. The key insight is that by storing color as a point attribute during the geometry phase, you can access it later in the shader without any UV mapping — the color is baked into the geometry itself.
+          </p>
+
+          <h2>What I Learned</h2>
+
+          <p>
+            Geometry Nodes reward thinking in terms of data flow rather than traditional modeling operations. The "subdivide then displace" pattern for creating organic-looking connections between points is surprisingly versatile — the same approach could generate coral, root systems, or circuit board traces with different noise parameters.
+          </p>
+
+          <p>
+            Passing data between the geometry node tree and the shader via attributes is powerful but easy to break. Renaming an attribute on one side without updating the other produces silent failures — no errors, just missing color. A naming convention helps.
+          </p>
+
+          <h2>Tools</h2>
+
+          <p>Blender 3.x, Geometry Nodes, Shader Editor</p>
+
+        </div>
+
+        <div class="blog-post-footer">
+          <a href="../notebook.html" class="blog-back-link">← Back to Notebooks</a>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <style>
+    .media-item {
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      padding: 15px;
+      margin: 30px auto;
+      max-width: 800px;
+    }
+
+    .media-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .single-video {
+      max-width: 800px;
+      margin: 30px auto;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      overflow: hidden;
+      background-color: var(--card-bg);
+      padding: 15px;
+    }
+
+    .single-video video {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      display: block;
+    }
+  </style>
+
+  <script src="../components.js"></script>
+</body>
+</html>

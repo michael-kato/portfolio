@@ -8,20 +8,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<body>
-  <header id="dynamic-header">
-    <div class="header-background"></div>
-    <div class="header-content">
-      <h1 class="header-title">Testing Stuff</h1>
-      <p class="header-subtitle">Experiments for fun and learning</p>
-    </div>
-  </header>
-
-  <nav>
-    <ul>
-      <li><a href="index.html">Back to Portfolio</a></li>
-    </ul>
-  </nav>
+<body data-header-title="Testing Stuff" data-header-subtitle="Experiments for fun and learning">
 
   <main>
     <section id="shader-fun">
@@ -75,10 +62,9 @@
     </section>
   </main>
 
-  <footer>
-    <p>&copy; 2025 Michael Kato. All rights reserved.</p>
-  </footer>
 
+
+  <script src="components.js"></script>
   <script src="shaders.js"></script>
 </body>
 

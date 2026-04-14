@@ -18,23 +18,6 @@
 </head>
 
 <body>
-  <header id="dynamic-header">
-    <div class="header-background"></div>
-    <div class="header-content">
-      <h1 class="header-title">Michael Kato</h1>
-      <p class="header-subtitle">Technically an artist!</p>
-    </div>
-  </header>
-
-  <nav>
-    <ul>
-      <li><a href="#tech">Tech</a></li>
-      <li><a href="#art">Art</a></li>
-      <li><a href="#games">Games</a></li>
-      <li><a href="#animations">Animations</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
 
   <main>
     <section id="about">
@@ -192,57 +175,7 @@
       </div>
     </section>
 
-    <section id="games">
-      <div class="container">
-        <div class="section-header">
-          <h2>Games</h2>
-        </div>
-        
-        <div class="text-content" style="max-width: 800px; margin: 20px auto; padding: 20px; text-align: center;">
-          <h1>Match 2 Game - Unity 2D</h1>
-          <p>Demonstration of 2D VFX, shaders, animation, and procedural systems.</p>
-          <div class="video-container">
-            <video controls style="border-radius: 6px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border: 1px solid var(--border-color);" onloadedmetadata="this.volume = 0.3;">
-              <source src="resources/2d_game_03.mp4" type="video/mp4">
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <h2>Highlights:</h2>
-          <section>
-              <ul style="display: inline-block; text-align: left;">
-                  <li>Dynamic tentacles seek out and eat loot drops</li>
-                  <li>Several custom shaders such as dissolve, fog swirl, and god rays</li>
-                  <li>Custom particle systems using Shiruken</li>
-                  <li>Sprite-based card flip sequences with state machine control</li>
-                  <li>Event-driven animation triggers for gameplay feedback (idle, click, flip, reset)</li>
-              </ul>
-          </section>
-          <p><strong>Tools:</strong> Unity 2D, C#, Shader Graph, Shiruken, IK</p>
-        </div>
 
-
-      </div>
-    </section>
-
-<section id="media-top">
-      <div class="container">
-        <div class="section-header">
-          <h2>Elecric Outline Effect (Blender)</h2>
-        </div>
-          <p style="text-align: center">I created an effect to transform any 3D model into a set of colorful dots connected by lighting</p>
-          <div class="single-video">
-            <video controls>
-              <source src="resources/electric_whale.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="media-item" style="display: block; text-align: center;">
-              <div class="text-content">
-              <p style="text-align: center">The geometry node setup in Blender. It starts by converting the mesh into a point cloud, connects the points to their closest neighbors with a spline, subdivides the spline and apply random noise to it, then extrude a cylinder along the path for the visual geo. A color ramp is applied along the Z axis and each point is assigned a color as an attribute. This color is later applied in the shader by extracting the attribute into the emissive property</p>
-            </div>
-            <img src="resources/geo_nodes.PNG" alt="Placeholder Image" style="max-width: 100%;">
-          </div>
-      </div>
-    </section>
 
 
     <section id="art">
@@ -293,6 +226,51 @@
     </section>
 
 
+
+    <section id="blog">
+      <div class="container">
+        <div class="section-header">
+          <h2>Notebooks</h2>
+        </div>
+        <div class="blog-grid">
+          <a href="notebook/match2-unity-2d.html" class="blog-card">
+            <div class="blog-card-meta">
+              <span class="blog-tag">Unity</span>
+              <span class="blog-tag">VFX</span>
+              <span class="blog-tag">Shaders</span>
+              <span class="blog-date">April 14, 2026</span>
+            </div>
+            <h3 class="blog-card-title">Match 2 Game – Unity 2D</h3>
+            <p class="blog-card-excerpt">A demonstration of 2D VFX, shaders, animation, and procedural systems built in Unity.</p>
+            <span class="blog-read-more">Read more →</span>
+          </a>
+          <a href="notebook/electric-outline-blender.html" class="blog-card">
+            <div class="blog-card-meta">
+              <span class="blog-tag">Blender</span>
+              <span class="blog-tag">Geometry Nodes</span>
+              <span class="blog-tag">VFX</span>
+              <span class="blog-date">April 14, 2026</span>
+            </div>
+            <h3 class="blog-card-title">Electric Outline Effect in Blender</h3>
+            <p class="blog-card-excerpt">Transforming any 3D model into colorful dots connected by lightning — entirely with Geometry Nodes.</p>
+            <span class="blog-read-more">Read more →</span>
+          </a>
+          <a href="notebook/lod-pipeline-lessons.html" class="blog-card">
+            <div class="blog-card-meta">
+              <span class="blog-tag">Pipeline</span>
+              <span class="blog-tag">Optimization</span>
+              <span class="blog-date">March 7, 2026</span>
+            </div>
+            <h3 class="blog-card-title">Lessons from Building an LOD Pipeline for AAA</h3>
+            <p class="blog-card-excerpt">What I learned integrating an automatic LOD generation algorithm into a shipping Call of Duty title — and how to avoid the traps that nearly broke our build.</p>
+            <span class="blog-read-more">Read more →</span>
+          </a>
+        </div>
+        <div class="blog-view-all">
+          <a href="notebook.html" class="blog-view-all-link">View all posts →</a>
+        </div>
+      </div>
+    </section>
 
     <section id="contact">
       <div class="container">
@@ -347,9 +325,7 @@
   </div>
 
 
-  <footer>
-    <p>&copy; 2025 Michael Kato. All rights reserved.</p>
-  </footer>
+
 
   <!-- Modal container for project details -->
   <div id="project-modal" class="modal">
@@ -376,6 +352,7 @@
   </div>
 
   <!-- Scripts -->
+  <script src="components.js"></script>
   <script src="portfolio-data.js"></script>
   <script src="index.js"></script>
 </body>
