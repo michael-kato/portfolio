@@ -1,0 +1,24 @@
+title: Michael Kato
+description: Technical artist portfolio and notebook posts.
+timezone: America/Los_Angeles
+url: https://michael-kato.github.io
+baseurl: /portfolio
+markdown: kramdown
+kramdown:
+  input: GFM
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      header_title: Michael Kato
+      header_subtitle: Notebooks
+      header_link: ../index.html
+      notebook_link: ../notebook.html
+      back_label: "&larr; Back to Notebooks"
+      permalink: /notebook/:title.html
+exclude:
+  - README.md
+  - CLAUDE.md
+  - .codex

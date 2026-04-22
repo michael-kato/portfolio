@@ -1,1 +1,8 @@
 /old/*
+CLAUDE.md
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+.bundle/
+.codex

@@ -1023,18 +1023,27 @@ section {
   border-bottom: 1px solid var(--border-color);
 }
 
+.blog-post-body h3 {
+  color: var(--text-color);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 28px 0 12px;
+}
+
 .blog-post-body p {
   margin-bottom: 18px;
   color: var(--text-color);
 }
 
-.blog-post-body ul {
+.blog-post-body ul,
+.blog-post-body ol {
   margin: 0 0 18px 20px;
   list-style-position: outside;
   text-indent: 0;
 }
 
-.blog-post-body ul li {
+.blog-post-body ul li,
+.blog-post-body ol li {
   margin-bottom: 10px;
   color: var(--text-color);
 }
@@ -1047,6 +1056,76 @@ section {
 .blog-post-body em {
   color: var(--tertiary-color);
   font-style: italic;
+}
+
+.blog-post-body blockquote {
+  margin: 24px 0;
+  padding-left: 16px;
+  border-left: 3px solid var(--secondary-color);
+  color: var(--tertiary-color);
+}
+
+.blog-post-body code {
+  background-color: rgba(240, 136, 62, 0.12);
+  border: 1px solid rgba(240, 136, 62, 0.2);
+  border-radius: 4px;
+  color: var(--text-color);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 0.9rem;
+  padding: 0.15rem 0.35rem;
+}
+
+.blog-post-body pre {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  margin: 24px 0;
+  overflow-x: auto;
+  padding: 16px;
+}
+
+.blog-post-body pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.blog-post-body hr {
+  border: 0;
+  border-top: 1px solid var(--border-color);
+  margin: 32px 0;
+}
+
+.media-item,
+.single-video {
+  max-width: 800px;
+  margin: 30px auto;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  overflow: hidden;
+  background-color: var(--card-bg);
+  padding: 15px;
+}
+
+.media-item img,
+.single-video video {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
+.media-caption {
+  color: var(--tertiary-color);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.media-item .media-caption {
+  margin-bottom: 0;
+  margin-top: 12px;
 }
 
 .blog-post-footer {
