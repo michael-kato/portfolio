@@ -1,0 +1,19 @@
+{% assign header_title = page.header_title | default: site.title %}
+{% assign header_subtitle = page.header_subtitle %}
+{% assign header_link = page.header_link %}
+
+<header id="dynamic-header">
+  <div class="header-background"></div>
+  <div class="header-content">
+    <h1 class="header-title">
+      {% if header_link %}
+        <a href="{{ header_link | relative_url }}" style="color: inherit; text-decoration: none;">{{ header_title }}</a>
+      {% else %}
+        {{ header_title }}
+      {% endif %}
+    </h1>
+    {% if header_subtitle %}
+      <p class="header-subtitle">{{ header_subtitle }}</p>
+    {% endif %}
+  </div>
+</header>

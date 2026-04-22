@@ -6,12 +6,12 @@ https://michael-kato.github.io/portfolio/
 
 The notebook/blog now uses Jekyll posts instead of hand-authored HTML pages.
 
-Important: `notebook.html`, `_layouts/`, and `_includes/` are now Jekyll source files. If you open `notebook.html` directly in a browser or static preview, you will see raw front matter and Liquid tags. The page only renders correctly after a Jekyll build.
+Important: `index.html`, `notebook.html`, `_layouts/`, and `_includes/` are now Jekyll source files. If you open them directly in a browser or static preview, you will see raw front matter and Liquid tags. They only render correctly after a Jekyll build.
 
 - Write new posts in `_posts/` using the filename format `YYYY-MM-DD-slug.md`
 - Add front matter for `title`, `date`, `tags`, `subtitle`, and `excerpt`
-- The notebook listing page at `notebook.html` builds itself from those posts
-- Posts publish to `notebook/slug.html`
+- The notebook listing page at `notebook.html` builds itself from those posts and publishes at `/notebook/`
+- Posts publish to `/notebook/slug/`
 - GitHub Pages deploys through `.github/workflows/pages.yml`
 - Local preview uses `bundle exec jekyll serve`
 

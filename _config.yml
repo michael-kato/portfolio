@@ -14,10 +14,10 @@ defaults:
       layout: post
       header_title: Michael Kato
       header_subtitle: Notebooks
-      header_link: ../index.html
-      notebook_link: ../notebook.html
+      header_link: /
+      notebook_link: /notebook/
       back_label: "&larr; Back to Notebooks"
-      permalink: /notebook/:title.html
+      permalink: /notebook/:title/
 exclude:
   - README.md
   - CLAUDE.md

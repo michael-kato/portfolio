@@ -2,42 +2,44 @@
 <html lang="en">
 <head>
   {% include analytics.html %}
-  {% include page_head.html style_path="../style.css" %}
+  {% include page_head.html style_path="/style.css" %}
 </head>
-<body
-  data-header-title="{{ page.header_title | default: site.title | escape }}"
-  data-header-subtitle="{{ page.header_subtitle | default: 'Notebooks' | escape }}"
-  data-header-link="{{ page.header_link | default: '../index.html' }}">
+<body data-page="notebook">
+  {% include site-header.html %}
+  {% include site-nav.html %}
   <main>
-    <article class="blog-post">
+    <section id="notebook-post">
       <div class="container">
-        <a href="{{ page.notebook_link | default: '../notebook.html' }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Notebooks' }}</a>
+        <a href="{{ page.notebook_link | default: '/notebook/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Notebooks' }}</a>
 
-        <div class="blog-post-header">
+        <div class="section-header">
+          <h1>{{ page.title }}</h1>
+        </div>
+
+        <div class="content-narrow">
           <div class="blog-card-meta">
             {% for tag in page.tags %}
               <span class="blog-tag">{{ tag }}</span>
             {% endfor %}
             <span class="blog-date">{{ page.date | date: "%B %-d, %Y" }}</span>
           </div>
-          <h1 class="blog-post-title">{{ page.title }}</h1>
           {% if page.subtitle %}
-            <p class="blog-post-subtitle">{{ page.subtitle }}</p>
+            <p class="notebook-subtitle">{{ page.subtitle }}</p>
           {% endif %}
         </div>
 
-        <div class="blog-post-body">
+        <div class="notebook-content">
           {{ content }}
         </div>
 
-        <div class="blog-post-footer">
-          <a href="{{ page.notebook_link | default: '../notebook.html' }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Notebooks' }}</a>
+        <div class="notebook-footer content-narrow">
+          <a href="{{ page.notebook_link | default: '/notebook/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Notebooks' }}</a>
         </div>
       </div>
-    </article>
+    </section>
   </main>
 
-  <script src="../components.js"></script>
+  {% include site-footer.html %}
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       document.querySelectorAll('video[data-default-volume]').forEach((video) => {

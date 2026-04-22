@@ -1,23 +1,20 @@
+---
+full_title: Michael Kato | Technical Artist
+description: Technical Artist with 10+ years in AAA games, metaverse apps, and synthetic data pipelines.
+header_title: Michael Kato
+header_subtitle: Technically an artist!
+---
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XCWCCCTYB4"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-XCWCCCTYB4');
-  </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Michael Kato | Technical Artist</title>
-  <link rel="stylesheet" href="style.css">
+  {% include analytics.html %}
+  {% include page_head.html style_path="/style.css" %}
 </head>
 
-<body>
+<body data-page="home">
+  {% include site-header.html %}
+  {% include site-nav.html is_home=true %}
 
   <main>
     <section id="about">
@@ -233,41 +230,22 @@
           <h2>Notebooks</h2>
         </div>
         <div class="blog-grid">
-          <a href="notebook/match2-unity-2d.html" class="blog-card">
-            <div class="blog-card-meta">
-              <span class="blog-tag">Unity</span>
-              <span class="blog-tag">VFX</span>
-              <span class="blog-tag">Shaders</span>
-              <span class="blog-date">April 14, 2026</span>
-            </div>
-            <h3 class="blog-card-title">Match 2 Game – Unity 2D</h3>
-            <p class="blog-card-excerpt">A demonstration of 2D VFX, shaders, animation, and procedural systems built in Unity.</p>
-            <span class="blog-read-more">Read more →</span>
-          </a>
-          <a href="notebook/electric-outline-blender.html" class="blog-card">
-            <div class="blog-card-meta">
-              <span class="blog-tag">Blender</span>
-              <span class="blog-tag">Geometry Nodes</span>
-              <span class="blog-tag">VFX</span>
-              <span class="blog-date">April 14, 2026</span>
-            </div>
-            <h3 class="blog-card-title">Electric Outline Effect in Blender</h3>
-            <p class="blog-card-excerpt">Transforming any 3D model into colorful dots connected by lightning — entirely with Geometry Nodes.</p>
-            <span class="blog-read-more">Read more →</span>
-          </a>
-          <a href="notebook/lod-pipeline-lessons.html" class="blog-card">
-            <div class="blog-card-meta">
-              <span class="blog-tag">Pipeline</span>
-              <span class="blog-tag">Optimization</span>
-              <span class="blog-date">March 7, 2026</span>
-            </div>
-            <h3 class="blog-card-title">Lessons from Building an LOD Pipeline for AAA</h3>
-            <p class="blog-card-excerpt">What I learned integrating an automatic LOD generation algorithm into a shipping Call of Duty title — and how to avoid the traps that nearly broke our build.</p>
-            <span class="blog-read-more">Read more →</span>
-          </a>
+          {% for post in site.posts limit: 3 %}
+            <a href="{{ post.url | relative_url }}" class="blog-card">
+              <div class="blog-card-meta">
+                {% for tag in post.tags %}
+                  <span class="blog-tag">{{ tag }}</span>
+                {% endfor %}
+                <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
+              </div>
+              <h3 class="blog-card-title">{{ post.title }}</h3>
+              <p class="blog-card-excerpt">{{ post.excerpt | strip_html | strip }}</p>
+              <span class="blog-read-more">Read more &rarr;</span>
+            </a>
+          {% endfor %}
         </div>
         <div class="blog-view-all">
-          <a href="notebook.html" class="blog-view-all-link">View all posts →</a>
+          <a href="{{ '/notebook/' | relative_url }}" class="blog-view-all-link">View all posts &rarr;</a>
         </div>
       </div>
     </section>
@@ -281,23 +259,37 @@
         
         <div class="contact-grid">
           <div class="contact-box">
-            <h3>Get In Touch</h3>
-
             <div class="contact-item">
-              <div class="contact-label">📧 Email:</div>
-              <div><a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a></div>
+              <div class="contact-label">
+                <span>📧 Email</span>
+              </div>
+              <div class="contact-value">
+                <a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a>
+              </div>
             </div>
 
             <div class="contact-item">
               <div class="contact-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg> LinkedIn:</div>
-              <div><a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#0077B5">
+                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                </svg>
+                <span>LinkedIn</span>
+              </div>
+              <div class="contact-value">
+                <a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a>
+              </div>
             </div>
 
             <div class="contact-item">
               <div class="contact-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg> GitHub:</div>
-              <div><a href="https://github.com/michael-kato" target="_blank">github.com/michael-kato</a></div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="#333">
+                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span>GitHub</span>
+              </div>
+              <div class="contact-value">
+                <a href="https://github.com/michael-kato" target="_blank">github.com/michael-kato</a>
+              </div>
             </div>
           </div>
         </div>
@@ -305,7 +297,7 @@
 
         <!-- Resume download button -->
         <div class="resume-download">
-          <a href="https://michael-kato.github.io/portfolio/resources/Michael_Kato_Resume.pdf" class="download-button" download>
+          <a href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" class="download-button" download>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
               <polyline points="7 10 12 15 17 10"></polyline>
@@ -321,7 +313,7 @@
 
 
   <div class="section-header">
-    <a href=".\test.html">Test</a>
+    <a href="{{ '/test.html' | relative_url }}">Test</a>
   </div>
 
 
@@ -352,8 +344,9 @@
   </div>
 
   <!-- Scripts -->
-  <script src="components.js"></script>
-  <script src="portfolio-data.js"></script>
-  <script src="index.js"></script>
+  {% include site-footer.html %}
+
+  <script src="{{ '/portfolio-data.js' | relative_url }}"></script>
+  <script src="{{ '/index.js' | relative_url }}"></script>
 </body>
 </html>

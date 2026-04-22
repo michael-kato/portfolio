@@ -2,16 +2,14 @@
 <html lang="en">
 <head>
   {% include analytics.html %}
-  {% include page_head.html style_path="style.css" %}
+  {% include page_head.html style_path="/style.css" %}
 </head>
-<body
-  data-header-title="{{ page.header_title | default: site.title | escape }}"
-  data-header-subtitle="{{ page.header_subtitle | default: 'Notebooks' | escape }}"
-  data-header-link="{{ page.header_link | default: 'index.html' }}">
+<body data-page="notebook">
+  {% include site-header.html %}
+  {% include site-nav.html %}
   <main>
     {{ content }}
   </main>
-
-  <script src="components.js"></script>
+  {% include site-footer.html %}
 </body>
 </html>

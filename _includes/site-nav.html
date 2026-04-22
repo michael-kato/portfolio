@@ -1,0 +1,21 @@
+{% if include.is_home %}
+  {% assign tech_link = "#tech" %}
+  {% assign art_link = "#art" %}
+  {% assign animations_link = "#animations" %}
+  {% assign contact_link = "#contact" %}
+{% else %}
+  {% assign tech_link = "/" | relative_url | append: "#tech" %}
+  {% assign art_link = "/" | relative_url | append: "#art" %}
+  {% assign animations_link = "/" | relative_url | append: "#animations" %}
+  {% assign contact_link = "/" | relative_url | append: "#contact" %}
+{% endif %}
+
+<nav>
+  <ul>
+    <li><a href="{{ tech_link }}">Tech</a></li>
+    <li><a href="{{ art_link }}">Art</a></li>
+    <li><a href="{{ animations_link }}">Animations</a></li>
+    <li><a href="{{ contact_link }}">Contact</a></li>
+    <li><a href="{{ '/notebook/' | relative_url }}">Notebooks</a></li>
+  </ul>
+</nav>
