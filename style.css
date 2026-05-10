@@ -7,8 +7,8 @@
   --tertiary-color: #8b949e;
   --card-bg: #21262d;
   --border-color: #30363d;
-  --header-bg: #221a16;
-  --section-header-bg: rgba(34, 25, 22, 0.3);
+  --header-bg: #0d1117;
+  --section-header-bg: rgba(33, 38, 45, 0.5);
 }
 
 /* ===== Base Styles ===== */
@@ -69,7 +69,7 @@ p {
   height: 100%;
   background-size: cover;
   background-position: center;
-  opacity: 0.15;
+  opacity: 0.35;
   transition: opacity 0.5s ease;
   z-index: 0;
 }
@@ -147,7 +147,7 @@ section {
   font-size: 1.8rem;
   color: var(--text-color);
   padding: 6px 12px;
-  border-bottom: 2px solid var(--secondary-color);
+  border-bottom: 2px solid var(--border-color);
   font-weight: 600;
   background-color: var(--section-header-bg);
   border-radius: 4px;
@@ -160,21 +160,21 @@ section {
   gap: 20px;
 }
 
-/* ===== Tech Section ===== */
-.tech-categories {
+/* ===== Career Section ===== */
+.career-categories {
   display: flex;
   flex-direction: column;
   gap: 14px;
   margin-bottom: 24px;
 }
 
-.tech-category {
+.career-category {
   border-radius: 4px;
   overflow: hidden;
   transition: box-shadow 0.3s;
 }
 
-.tech-category:not(:last-child)::after {
+.career-category:not(:last-child)::after {
   content: "";
   display: block;
   width: 100%;
@@ -187,7 +187,7 @@ section {
   bottom: -12px;
 }
 
-.tech-category-header {
+.career-category-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -199,7 +199,7 @@ section {
   position: relative;
 }
 
-.tech-category-header::after {
+.career-category-header::after {
   content: "";
   position: absolute;
   bottom: 0;
@@ -210,16 +210,16 @@ section {
   transition: width 0.3s ease;
 }
 
-.tech-category-header:hover::after,
-.tech-category.active .tech-category-header::after {
+.career-category-header:hover::after,
+.career-category.active .career-category-header::after {
   width: 100%;
 }
 
-.tech-category-header:hover {
+.career-category-header:hover {
   background-color: rgba(88, 166, 255, 0.05);
 }
 
-.tech-category-header h3 {
+.career-category-header h3 {
   color: var(--accent-color);
   font-size: 1.3rem;
   font-weight: 600;
@@ -231,30 +231,30 @@ section {
   transition: transform 0.3s ease;
 }
 
-.tech-category.active .toggle-icon {
+.career-category.active .toggle-icon {
   transform: rotate(180deg);
 }
 
-.tech-category-content {
+.career-category-content {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease;
   background-color: var(--bg-color);
 }
 
-.tech-category.active .tech-category-content {
+.career-category.active .career-category-content {
   max-height: 1500px;
 }
 
-.tech-category.active .tech-category-header {
+.career-category.active .career-category-header {
   border-bottom: 1px solid var(--border-color);
 }
 
-.tech-video-container {
+.career-video-container {
   padding: 12px 12px 0;
 }
 
-.tech-projects {
+.career-projects {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 12px;
@@ -420,7 +420,7 @@ section {
   bottom: 0;
   left: 0;
   right: 0;
-  background-color: rgba(13, 17, 23, 0.8);
+  background-color: rgba(13, 17, 23, 0.86);
   color: var(--text-color);
   padding: 6px 8px;
   transform: translateY(100%);
@@ -1177,11 +1177,11 @@ footer {
     font-size: 2rem;
   }
 
-  .tech-category-header h3 {
+  .career-category-header h3 {
     font-size: 1.1rem;
   }
 
-  .tech-projects {
+  .career-projects {
     grid-template-columns: 1fr;
   }
 

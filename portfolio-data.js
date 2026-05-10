@@ -130,7 +130,7 @@ const artData = {
     `,
     images: [
       {
-        src: "http://i.imgur.com/UGUc4yz.jpg",
+        src: "https://i.imgur.com/UGUc4yz.jpg",
         caption: "Factory room overview, hero shot."
       },
       {
@@ -138,11 +138,11 @@ const artData = {
         caption: "Closeup of the crane, which was rigged and animated, part of the final boss fight"
       },
       {
-        src: "http://i.imgur.com/6nSUBCj.jpg",
+        src: "https://i.imgur.com/6nSUBCj.jpg",
         caption: "Level 01, this a recycling facility where the player, a robot, is discarded into."
       },
       {
-        src: "http://i.imgur.com/jMMIZtA.png",
+        src: "https://i.imgur.com/jMMIZtA.png",
         caption: "Nuckinfutts at his workbench, assembling who knows what."
       },
       {
@@ -176,7 +176,7 @@ const artData = {
     `,
     images: [
       {
-        src: "http://i.imgur.com/DYKhtLU.jpg",
+        src: "https://i.imgur.com/DYKhtLU.jpg",
         caption: "Collage of some of the props I made"
       },
       {
@@ -209,15 +209,15 @@ const artData = {
       },
       {
         src: "https://i.imgur.com/bs6Bc.png",
-        caption: "Let there be floodlight"
+        caption: "Let there be floodlight!"
       },
       {
         src: "https://i.imgur.com/pcnr7.png",
-        caption: "Basic hand truck, minimal texture detail"
+        caption: "Basic hand truck"
       },
       {
         src: "https://i.imgur.com/1gRU6.png",
-        caption: "Ceiling fan"
+        caption: "My biggest fan!"
       }
     ],
     video: null
@@ -230,11 +230,11 @@ const artData = {
     `,
     images: [
       {
-        src: "http://i.imgur.com/DClkapV.jpg",
+        src: "https://i.imgur.com/DClkapV.jpg",
         caption: "Kitchen render in Maya with mental ray"
       },
       {
-        src: "http://i.imgur.com/nhb5Um2.jpg",
+        src: "https://i.imgur.com/nhb5Um2.jpg",
         caption: "Kitchen render alt"
       },
       {

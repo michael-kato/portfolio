@@ -1,10 +1,10 @@
 {% if include.is_home %}
-  {% assign tech_link = "#tech" %}
+  {% assign career_link = "#career" %}
   {% assign art_link = "#art" %}
   {% assign animations_link = "#animations" %}
   {% assign contact_link = "#contact" %}
 {% else %}
-  {% assign tech_link = "/" | relative_url | append: "#tech" %}
+  {% assign career_link = "/" | relative_url | append: "#career" %}
   {% assign art_link = "/" | relative_url | append: "#art" %}
   {% assign animations_link = "/" | relative_url | append: "#animations" %}
   {% assign contact_link = "/" | relative_url | append: "#contact" %}
@@ -12,7 +12,7 @@
 
 <nav>
   <ul>
-    <li><a href="{{ tech_link }}">Tech</a></li>
+    <li><a href="{{ career_link }}">Career</a></li>
     <li><a href="{{ art_link }}">Art</a></li>
     <li><a href="{{ animations_link }}">Animations</a></li>
     <li><a href="{{ contact_link }}">Contact</a></li>

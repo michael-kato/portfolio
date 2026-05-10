@@ -61,7 +61,7 @@
   const navEl = document.createElement('nav');
   navEl.innerHTML = `
     <ul>
-      <li><a href="${indexBase}#tech">Tech</a></li>
+      <li><a href="${indexBase}#career">Career</a></li>
       <li><a href="${indexBase}#art">Art</a></li>
       <li><a href="${indexBase}#animations">Animations</a></li>
       <li><a href="${indexBase}#contact">Contact</a></li>

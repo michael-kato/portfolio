@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include analytics.html %}
+  {% include page_head.html style_path="/style.css" %}
+</head>
+
+<body data-page="home"{% if page.variant %} data-variant="{{ page.variant }}"{% endif %}>
+  {% include site-header.html %}
+  {% include site-nav.html is_home=true %}
+
+  {% include home-content.html %}
+
+  <!-- Scripts -->
+  {% include site-footer.html %}
+
+  <script src="{{ '/portfolio-data.js' | relative_url }}"></script>
+  <script src="{{ '/index.js' | relative_url }}"></script>
+</body>
+</html>
