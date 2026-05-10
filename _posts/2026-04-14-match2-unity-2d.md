@@ -9,28 +9,24 @@ subtitle: A demonstration of 2D VFX, shaders, animation, and procedural systems 
 excerpt: A demonstration of 2D VFX, shaders, animation, and procedural systems built in Unity.
 ---
 
+This project started to refresh my knowledge of Unity especially in the realm of 2D which I've never really touched. I tried to make as much as possible dynamic and interactive. Adding as much visual flair as I possibly could.
+
 {% include post-video.html src="/portfolio/resources/2d_game_03.mp4" volume=0.3 %}
-
-This project started as an excuse to dive deep into Unity 2D's VFX and shader tooling. I wanted to build something small enough to finish but rich enough to explore procedural animation, particle systems, and custom shaders in a real gameplay context.
-
-The result is a match-2 card game where the visual polish does most of the heavy lifting. Every interaction has feedback, every transition has personality.
 
 ## Highlights
 
 - **Dynamic tentacles** that seek out and eat loot drops using inverse kinematics
-- **Custom shaders** including dissolve, fog swirl, and god rays, all built in Shader Graph
-- **Custom particle systems** using Shuriken for impact, pickup, and ambient FX
+- **Custom shaders** including dissolve, fog swirl, and god rays. All node based, built in Shader Graph
+- **Custom particle systems** using Shuriken for impact, pickup, and ambient FX. 
 - **Sprite-based card flip sequences** with state machine control for clean transitions
 - **Event-driven animation triggers** for gameplay feedback (idle, click, flip, reset)
 
 ## Technical Approach
 
-The tentacle system uses a chain of IK targets that smoothly interpolate toward loot drop positions. Once a drop is within reach, the tentacle "grabs" it and plays an absorption animation driven by a dissolve shader. The dissolve threshold is animated over time, giving a satisfying disintegration effect.
+The tentacle system uses a chain of IK targets that (relatively) smoothly interpolate toward loot drop positions. Once a drop is within reach, the tentacle "grabs" it and plays an eating animation accompanied by screen shake (Cthulhu's stomach rumbling presumably)
 
-The fog swirl shader combines scrolling noise textures with a radial distortion pass. God rays are screen-space, sampling a bright-pass buffer and blurring along a direction vector pointed at the light source. Both are lightweight enough to run without issue on mobile-tier hardware.
-
-Card flip animations use a sprite-swap approach rather than 3D rotation. Each frame of the flip is a hand-authored sprite, triggered by a state machine that locks input during transitions to prevent double-flips and race conditions.
+The fog swirl shader combines scrolling noise textures with a radial distortion pass. God rays are screen-space, sampling a bright-pass buffer and blurring along a direction vector pointed at the light source. Both are lightweight enough to run without issue on mobile hardware.
 
 ## Tools
 
-Unity 2D, C#, Shader Graph, Shuriken Particle System, Inverse Kinematics
+Unity 2D, C#, Shader Graph, Shuriken for VFX, Inverse Kinematics
