@@ -63,9 +63,8 @@
     <ul>
       <li><a href="${indexBase}#career">Career</a></li>
       <li><a href="${indexBase}#art">Art</a></li>
-      <li><a href="${indexBase}#animations">Animations</a></li>
       <li><a href="${indexBase}#contact">Contact</a></li>
-      <li><a href="${root}notebook.html">Notebooks</a></li>
+      <li><a href="${root}blog/">Blog</a></li>
     </ul>
   `;
 

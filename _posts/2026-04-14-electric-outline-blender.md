@@ -9,7 +9,7 @@ subtitle: Transforming any 3D model into colorful dots connected by lightning, e
 excerpt: Transforming any 3D model into colorful dots connected by lightning, entirely with Geometry Nodes.
 ---
 
-{% include post-video.html src="../resources/electric_whale.mp4" %}
+{% include post-video.html src="/portfolio/resources/electric_whale.mp4" %}
 
 I wanted to create an effect that could take any arbitrary mesh and convert it into something that looked like an electrical schematic come to life: points of light connected by arcing, noisy lightning bolts, all wrapped in a color gradient.
 
@@ -28,7 +28,7 @@ The pipeline is built entirely in Blender's Geometry Nodes. Here's the breakdown
 
 ## The Node Graph
 
-{% include post-image.html src="../resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" %}
+{% include post-image.html src="/portfolio/resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" %}
 
 The geometry node setup above shows the full pipeline. The key insight is that by storing color as a point attribute during the geometry phase, you can access it later in the shader without any UV mapping. The color is baked into the geometry itself.
 

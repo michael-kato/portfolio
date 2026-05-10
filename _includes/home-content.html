@@ -162,11 +162,11 @@
     <section id="blog">
       <div class="container">
         <div class="section-header">
-          <h2>Notebooks</h2>
+          <h2>Blog</h2>
         </div>
         <div class="blog-grid">
           {% for post in site.posts limit: 3 %}
-            <a href="{{ post.url | relative_url }}" class="blog-card">
+            <a href="{{ '/blog/#' | relative_url | append: (post.title | slugify) }}" class="blog-card">
               <div class="blog-card-meta">
                 {% for tag in post.tags %}
                   <span class="blog-tag">{{ tag }}</span>
@@ -180,7 +180,7 @@
           {% endfor %}
         </div>
         <div class="blog-view-all">
-          <a href="{{ '/notebook/' | relative_url }}" class="blog-view-all-link">View all posts &rarr;</a>
+          <a href="{{ '/blog/' | relative_url }}" class="blog-view-all-link">View all blog posts &rarr;</a>
         </div>
       </div>
     </section>

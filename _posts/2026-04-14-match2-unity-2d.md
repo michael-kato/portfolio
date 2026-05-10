@@ -9,7 +9,7 @@ subtitle: A demonstration of 2D VFX, shaders, animation, and procedural systems 
 excerpt: A demonstration of 2D VFX, shaders, animation, and procedural systems built in Unity.
 ---
 
-{% include post-video.html src="../resources/2d_game_03.mp4" volume=0.3 %}
+{% include post-video.html src="/portfolio/resources/2d_game_03.mp4" volume=0.3 %}
 
 This project started as an excuse to dive deep into Unity 2D's VFX and shader tooling. I wanted to build something small enough to finish but rich enough to explore procedural animation, particle systems, and custom shaders in a real gameplay context.
 

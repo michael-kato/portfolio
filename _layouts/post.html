@@ -10,7 +10,7 @@
   <main>
     <section id="notebook-post">
       <div class="container">
-        <a href="{{ page.notebook_link | default: '/notebook/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Notebooks' }}</a>
+        <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Blog' }}</a>
 
         <div class="section-header">
           <h1>{{ page.title }}</h1>

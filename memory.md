@@ -16,24 +16,31 @@ The homepage now uses a shared layout/content split:
 - `index.html` is only front matter for the default homepage.
 - `programming.html` is front matter for the programming-focused clean URL variant.
 - `_layouts/home.html` contains the shared HTML shell, includes, scripts, and `data-variant` hook.
-- `_includes/home-content.html` contains the shared homepage body: about, career, art, animations, notebooks preview, contact, modals, and lightbox.
+- `_includes/home-content.html` contains the shared homepage body: about, career, art, notebooks preview, contact, modals, and lightbox.
 
 This keeps alternate URLs from duplicating the full homepage markup.
 
 ## Navigation
 
-For Jekyll-rendered pages, `_includes/site-nav.html` is the active nav include. On home-style pages it links directly to same-page anchors such as `#career`, `#art`, `#animations`, and `#contact`.
+For Jekyll-rendered pages, `_includes/site-nav.html` is the active nav include. On home-style pages it links directly to same-page anchors such as `#career`, `#art`, `#contact`
 
 `components.js` is a legacy dynamic header/nav/footer loader used by older/static pages. It still contains older assumptions, so check whether a page uses Jekyll includes or `components.js` before changing navigation globally.
 
 ## Content/data split
 
-Project and art modal content lives in `portfolio-data.js`:
+Project and art modal content (used for dynamic injection) lives in `portfolio-data.js`:
 
 - `projectData` powers project modal details.
 - `artData` powers expanded art gallery details.
 
 The cards and section structure live in `_includes/home-content.html`. The interactive behavior for those cards lives in `index.js`.
+
+## Blog System (formerly Notebooks)
+
+The site now uses a single-page blog feed at `/blog/` (source: `notebook.html`).
+- **Feed Structure:** All posts are rendered in full within a vertical feed.
+- **Navigation:** A Table of Contents (ToC) at the top allows jumping to specific posts using anchor links (`#post-title-slug`).
+- **Redirects:** The homepage "Read more" links now point directly to the post's anchor on the blog page rather than separate pages.
 
 ## Variant system
 
@@ -52,9 +59,15 @@ The current `programming` variant:
 - changes the page title in JavaScript
 - changes the about copy
 - renames `Career` to `Programming Work`
-- hides `art`, `animations`, and `blog`
+- hides `art` and `blog`
 - updates the GitHub CTA copy
 - adds `body.variant-programming` for CSS theme overrides
+
+## Layout & Styling Notes
+
+- **Lists:** Bullets in `.project-card` and `.modal-body` are explicitly indented to override global resets.
+- **Overlays:** Header background overlays and canvas opacities are tuned to ensure the shader remains visible; modal backdrops use higher opacity (0.92) for better legibility.
+- **Scrolling:** `scroll-behavior: smooth` is enabled globally. Auto-scrolling on modal/art expansion has been disabled to improve user control.
 
 Variant styling lives in `style.css` as body-level CSS custom property overrides.
 

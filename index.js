@@ -33,7 +33,7 @@ const portfolioVariants = {
     labels: {
       career: 'Programming Work'
     },
-    hiddenSections: ['art', 'animations', 'blog'],
+    hiddenSections: ['art', 'blog'],
     githubTitle: 'More Code',
     githubDescription: 'Browse additional projects on GitHub.'
   }
@@ -373,11 +373,6 @@ function expandArtItem(item) {
   
   // Add expanded class last to trigger animations
   item.classList.add('expanded');
-  
-  // Scroll to make sure expanded item is visible
-  setTimeout(() => {
-    item.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 100);
 }
 
 /**
