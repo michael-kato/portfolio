@@ -218,7 +218,7 @@ function openProjectModal(project) {
   
   // Update and show modal
   projectModal.innerHTML = modalContent;
-  projectModal.style.display = 'block';
+  projectModal.classList.add('active');
   
   // Add image click handlers for lightbox
   if (project.images && project.images.length > 0) {
@@ -235,7 +235,7 @@ function openProjectModal(project) {
   const closeBtn = projectModal.querySelector('.close-modal');
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
-      projectModal.style.display = 'none';
+      projectModal.classList.remove('active');
     });
   }
 }
@@ -422,7 +422,7 @@ function setupModalHandlers() {
 
     modal.addEventListener('click', (e) => {
       if (!e.target.closest('.modal-content')) {
-        modal.style.display = 'none';
+        modal.classList.remove('active');
       }
     });
   });
@@ -431,7 +431,7 @@ function setupModalHandlers() {
     lightbox.addEventListener('click', (e) => {
       const clickedControls = e.target.closest('.lightbox-image, .lightbox-nav, .lightbox-close');
       if (!clickedControls) {
-        lightbox.style.display = 'none';
+        lightbox.classList.remove('active');
       }
     });
   }
@@ -446,9 +446,9 @@ function setupModalHandlers() {
     if (projectOpen || artOpen || lightboxOpen) {
       if (e.key === 'Escape') {
         // Close all modals
-        if (projectModal) projectModal.style.display = 'none';
-        if (artModal) artModal.style.display = 'none';
-        if (lightbox) lightbox.style.display = 'none';
+        if (projectModal) projectModal.classList.remove('active');
+        if (artModal) artModal.classList.remove('active');
+        if (lightbox) lightbox.classList.remove('active');
       } else if (e.key === 'ArrowLeft' && lightboxOpen) {
         // Previous image in lightbox
         const prevBtn = lightbox.querySelector('.lightbox-prev');
@@ -516,13 +516,13 @@ function openLightbox(images, startIndex = 0) {
   // Close lightbox when clicking X
   if (closeButton) {
     closeButton.onclick = () => {
-      lightbox.style.display = 'none';
+      lightbox.classList.remove('active');
     };
   }
   
   // Show lightbox with current image
   updateLightbox();
-  lightbox.style.display = 'block';
+  lightbox.classList.add('active');
 }
 
 /**
@@ -559,7 +559,7 @@ function setRandomHeaderBackground(galleryImages) {
   // After fade-out, set new background and fade in
   setTimeout(() => {
     headerBackground.style.backgroundImage = `url(${selectedImage})`;
-    headerBackground.style.opacity = 0.35;
+    headerBackground.style.opacity = 0.15; // Match the new lower opacity in CSS
   }, 300);
 }
 

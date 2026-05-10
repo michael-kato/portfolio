@@ -4,7 +4,14 @@
  * Adapted from Shadertoy: https://www.shadertoy.com/view/3l23Rh
  */
 
-document.addEventListener('DOMContentLoaded', initShader);
+document.addEventListener('DOMContentLoaded', () => {
+  // Ensure canvas is properly positioned
+  const bgCanvas = document.getElementById('background-canvas');
+  if (bgCanvas) {
+    bgCanvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; display: block; border: none; margin: 0; padding: 0;';
+  }
+  initShader();
+});
 
 
 const shaders = {
@@ -44,6 +51,84 @@ const shaders = {
 
     // Output to screen
     fragColor = vec4(col,1.0);
+    }
+
+    out vec4 outColor;
+    void main() {
+      mainImage(outColor, gl_FragCoord.xy);
+    }
+`,
+  'background-canvas': `#version 300 es
+    precision mediump float;
+    
+    uniform vec2 uResolution;
+    uniform float uTime;
+    
+    // Simplex-like noise
+    float hash(vec2 p) {
+      return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+    }
+    
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      f = f * f * (3.0 - 2.0 * f);
+      
+      float a = hash(i);
+      float b = hash(i + vec2(1.0, 0.0));
+      float c = hash(i + vec2(0.0, 1.0));
+      float d = hash(i + vec2(1.0, 1.0));
+      
+      return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+    }
+    
+    float fbm(vec2 p) {
+      float value = 0.0;
+      float amplitude = 0.5;
+      float frequency = 1.0;
+      
+      for (int i = 0; i < 5; i++) {
+        value += amplitude * noise(p * frequency);
+        frequency *= 2.0;
+        amplitude *= 0.5;
+      }
+      
+      return value;
+    }
+    
+    void mainImage(out vec4 fragColor, in vec2 fragCoord) {
+      vec2 uv = fragCoord / uResolution.xy;
+      
+      // Create layered cloud effect
+      vec2 p = uv * 3.0;
+      
+      // Multiple layers of FBM for cloud-like clouds
+      float cloud1 = fbm(p + uTime * 0.1);
+      float cloud2 = fbm(p * 0.5 + uTime * 0.15 + 10.0);
+      float cloud3 = fbm(p * 0.25 + uTime * 0.08 + 20.0);
+      
+      float clouds = cloud1 * 0.5 + cloud2 * 0.3 + cloud3 * 0.2;
+      clouds = smoothstep(0.3, 0.7, clouds);
+      
+      // Color palette - forest atmosphere
+      vec3 darkBase = vec3(20.0, 33.0, 15.0) / 255.0;  // #0f172f
+      vec3 forestGreen = vec3(56.0, 69.0, 31.0) / 255.0;  // #384531f
+      vec3 skyBlue = vec3(103.0, 183.0, 220.0) / 255.0;  // #67b7dc
+      vec3 lightCloud = vec3(247.0, 241.0, 220.0) / 255.0;  // #f7f1dc
+      
+      // Vertical gradient
+      vec3 col = mix(darkBase, forestGreen, uv.y * 0.4);
+      
+      // Add some sky blue at top
+      col = mix(col, skyBlue * 0.3, uv.y * 0.3);
+      
+      // Blend in clouds
+      col = mix(col, lightCloud * 0.4, clouds * 0.5);
+      
+      // Smooth transitions to avoid harsh lines
+      col += fbm(uv * 0.5 + uTime * 0.02) * 0.1;
+      
+      fragColor = vec4(col, 1.0);
     }
 
     out vec4 outColor;

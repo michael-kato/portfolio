@@ -6,6 +6,8 @@
 </head>
 
 <body data-page="home"{% if page.variant %} data-variant="{{ page.variant }}"{% endif %}>
+  <canvas id="background-canvas"></canvas>
+  
   {% include site-header.html %}
   {% include site-nav.html is_home=true %}
 
@@ -15,6 +17,7 @@
   {% include site-footer.html %}
 
   <script src="{{ '/portfolio-data.js' | relative_url }}"></script>
+  <script src="{{ '/shaders.js' | relative_url }}"></script>
   <script src="{{ '/index.js' | relative_url }}"></script>
 </body>
 </html>
