@@ -65,9 +65,15 @@ The current `programming` variant:
 
 ## Layout & Styling Notes
 
-- **Lists:** Bullets in `.project-card` and `.modal-body` are explicitly indented to override global resets.
+- **Color Hierarchy:**
+  - `bright-wheat`: Used for site and blog post titles.
+  - `light-wheat`: Used for section headers (About, Career, etc.), nav links, and tags.
+  - `accent-color` (Orange): Used for career category headers and project titles.
+  - `wheat`: Used for standard body and descriptive text.
+  - `dark-burnt-orange`: Used for accent lines, arrows, logos, and UI-specific links (Read more).
+- **Lists:** Bullets in cards and modals are explicitly indented.
 - **Overlays:** Header background overlays and canvas opacities are tuned to ensure the shader remains visible; modal backdrops use higher opacity (0.92) for better legibility.
-- **Scrolling:** `scroll-behavior: smooth` is enabled globally. Auto-scrolling on modal/art expansion has been disabled to improve user control.
+- **Scrolling:** `scroll-behavior: smooth` is enabled globally. Career categories and Art items use `scrollIntoView` when expanded to align with the top of the viewport, using `scroll-margin-top` (80px) to account for the sticky navigation bar.
 
 Variant styling lives in `style.css` as body-level CSS custom property overrides.
 

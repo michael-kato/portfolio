@@ -131,6 +131,11 @@ function initCareerSection() {
             otherCategory.classList.remove('active');
           }
         });
+
+        // Scroll to the top of the category after a short delay for the transition
+        setTimeout(() => {
+          category.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
       }
     });
   });
@@ -373,6 +378,11 @@ function expandArtItem(item) {
   
   // Add expanded class last to trigger animations
   item.classList.add('expanded');
+
+  // Scroll to the top of the art item
+  setTimeout(() => {
+    item.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 50);
 }
 
 /**
