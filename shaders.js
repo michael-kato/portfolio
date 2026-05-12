@@ -67,23 +67,21 @@ const shaders = {
 
     #define rot(a)         mat2(cos( a +vec4(0,11,33,0)))
     #define linstep(m,M,x) clamp((x - m)/(M - m), 0., 1.)
-    #define disp(t)        2.* vec2( sin((t)*.22), cos((t)*.175) )
+    #define disp(t)        vec2(0.0)
 
     float prm1;
-    vec2  bsMo = vec2(0.0);
     vec2  bsMo; // Mouse influence parameter
 
     vec2 map(vec3 p) {
         vec2 q = p.xy - disp(p.z);
-        p.xy *= rot( sin(p.z+uTime) * (.1 + prm1*.05) + uTime*.09 );
-        float d, z = 1., trk = z, dspAmp = .1 + prm1*.2;
+        p.xy *= rot( sin(p.z) * .1 ); // Static twist based on depth
+        float d, z = 1., trk = z, dspAmp = .15; // Constant displacement amplitude
         p *= .61;
         for(int i=0; i < 4; i++, z *= .57, trk *= 1.4 )
-            p += dspAmp * sin( trk*(p.zxy*.75 + uTime*.8) ),
+            p += dspAmp * sin( trk*(p.zxy*.75) ), // Removed uTime to stop churning
             d -= z * abs( dot(cos(p), sin(p.yzx)) ),
             p *= 1.93 * mat3(.33338, .56034, -.71817, -.87887, .32651, -.15323, .15162, .69596, .61339);
-        d = abs(d + prm1*3. )+ prm1*.3 - 2.5;
-        d = abs(d + prm1*3. )+ prm1*.3 - 2.5 + bsMo.y; // Reintroduce bsMo.y influence
+        d = abs(d) - 2.2; 
         return vec2(d +.25,0) + dot(q,q)*vec2(.2,1);
     }
 
@@ -125,22 +123,24 @@ const shaders = {
     }
 
     void mainImage( out vec4 O, vec2 u ) {	
-        vec2 R = uResolution.xy, q = u/R, p = (u - .5*R ) / R.y;
-        prm1 = smoothstep(-.4, .4, sin(uTime*.3) );
-        float time = uTime*1.5, tgtDst = 3.5, dspAmp = .85;
-        bsMo = (uMouse - .5*R ) / R.y; // Calculate bsMo from uMouse
-        prm1 = smoothstep(-.4, .4, sin(uTime*.3) ); // This was already here
-        float time = uTime*1.5, tgtDst = 3.5, dspAmp = .85; // This was already here
-        vec3 P = vec3(sin(uTime)*.5,0,time);
-        P.xy += disp(P.z)*dspAmp;
-        vec3 target = normalize(P - vec3(disp(time + tgtDst)*dspAmp, time + tgtDst)),
+        vec2 R = uResolution.xy, q = u/R, p = (u - 0.5*R ) / R.y;
+        // Map mouse to [-0.5, 0.5] range relative to center
+        bsMo = (uMouse * 0.5 - 0.5*R ) / R.y; 
+        
+        prm1 = 0.0; // Stabilize prm1 to remove procedural color/cam shifting
+        float time = uTime*1.5;
+        vec3 P = vec3(0.0, 0.0, time);
+        
+        // Camera target reacts to mouse
+        vec3 target = normalize(vec3(bsMo.x * 5.0, bsMo.y * 5.0, -1.0)),
              rightdir = normalize(cross(target, vec3(0,1,0))),
              updir = normalize(cross(rightdir, target)),
              rightdir2 = cross(updir, target),
-             D = normalize( p.x*rightdir2 + p.y*updir - target);
-        D.xy *= rot( -disp(time + 3.5).x*.2 );
-        D.xy *= rot( bsMo.x - disp(time + 3.5).x*.2 ); // Reintroduce bsMo.x influence
-        P.x -= bsMo.x*2.; // Reintroduce bsMo.x influence on camera position
+             D = normalize( p.x*rightdir2 + p.y*updir + vec3(0,0,1)); // Standardized view vector
+        
+        // Apply mouse-driven rotation to the final ray direction
+        D.xy *= rot(bsMo.x * 0.5);
+
         vec3 C = render(P, D, time).rgb;
         C = iLerp(C, C.bgr, min(prm1,.95));
         C = pow( C, vec3(0.75,0.8,0.85) ) *vec3(0.8,0.78,0.75);
@@ -203,22 +203,22 @@ function initShader() {
     const buffers = initBuffers(gl);
 
     // Start animation loop
-    let mouseX = 0;
-    let mouseY = 0;
+    // Use window coordinates for the listeners to bypass 'pointer-events: none'
+    let targetMouseX = window.innerWidth / 2;
+    let targetMouseY = window.innerHeight / 2;
+    let currentMouseX = targetMouseX;
+    let currentMouseY = targetMouseY;
 
-    // Mouse tracking event listeners
     function updateMousePosition(e) {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = rect.height - (e.clientY - rect.top) - 1; // Flip Y for WebGL coordinates
+      targetMouseX = e.clientX;
+      // Invert Y: Screen (top-0) to WebGL (bottom-0)
+      targetMouseY = window.innerHeight - e.clientY;
     }
 
-    canvas.addEventListener('mousemove', updateMousePosition);
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault(); // Prevent scrolling on touch
+    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('touchmove', (e) => {
       const touch = e.touches[0];
-      mouseX = touch.clientX - canvas.getBoundingClientRect().left;
-      mouseY = canvas.getBoundingClientRect().height - (touch.clientY - canvas.getBoundingClientRect().top) - 1;
+      updateMousePosition(touch);
     });
 
     let then = 0;
@@ -227,8 +227,12 @@ function initShader() {
       const deltaTime = now - then;
       then = now;
 
-      drawScene(gl, programInfo, buffers, now);
-      drawScene(gl, programInfo, buffers, now, mouseX, mouseY); // Pass mouse coordinates
+      // Lazy interpolation (LERP) for smooth following
+      const smoothness = 0.07; // Slightly more responsive but still "lazy"
+      currentMouseX += (targetMouseX - currentMouseX) * smoothness;
+      currentMouseY += (targetMouseY - currentMouseY) * smoothness;
+
+      drawScene(gl, programInfo, buffers, now, currentMouseX, currentMouseY);
       requestAnimationFrame(render);
     }
     requestAnimationFrame(render);
@@ -304,8 +308,7 @@ function initBuffers(gl) {
 /**
  * Draw the scene
  */
-function drawScene(gl, programInfo, buffers, time) {
-function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) { // Accept mouse coordinates
+function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) {
   // Resize canvas to match display size
   resizeCanvasToDisplaySize(gl.canvas);
 
