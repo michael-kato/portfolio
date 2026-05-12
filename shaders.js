@@ -142,7 +142,7 @@ function initShader() {
   const canvases = document.getElementsByTagName('canvas');
   console.info(canvases);
   for (let i=0; i < canvases.length; i++) {
-    canvas = canvases[i];
+    const canvas = canvases[i];
     console.info(canvas);
     if (!canvas) return;
 
@@ -162,6 +162,8 @@ function initShader() {
     `;
     console.info(canvas.id);
     const fs = shaders[canvas.id];
+    
+    if (!fs) continue; // Skip if we don't have a shader defined for this canvas ID
 
     // Initialize shader program
     const shaderProgram = initShaderProgram(gl, vs, fs);

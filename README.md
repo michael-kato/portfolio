@@ -1,17 +1,17 @@
 # portfolio
 My portfolio!
-https://michael-kato.github.io/portfolio/
+https://michael-kato.github.io/
 
-## Notebook workflow
+## blog workflow
 
-The notebook/blog now uses Jekyll posts instead of hand-authored HTML pages.
+The blog/blog now uses Jekyll posts instead of hand-authored HTML pages.
 
-Important: `index.html`, `notebook.html`, `_layouts/`, and `_includes/` are now Jekyll source files. If you open them directly in a browser or static preview, you will see raw front matter and Liquid tags. They only render correctly after a Jekyll build.
+Important: `index.html`, `blog.html`, `_layouts/`, and `_includes/` are now Jekyll source files. If you open them directly in a browser or static preview, you will see raw front matter and Liquid tags. They only render correctly after a Jekyll build.
 
 - Write new posts in `_posts/` using the filename format `YYYY-MM-DD-slug.md`
 - Add front matter for `title`, `date`, `tags`, `subtitle`, and `excerpt`
-- The notebook listing page at `notebook.html` builds itself from those posts and publishes at `/notebook/`
-- Posts publish to `/notebook/slug/`
+- The blog listing page at `blog.html` builds itself from those posts and publishes at `/blog/`
+- Posts publish to `/blog/slug/`
 - GitHub Pages deploys through `.github/workflows/pages.yml`
 - Local preview uses `bundle exec jekyll serve`
 
@@ -25,7 +25,7 @@ tags:
   - Blender
   - Pipeline
 subtitle: A short one-line summary for the post header.
-excerpt: A short summary used on the notebook listing page.
+excerpt: A short summary used on the blog listing page.
 ---
 
 Write in normal Markdown here.

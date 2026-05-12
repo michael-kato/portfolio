@@ -13,7 +13,7 @@ I wanted to create an effect that could take any arbitrary mesh and convert it i
 
 The entire effect is non-destructive and works on any mesh.
 
-{% include post-video.html src="/portfolio/resources/electric_whale.mp4" %}
+{% include post-video.html src="/portfolio/resources/electric_whale.mp4" autoplay=true muted=true loop=true playsinline=true %}
 
 ## How It Works
 

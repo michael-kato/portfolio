@@ -10,19 +10,23 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   applyPortfolioVariant();
+  
+  renderProjectCards();
+
   initCareerSection();
   setupProjectCards();
   setupArtItems();
+  setupBlogImages();
   setupModalHandlers();
   initDynamicBackground();
 });
 
 function getProjectData() {
-  return typeof projectData === 'undefined' ? {} : projectData;
+  return window.projectData || {};
 }
 
 function getArtData() {
-  return typeof artData === 'undefined' ? {} : artData;
+  return window.artData || {};
 }
 
 const portfolioVariants = {
@@ -111,6 +115,45 @@ function hideVariantSections(sectionIds) {
 }
 
 /**
+ * Dynamically render project cards based on data-project-ids attribute
+ */
+function renderProjectCards() {
+  const containers = document.querySelectorAll('.career-projects');
+  const data = getProjectData();
+
+  if (Object.keys(data).length === 0) {
+    return false;
+  }
+  
+  containers.forEach(container => {
+    const ids = container.dataset.projectIds ? container.dataset.projectIds.split(',') : [];
+    if (ids.length === 0) return;
+    
+    let html = '';
+    ids.forEach(id => {
+      const projectId = id.trim();
+      const project = data[projectId];
+      if (!project) return;
+
+      const tags = project.tags || [];
+      const tagsHtml = tags.length > 0 
+        ? `<div class="project-tags">${tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}</div>`
+        : '';
+      
+      // Support up to 3 cards side-by-side as per CSS grid
+      html += `
+        <div class="project-card" id="${projectId}">
+          <h3 class="project-header">${project.title}</h3>
+          <p class="project-description">${project.summary || ''}</p>
+          ${tagsHtml}
+        </div>`;
+    });
+    container.innerHTML = html;
+  });
+  return true;
+}
+
+/**
  * Initialize career section collapsible functionality
  */
 function initCareerSection() {
@@ -135,7 +178,7 @@ function initCareerSection() {
         // Scroll to the top of the category after a short delay for the transition
         setTimeout(() => {
           category.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
+        }, 150);
       }
     });
   });
@@ -152,21 +195,21 @@ function initCareerSection() {
 function setupProjectCards() {
   const projectModal = document.getElementById('project-modal');
   if (!projectModal) return;
-  
-  document.querySelectorAll('.project-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const projectId = card.id;
-      const project = getProjectData()[projectId] || {
-        title: card.querySelector('.project-header')?.textContent || 'Project',
-        description: `<p>${card.querySelector('.project-description')?.textContent || ''}</p>
-                     <h4>Detailed information coming soon</h4>
-                     <p>This project is currently being documented with full implementation details and impact metrics.</p>`,
-        images: null,
-        video: null
-      };
-      
-      openProjectModal(project);
-    });
+
+  // EVENT DELEGATION: Attach to document to handle dynamically rendered cards
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.project-card');
+    if (!card) return;
+
+    const projectId = card.id;
+    const project = getProjectData()[projectId] || {
+      title: card.querySelector('.project-header')?.textContent || 'Project',
+      description: `<p>${card.querySelector('.project-description')?.textContent || ''}</p>`,
+      images: null,
+      video: null
+    };
+    
+    openProjectModal(project);
   });
 }
 
@@ -297,6 +340,30 @@ function setupArtItems() {
 }
 
 /**
+ * Set up expansion handlers for images within blog/blog content
+ */
+function setupBlogImages() {
+  const blogPosts = document.querySelectorAll('.blog-content');
+  if (blogPosts.length === 0) return;
+
+  blogPosts.forEach(post => {
+    // Find all images within this specific post
+    const imgElements = Array.from(post.querySelectorAll('img'));
+    const imageData = imgElements.map(img => ({
+      src: img.src,
+      caption: img.alt || img.title || ''
+    }));
+
+    // Add click listeners to each image to open in a gallery for this post
+    imgElements.forEach((img, index) => {
+      img.addEventListener('click', () => {
+        openLightbox(imageData, index);
+      });
+    });
+  });
+}
+
+/**
  * Expand an art item with detailed content
  */
 function expandArtItem(item) {
@@ -382,7 +449,7 @@ function expandArtItem(item) {
   // Scroll to the top of the art item
   setTimeout(() => {
     item.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 50);
+  }, 150);
 }
 
 /**
@@ -444,9 +511,9 @@ function setupModalHandlers() {
   // Global keyboard navigation
   window.addEventListener('keydown', (e) => {
     // Only handle keys if a modal is visible
-    const projectOpen = projectModal?.style.display === 'block';
-    const artOpen = artModal?.style.display === 'block';
-    const lightboxOpen = lightbox?.style.display === 'block';
+    const projectOpen = projectModal?.classList.contains('active');
+    const artOpen = artModal?.classList.contains('active');
+    const lightboxOpen = lightbox?.classList.contains('active');
 
     if (projectOpen || artOpen || lightboxOpen) {
       if (e.key === 'Escape') {

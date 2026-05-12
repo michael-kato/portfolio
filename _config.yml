@@ -1,5 +1,5 @@
 title: Michael Kato
-description: Technical artist portfolio and notebook posts.
+description: Technical artist portfolio and blog posts.
 timezone: America/Los_Angeles
 url: https://michael-kato.github.io
 baseurl: /portfolio
@@ -13,11 +13,11 @@ defaults:
     values:
       layout: post
       header_title: Michael Kato
-      header_subtitle: Notebooks
+      header_subtitle: blogs
       header_link: /
-      notebook_link: /notebook/
-      back_label: "&larr; Back to Notebooks"
-      permalink: /notebook/:title/
+      blog_link: /blog/
+      back_label: "&larr; Back to blogs"
+      permalink: /blog/:title/
 exclude:
   - README.md
   - CLAUDE.md

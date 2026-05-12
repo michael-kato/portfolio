@@ -4,11 +4,11 @@
   {% include analytics.html %}
   {% include page_head.html style_path="/style.css" %}
 </head>
-<body data-page="notebook">
+<body data-page="blog">
   {% include site-header.html %}
   {% include site-nav.html %}
   <main>
-    <section id="notebook-post">
+    <section id="blog-post">
       <div class="container">
         <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Blog' }}</a>
 
@@ -24,16 +24,16 @@
             <span class="blog-date">{{ page.date | date: "%B %-d, %Y" }}</span>
           </div>
           {% if page.subtitle %}
-            <p class="notebook-subtitle">{{ page.subtitle }}</p>
+            <p class="blog-subtitle">{{ page.subtitle }}</p>
           {% endif %}
         </div>
 
-        <div class="notebook-content">
+        <div class="blog-content">
           {{ content }}
         </div>
 
-        <div class="notebook-footer content-narrow">
-          <a href="{{ page.notebook_link | default: '/notebook/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Notebooks' }}</a>
+        <div class="blog-footer content-narrow">
+          <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to blogs' }}</a>
         </div>
       </div>
     </section>

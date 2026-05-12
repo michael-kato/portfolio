@@ -11,7 +11,9 @@ excerpt: A demonstration of 2D VFX, shaders, animation, and procedural systems b
 
 This project started to refresh my knowledge of Unity especially in the realm of 2D which I've never really touched. I tried to make as much as possible dynamic and interactive. Adding as much visual flair as I possibly could.
 
-{% include post-video.html src="/portfolio/resources/2d_game_03.mp4" volume=0.3 %}
+<div class="video-vertical-wrap">
+  {% include post-video.html src="/portfolio/resources/2d_game_03.mp4" volume=0.3 %}
+</div>
 
 ## Highlights
 

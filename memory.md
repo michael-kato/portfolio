@@ -4,10 +4,10 @@
 
 This is a Jekyll/GitHub Pages portfolio site. The public base URL is configured in `_config.yml` as:
 
-- `url: https://michael-kato.github.io`
-- `baseurl: /portfolio`
+- `url: https://michael-kato.github.io` (or your custom domain)
+- `baseurl: ""`
 
-That means clean generated pages publish under `/portfolio/...` on GitHub Pages. For example, the programming variant is `/portfolio/programming/`.
+That means generated pages now publish at the root. For example, the programming variant is `/programming/`.
 
 ## Homepage structure
 
@@ -16,7 +16,7 @@ The homepage now uses a shared layout/content split:
 - `index.html` is only front matter for the default homepage.
 - `programming.html` is front matter for the programming-focused clean URL variant.
 - `_layouts/home.html` contains the shared HTML shell, includes, scripts, and `data-variant` hook.
-- `_includes/home-content.html` contains the shared homepage body: about, career, art, notebooks preview, contact, modals, and lightbox.
+- `_includes/home-content.html` contains the shared homepage body: about, career, art, blogs preview, contact, modals, and lightbox.
 
 This keeps alternate URLs from duplicating the full homepage markup.
 
@@ -35,9 +35,9 @@ Project and art modal content (used for dynamic injection) lives in `portfolio-d
 
 The cards and section structure live in `_includes/home-content.html`. The interactive behavior for those cards lives in `index.js`.
 
-## Blog System (formerly Notebooks)
+## Blog System (formerly blogs)
 
-The site now uses a single-page blog feed at `/blog/` (source: `notebook.html`).
+The site now uses a single-page blog feed at `/blog/` (source: `blog.html`).
 - **Feed Structure:** All posts are rendered in full within a vertical feed.
 - **Navigation:** A Table of Contents (ToC) at the top allows jumping to specific posts using anchor links (`#post-title-slug`).
 - **Redirects:** The homepage "Read more" links now point directly to the post's anchor on the blog page rather than separate pages.
@@ -94,7 +94,7 @@ bundle exec jekyll serve
 Default local URL:
 
 ```text
-http://127.0.0.1:4000/portfolio/
+http://127.0.0.1:4000/
 ```
 
 Programming local URL:
