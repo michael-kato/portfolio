@@ -5,11 +5,17 @@
   {% include page_head.html style_path="/style.css" %}
 </head>
 <body data-page="blog">
+  <canvas id="background-canvas"></canvas>
+  
   {% include site-header.html %}
   {% include site-nav.html %}
   <main>
     {{ content }}
   </main>
   {% include site-footer.html %}
+
+  <script src="{{ 'site-content.js' | relative_url }}"></script>
+  <script src="{{ 'shaders.js' | relative_url }}"></script>
+  <script src="{{ 'index.js' | relative_url }}"></script>
 </body>
 </html>
