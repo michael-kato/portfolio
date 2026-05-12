@@ -311,7 +311,7 @@ section {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease;
-  background-color: var(--bg-color);
+  background-color: var(--shadow-color);
 }
 
 .career-category.active .career-category-content {
@@ -473,7 +473,6 @@ section {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   overflow: hidden;
-  background-color: var(--card-bg);
   transition: transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
   aspect-ratio: 1 / 1;
@@ -540,7 +539,7 @@ section {
 }
 
 .expanded-art-container {
-  background-color: var(--dark-douglas-fir);
+  background-color: var(--shadow-color);
   border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0 4px 20px var(--shadow-color);
@@ -1161,6 +1160,11 @@ section {
   margin: 0 auto;
   line-height: 1.8;
   font-size: 1rem;
+  background-color: var(--shadow-color);
+  border: 1px solid rgba(var(--wheat-rgb), 0.14);
+  padding: 10px 12px;
+  box-shadow: 0 30px 60px rgba(var(--ink-black-rgb), 0.26);
+  backdrop-filter: blur(14px);
 }
 
 .blog-content h2 {
