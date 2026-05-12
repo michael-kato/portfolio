@@ -21,10 +21,9 @@ window.projectData = {
 
   <p>Highlights include:</p>
   <ul class="project-list">
-    <li>Identified and patched a 1ms-per-frame battery polling call running every frame, surfacing the regression and shipping a fix the same day it was flagged by the team</li>
     <li>Swept nearly the entire codebase to batch or cache redundant native Unity transform calls (SetPosition, GetTransform), later standardized as a linter error</li>
-    <li>Cleaned up dozens of uncached memory allocations contributing to the platform's chronic GC pressure</li>
-    <li>Earned code reviewer status—a distinction not held by most technical artists on the team—and regularly reviewed engineer submissions</li>
+    <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events</li>
+    <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and many more</li>  
   </ul>
 </div>
   `,
@@ -85,7 +84,7 @@ window.projectData = {
 
   <p>The pipeline handled:</p>
   <ul class="project-list">
-    <li>Delivery: automatically packaged all Python dependencies in-place, resolved and bundled metadata file references, zipped the environment, pushed to AWS, and sent a confirmation email to vendors, and debugged issues</li>
+    <li>Delivery: automatically packaged all Python dependencies in-place, bundled metadata file references, zipped the environment, pushed to AWS, and sent a confirmation email to vendors, and debugged issues</li>
     <li>Ingestion: pulled completed vendor assets into the Perforce depot, ran the QA validation suite automatically, and notified artists of new assets ready for manual review</li>
     <li>Eliminated manual handoff steps on both ends of the outsourcing loop, reducing the risk of broken environments or missed QA failures reaching the training pipeline</li>
   </ul>
