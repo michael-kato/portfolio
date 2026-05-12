@@ -36,7 +36,7 @@ window.projectData = {
     tags: ["C#", "Unity", "Analytics"],
     description: `
 <div class="project-section">
-  <p>I collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds' weekly release cadence—starting as a solo initiative before growing into a dedicated team effort.</p>
+  <p>I collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds' weekly release cadence,starting as a solo initiative before growing into a dedicated team effort.</p>
 
   <p>The framework:</p>
   <ul class="project-list">
@@ -157,7 +157,7 @@ window.projectData = {
     tags: ["C++", "C#", "Optimization"],
     description: `
 <div class="project-section">
-  <p>For Call of Duty: WWII, I partnered with the central technology group to integrate a proprietary LOD generation algorithm into Sledgehammer's asset pipeline—replacing hand-authored LODs for every 3D asset in the game.</p>
+  <p>For Call of Duty: WWII, I partnered with the central technology group to integrate a proprietary LOD generation algorithm into Sledgehammer's asset pipeline,replacing hand-authored LODs for every 3D asset in the game.</p>
 
   <p>The system:</p>
   <ul class="project-list">

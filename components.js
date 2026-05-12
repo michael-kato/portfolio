@@ -5,9 +5,9 @@
  * Usage: Add <script src="components.js"></script> (or "../components.js" for subdirs)
  *        before any other scripts. Set data attributes on <body> to customize:
  *
- *   data-header-title   – Header h1 text (default: "Michael Kato")
- *   data-header-subtitle – Header subtitle (default: "Technically an artist!")
- *   data-header-link    – If set, header title becomes a link to this URL
+ *   data-header-title   - Header h1 text (default: "Michael Kato")
+ *   data-header-subtitle - Header subtitle (default: "Technically an artist!")
+ *   data-header-link    - If set, header title becomes a link to this URL
  */
 
 (function () {

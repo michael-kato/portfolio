@@ -63,6 +63,7 @@ const shaders = {
     
     uniform vec2 uResolution;
     uniform float uTime;
+    uniform vec2 uMouse; // Reintroduce uMouse uniform
 
     #define rot(a)         mat2(cos( a +vec4(0,11,33,0)))
     #define linstep(m,M,x) clamp((x - m)/(M - m), 0., 1.)
@@ -70,6 +71,7 @@ const shaders = {
 
     float prm1;
     vec2  bsMo = vec2(0.0);
+    vec2  bsMo; // Mouse influence parameter
 
     vec2 map(vec3 p) {
         vec2 q = p.xy - disp(p.z);
@@ -81,6 +83,7 @@ const shaders = {
             d -= z * abs( dot(cos(p), sin(p.yzx)) ),
             p *= 1.93 * mat3(.33338, .56034, -.71817, -.87887, .32651, -.15323, .15162, .69596, .61339);
         d = abs(d + prm1*3. )+ prm1*.3 - 2.5;
+        d = abs(d + prm1*3. )+ prm1*.3 - 2.5 + bsMo.y; // Reintroduce bsMo.y influence
         return vec2(d +.25,0) + dot(q,q)*vec2(.2,1);
     }
 
@@ -125,6 +128,9 @@ const shaders = {
         vec2 R = uResolution.xy, q = u/R, p = (u - .5*R ) / R.y;
         prm1 = smoothstep(-.4, .4, sin(uTime*.3) );
         float time = uTime*1.5, tgtDst = 3.5, dspAmp = .85;
+        bsMo = (uMouse - .5*R ) / R.y; // Calculate bsMo from uMouse
+        prm1 = smoothstep(-.4, .4, sin(uTime*.3) ); // This was already here
+        float time = uTime*1.5, tgtDst = 3.5, dspAmp = .85; // This was already here
         vec3 P = vec3(sin(uTime)*.5,0,time);
         P.xy += disp(P.z)*dspAmp;
         vec3 target = normalize(P - vec3(disp(time + tgtDst)*dspAmp, time + tgtDst)),
@@ -133,6 +139,8 @@ const shaders = {
              rightdir2 = cross(updir, target),
              D = normalize( p.x*rightdir2 + p.y*updir - target);
         D.xy *= rot( -disp(time + 3.5).x*.2 );
+        D.xy *= rot( bsMo.x - disp(time + 3.5).x*.2 ); // Reintroduce bsMo.x influence
+        P.x -= bsMo.x*2.; // Reintroduce bsMo.x influence on camera position
         vec3 C = render(P, D, time).rgb;
         C = iLerp(C, C.bgr, min(prm1,.95));
         C = pow( C, vec3(0.75,0.8,0.85) ) *vec3(0.8,0.78,0.75);
@@ -187,6 +195,7 @@ function initShader() {
       uniformLocations: {
         resolution: gl.getUniformLocation(shaderProgram, 'uResolution'),
         time: gl.getUniformLocation(shaderProgram, 'uTime'),
+        mouse: gl.getUniformLocation(shaderProgram, 'uMouse'), // Add uMouse uniform location
       },
     };
 
@@ -194,6 +203,24 @@ function initShader() {
     const buffers = initBuffers(gl);
 
     // Start animation loop
+    let mouseX = 0;
+    let mouseY = 0;
+
+    // Mouse tracking event listeners
+    function updateMousePosition(e) {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = rect.height - (e.clientY - rect.top) - 1; // Flip Y for WebGL coordinates
+    }
+
+    canvas.addEventListener('mousemove', updateMousePosition);
+    canvas.addEventListener('touchmove', (e) => {
+      e.preventDefault(); // Prevent scrolling on touch
+      const touch = e.touches[0];
+      mouseX = touch.clientX - canvas.getBoundingClientRect().left;
+      mouseY = canvas.getBoundingClientRect().height - (touch.clientY - canvas.getBoundingClientRect().top) - 1;
+    });
+
     let then = 0;
     function render(now) {
       now *= 0.001;  // convert to seconds
@@ -201,6 +228,7 @@ function initShader() {
       then = now;
 
       drawScene(gl, programInfo, buffers, now);
+      drawScene(gl, programInfo, buffers, now, mouseX, mouseY); // Pass mouse coordinates
       requestAnimationFrame(render);
     }
     requestAnimationFrame(render);
@@ -277,6 +305,7 @@ function initBuffers(gl) {
  * Draw the scene
  */
 function drawScene(gl, programInfo, buffers, time) {
+function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) { // Accept mouse coordinates
   // Resize canvas to match display size
   resizeCanvasToDisplaySize(gl.canvas);
 
@@ -293,6 +322,7 @@ function drawScene(gl, programInfo, buffers, time) {
   // Set uniforms
   gl.uniform2f(programInfo.uniformLocations.resolution, gl.canvas.width, gl.canvas.height);
   gl.uniform1f(programInfo.uniformLocations.time, time);
+  gl.uniform2f(programInfo.uniformLocations.mouse, mouseX, mouseY); // Pass mouse coordinates to shader
 
   // Set up position attribute
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
