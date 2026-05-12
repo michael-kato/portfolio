@@ -10,23 +10,35 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   applyPortfolioVariant();
-  
-  renderProjectCards();
 
   initCareerSection();
   setupProjectCards();
   setupArtItems();
   setupBlogImages();
   setupModalHandlers();
-  initDynamicBackground();
+  setupChatBot();
+
+  // Delay decryption and rendering to prioritize initial page load
+  setTimeout(() => {
+    renderProjectCards();
+    initDynamicBackground();
+  }, 400);
 });
 
 function getProjectData() {
-  return window.projectData || {};
+  const data = window.projectData || {};
+  if (typeof data === 'string') {
+    try { return JSON.parse(atob(data)); } catch(e) { return {}; }
+  }
+  return data;
 }
 
 function getArtData() {
-  return window.artData || {};
+  const data = window.artData || {};
+  if (typeof data === 'string') {
+    try { return JSON.parse(atob(data)); } catch(e) { return {}; }
+  }
+  return data;
 }
 
 const portfolioVariants = {
@@ -482,6 +494,72 @@ function collapseArtItem(item) {
 }
 
 /**
+ * Set up the AI Career Assistant widget
+ */
+function setupChatBot() {
+  const toggle = document.getElementById('chat-toggle');
+  const chatWindow = document.getElementById('chat-window');
+  const close = document.getElementById('close-chat');
+  const send = document.getElementById('send-chat');
+  const input = document.getElementById('chat-input');
+  const messages = document.getElementById('chat-messages');
+
+  if (!toggle || !chatWindow) return;
+
+  toggle.onclick = () => chatWindow.classList.toggle('active');
+  close.onclick = () => chatWindow.classList.remove('active');
+
+  const handleSend = async () => {
+    const text = input.value.trim();
+    if (!text) return;
+
+    messages.innerHTML += `<div class="message user-message">${text}</div>`;
+    input.value = '';
+    messages.scrollTop = messages.scrollHeight;
+    input.disabled = true;
+
+    const typingId = 'bot-typing-' + Date.now();
+    messages.innerHTML += `<div id="${typingId}" class="message bot-message italic">Connecting to Career Assistant...</div>`;
+    messages.innerHTML += `<div id="${typingId}" class="message bot-message italic">Consulting Michael's history...</div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          prompt: text,
+          timestamp: new Date().toISOString() 
+        })
+      });
+
+      if (response.status === 404) {
+        throw new Error("Chat endpoint not found. Ensure your serverless proxy is deployed.");
+      }
+
+      if (!response.ok) {
+        throw new Error(`API Error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      document.getElementById(typingId)?.remove();
+      messages.innerHTML += `<div class="message bot-message">${data.reply || "I'm not sure about that. Try asking about his work at Meta or Apple!"}</div>`;
+    } catch (error) {
+      console.error("Career Assistant Error:", error.message);
+      document.getElementById(typingId)?.remove();
+      messages.innerHTML += `<div class="message bot-message">I'm having trouble connecting to my brain. Please try again later!</div>`;
+    } finally {
+      input.disabled = false;
+      input.focus();
+    }
+    messages.scrollTop = messages.scrollHeight;
+  };
+
+  send.onclick = handleSend;
+  input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
+}
+
+/**
  * Set up global modal and lightbox handlers
  */
 function setupModalHandlers() {
@@ -597,6 +675,9 @@ function openLightbox(images, startIndex = 0) {
   lightbox.classList.add('active');
 }
 
+// Global to track the last used header image to prevent consecutive repeats
+let lastHeaderImage = '';
+
 /**
  * Function to set a random header background from gallery images
  */
@@ -621,9 +702,17 @@ function setRandomHeaderBackground(galleryImages) {
   const headerBackground = document.querySelector('.header-background');
   if (!headerBackground || !galleryImages.length) return;
   
-  // Select a random image
-  const randomIndex = Math.floor(Math.random() * galleryImages.length);
-  const selectedImage = galleryImages[randomIndex];
+  // Select a random image, ensuring it's not the same as the current one
+  let selectedImage;
+  if (galleryImages.length > 1) {
+    do {
+      selectedImage = galleryImages[Math.floor(Math.random() * galleryImages.length)];
+    } while (selectedImage === lastHeaderImage);
+  } else {
+    selectedImage = galleryImages[0];
+  }
+  
+  lastHeaderImage = selectedImage;
   
   // Fade out current background
   headerBackground.style.opacity = 0;
@@ -631,7 +720,7 @@ function setRandomHeaderBackground(galleryImages) {
   // After fade-out, set new background and fade in
   setTimeout(() => {
     headerBackground.style.backgroundImage = `url(${selectedImage})`;
-    headerBackground.style.opacity = 0.15; // Match the new lower opacity in CSS
+    headerBackground.style.opacity = 0.25; // Slightly increased for better visibility of alpha images
   }, 300);
 }
 
@@ -645,7 +734,11 @@ function collectGalleryImages() {
     if (artProject.images && artProject.images.length > 0) {
       artProject.images.forEach(image => {
         const imageUrl = typeof image === 'string' ? image : image.src;
-        if (imageUrl && !imageUrl.includes('/api/placeholder/') && !imageUrl.includes('placeholder')) {
+        
+        // Filter out video files which cannot be used as CSS background-images
+        const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(imageUrl);
+        
+        if (imageUrl && !isVideo && !imageUrl.includes('/api/placeholder/') && !imageUrl.includes('placeholder')) {
           imageUrls.push(imageUrl);
         }
       });

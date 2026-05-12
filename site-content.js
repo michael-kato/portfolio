@@ -5,6 +5,11 @@
 
 console.log("Site Content Script (formerly portfolio-data) Loaded Successfully");
 
+/* 
+   To obfuscate your data, replace the object with the result of:
+   window.projectData = btoa(JSON.stringify(projectDataRaw))
+*/
+
 window.projectData = {
   "project-code-contributions": {
     title: "Performance Code Contributions",
@@ -65,8 +70,8 @@ window.projectData = {
 </div>
   `,
     images: [
-      "/portfolio/resources/hitch_dashboard.PNG",
-      "/portfolio/resources/fps_dashboard.PNG"
+      "/resources/hitch_dashboard.PNG",
+      "/resources/fps_dashboard.PNG"
     ],
     video: null
   },
@@ -186,8 +191,8 @@ window.projectData = {
 </div>
   `,
     images: [
-      "https://lh5.googleusercontent.com/1Q15n_Eyxk7RXPCthwuFvqyC_ft8RIm3ck0GY4xiK1JibG90slSW-vA8LJOwcp75kZ17NjMkCX9MFC6Pqgb1VbnJxP7bsbj6djgqvwdn9H3jHrYDnQPD2KUrP55MYmSOeMB37CHH",
-      "https://lh3.googleusercontent.com/pKYtVNI01Qr9OcI4gQvu0w_j_8lqGlx6iVZIW3JHJdVTIDT9OtAZbM8iaFV4sun43ve0_4CAaZ-9muuxgQkyyeSzGkhRVI78GPVcLW08G-khNAhlZrzA9qOlvcTwqiJHIj591a14"
+      "/resources/geo_nodes.PNG",
+      "/resources/electric_whale.mp4"
     ],
     video: null
   }

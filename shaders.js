@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Ensure canvas is properly positioned
   const bgCanvas = document.getElementById('background-canvas');
   if (bgCanvas) {
-    bgCanvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; display: block; border: none; margin: 0; padding: 0;';
+    bgCanvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -100; pointer-events: none; display: block; border: none; margin: 0; padding: 0;';
   }
   initShader();
 });
@@ -63,72 +63,81 @@ const shaders = {
     
     uniform vec2 uResolution;
     uniform float uTime;
-    
-    // Simplex-like noise
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453);
+
+    #define rot(a)         mat2(cos( a +vec4(0,11,33,0)))
+    #define linstep(m,M,x) clamp((x - m)/(M - m), 0., 1.)
+    #define disp(t)        2.* vec2( sin((t)*.22), cos((t)*.175) )
+
+    float prm1;
+    vec2  bsMo = vec2(0.0);
+
+    vec2 map(vec3 p) {
+        vec2 q = p.xy - disp(p.z);
+        p.xy *= rot( sin(p.z+uTime) * (.1 + prm1*.05) + uTime*.09 );
+        float d, z = 1., trk = z, dspAmp = .1 + prm1*.2;
+        p *= .61;
+        for(int i=0; i < 4; i++, z *= .57, trk *= 1.4 )
+            p += dspAmp * sin( trk*(p.zxy*.75 + uTime*.8) ),
+            d -= z * abs( dot(cos(p), sin(p.yzx)) ),
+            p *= 1.93 * mat3(.33338, .56034, -.71817, -.87887, .32651, -.15323, .15162, .69596, .61339);
+        d = abs(d + prm1*3. )+ prm1*.3 - 2.5;
+        return vec2(d +.25,0) + dot(q,q)*vec2(.2,1);
     }
-    
-    float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      f = f * f * (3.0 - 2.0 * f);
-      
-      float a = hash(i);
-      float b = hash(i + vec2(1.0, 0.0));
-      float c = hash(i + vec2(0.0, 1.0));
-      float d = hash(i + vec2(1.0, 1.0));
-      
-      return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+
+    vec4 render( vec3 ro, vec3 rd, float time ) {
+        vec4 rez = vec4(0.0);
+        float ldst = 8., t = 1.5, T = time + ldst, fogT = 0.0;
+        for(int i=0; rez.a < .99 && i < 50; i++ ) {
+            vec3  pos = ro + t*rd;
+            vec2  mpv = map(pos);
+            float den = clamp(mpv.x - .3, 0.,1.)*1.12,
+                   dn = clamp(mpv.x + 2., 0.,3.);
+            vec4 C = vec4(0.0);
+            if (mpv.x > .6) { 
+                C = vec4( sin(vec3(4.0,0.2,0.1) + mpv.y*.1 +sin(pos.z*.4)*.5 + 1.8)*.5 + .5, .08 );
+                C *= den*den*den;
+                C.rgb *= linstep(4.,-2.5, mpv.x) *2.3;
+                float dif = clamp((den - map(pos+.8 ).x)/9. , .001, 1. )
+                           + clamp((den - map(pos+.35).x)/2.5, .001, 1. );
+                C.xyz *= den*( vec3(.002,.015,.025) + 1.2*dif*vec3(.01,.02,.01));
+            }
+            float fogC = exp(t*.2 - 2.2);
+            C += vec4(.03,.05,.05, .05) *clamp(fogC-fogT, 0., 1. );
+            fogT = fogC;
+            rez += C *(1. - rez.a);
+            t += clamp(.5 - dn*dn*.05, .09, .3);
+        }
+        return rez;
     }
-    
-    float fbm(vec2 p) {
-      float value = 0.0;
-      float amplitude = 0.5;
-      float frequency = 1.0;
-      
-      for (int i = 0; i < 5; i++) {
-        value += amplitude * noise(p * frequency);
-        frequency *= 2.0;
-        amplitude *= 0.5;
-      }
-      
-      return value;
+
+    #define getsat(c)  1. -  min(min(c.x, c.y), c.z) / max(max(c.x, c.y), c.z)
+
+    vec3 iLerp(vec3 a, vec3 b, float x) {
+        vec3 ic = mix(a, b, x) + vec3(1e-6,0.,0.);
+        float lgt = dot(vec3(1), ic),
+              sd = abs( getsat(ic) - mix(getsat(a), getsat(b), x) );
+        vec3 dir = normalize( ic*3. - lgt );
+        ic += 1.5*dir*sd*lgt * dot(dir, normalize(ic));
+        return ic;
     }
-    
-    void mainImage(out vec4 fragColor, in vec2 fragCoord) {
-      vec2 uv = fragCoord / uResolution.xy;
-      
-      // Create layered cloud effect
-      vec2 p = uv * 3.0;
-      
-      // Multiple layers of FBM for cloud-like clouds
-      float cloud1 = fbm(p + uTime * 0.1);
-      float cloud2 = fbm(p * 0.5 + uTime * 0.15 + 10.0);
-      float cloud3 = fbm(p * 0.25 + uTime * 0.08 + 20.0);
-      
-      float clouds = cloud1 * 0.5 + cloud2 * 0.3 + cloud3 * 0.2;
-      clouds = smoothstep(0.3, 0.7, clouds);
-      
-      // Color palette - forest atmosphere
-      vec3 darkBase = vec3(20.0, 33.0, 15.0) / 255.0;  // #0f172f
-      vec3 forestGreen = vec3(56.0, 69.0, 31.0) / 255.0;  // #384531f
-      vec3 skyBlue = vec3(103.0, 183.0, 220.0) / 255.0;  // #67b7dc
-      vec3 lightCloud = vec3(247.0, 241.0, 220.0) / 255.0;  // #f7f1dc
-      
-      // Vertical gradient
-      vec3 col = mix(darkBase, forestGreen, uv.y * 0.4);
-      
-      // Add some sky blue at top
-      col = mix(col, skyBlue * 0.3, uv.y * 0.3);
-      
-      // Blend in clouds
-      col = mix(col, lightCloud * 0.4, clouds * 0.5);
-      
-      // Smooth transitions to avoid harsh lines
-      col += fbm(uv * 0.5 + uTime * 0.02) * 0.1;
-      
-      fragColor = vec4(col, 1.0);
+
+    void mainImage( out vec4 O, vec2 u ) {	
+        vec2 R = uResolution.xy, q = u/R, p = (u - .5*R ) / R.y;
+        prm1 = smoothstep(-.4, .4, sin(uTime*.3) );
+        float time = uTime*1.5, tgtDst = 3.5, dspAmp = .85;
+        vec3 P = vec3(sin(uTime)*.5,0,time);
+        P.xy += disp(P.z)*dspAmp;
+        vec3 target = normalize(P - vec3(disp(time + tgtDst)*dspAmp, time + tgtDst)),
+             rightdir = normalize(cross(target, vec3(0,1,0))),
+             updir = normalize(cross(rightdir, target)),
+             rightdir2 = cross(updir, target),
+             D = normalize( p.x*rightdir2 + p.y*updir - target);
+        D.xy *= rot( -disp(time + 3.5).x*.2 );
+        vec3 C = render(P, D, time).rgb;
+        C = iLerp(C, C.bgr, min(prm1,.95));
+        C = pow( C, vec3(0.75,0.8,0.85) ) *vec3(0.8,0.78,0.75);
+        C *= pow( 16.*q.x*q.y*(1.-q.x)*(1.-q.y), .12)*.7+.3;
+        O = vec4(C, 1.0);
     }
 
     out vec4 outColor;
@@ -178,29 +187,11 @@ function initShader() {
       uniformLocations: {
         resolution: gl.getUniformLocation(shaderProgram, 'uResolution'),
         time: gl.getUniformLocation(shaderProgram, 'uTime'),
-        mouse: gl.getUniformLocation(shaderProgram, 'uMouse'),
       },
     };
 
     // Initialize buffers
     const buffers = initBuffers(gl);
-
-    // Mouse tracking
-    let mouseX = 0;
-    let mouseY = 0;
-
-    function updateMousePosition(e) {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = rect.height - (e.clientY - rect.top) - 1;  // flip Y for WebGL
-    }
-
-    canvas.addEventListener('mousemove', updateMousePosition);
-    canvas.addEventListener('touchmove', (e) => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      updateMousePosition(touch);
-    });
 
     // Start animation loop
     let then = 0;
@@ -209,7 +200,7 @@ function initShader() {
       const deltaTime = now - then;
       then = now;
 
-      drawScene(gl, programInfo, buffers, now, mouseX, mouseY);
+      drawScene(gl, programInfo, buffers, now);
       requestAnimationFrame(render);
     }
     requestAnimationFrame(render);
@@ -285,7 +276,7 @@ function initBuffers(gl) {
 /**
  * Draw the scene
  */
-function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) {
+function drawScene(gl, programInfo, buffers, time) {
   // Resize canvas to match display size
   resizeCanvasToDisplaySize(gl.canvas);
 
@@ -302,7 +293,6 @@ function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) {
   // Set uniforms
   gl.uniform2f(programInfo.uniformLocations.resolution, gl.canvas.width, gl.canvas.height);
   gl.uniform1f(programInfo.uniformLocations.time, time);
-  gl.uniform2f(programInfo.uniformLocations.mouse, mouseX, mouseY);
 
   // Set up position attribute
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
@@ -324,9 +314,12 @@ function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) {
  * Resize canvas to match display size
  */
 function resizeCanvasToDisplaySize(canvas) {
+  // Set this to a value between 0 and 1 to downsample (e.g., 0.5 = half resolution)
+  const multiplier = 0.5;
+
   // Get the display size of the canvas
-  const displayWidth = canvas.clientWidth;
-  const displayHeight = canvas.clientHeight;
+  const displayWidth = Math.floor(canvas.clientWidth * multiplier);
+  const displayHeight = Math.floor(canvas.clientHeight * multiplier);
 
   // Check if the canvas is not the same size
   if (canvas.width !== displayWidth || canvas.height !== displayHeight) {

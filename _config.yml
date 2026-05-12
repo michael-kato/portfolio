@@ -1,8 +1,9 @@
 title: Michael Kato
 description: Technical artist portfolio and blog posts.
+encoding: utf-8
 timezone: America/Los_Angeles
 url: https://michael-kato.github.io
-baseurl: /portfolio
+baseurl: "/portfolio"
 markdown: kramdown
 kramdown:
   input: GFM
