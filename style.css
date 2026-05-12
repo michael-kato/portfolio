@@ -5,7 +5,7 @@
   --cornsilk: #fefae0;
   --sunlit-clay: #dda15e;
   --copperwood: #d87721;
-  --dark-burnt-orange: #c44900;
+  --dark-burnt-orange: #a73d00;
 
   /* RGB helpers for transparent variations of the pasted palette. */
   --olive-leaf-rgb: 96, 108, 56;
@@ -48,6 +48,7 @@
   --secondary-color: var(--light-wheat);
   --tertiary-color: rgba(var(--wheat-rgb), 0.74);
   --card-bg: rgba(var(--dark-slate-grey-rgb), 0.74);
+  --card-bg-halftrans: rgba(var(--dark-slate-grey-rgb), 0.5);
   --border-color: rgba(var(--wheat-rgb), 0.2);
   --header-bg: var(--douglas-fir);
   --section-header-bg: rgba(var(--canopy-green-rgb), 0.72);
@@ -146,7 +147,7 @@ p {
 
 .header-title {
   font-size: 2.5rem;
-  color: var(--bright-wheat);
+  color: var(--light-wheat);
   font-weight: 600;
   text-shadow: 0 2px 5px var(--shadow-color);
 }
@@ -998,7 +999,7 @@ section {
 
 /* ===== Blog Feed Styles ===== */
 .toc-container {
-  background-color: var(--card-bg);
+  background-color: var(--card-bg-halftrans);
   border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 20px;
@@ -1014,6 +1015,7 @@ section {
 }
 
 .toc-list {
+  color: var(--dark-burnt-orange);
   list-style: none;
   margin: 0;
   padding: 0;
@@ -1092,7 +1094,7 @@ section {
 }
 
 .blog-card-title {
-  color: var(--bright-wheat);
+  color: var(--burnt-orange);
   font-size: 1.6rem;
   font-weight: 600;
   margin-bottom: 10px;
