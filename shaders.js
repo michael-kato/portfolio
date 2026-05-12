@@ -59,23 +59,24 @@ const shaders = {
     }
 `,
   'background-canvas': `#version 300 es
-    precision mediump float;
+    precision highp float;
     
     uniform vec2 uResolution;
     uniform float uTime;
-    uniform vec2 uMouse; // Reintroduce uMouse uniform
+    uniform vec2 uMouse;
 
     #define rot(a)         mat2(cos( a +vec4(0,11,33,0)))
     #define linstep(m,M,x) clamp((x - m)/(M - m), 0., 1.)
-    #define disp(t)        vec2(0.0)
+    #define disp(t)        vec2(sin(t*1.7 + uTime*0.35), cos(t*1.3 - uTime*0.32)) * 0.22
 
     float prm1;
-    vec2  bsMo; // Mouse influence parameter
+    vec2  bsMo;
 
     vec2 map(vec3 p) {
         vec2 q = p.xy - disp(p.z);
-        p.xy *= rot( sin(p.z) * .1 ); // Static twist based on depth
-        float d, z = 1., trk = z, dspAmp = .15; // Constant displacement amplitude
+        p.xy *= rot( sin(p.z * 1.8) * .45 + uTime * .08 ); // much slower tunnel rotation
+        p.xy += 0.08 * vec2(sin(p.y*2.4 + uTime*0.42), cos(p.x*2.2 - uTime*0.38));
+        float d, z = 1., trk = z, dspAmp = .22; // stronger displacement amplitude
         p *= .61;
         for(int i=0; i < 4; i++, z *= .57, trk *= 1.4 )
             p += dspAmp * sin( trk*(p.zxy*.75) ), // Removed uTime to stop churning
@@ -95,12 +96,18 @@ const shaders = {
                    dn = clamp(mpv.x + 2., 0.,3.);
             vec4 C = vec4(0.0);
             if (mpv.x > .6) { 
-                C = vec4( sin(vec3(4.0,0.2,0.1) + mpv.y*.1 +sin(pos.z*.4)*.5 + 1.8)*.5 + .5, .08 );
+                vec3 base = sin(vec3(4.0,1.4,2.9) + mpv.y*0.24 + sin(pos.z*0.62)*0.9 + vec3(0.0,1.9,3.6))*0.5 + 0.5;
+                vec3 warm = vec3(1.0,0.72,0.38);
+                vec3 cool = vec3(0.25,0.55,0.95);
+                vec3 palette = mix(cool * base, warm * base, smoothstep(0.0, 1.0, mpv.y) * 0.85 + 0.15);
+                C = vec4(palette, .08);
                 C *= den*den*den;
-                C.rgb *= linstep(4.,-2.5, mpv.x) *2.3;
+                C.rgb *= linstep(4.,-2.5, mpv.x) * 3.0;
+                C.rgb = mix(C.rgb, vec3(1.0,0.78,0.45), smoothstep(-0.3, 0.8, mpv.y)*0.55);
+                C.rgb = mix(C.rgb, vec3(0.85,0.28,0.55), smoothstep(0.4, 1.0, mpv.x)*0.35);
                 float dif = clamp((den - map(pos+.8 ).x)/9. , .001, 1. )
                            + clamp((den - map(pos+.35).x)/2.5, .001, 1. );
-                C.xyz *= den*( vec3(.002,.015,.025) + 1.2*dif*vec3(.01,.02,.01));
+                C.xyz *= den*( vec3(.005,.03,.04) + 1.2*dif*vec3(.02,.03,.02));
             }
             float fogC = exp(t*.2 - 2.2);
             C += vec4(.03,.05,.05, .05) *clamp(fogC-fogT, 0., 1. );
@@ -124,26 +131,30 @@ const shaders = {
 
     void mainImage( out vec4 O, vec2 u ) {	
         vec2 R = uResolution.xy, q = u/R, p = (u - 0.5*R ) / R.y;
-        // Map mouse to [-0.5, 0.5] range relative to center
-        bsMo = (uMouse * 0.5 - 0.5*R ) / R.y; 
+        bsMo = clamp((0.5*R - uMouse) / R.y, vec2(-0.65), vec2(0.65));
         
         prm1 = 0.0; // Stabilize prm1 to remove procedural color/cam shifting
         float time = uTime*1.5;
         vec3 P = vec3(0.0, 0.0, time);
         
-        // Camera target reacts to mouse
-        vec3 target = normalize(vec3(bsMo.x * 5.0, bsMo.y * 5.0, -1.0)),
+        // Aim the tunnel toward a distant exit that follows the pointer.
+        vec3 exitPoint = vec3(bsMo * vec2(3.2, 2.4), 7.0);
+        vec3 target = normalize(exitPoint),
              rightdir = normalize(cross(target, vec3(0,1,0))),
              updir = normalize(cross(rightdir, target)),
              rightdir2 = cross(updir, target),
-             D = normalize( p.x*rightdir2 + p.y*updir + vec3(0,0,1)); // Standardized view vector
+             D = normalize(p.x*rightdir2 + p.y*updir + target);
         
-        // Apply mouse-driven rotation to the final ray direction
-        D.xy *= rot(bsMo.x * 0.5);
+        D.xy *= rot(bsMo.x * 0.18);
 
         vec3 C = render(P, D, time).rgb;
+        float center = smoothstep(0.7, 0.0, length(p));
+        C += vec3(0.18, 0.24, 0.36) * center;
+        C *= 1.08;
         C = iLerp(C, C.bgr, min(prm1,.95));
-        C = pow( C, vec3(0.75,0.8,0.85) ) *vec3(0.8,0.78,0.75);
+        C = pow( C, vec3(0.75,0.8,0.85) ) * vec3(0.82,0.8,0.78);
+        float dither = (fract(sin(dot(u / uResolution.xy, vec2(12.9898,78.233)) + uTime * 12.7) * 43758.5453) - 0.5) * 0.008;
+        C += dither;
         C *= pow( 16.*q.x*q.y*(1.-q.x)*(1.-q.y), .12)*.7+.3;
         O = vec4(C, 1.0);
     }
@@ -195,7 +206,7 @@ function initShader() {
       uniformLocations: {
         resolution: gl.getUniformLocation(shaderProgram, 'uResolution'),
         time: gl.getUniformLocation(shaderProgram, 'uTime'),
-        mouse: gl.getUniformLocation(shaderProgram, 'uMouse'), // Add uMouse uniform location
+        mouse: gl.getUniformLocation(shaderProgram, 'uMouse'),
       },
     };
 
@@ -204,22 +215,26 @@ function initShader() {
 
     // Start animation loop
     // Use window coordinates for the listeners to bypass 'pointer-events: none'
-    let targetMouseX = window.innerWidth / 2;
-    let targetMouseY = window.innerHeight / 2;
+    resizeCanvasToDisplaySize(canvas);
+
+    let targetMouseX = canvas.width / 2;
+    let targetMouseY = canvas.height / 2;
     let currentMouseX = targetMouseX;
     let currentMouseY = targetMouseY;
 
     function updateMousePosition(e) {
-      targetMouseX = e.clientX;
-      // Invert Y: Screen (top-0) to WebGL (bottom-0)
-      targetMouseY = window.innerHeight - e.clientY;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width || 1;
+      const scaleY = canvas.height / rect.height || 1;
+      targetMouseX = Math.min(Math.max((e.clientX - rect.left) * scaleX, 0), canvas.width);
+      targetMouseY = Math.min(Math.max((rect.bottom - e.clientY) * scaleY, 0), canvas.height);
     }
 
-    window.addEventListener('mousemove', updateMousePosition);
+    window.addEventListener('pointermove', updateMousePosition);
     window.addEventListener('touchmove', (e) => {
       const touch = e.touches[0];
-      updateMousePosition(touch);
-    });
+      if (touch) updateMousePosition(touch);
+    }, { passive: true });
 
     let then = 0;
     function render(now) {
