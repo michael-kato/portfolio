@@ -327,7 +327,7 @@ function initShader() {
     if (!fs) continue; // Skip if we don't have a shader defined for this canvas ID
 
     //debug 
-    fs = shaders['star-nest'];
+    //fs = shaders['star-nest'];
     
     // Initialize shader program
     const shaderProgram = initShaderProgram(gl, vs, fs);
