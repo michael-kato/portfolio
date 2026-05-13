@@ -1484,6 +1484,15 @@ footer {
   font-weight: 600;
 }
 
+.chat-close {
+  background: transparent;
+  border: none;
+  color: var(--accent-color);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
 .chat-messages {
   flex: 1;
   padding: 15px;
