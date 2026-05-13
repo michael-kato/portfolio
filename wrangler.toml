@@ -5,3 +5,7 @@ workers_dev = true
 
 [build]
 command = "echo 'No build step'"
+
+[[kv_namespaces]]
+binding = "PORTFOLIO_KV"
+id = "fbb8db04d8a447768a7878b087c8c328"

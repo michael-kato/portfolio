@@ -3,12 +3,6 @@
  * This file contains all project and art data to make maintenance easier
  */
 
-console.log("Site Content Script (formerly portfolio-data) Loaded Successfully");
-
-/* 
-   To obfuscate your data, replace the object with the result of:
-   window.projectData = btoa(JSON.stringify(projectDataRaw))
-*/
 
 window.projectData = {
   "project-code-contributions": {

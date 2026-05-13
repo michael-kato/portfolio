@@ -1,8 +1,20 @@
 export default {
   async fetch(request, env, ctx) {
+    const allowedOrigins = [
+      "https://michael-kato.github.io",
+      "http://127.0.0.1:4000" // Add your local development URL here
+    ];
+
+    const requestOrigin = request.headers.get("Origin");
+    let corsAllowOrigin = "https://michael-kato.github.io"; // Default to production origin
+
+    if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
+      corsAllowOrigin = requestOrigin;
+    }
+
     // Define CORS headers
     const corsHeaders = {
-      "Access-Control-Allow-Origin": "https://michael-kato.github.io",
+      "Access-Control-Allow-Origin": corsAllowOrigin,
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
     };
@@ -15,14 +27,25 @@ export default {
     }
 
     if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405 });
+      return new Response('Method not allowed', { 
+        status: 405,
+        headers: corsHeaders 
+      });
     }
 
     const { prompt, timestamp } = await request.json();
 
     const token = env.GITHUB_TOKEN;
-    const careerSecret = env.CAREER_OVERVIEW;
+    // Retrieve the large text from KV instead of environment variables
+    const careerSecret = await env.PORTFOLIO_KV.get("CAREER_OVERVIEW");
     const modelName = "gpt-4o-mini";
+
+    if (!careerSecret) {
+      return new Response(JSON.stringify({ error: "Career data not found in KV" }), { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
 
     try {
       const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
@@ -46,7 +69,10 @@ export default {
 
       if (!response.ok) {
         const error = await response.json();
-        return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+        return new Response(JSON.stringify({ error: error.message || "AI API Error" }), { 
+          status: 500,
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+        });
       }
 
       const data = await response.json();

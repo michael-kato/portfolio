@@ -382,7 +382,6 @@ function initShader() {
       let smoothness;
       if(randomKey == "star-nest") {
         smoothness = 0.2;
-        console.log("smoothness", smoothness);
       } else {
         smoothness = 0.008; // Strong lag for smooth motion
       }

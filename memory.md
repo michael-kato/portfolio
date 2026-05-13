@@ -125,9 +125,13 @@ The chat API is powered by a Cloudflare Worker that handles POST requests to `/a
 ### Environment Variables
 
 Set these in your Cloudflare dashboard or via Wrangler:
-
 - `GITHUB_TOKEN`: GitHub token for Azure AI inference API access
-- `CAREER_OVERVIEW`: Career history text for the LLM system prompt
+
+### Data Storage (KV)
+
+Due to size limits (5KB) on environment variables, the career history is stored in Cloudflare KV:
+- **Namespace Binding**: `PORTFOLIO_KV`
+- **Key**: `CAREER_OVERVIEW`
 
 ### Deployment
 

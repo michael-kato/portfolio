@@ -519,8 +519,7 @@ function setupChatBot() {
     input.disabled = true;
 
     const typingId = 'bot-typing-' + Date.now();
-    messages.innerHTML += `<div id="${typingId}" class="message bot-message italic">Connecting to Career Assistant...</div>`;
-    messages.innerHTML += `<div id="${typingId}" class="message bot-message italic">Consulting Michael's history...</div>`;
+    messages.innerHTML += `<div id="${typingId}" class="message bot-message italic">Consulting Career Assistant...</div>`;
     messages.scrollTop = messages.scrollHeight;
 
     try {
@@ -546,7 +545,7 @@ function setupChatBot() {
       document.getElementById(typingId)?.remove();
       messages.innerHTML += `<div class="message bot-message">${data.reply || "I'm not sure about that. Try asking about his work at Meta or Apple!"}</div>`;
     } catch (error) {
-      console.error("Career Assistant Error:", error.message);
+      console.error("Career Assistant Error:", error);
       document.getElementById(typingId)?.remove();
       messages.innerHTML += `<div class="message bot-message">I'm having trouble connecting to my brain. Please try again later!</div>`;
     } finally {
