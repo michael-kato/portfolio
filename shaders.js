@@ -58,7 +58,7 @@ const shaders = {
       mainImage(outColor, gl_FragCoord.xy);
     }
 `,
-  'background-canvas': `#version 300 es
+  'protean-clouds': `#version 300 es
     precision highp float;
     
     uniform vec2 uResolution;
@@ -76,46 +76,51 @@ const shaders = {
         vec2 q = p.xy - disp(p.z);
         p.xy *= rot( sin(p.z * 1.8) * .45 + uTime * .08 ); // much slower tunnel rotation
         p.xy += 0.08 * vec2(sin(p.y*2.4 + uTime*0.42), cos(p.x*2.2 - uTime*0.38));
-        float d, z = 1., trk = z, dspAmp = .22; // stronger displacement amplitude
-        p *= .61;
+        float d, z = 1., trk = z, dspAmp = .8; // tighter structure for sharper clouds
+        p *= .57;
         for(int i=0; i < 4; i++, z *= .57, trk *= 1.4 )
             p += dspAmp * sin( trk*(p.zxy*.75) ), // Removed uTime to stop churning
             d -= z * abs( dot(cos(p), sin(p.yzx)) ),
             p *= 1.93 * mat3(.33338, .56034, -.71817, -.87887, .32651, -.15323, .15162, .69596, .61339);
-        d = abs(d) - 2.2; 
+        d = abs(d) - 5.0; 
         return vec2(d +.25,0) + dot(q,q)*vec2(.2,1);
     }
 
-    vec4 render( vec3 ro, vec3 rd, float time ) {
-        vec4 rez = vec4(0.0);
-        float ldst = 8., t = 1.5, T = time + ldst, fogT = 0.0;
-        for(int i=0; rez.a < .99 && i < 50; i++ ) {
-            vec3  pos = ro + t*rd;
-            vec2  mpv = map(pos);
-            float den = clamp(mpv.x - .3, 0.,1.)*1.12,
-                   dn = clamp(mpv.x + 2., 0.,3.);
-            vec4 C = vec4(0.0);
-            if (mpv.x > .6) { 
-                vec3 base = sin(vec3(4.0,1.4,2.9) + mpv.y*0.24 + sin(pos.z*0.62)*0.9 + vec3(0.0,1.9,3.6))*0.5 + 0.5;
-                vec3 warm = vec3(1.0,0.72,0.38);
-                vec3 cool = vec3(0.25,0.55,0.95);
-                vec3 palette = mix(cool * base, warm * base, smoothstep(0.0, 1.0, mpv.y) * 0.85 + 0.15);
-                C = vec4(palette, .08);
-                C *= den*den*den;
-                C.rgb *= linstep(4.,-2.5, mpv.x) * 3.0;
-                C.rgb = mix(C.rgb, vec3(1.0,0.78,0.45), smoothstep(-0.3, 0.8, mpv.y)*0.55);
-                C.rgb = mix(C.rgb, vec3(0.85,0.28,0.55), smoothstep(0.4, 1.0, mpv.x)*0.35);
-                float dif = clamp((den - map(pos+.8 ).x)/9. , .001, 1. )
-                           + clamp((den - map(pos+.35).x)/2.5, .001, 1. );
-                C.xyz *= den*( vec3(.005,.03,.04) + 1.2*dif*vec3(.02,.03,.02));
+    vec4 render( in vec3 ro, in vec3 rd, float time )
+    {
+      vec4 rez = vec4(0);
+        const float ldst = 8.;
+      vec3 lpos = vec3(disp(time + ldst)*0.5, time + ldst);
+      float t = 1.5;
+      float fogT = 0.;
+      for(int i=0; i<130; i++)
+      {
+        if(rez.a > 0.99)break;
+
+        vec3 pos = ro + t*rd;
+            vec2 mpv = map(pos);
+        float den = clamp(mpv.x-0.3,0.,1.)*1.12;
+        float dn = clamp((mpv.x + 2.),0.,3.);
+            
+        vec4 col = vec4(0);
+            if (mpv.x > 0.6)
+            {
+            
+                col = vec4(sin(vec3(5.,0.4,0.2) + mpv.y*0.1 +sin(pos.z*0.4)*0.5 + 1.8)*0.5 + 0.5,0.08);
+                col *= den*den*den;
+          col.rgb *= linstep(4.,-2.5, mpv.x)*2.3;
+                float dif =  clamp((den - map(pos+.8).x)/9., 0.001, 1. );
+                dif += clamp((den - map(pos+.35).x)/2.5, 0.001, 1. );
+                col.xyz *= den*(vec3(0.005,.045,.075) + 1.5*vec3(0.033,0.07,0.03)*dif);
             }
-            float fogC = exp(t*.2 - 2.2);
-            C += vec4(.03,.05,.05, .05) *clamp(fogC-fogT, 0., 1. );
-            fogT = fogC;
-            rez += C *(1. - rez.a);
-            t += clamp(.5 - dn*dn*.05, .09, .3);
-        }
-        return rez;
+        
+        float fogC = exp(t*0.2 - 2.2);
+        col.rgba += vec4(0.06,0.11,0.11, 0.1)*clamp(fogC-fogT, 0., 1.);
+        fogT = fogC;
+        rez = rez + col*(1. - rez.a);
+        t += clamp(0.5 - dn*dn*.05, 0.09, 0.3);
+      }
+      return clamp(rez, 0.0, 1.0);
     }
 
     #define getsat(c)  1. -  min(min(c.x, c.y), c.z) / max(max(c.x, c.y), c.z)
@@ -163,32 +168,28 @@ const shaders = {
     void main() {
       mainImage(outColor, gl_FragCoord.xy);
     }
-`
-};
-
-const backgroundCanvasShaders = [
-  shaders['background-canvas'],
-`#version 300 es
+`,
+  'star-nest': `#version 300 es
     precision highp float;
 
     uniform vec2 uResolution;
     uniform float uTime;
     uniform vec2 uMouse;
 
-    #define iterations 17
+    #define iterations 15
     #define formuparam 0.53
 
     #define volsteps 20
     #define stepsize 0.1
 
-    #define zoom   0.800
-    #define tile   0.850
-    #define speed  0.010 
+    #define zoom   0.400
+    #define tile   0.550
+    #define speed  0.001
 
     #define brightness 0.0015
-    #define darkmatter 0.300
+    #define darkmatter 0.500
     #define distfading 0.730
-    #define saturation 0.850
+    #define saturation 0.950
 
     void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
         vec2 uv = fragCoord.xy / uResolution.xy - 0.5;
@@ -234,7 +235,7 @@ const backgroundCanvasShaders = [
       mainImage(outColor, gl_FragCoord.xy);
     }
   `
-];
+};
 
 function initShader() {
   const canvases = document.getElementsByTagName('canvas');
@@ -261,13 +262,14 @@ function initShader() {
     console.info(canvas.id);
     let fs;
     if (canvas.id === 'background-canvas') {
-      const index = Math.floor(Math.random() * backgroundCanvasShaders.length);
-      console.info('Selected background shader', index);
-      fs = backgroundCanvasShaders[index];
+      const shaderKeys = Object.keys(shaders).filter(key => key !== 'tutorial-shader-canvas');
+      const randomKey = shaderKeys[Math.floor(Math.random() * shaderKeys.length)];
+      console.info('Selected background shader', randomKey);
+      fs = shaders[randomKey];
     } else {
       fs = shaders[canvas.id];
     }
-    
+
     if (!fs) continue; // Skip if we don't have a shader defined for this canvas ID
 
     // Initialize shader program
