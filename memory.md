@@ -16,9 +16,18 @@ The homepage now uses a shared layout/content split:
 - `index.html` is only front matter for the default homepage.
 - `programming.html` is front matter for the programming-focused clean URL variant.
 - `_layouts/home.html` contains the shared HTML shell, includes, scripts, and `data-variant` hook.
-- `_includes/home-content.html` contains the shared homepage body: about, career, art, blogs preview, contact, modals, and lightbox.
+- `_includes/home-content.html` contains the shared homepage body: about, career, art, blogs preview, contact, recruiter chat, modals, and lightbox.
 
 This keeps alternate URLs from duplicating the full homepage markup.
+
+## Recent updates
+
+- A recruiter chat widget has been added to `_includes/home-content.html`. It renders as a collapsible bubble and opens `#chat-window` on demand.
+- `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
+- `/_layouts/post.html` now includes the blog post lightbox container so full-size image zoom works on post pages as well.
+- `shaders.js` now has inline comments for both `protean-clouds` and `star-nest` shaders, exposing tunable parameters like tunnel exit size, glow intensity, sparkle brightness, and star size clamping.
+- Cloudflare Worker files have been added for the chat API: `chat.js` contains the main handler, `wrangler.toml` configures deployment, and `functions/api/chat.js` provides an alternative Pages functions implementation. The worker handles POST requests to `/api/chat`, parses JSON input with `prompt` (and optional `timestamp`), queries GPT-4o-mini via GitHub's Azure AI inference, and returns JSON responses with `reply`.
+
 
 ## Navigation
 
@@ -102,3 +111,37 @@ Programming local URL:
 ```text
 http://127.0.0.1:4000/portfolio/programming/
 ```
+
+## Cloudflare Worker Deployment
+
+The chat API is powered by a Cloudflare Worker that handles POST requests to `/api/chat`.
+
+### Files
+
+- `chat.js`: Main worker script using the standard Cloudflare Workers API
+- `wrangler.toml`: Wrangler configuration for deployment
+- `functions/api/chat.js`: Alternative implementation for Cloudflare Pages Functions
+
+### Environment Variables
+
+Set these in your Cloudflare dashboard or via Wrangler:
+
+- `GITHUB_TOKEN`: GitHub token for Azure AI inference API access
+- `CAREER_OVERVIEW`: Career history text for the LLM system prompt
+
+### Deployment
+
+Install Wrangler CLI:
+
+```sh
+npm install -g wrangler
+```
+
+Login and deploy:
+
+```sh
+wrangler auth login
+wrangler deploy
+```
+
+The worker will be available at the configured route (e.g., `https://michael-kato.github.io/api/chat`).

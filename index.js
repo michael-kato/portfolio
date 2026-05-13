@@ -524,7 +524,8 @@ function setupChatBot() {
     messages.scrollTop = messages.scrollHeight;
 
     try {
-      const response = await fetch('/api/chat', {
+      // Update this URL to your actual worker URL after running 'wrangler deploy'
+      const response = await fetch('https://portfolio-chat.cass-account.workers.dev/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
