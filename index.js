@@ -513,7 +513,9 @@ function setupChatBot() {
     const text = input.value.trim();
     if (!text) return;
 
-    messages.innerHTML += `<div class="message user-message">${text}</div>`;
+    // Use markdown for user messages if marked is available
+    const userHtml = typeof marked !== 'undefined' ? marked.parse(text) : text;
+    messages.innerHTML += `<div class="message user-message">${userHtml}</div>`;
     input.value = '';
     messages.scrollTop = messages.scrollHeight;
     input.disabled = true;
@@ -543,7 +545,9 @@ function setupChatBot() {
 
       const data = await response.json();
       document.getElementById(typingId)?.remove();
-      messages.innerHTML += `<div class="message bot-message">${data.reply || "I'm not sure about that. Try asking about his work at Meta or Apple!"}</div>`;
+      const botReply = data.reply || "I'm not sure about that. Try asking about his work at Meta or Apple!";
+      const botHtml = typeof marked !== 'undefined' ? marked.parse(botReply) : botReply;
+      messages.innerHTML += `<div class="message bot-message">${botHtml}</div>`;
     } catch (error) {
       console.error("Career Assistant Error:", error);
       document.getElementById(typingId)?.remove();

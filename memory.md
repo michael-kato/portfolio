@@ -22,12 +22,13 @@ This keeps alternate URLs from duplicating the full homepage markup.
 
 ## Recent updates
 
-- A recruiter chat widget has been added to `_includes/home-content.html`. It renders as a collapsible bubble and opens `#chat-window` on demand.
+- A recruiter chat widget has been added. The UI is placed at the root of `_layouts/home.html` to bypass stacking context issues, ensuring it draws on top of all elements (z-index: 99999).
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
 - `/_layouts/post.html` now includes the blog post lightbox container so full-size image zoom works on post pages as well.
 - `shaders.js` now has inline comments for both `protean-clouds` and `star-nest` shaders, exposing tunable parameters like tunnel exit size, glow intensity, sparkle brightness, and star size clamping.
-- Cloudflare Worker files have been added for the chat API: `chat.js` contains the main handler, `wrangler.toml` configures deployment, and `functions/api/chat.js` provides an alternative Pages functions implementation. The worker handles POST requests to `/api/chat`, parses JSON input with `prompt` (and optional `timestamp`), queries GPT-4o-mini via GitHub's Azure AI inference, and returns JSON responses with `reply`.
-
+- Cloudflare Worker files power the chat API: `chat.js` handles requests, while `wrangler.toml` manages deployment. The worker queries GPT-4o-mini via GitHub's Azure AI inference.
+- **Chat UI Features**: Supports Markdown rendering via `marked.js`, inherits blog styling via the `blog-content` class, and features a pulsing notification animation on the toggle bubble.
+- **Desktop GUI Logic**: The chat window is resizable from the **top-left corner**. This is implemented via a CSS trick: rotating the entire window 180 degrees to move the native resize handle, then rotating internal containers back to keep text upright.
 
 ## Navigation
 

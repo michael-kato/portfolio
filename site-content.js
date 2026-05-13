@@ -11,13 +11,13 @@ window.projectData = {
     tags: ["C#", "Unity", "Optimization"],
     description: `
 <div class="project-section">
-  <p>In addition to several other duties I accumulated at Meta, I also contributed directly to Horizon Worlds' game code as a technical artist, with a commit volume comparable to an average Meta software engineer.</p>
+  <p>In addition to many other duties I accumulated at Meta, I also contributed directly to Horizon Worlds' game code as a technical artist, with a commit volume comparable to an average Meta software engineer.</p>
 
   <p>Highlights include:</p>
   <ul class="project-list">
-    <li>Swept nearly the entire codebase to batch or cache redundant native Unity transform calls (SetPosition, GetTransform), later standardized as a linter error</li>
+    <li>Swept nearly the entire codebase to batch apply performance fixes in hundreds of files, later standardized as a linter error</li>
     <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events</li>
-    <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and many more</li>  
+    <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and many more</li>
   </ul>
 </div>
   `,

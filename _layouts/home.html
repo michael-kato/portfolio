@@ -13,8 +13,29 @@
 
   {% include home-content.html %}
 
+  <!-- Global Chat Widget - Placed at root to bypass stacking contexts -->
+  <div class="chat-widget" aria-label="Recruiter chatbox">
+    <button id="chat-toggle" class="chat-toggle" aria-label="Open recruiter chat">
+      💬
+    </button>
+    <div id="chat-window" class="chat-window" role="dialog" aria-modal="false" aria-label="Recruiter career assistant">
+      <div class="chat-header">
+        <span>Career Assistant</span>
+        <button id="close-chat" class="chat-close" aria-label="Close chat">×</button>
+      </div>
+      <div id="chat-messages" class="chat-messages blog-content">
+        <div class="message bot-message italic">Paste a job posting or ask how my skills match your role.</div>
+      </div>
+      <div class="chat-input-area">
+        <input id="chat-input" type="text" placeholder="Describe the job or ask about skill fit...">
+        <button id="send-chat" type="button">Send</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Scripts -->
   {% include site-footer.html %}
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <script src="{{ 'site-content.js' | relative_url }}"></script>
   <script src="{{ 'shaders.js' | relative_url }}"></script>
