@@ -196,8 +196,8 @@ const shaders = {
         uv.y *= uResolution.y / uResolution.x;
         vec3 dir = vec3(uv*zoom,1.);
         float time = uTime*speed + .25;
-        float a1 = .5 + uMouse.x/uResolution.x*2.;
-        float a2 = .8 + uMouse.y/uResolution.y*2.;
+        float a1 = .5 - uMouse.x/uResolution.x*2.;
+        float a2 = .8 - uMouse.y/uResolution.y*2.;
         mat2 rot1 = mat2(cos(a1), sin(a1), -sin(a1), cos(a1));
         mat2 rot2 = mat2(cos(a2), sin(a2), -sin(a2), cos(a2));
         dir.xz *= rot1;
@@ -261,9 +261,9 @@ function initShader() {
     `;
     console.info(canvas.id);
     let fs;
+    const shaderKeys = Object.keys(shaders).filter(key => key !== 'tutorial-shader-canvas');
+    randomKey = shaderKeys[Math.floor(Math.random() * shaderKeys.length)];
     if (canvas.id === 'background-canvas') {
-      const shaderKeys = Object.keys(shaders).filter(key => key !== 'tutorial-shader-canvas');
-      const randomKey = shaderKeys[Math.floor(Math.random() * shaderKeys.length)];
       console.info('Selected background shader', randomKey);
       fs = shaders[randomKey];
     } else {
@@ -321,8 +321,15 @@ function initShader() {
       const deltaTime = now - then;
       then = now;
 
-      // Lazy interpolation (LERP) for smooth following
-      const smoothness = 0.07; // Slightly more responsive but still "lazy"
+      // Heavy smoothing so both clouds track the pointer slowly
+      let smoothness;
+      if(randomKey == "star-nest") {
+        smoothness = 0.2;
+        console.log("smoothness", smoothness);
+      } else {
+        smoothness = 0.008; // Strong lag for smooth motion
+      }
+
       currentMouseX += (targetMouseX - currentMouseX) * smoothness;
       currentMouseY += (targetMouseY - currentMouseY) * smoothness;
 
