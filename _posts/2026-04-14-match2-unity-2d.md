@@ -1,6 +1,6 @@
 ---
 title: Match 2 Game - Unity 2D
-date: 2026-04-14
+date: 2026-02-11
 tags:
   - Unity
   - VFX
@@ -9,7 +9,7 @@ subtitle: A demonstration of 2D VFX, shaders, animation, and procedural systems 
 excerpt: A demonstration of 2D VFX, shaders, animation, and procedural systems built in Unity.
 ---
 
-This project started to refresh my knowledge of Unity especially in the realm of 2D which I've never really touched. I tried to make as much as possible dynamic and interactive. Adding as much visual flair as I possibly could.
+This project started to refresh my knowledge of Unity especially in the realm of 2D which I've never really touched. I tried to make as much as possible dynamic and interactive. The main focus was adding visual flair and polish to the interactions.
 
 <div class="video-vertical-wrap">
   {% include post-video.html src="/portfolio/resources/2d_game_03.mp4" volume=0.3 %}

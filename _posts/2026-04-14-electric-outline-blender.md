@@ -1,6 +1,6 @@
 ---
 title: Electric Outline Effect in Blender
-date: 2026-04-14
+date: 2025-06-10
 tags:
   - Blender
   - Geometry Nodes

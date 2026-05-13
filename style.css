@@ -1258,7 +1258,7 @@ section {
   border: 1px solid var(--border-color);
   border-radius: 4px;
   overflow: hidden;
-  background-color: var(--card-bg);
+  background-color: var(--midnight-violet);
   padding: 8px;
 }
 
