@@ -165,7 +165,10 @@ p {
 /* ===== Navigation ===== */
 nav {
   background-color: var(--card-bg-trans);
-  padding: 10px 14px;
+  padding: 5px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin: 0;
   box-shadow: 0 1px 3px var(--shadow-color);
   position: sticky;
@@ -174,11 +177,12 @@ nav {
 }
 
 nav ul {
-  display: flex;
+  display: inline-flex;
   list-style-type: none;
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
+  flex: 1;
 }
 
 nav a {
@@ -193,6 +197,24 @@ nav a {
 nav a:hover {
   background-color: var(--hover-tint);
   text-decoration: none;
+}
+
+.shader-toggle-btn {
+  background: none;
+  border: none;
+  color: var(--tertiary-color);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  opacity: 0.5;
+}
+
+.shader-toggle-btn:hover {
+  color: var(--accent-color);
+  opacity: 1;
+  transform: scale(1.2);
 }
 
 /* ===== Section Styles ===== */
@@ -1468,8 +1490,14 @@ footer {
   /* Native resize is bottom-right; rotating 180deg moves it to top-left */
   resize: both;
   overflow: hidden;
-  transform: rotate(180deg);
+  transform: rotate(180deg) translate3d(0, 0, 0);
   transform-origin: center;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+  -webkit-font-smoothing: antialiased;
+  image-rendering: -webkit-optimize-contrast;
 
   background-color: rgba(var(--dark-slate-grey-rgb), 0.74);
   border: 1px solid var(--border-color);

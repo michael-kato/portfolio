@@ -60,12 +60,18 @@
 
   const navEl = document.createElement('nav');
   navEl.innerHTML = `
+    <button id="prev-shader" class="shader-toggle-btn" title="Previous Background" aria-label="Previous Background">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
     <ul>
       <li><a href="${indexBase}#career">Career</a></li>
       <li><a href="${indexBase}#art">Art</a></li>
       <li><a href="${indexBase}#contact">Contact</a></li>
       <li><a href="${root}blog/">Blog</a></li>
     </ul>
+    <button id="next-shader" class="shader-toggle-btn" title="Next Background" aria-label="Next Background">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
   `;
 
   // ── Footer ──────────────────────────────────────────────────────────

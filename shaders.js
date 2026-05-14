@@ -4,291 +4,54 @@
  * Adapted from Shadertoy: https://www.shadertoy.com/view/3l23Rh
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+let bgState = null;
+let backgroundShaderKeys = [];
+const shaders = {};
+
+document.addEventListener('DOMContentLoaded', async () => {
   // Ensure canvas is properly positioned
   const bgCanvas = document.getElementById('background-canvas');
   if (bgCanvas) {
     bgCanvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -100; pointer-events: none; display: block; border: none; margin: 0; padding: 0;';
   }
+
+  // Load external shader files before initializing
+  await loadShaders();
+
+  // Initialize keys for the background switcher
+  backgroundShaderKeys = Object.keys(shaders).filter(key => key !== 'tutorial-shader-canvas');
+
   initShader();
+  setupShaderControls();
 });
 
+/**
+ * Ingests shader files as strings
+ */
+async function loadShaders() {
+  const shaderFiles = {
+    'tutorial-shader-canvas': 'resources/tutorial.frag',
+    'protean-clouds': 'resources/protean-clouds.frag',
+    'star-nest': 'resources/star-nest.frag',
+    'rainforest': 'resources/rainforest.frag',
+    'journey': 'resources/journey.frag'
+  };
 
-const shaders = {
-  'tutorial-shader-canvas': `#version 300 es
-    precision mediump float;
-    
-    uniform vec2 uResolution;
-    uniform float uTime;
-    
-    void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-    // Normalized pixel coordinates (from 0 to 1)
-    vec2 uv = fragCoord/uResolution.xy;
-    vec2 q = uv - vec2(0.3, 0.7);
+  // Get the base path of the current script to resolve shader paths
+  const script = document.querySelector('script[src*="shaders.js"]');
+  const baseUrl = script ? script.src.replace('shaders.js', '') : '';
 
-    // background
-    vec3 col = mix(vec3(1.0, 0.4, 0.1), vec3(1.0, 0.8, 0.3), sqrt(uv.y));
-    
-    float petals = 0.1*cos(atan(q.x, q.y) * 9. + 30.0*q.x+sin(uTime));
-    float r = 0.2 + petals;
-    col.r -= .5 - smoothstep(r, r+0.01, length(q));
-    // trunk
-    r = 0.015;
-    r += 0.002*cos(120.0*q.y);
-    r += exp(-28.0*uv.y);
-    col *= 1.0 - (1.0-smoothstep(r, r+0.005, abs(q.x+-0.25*sin(2.0*q.y)))) * (1.0 - smoothstep(-0.2,0.0,q.y));
-
-    // look I'm shading!
-    vec2 sun = uv - vec2(0.9,0.9);
-    sun.y *= 0.7;
-    r = smoothstep(0.2, 0.2, length(sun));
-    col /= r;
-    
-    // water
-    vec2 w = uv - vec2(.5, 0.5);
-    float wave = sin(uTime) * cos(sin(w.x+10.0)+sin(10.0) * w.x);
-    col.b /= 1.0 - (1.0-smoothstep(wave,wave, w.y)) / (1.0 - smoothstep(sin(-0.4),sin(-0.4),w.y));
-
-    // Output to screen
-    fragColor = vec4(col,1.0);
+  const promises = Object.entries(shaderFiles).map(async ([key, path]) => {
+    try {
+      const response = await fetch(baseUrl + path);
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      shaders[key] = await response.text();
+    } catch (e) {
+      console.error(`Failed to load shader: ${path}`, e);
     }
+  });
 
-    out vec4 outColor;
-    void main() {
-      mainImage(outColor, gl_FragCoord.xy);
-    }
-`,
-  'protean-clouds': `#version 300 es
-    precision highp float;
-    
-    uniform vec2 uResolution;
-    uniform float uTime;
-    uniform vec2 uMouse;
-
-    // === HELPER MACROS ===
-    #define rot(a)         mat2(cos( a +vec4(0,11,33,0)))  // Rotation matrix
-    #define linstep(m,M,x) clamp((x - m)/(M - m), 0., 1.)  // Linear interpolation clamped to [0,1]
-    #define disp(t)        vec2(sin(t*1.7 + uTime*0.35), cos(t*1.3 - uTime*0.32)) * 0.22  // Displacement offset
-
-    float prm1;
-    vec2  bsMo;
-
-    // === DISTANCE FIELD MAP (generates the tunnel structure) ===
-    // Returns: vec2(distance_to_surface, metadata)
-    vec2 map(vec3 p) {
-        // Displace space based on depth
-        vec2 q = p.xy - disp(p.z);
-        
-        // Rotate tunnel around its axis (slower rotation)
-        p.xy *= rot( sin(p.z * 1.8) * .45 + uTime * .08 ); // Reduce 0.45 to rotate slower, increase to rotate faster
-        
-        // Add undulating motion to tunnel walls
-        p.xy += 0.01 * vec2(sin(p.y*2.4 + uTime*0.42), cos(p.x*2.2 - uTime*0.38));
-        
-        // Fractal iteration to create cloud detail
-        float d;
-        float z = 1.;
-        float trk = .1;
-        float dspAmp = .2; // dspAmp controls cloud density/sharpness
-        p *= .57;  // Scale down for fractal
-        
-        // Iterate to create layered cloud structure
-        for(int i=0; i < 4; i++, z *= .57, trk *= 1.4 )
-            p += dspAmp * sin( trk*(p.zxy*100.) ),
-            d -= z * abs( dot(cos(p), sin(p.yzx)) ),
-            p *= 1.93 * mat3(.33338, .56034, -.71817, -.87887, .32651, -.15323, .15162, .69596, .61339);
-        
-        // Base distance calculation
-        d = abs(d) - 2.0;  // Increase to expand tunnel, decrease to shrink
-        return vec2(d +.25,0) + dot(q,q)*vec2(.2,1);
-    }
-
-    // === RAY MARCHING RENDER (traverses through space to find cloud density) ===
-    // Ray origin (ro), ray direction (rd), accumulated color and opacity
-    vec4 render( in vec3 ro, in vec3 rd, float time )
-    {
-      vec4 rez = vec4(0);  // Accumulator for final color
-      const float ldst = 8.;
-      vec3 lpos = vec3(disp(time + ldst)*0.5, time + ldst);
-      float t = 1.5;  // Starting ray distance
-      float fogT = 0.;
-      
-      // === RAY MARCH LOOP ===
-      for(int i=0; i<100; i++)  // Iterate up to 130 steps along the ray
-      {
-        if(rez.a > 0.99)break;  // Stop if fully opaque
-
-        vec3 pos = ro + t*rd;  // Current position along ray
-        vec2 mpv = map(pos);  // Get distance field info
-        float den = clamp(mpv.x-0.1,0.,1.)*.92;  // Cloud density (increase 1.12 for brighter clouds)
-        float dn = clamp((mpv.x + 2.),0.,3.);
-            
-        vec4 col = vec4(0);
-        // === CLOUD COLOR AND SHADING ===
-        if (mpv.x > 1.6)  // Only shade if in cloud region
-        {
-            // Generate more varied cloud hues using multiple phase offsets
-            vec3 baseHue = sin(vec3(5.0, 1.0, 2.8)
-                + mpv.y * vec3(0.18, 0.10, 0.10)
-                + sin(pos.z * vec3(0.38, 0.21, 0.66) + vec3(0.8, 0.4, 2.6)) * 0.5)
-                * 0.5 + 0.5;
-            col = vec4(baseHue, 0.1);
-            col *= den * den * den;  // Apply density cubing for a more volumetric look
-            col.rgb *= linstep(4., -2.5, mpv.x) * vec3(2.8, 0.5, 2.0);  // Per-channel brightness boost
-            
-            // Lighting calculation (fake diffuse)
-            float dif = clamp((den - map(pos + .8).x) / 9., 0.001, 1.);
-            dif += clamp((den - map(pos + .15).x) * 2.5, 0.001, 1.);
-            // More colorful light tint for the clouds
-            col.xyz *= den * (vec3(0.02, 0.05, 0.08) + 1.5 * vec3(0.16, 0.10, 0.15) * dif);
-        }
-        
-        // === FOG BLENDING ===
-        float fogC = exp(t * 0.2 - 2.2);
-        col.rgba += vec4(0.06, 0.10, 0.14, 0.22) * clamp(fogC - fogT, 0., 1.);
-        fogT = fogC;
-        rez = rez + col*(1. - rez.a);  // Blend with accumulated color
-        t += clamp(0.5 - dn*dn*.05, 0.09, 0.3);  // Adaptive step size
-      }
-      return clamp(rez, 0.0, 1.0);
-    }
-
-    #define getsat(c)  1. -  min(min(c.x, c.y), c.z) / max(max(c.x, c.y), c.z)
-
-    // Color interpolation helper
-    vec3 iLerp(vec3 a, vec3 b, float x) {
-        vec3 ic = mix(a, b, x) + vec3(1e-6,0.,0.);
-        float lgt = dot(vec3(1), ic),
-              sd = abs( getsat(ic) - mix(getsat(a), getsat(b), x) );
-        vec3 dir = normalize( ic*3. - lgt );
-        ic += 1.5*dir*sd*lgt * dot(dir, normalize(ic));
-        return ic;
-    }
-
-    // === MAIN IMAGE - CAMERA SETUP AND COMPOSITING ===
-    void mainImage( out vec4 O, vec2 u ) {	
-        vec2 R = uResolution.xy, q = u/R, p = (u - 0.5*R ) / R.y;
-        bsMo = clamp((0.5*R - uMouse) / R.y, vec2(-0.65), vec2(0.65));
-        
-        prm1 = 0.0; // Stabilize prm1 to remove procedural color/cam shifting
-        float time = uTime*1.5;
-        vec3 P = vec3(0.0, 0.0, time);  // Ray origin (camera position)
-        
-        // === TUNNEL EXIT POINT SETUP ===
-        // Aim the tunnel toward a distant exit that follows the mouse pointer
-        vec3 exitPoint = vec3(bsMo * vec2(3.2, 2.4), 7.0);  // Adjust 3.2, 2.4 to scale tunnel exit size
-        vec3 target = normalize(exitPoint),
-             rightdir = normalize(cross(target, vec3(0,1,0))),
-             updir = normalize(cross(rightdir, target)),
-             rightdir2 = cross(updir, target),
-             D = normalize(p.x*rightdir2 + p.y*updir + target);  // Ray direction
-        
-        D.xy *= rot(bsMo.x * 0.18);
-
-        vec3 C = render(P, D, time).rgb;
-        
-        // === DITHERING (reduces banding artifacts) ===
-        float dither = (fract(sin(dot(u / uResolution.xy, vec2(12.9898,78.233)) + uTime * 12.7) * 43758.5453) - 0.5) * 0.008;
-        C += dither;
-        
-        O = vec4(C, 1.0);
-    }
-
-    out vec4 outColor;
-    void main() {
-      mainImage(outColor, gl_FragCoord.xy);
-    }
-`,
-  'star-nest': `#version 300 es
-    precision highp float;
-
-    uniform vec2 uResolution;
-    uniform float uTime;
-    uniform vec2 uMouse;
-
-    // === FRACTAL PARAMETERS ===
-    #define iterations 15        // Fractal iteration depth (higher = more complex detail = more sparkles, lower = simpler/fewer sparkles)
-    #define formuparam 0.53       // Fractal formula parameter (controls the shape)
-
-    // === VOLUMETRIC RAYMARCHING PARAMETERS ===
-    #define volsteps 20           // Number of steps to march through the volume (fewer = less sparkle accumulation)
-    #define stepsize 0.1          // Distance between each volumetric step
-
-    // === CAMERA/VIEW PARAMETERS ===
-    #define zoom   0.400          // Camera zoom level (affects how close/far the stars appear)
-    #define tile   0.550          // Tiling scale (controls star spacing)
-    #define speed  0.0001          // Animation speed
-
-    // === BRIGHTNESS AND VISUAL CONTROLS ===
-    #define brightness 0.002     // *** MAIN SPARKLE CONTROL *** Lower = fewer/dimmer sparkles, Higher = more/brighter sparkles
-    #define darkmatter 0.100      // Darkens certain areas (reduces visibility through dense regions)
-    #define distfading 0.730      // How much distance fading occurs per step (higher = fades faster)
-    #define saturation 0.950      // Color saturation (1.0 = full color, 0.0 = grayscale)
-
-    void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
-        // === SETUP: Normalize coordinates and create view ray ===
-        vec2 uv = fragCoord.xy / uResolution.xy - 0.5;
-        uv.y *= uResolution.y / uResolution.x;
-        vec3 dir = vec3(uv*zoom, 1.);  // View direction
-        
-        float time = uTime*speed + .25;
-        
-        // === MOUSE CONTROL: Rotate view based on mouse position ===
-        float a1 = .5 - uMouse.x/uResolution.x*2.;
-        float a2 = .8 - uMouse.y/uResolution.y*2.;
-        mat2 rot1 = mat2(cos(a1), sin(a1), -sin(a1), cos(a1));
-        mat2 rot2 = mat2(cos(a2), sin(a2), -sin(a2), cos(a2));
-        dir.xz *= rot1;
-        dir.xy *= rot2;
-        
-        // === CAMERA: Moving through space over time ===
-        vec3 from = vec3(1., .5, 0.5);
-        from += vec3(time*2., time, -2.);  // Camera motion
-        from.xz *= rot1;
-        from.xy *= rot2;
-        
-        // === VOLUMETRIC RAYMARCHING LOOP ===
-        float s = 0.1;             // Current distance along ray
-        float fade = 1.;           // Fade accumulator
-        vec3 v = vec3(0.);         // Final color accumulator
-        
-        for (int r = 0; r < volsteps; r++) {  // For each volumetric step
-            vec3 p = from + s*dir*.5;
-            p = abs(vec3(tile) - mod(p, vec3(tile*2.)));  // Tile the space
-            
-            // === FRACTAL ITERATION (generates the star structure) ===
-            float pa = 0.;
-            float a = 0.;
-            for (int i = 0; i < iterations; i++) {  // Iterate the fractal formula
-                p = abs(p)/dot(p,p) - formuparam;
-                a += abs(length(p)-pa);  // Accumulate fractal detail
-                pa = length(p);
-            }
-            
-            // === SHADING: Dark matter and brightness ===
-            float dm = max(0., darkmatter - a*a*.001);
-            a *= a*a;  // Cube the accumulation for visual effect
-
-            if (r > 6) fade *= 1. - dm;  // Apply dark matter darkening
-            
-            v += fade;  // Add base fade
-            // *** THIS LINE CREATES THE SPARKLES ***
-            // Reduce brightness to reduce sparkles; increase to enhance them
-            v += vec3(s, s*s, s*s*s*s) * a * brightness * fade;
-            
-            fade *= distfading;  // Apply distance fade
-            s += stepsize;  // Step forward along ray
-        }
-        
-        // === FINAL COMPOSITING ===
-        v = mix(vec3(length(v)), v, saturation);  // Apply saturation
-        fragColor = vec4(v * 0.01, 1.);  // Final output (0.01 is a scaling factor)
-    }
-    out vec4 outColor;
-    void main() {
-      mainImage(outColor, gl_FragCoord.xy);
-    }
-  `
+  await Promise.all(promises);
 };
 
 function initShader() {
@@ -297,7 +60,7 @@ function initShader() {
   for (let i=0; i < canvases.length; i++) {
     const canvas = canvases[i];
     console.info(canvas);
-    if (!canvas) return;
+    if (!canvas) continue;
 
     const gl = canvas.getContext('webgl2');
     if (!gl) {
@@ -313,22 +76,18 @@ function initShader() {
         gl_Position = aPosition;
       }
     `;
-    console.info(canvas.id);
-    let fs;
-    const shaderKeys = Object.keys(shaders).filter(key => key !== 'tutorial-shader-canvas');
-    randomKey = shaderKeys[Math.floor(Math.random() * shaderKeys.length)];
+    let fs, currentKey;
     if (canvas.id === 'background-canvas') {
-      console.info('Selected background shader', randomKey);
-      fs = shaders[randomKey];
+      const randomIndex = Math.floor(Math.random() * backgroundShaderKeys.length);
+      currentKey = backgroundShaderKeys[randomIndex];
+      fs = shaders[currentKey];
     } else {
-      fs = shaders[canvas.id];
+      currentKey = canvas.id;
+      fs = shaders[currentKey];
     }
 
     if (!fs) continue; // Skip if we don't have a shader defined for this canvas ID
 
-    //debug 
-    //fs = shaders['star-nest'];
-    
     // Initialize shader program
     const shaderProgram = initShaderProgram(gl, vs, fs);
     if (!shaderProgram) return;
@@ -344,7 +103,17 @@ function initShader() {
         time: gl.getUniformLocation(shaderProgram, 'uTime'),
         mouse: gl.getUniformLocation(shaderProgram, 'uMouse'),
       },
+      currentKey: currentKey
     };
+
+    if (canvas.id === 'background-canvas') {
+      bgState = {
+        gl,
+        vs,
+        programInfo,
+        currentIndex: backgroundShaderKeys.indexOf(currentKey)
+      };
+    }
 
     // Initialize buffers
     const buffers = initBuffers(gl);
@@ -378,10 +147,9 @@ function initShader() {
       const deltaTime = now - then;
       then = now;
 
-      // Heavy smoothing so both clouds track the pointer slowly
       let smoothness;
-      if(randomKey == "star-nest") {
-        smoothness = 0.2;
+      if(programInfo.currentKey == "star-nest") {
+        smoothness = 0.5;
       } else {
         smoothness = 0.008; // Strong lag for smooth motion
       }
@@ -395,6 +163,75 @@ function initShader() {
     requestAnimationFrame(render);
   };
 
+}
+
+/**
+ * Setup click handlers for the nav buttons
+ */
+function setupShaderControls() {
+  let prevBtn = document.getElementById('prev-shader');
+  let nextBtn = document.getElementById('next-shader');
+
+  // If buttons are missing (e.g. on Jekyll pages), inject them dynamically
+  if (!prevBtn || !nextBtn) {
+    const nav = document.querySelector('nav');
+    if (nav) {
+      const ul = nav.querySelector('ul');
+      if (ul) {
+        if (!prevBtn) {
+          prevBtn = document.createElement('button');
+          prevBtn.id = 'prev-shader';
+          prevBtn.className = 'shader-toggle-btn';
+          prevBtn.title = 'Previous Background';
+          prevBtn.setAttribute('aria-label', 'Previous Background');
+          prevBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>';
+          nav.insertBefore(prevBtn, ul);
+        }
+        if (!nextBtn) {
+          nextBtn = document.createElement('button');
+          nextBtn.id = 'next-shader';
+          nextBtn.className = 'shader-toggle-btn';
+          nextBtn.title = 'Next Background';
+          nextBtn.setAttribute('aria-label', 'Next Background');
+          nextBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
+          nav.appendChild(nextBtn);
+        }
+      }
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.onclick = (e) => { e.preventDefault(); switchBackgroundShader(-1); };
+  }
+  if (nextBtn) {
+    nextBtn.onclick = (e) => { e.preventDefault(); switchBackgroundShader(1); };
+  }
+}
+
+/**
+ * Switch background shader to previous or next in the list
+ */
+function switchBackgroundShader(direction) {
+  if (!bgState) return;
+  
+  const nextIndex = (bgState.currentIndex + direction + backgroundShaderKeys.length) % backgroundShaderKeys.length;
+  const newKey = backgroundShaderKeys[nextIndex];
+  const fs = shaders[newKey];
+  
+  const newProgram = initShaderProgram(bgState.gl, bgState.vs, fs);
+  if (!newProgram) return;
+  
+  // Update programInfo in place so the render loop picks it up
+  bgState.programInfo.program = newProgram;
+  bgState.currentIndex = nextIndex;
+  bgState.programInfo.currentKey = newKey;
+  bgState.programInfo.uniformLocations = {
+    resolution: bgState.gl.getUniformLocation(newProgram, 'uResolution'),
+    time: bgState.gl.getUniformLocation(newProgram, 'uTime'),
+    mouse: bgState.gl.getUniformLocation(newProgram, 'uMouse'),
+  };
+  
+  console.info('Switched background shader to:', newKey);
 }
 
 /**
