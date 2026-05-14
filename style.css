@@ -124,7 +124,7 @@ p {
   text-align: center;
   overflow: hidden;
   border-bottom: 1px solid var(--border-color);
-  background-color: var(--header-bg);
+  background-color: var(--ink-black);
   padding: 28px 16px;
 }
 
