@@ -14,13 +14,13 @@ uniform vec2 uMouse;
 #define stepsize 0.1          // Distance between each volumetric step
 
 // === CAMERA/VIEW PARAMETERS ===
-#define zoom   0.400          // Camera zoom level (affects how close/far the stars appear)
-#define tile   0.550          // Tiling scale (controls star spacing)
+#define zoom   0.800          // Camera zoom level (affects how close/far the stars appear)
+#define tile   0.850          // Tiling scale (controls star spacing)
 #define speed  0.0001          // Animation speed
 
 // === BRIGHTNESS AND VISUAL CONTROLS ===
 #define brightness 0.002     // *** MAIN SPARKLE CONTROL *** Lower = fewer/dimmer sparkles, Higher = more/brighter sparkles
-#define darkmatter 0.100      // Darkens certain areas (reduces visibility through dense regions)
+#define darkmatter 0.300      // Darkens certain areas (reduces visibility through dense regions)
 #define distfading 0.730      // How much distance fading occurs per step (higher = fades faster)
 #define saturation 0.950      // Color saturation (1.0 = full color, 0.0 = grayscale)
 
