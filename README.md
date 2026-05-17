@@ -1,6 +1,6 @@
 # portfolio
 My portfolio!
-https://michael-kato.github.io/
+https://michaelkato.work
 
 ## blog workflow
 
@@ -44,6 +44,6 @@ Write in normal Markdown here.
 1. Install Ruby and Bundler.
 2. Run `bundle install`
 3. Run `bundle exec jekyll serve`
-4. Open `http://127.0.0.1:4000/portfolio/`
+4. Open `http://127.0.0.1:4000/`
 
 GitHub Pages now deploys the site through GitHub Actions, so the pushed site should render the Jekyll templates correctly once Pages is configured to use GitHub Actions.

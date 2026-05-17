@@ -13,7 +13,7 @@ I wanted to create an effect that could take any arbitrary mesh and convert it i
 
 The entire effect is non-destructive and works on any mesh.
 
-{% include post-video.html src="/portfolio/resources/electric_whale.mp4" autoplay=true muted=true loop=true playsinline=true %}
+{% include post-video.html src="/resources/electric_whale.mp4" autoplay=true muted=true loop=true playsinline=true %}
 
 ## How It Works
 
@@ -30,7 +30,7 @@ The pipeline is built with Blender's Geometry Nodes and a little shader magic. I
 
 The geometry node setup above shows the full pipeline.
 
-{% include post-image.html src="/portfolio/resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" %}
+{% include post-image.html src="/resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" %}
 
 The slowest part is the inner loop where each point finds it's nearest neighbors to connect an electric arc. The time complexity is O(n²) which is the absolute worst case possible. I'd like to optimize it one day perhaps by using the new raycast node the recent Blender version, which wasn't available at the time. There are probably other ways to optimize this too. 
 

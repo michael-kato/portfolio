@@ -63,8 +63,8 @@ window.projectData = {
 </div>
   `,
     images: [
-      "/portfolio/resources/hitch_dashboard.PNG",
-      "/portfolio/resources/fps_dashboard.PNG"
+      "/resources/hitch_dashboard.PNG",
+      "/resources/fps_dashboard.PNG"
     ],
     video: null
   },

@@ -4,7 +4,6 @@
 
 This is a Jekyll/GitHub Pages portfolio site. The public base URL is configured in `_config.yml` as:
 
-- `url: https://michael-kato.github.io` (or your custom domain)
 - `baseurl: ""`
 
 That means generated pages now publish at the root. For example, the programming variant is `/programming/`.
@@ -110,7 +109,7 @@ http://127.0.0.1:4000/
 Programming local URL:
 
 ```text
-http://127.0.0.1:4000/portfolio/programming/
+http://127.0.0.1:4000/programming/
 ```
 
 ## Cloudflare Worker Deployment
@@ -149,4 +148,4 @@ wrangler auth login
 wrangler deploy
 ```
 
-The worker will be available at the configured route (e.g., `https://michael-kato.github.io/api/chat`).
+The worker will be available at the configured route (e.g., `https://michaelkato.work/api/chat`).
