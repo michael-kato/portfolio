@@ -6,3 +6,4 @@ _site/
 .bundle/
 .codex
 .wrangler/
+dev.vars

@@ -5,10 +5,15 @@ export default {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type',
-      'Vary': 'Origin'
+      'Access-Control-Max-Age': '86400',
     };
 
-    if (request.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { 
+        status: 204, 
+        headers: corsHeaders 
+      });
+    }
 
     try {
     // GET: Fetch approved comments for a specific post
@@ -49,10 +54,14 @@ export default {
   },
 
   async sendNotification(env, comment) {
-    if (!env.EMAIL_API_KEY) return;
+    if (!env.EMAIL_API_KEY) {
+      console.warn("EMAIL_API_KEY is not defined. Skipping email notification.");
+      return;
+    }
 
+    console.log(`Attempting to send email notification for post: ${comment.slug}`);
     // Example using Resend API to send a notification
-    await fetch('https://api.resend.com/emails', {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${env.EMAIL_API_KEY}`,
@@ -65,5 +74,12 @@ export default {
         text: `From: ${comment.author}\n\n${comment.text}`
       })
     });
+
+    if (response.ok) {
+      console.log("Email notification sent successfully.");
+    } else {
+      const errorText = await response.text();
+      console.error(`Failed to send email. Status: ${response.status}, Response: ${errorText}`);
+    }
   }
 };
