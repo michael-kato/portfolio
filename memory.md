@@ -56,7 +56,7 @@ The site now uses a single-page blog feed at `/blog/` (source: `blog.html`).
 Anonymous comments are supported on blog posts using Cloudflare D1 and a dedicated Worker.
 - **Storage:** Cloudflare D1 (SQL) with table `comments`.
 - **Moderation:** Handled via Cloudflare D1 dashboard (SQL `is_approved` flag).
-- **Backend:** `portfolio-comments.cass-account.workers.dev` handles GET/POST.
+- **Backend:** `portfolio-comments.mkato.workers.dev` handles GET/POST.
 - **Email:** Sends notifications upon new comment submissions via Resend API or Cloudflare Email Routing.
 - **Frontend:** Injected dynamically into `.blog-content` containers via `setupComments()` in `index.js`.
 

@@ -527,7 +527,7 @@ function setupChatBot() {
 
     try {
       // Update this URL to your actual worker URL after running 'wrangler deploy'
-      const response = await fetch('https://portfolio-chat.cass-account.workers.dev/', {
+      const response = await fetch('https://portfolio-chat.mkato.workers.dev/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
@@ -617,7 +617,7 @@ async function setupComments() {
 
     // Load existing approved comments
     try {
-      const response = await fetch(`https://portfolio-comments.cass-account.workers.dev/comments?slug=${slug}`);
+      const response = await fetch(`https://portfolio-comments.mkato.workers.dev/comments?slug=${slug}`);
       if (response.ok) {
         const comments = await response.json();
         if (comments.length === 0) {
@@ -648,7 +648,7 @@ async function setupComments() {
       status.textContent = 'Posting...';
 
       try {
-        const response = await fetch('https://portfolio-comments.cass-account.workers.dev/comments', {
+        const response = await fetch('https://portfolio-comments.mkato.workers.dev/comments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, author, text })
