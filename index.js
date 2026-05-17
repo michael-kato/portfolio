@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupBlogImages();
   setupModalHandlers();
   setupChatBot();
+  setupComments();
 
   // Delay decryption and rendering to prioritize initial page load
   setTimeout(() => {
@@ -561,6 +562,120 @@ function setupChatBot() {
 
   send.onclick = handleSend;
   input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
+}
+
+/**
+ * Setup simple anonymous commenting for blog posts
+ */
+async function setupComments() {
+  const posts = document.querySelectorAll('.blog-content');
+  if (posts.length === 0) return;
+
+  // Inject basic styles for the comment section
+  if (!document.getElementById('comments-style')) {
+    const style = document.createElement('style');
+    style.id = 'comments-style';
+    style.textContent = `
+      .comments-section { margin-top: 4rem; border-top: 1px solid var(--dark-burnt-orange); padding-top: 2rem; max-width: 800px; }
+      .comment-item { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #222; }
+      .comment-meta { font-size: 0.85rem; color: var(--light-wheat); margin-bottom: 0.5rem; opacity: 0.8; }
+      .comment-author { font-weight: bold; color: var(--accent-color); margin-right: 0.5rem; }
+      .comment-body { line-height: 1.6; color: var(--wheat); white-space: pre-wrap; }
+      .comment-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 3rem; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 4px; }
+      .comment-name-input, .comment-text-input { background: #0a0a0a; border: 1px solid #333; color: var(--wheat); padding: 0.8rem; font-family: inherit; }
+      .comment-text-input { min-height: 120px; resize: vertical; }
+      .comment-submit-btn { background: var(--dark-burnt-orange); color: white; border: none; padding: 0.8rem; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
+      .comment-submit-btn:hover { opacity: 0.8; }
+      .comment-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+      .comment-status { font-size: 0.9rem; margin-top: 0.5rem; font-style: italic; color: var(--light-wheat); }
+    `;
+    document.head.appendChild(style);
+  }
+
+  posts.forEach(async (post) => {
+    const slug = post.id || post.parentElement?.id || window.location.pathname.split('/').filter(Boolean).pop();
+    if (!slug || slug === 'blog') return;
+
+    const commentWrapper = document.createElement('div');
+    commentWrapper.className = 'comments-section';
+    commentWrapper.innerHTML = `
+      <h3 class="comments-title">Comments</h3>
+      <div class="comments-list" id="comments-list-${slug}">Loading comments...</div>
+      <form class="comment-form" id="comment-form-${slug}">
+        <input type="text" placeholder="Name (anonymous)" class="comment-name-input" maxlength="50">
+        <textarea placeholder="Share your thoughts..." required class="comment-text-input" maxlength="2000"></textarea>
+        <button type="submit" class="comment-submit-btn">Post Comment</button>
+        <div class="comment-status"></div>
+      </form>
+    `;
+    post.appendChild(commentWrapper);
+
+    const listContainer = document.getElementById(`comments-list-${slug}`);
+    const form = document.getElementById(`comment-form-${slug}`);
+    const status = form.querySelector('.comment-status');
+    const submitBtn = form.querySelector('.comment-submit-btn');
+
+    // Load existing approved comments
+    try {
+      const response = await fetch(`https://portfolio-comments.cass-account.workers.dev/comments?slug=${slug}`);
+      if (response.ok) {
+        const comments = await response.json();
+        if (comments.length === 0) {
+          listContainer.innerHTML = '<p style="font-style: italic; opacity: 0.6;">No comments yet. Be the first!</p>';
+        } else {
+          listContainer.innerHTML = comments.map(c => `
+            <div class="comment-item">
+              <div class="comment-meta">
+                <span class="comment-author">${escapeHtml(c.author)}</span>
+                <span class="comment-date">${new Date(c.created_at).toLocaleDateString()}</span>
+              </div>
+              <div class="comment-body">${escapeHtml(c.text)}</div>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (e) {
+      listContainer.innerHTML = '<p>Error loading comments.</p>';
+    }
+
+    // Handle submission
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const author = form.querySelector('.comment-name-input').value.trim() || 'Anonymous';
+      const text = form.querySelector('.comment-text-input').value.trim();
+
+      submitBtn.disabled = true;
+      status.textContent = 'Posting...';
+
+      try {
+        const response = await fetch('https://portfolio-comments.cass-account.workers.dev/comments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ slug, author, text })
+        });
+
+        if (response.ok) {
+          status.textContent = 'Comment submitted! It will appear once approved.';
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        status.textContent = 'Failed to post. Please try again later.';
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  });
+}
+
+function escapeHtml(unsafe) {
+  return unsafe
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 /**

@@ -51,6 +51,15 @@ The site now uses a single-page blog feed at `/blog/` (source: `blog.html`).
 - **Navigation:** A Table of Contents (ToC) at the top allows jumping to specific posts using anchor links (`#post-title-slug`).
 - **Redirects:** The homepage "Read more" links now point directly to the post's anchor on the blog page rather than separate pages.
 
+## Comment System
+
+Anonymous comments are supported on blog posts using Cloudflare D1 and a dedicated Worker.
+- **Storage:** Cloudflare D1 (SQL) with table `comments`.
+- **Moderation:** Handled via Cloudflare D1 dashboard (SQL `is_approved` flag).
+- **Backend:** `portfolio-comments.cass-account.workers.dev` handles GET/POST.
+- **Email:** Sends notifications upon new comment submissions via Resend API or Cloudflare Email Routing.
+- **Frontend:** Injected dynamically into `.blog-content` containers via `setupComments()` in `index.js`.
+
 ## Variant system
 
 Clean URL variants are implemented as real Jekyll pages plus JavaScript configuration:

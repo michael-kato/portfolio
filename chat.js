@@ -2,11 +2,12 @@ export default {
   async fetch(request, env, ctx) {
     const allowedOrigins = [
       "https://michael-kato.github.io",
+      "https://michaelkato.work",
       "http://127.0.0.1:4000" // Add your local development URL here
     ];
 
     const requestOrigin = request.headers.get("Origin");
-    let corsAllowOrigin = "https://michael-kato.github.io"; // Default to production origin
+    let corsAllowOrigin = "https://michaelkato.work"; // Default to production origin
 
     if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
       corsAllowOrigin = requestOrigin;
