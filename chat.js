@@ -1,23 +1,10 @@
 export default {
   async fetch(request, env, ctx) {
-    const allowedOrigins = [
-      "https://michael-kato.github.io",
-      "https://michaelkato.work",
-      "http://127.0.0.1:4000" // Add your local development URL here
-    ];
-
-    const requestOrigin = request.headers.get("Origin");
-    let corsAllowOrigin = "https://michaelkato.work"; // Default to production origin
-
-    if (requestOrigin && allowedOrigins.includes(requestOrigin)) {
-      corsAllowOrigin = requestOrigin;
-    }
-
-    // Define CORS headers
     const corsHeaders = {
-      "Access-Control-Allow-Origin": corsAllowOrigin,
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type",
+      "Vary": "Origin"
     };
 
     // Handle CORS preflight requests
@@ -38,7 +25,15 @@ export default {
 
     const token = env.GITHUB_TOKEN;
     // Retrieve the large text from KV instead of environment variables
-    const careerSecret = await env.PORTFOLIO_KV.get("CAREER_OVERVIEW");
+    let careerSecret = null;
+    try {
+      if (env.PORTFOLIO_KV) {
+        careerSecret = await env.PORTFOLIO_KV.get("CAREER_OVERVIEW");
+      }
+    } catch (kvError) {
+      console.error("KV Error:", kvError);
+    }
+
     const modelName = "gpt-4o-mini";
 
     if (!careerSecret) {
@@ -70,7 +65,7 @@ export default {
 
       if (!response.ok) {
         const error = await response.json();
-        return new Response(JSON.stringify({ error: error.message || "AI API Error" }), { 
+        return new Response(JSON.stringify({ error: error.error?.message || "AI API Error" }), { 
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' }
         });

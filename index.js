@@ -527,21 +527,18 @@ function setupChatBot() {
 
     try {
       // Update this URL to your actual worker URL after running 'wrangler deploy'
-      const response = await fetch('https://portfolio-chat.mkato.workers.dev/', {
+      const response = await fetch('https://portfolio-chat.mkato.workers.dev', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ 
           prompt: text,
           timestamp: new Date().toISOString() 
         })
       });
 
-      if (response.status === 404) {
-        throw new Error("Chat endpoint not found. Ensure your serverless proxy is deployed.");
-      }
-
       if (!response.ok) {
-        throw new Error(`API Error: ${response.statusText}`);
+        const errData = await response.json().catch(() => ({}));
+        throw new Error(errData.error || `Server Error (${response.status})`);
       }
 
       const data = await response.json();
@@ -552,7 +549,7 @@ function setupChatBot() {
     } catch (error) {
       console.error("Career Assistant Error:", error);
       document.getElementById(typingId)?.remove();
-      messages.innerHTML += `<div class="message bot-message">I'm having trouble connecting to my brain. Please try again later!</div>`;
+      messages.innerHTML += `<div class="message bot-message"><strong>Error:</strong> ${error.message}<br><br>I'm having trouble connecting to my brain. Please try again later!</div>`;
     } finally {
       input.disabled = false;
       input.focus();
@@ -568,7 +565,8 @@ function setupChatBot() {
  * Setup simple anonymous commenting for blog posts
  */
 async function setupComments() {
-  const posts = document.querySelectorAll('.blog-content');
+  // Target blog content specifically to avoid injecting comments into the Chatbot UI
+  const posts = document.querySelectorAll('article.blog-content, .blog-feed-item .blog-content');
   if (posts.length === 0) return;
 
   // Inject basic styles for the comment section

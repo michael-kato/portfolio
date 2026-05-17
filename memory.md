@@ -157,4 +157,4 @@ wrangler auth login
 wrangler deploy
 ```
 
-The worker will be available at the configured route (e.g., `https://michaelkato.work/api/chat`).
+The worker will be available at the configured route (e.g., `https://portfolio-chat.mkato.workers.dev`).

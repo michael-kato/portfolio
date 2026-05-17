@@ -32,14 +32,12 @@ async function loadShaders() {
   const shaderFiles = {
     'tutorial-shader-canvas': 'resources/tutorial.frag',
     'protean-clouds': 'resources/protean-clouds.frag',
-    'star-nest': 'resources/star-nest.frag',
-    'rainforest': 'resources/rainforest.frag',
-    'journey': 'resources/journey.frag'
+    'star-nest': 'resources/star-nest.frag'
   };
 
-  // Get the base path of the current script to resolve shader paths
+  // Use absolute root-relative paths for assets to ensure they load on all variants/subpages
   const script = document.querySelector('script[src*="shaders.js"]');
-  const baseUrl = script ? script.src.replace('shaders.js', '') : '';
+  const baseUrl = script ? script.src.split('shaders.js')[0] : '/';
 
   const promises = Object.entries(shaderFiles).map(async ([key, path]) => {
     try {
