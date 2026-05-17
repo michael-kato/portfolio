@@ -15,8 +15,8 @@ window.projectData = {
 
   <p>Highlights include:</p>
   <ul class="project-list">
-    <li>Swept nearly the entire codebase to batch apply performance fixes in hundreds of files, later standardized as a linter error</li>
-    <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events</li>
+    <li>Regularly resolved ship-blocking performance regressions through profiling and collaboration with engineers and management. Utilized a suite of internal tools to identify regressive code changes after culprits found through profiling.</li>
+    <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events. Swept nearly the entire codebase to batch apply performance fixes in hundreds of files.</li>
     <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and many more</li>
   </ul>
 </div>
