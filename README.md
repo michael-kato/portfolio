@@ -35,8 +35,8 @@ Write in normal Markdown here.
 - Lists work
 - **Bold** and *italic* work
 
-{% include post-video.html src="../resources/my-video.mp4" caption="Optional caption." %}
-{% include post-image.html src="../resources/my-image.png" alt="Describe the image" caption="Optional caption." %}
+{% include post-video.html src="/resources/my-video.mp4" caption="Optional caption." %}
+{% include post-image.html src="/resources/my-image.png" alt="Describe the image" caption="Optional caption." %}
 ```
 
 ## Local preview

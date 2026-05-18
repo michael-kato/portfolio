@@ -1,5 +1,5 @@
 <figure class="media-item">
-  <img src="{{ include.src }}" alt="{{ include.alt | default: '' }}">
+  <img src="{{ include.src | relative_url }}" alt="{{ include.alt | default: '' }}" loading="lazy" decoding="async">
   {% if include.caption %}
     <figcaption class="media-caption">{{ include.caption }}</figcaption>
   {% endif %}

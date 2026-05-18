@@ -20,9 +20,6 @@
 
         <div class="content-narrow">
           <div class="blog-card-meta">
-            {% for tag in page.tags %}
-              <span class="blog-tag">{{ tag }}</span>
-            {% endfor %}
             <span class="blog-date">{{ page.date | date: "%B %-d, %Y" }}</span>
           </div>
           {% if page.subtitle %}

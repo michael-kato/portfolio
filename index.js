@@ -565,16 +565,16 @@ function setupChatBot() {
  * Setup simple anonymous commenting for blog posts
  */
 async function setupComments() {
-  // Target blog content specifically to avoid injecting comments into the Chatbot UI
-  const posts = document.querySelectorAll('article.blog-content, .blog-feed-item .blog-content');
-  if (posts.length === 0) return;
+  // Target the post containers (cards in the feed or the main container on single pages)
+  const targets = document.querySelectorAll('.blog-feed-item, #blog-post .container');
+  if (targets.length === 0) return;
 
   // Inject basic styles for the comment section
   if (!document.getElementById('comments-style')) {
     const style = document.createElement('style');
     style.id = 'comments-style';
     style.textContent = `
-      .comments-section { margin-top: 4rem; border-top: 1px solid var(--dark-burnt-orange); padding-top: 2rem; max-width: 800px; }
+      .comments-section { margin-top: 1rem; border-top: 1px solid var(--dark-burnt-orange);  max-width: 800px; }
       .comment-item { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #222; }
       .comment-meta { font-size: 0.85rem; color: var(--light-wheat); margin-bottom: 0.5rem; opacity: 0.8; }
       .comment-author { font-weight: bold; color: var(--accent-color); margin-right: 0.5rem; }
@@ -590,8 +590,8 @@ async function setupComments() {
     document.head.appendChild(style);
   }
 
-  posts.forEach(async (post) => {
-    const slug = post.id || post.parentElement?.id || window.location.pathname.split('/').filter(Boolean).pop();
+  targets.forEach(async (target) => {
+    const slug = target.id || window.location.pathname.split('/').filter(Boolean).pop();
     if (!slug || slug === 'blog') return;
 
     const commentWrapper = document.createElement('div');
@@ -606,7 +606,7 @@ async function setupComments() {
         <div class="comment-status"></div>
       </form>
     `;
-    post.appendChild(commentWrapper);
+    target.appendChild(commentWrapper);
 
     const listContainer = document.getElementById(`comments-list-${slug}`);
     const form = document.getElementById(`comment-form-${slug}`);

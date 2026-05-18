@@ -54,10 +54,8 @@ async function loadShaders() {
 
 function initShader() {
   const canvases = document.getElementsByTagName('canvas');
-  console.info(canvases);
   for (let i=0; i < canvases.length; i++) {
     const canvas = canvases[i];
-    console.info(canvas);
     if (!canvas) continue;
 
     const gl = canvas.getContext('webgl2');

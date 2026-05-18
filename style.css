@@ -1061,7 +1061,14 @@ section {
 }
 
 .blog-feed-item {
-  margin-bottom: 60px;
+  margin-bottom: 10px;
+  margin-bottom: 20px;
+  background-color: rgba(var(--dark-slate-grey-rgb), 0.4);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 .post-separator {
