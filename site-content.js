@@ -343,7 +343,7 @@ window.artData = {
         caption: "Character from Star Wars: Clone Wars. I modelled, texture, rigged, and animated this character but the files are lost."
       }
     ],
-    video: "https://www.youtube.com/watch?v=2k-cztTwVzU"
+    video: ""
   },
 
   "art-personal": {
