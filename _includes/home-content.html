@@ -110,13 +110,25 @@
         </div>
         <div class="blog-grid">
           {% for post in site.posts limit: 3 %}
+            {% assign content_parts = post.content | split: 'src="' %}
             <a href="{{ '/blog/' | relative_url }}#{{ post.title | slugify }}" class="blog-card">
               <div class="blog-card-meta">
+                <h3 class="blog-card-title">{{ post.title }}</h3>
                 <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
               </div>
-              <h3 class="blog-card-title">{{ post.title }}</h3>
-              <p class="blog-card-excerpt">{{ post.excerpt | strip_html | strip }}</p>
-              <span class="blog-read-more">Read more &rarr;</span>
+              <div class="blog-card-row">
+                <p class="blog-card-excerpt">{{ post.content | strip_html | truncate: 160 }}</p>
+                {% if content_parts.size > 1 %}
+                  {% assign first_media = content_parts[1] | split: '"' | first %}
+                  <div class="blog-card-thumb">
+                    {% if first_media contains '.mp4' or first_media contains '.webm' or first_media contains '.mov' %}
+                      <video src="{{ first_media | relative_url }}" muted autoplay loop playsinline></video>
+                    {% else %}
+                      <img src="{{ first_media | relative_url }}" alt="{{ post.title }}">
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </div>
             </a>
           {% endfor %}
         </div>

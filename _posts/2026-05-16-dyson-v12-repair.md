@@ -1,8 +1,7 @@
 ---
 title: Dyson V12 Repair - A First-Time Soldering Adventure
+post_id: dyson-v12-repair
 date: 2026-05-16
-subtitle: "Resurrecting a Dyson V12 Slim Detect with zero experience and a few creative hacks."
-excerpt: "My journey fixing a dead Dyson V12, dealing with oversized capacitors, and learning the hard way that some wires are just too small for a beginner's toolkit."
 ---
 
 As a Technical Artist, I spend most of my time debugging virtual pipelines. Recently however, a hardware pipeline in my house failed: my Dyson V12 Slim Detect completely died! The Dyson repair shop said I needed to buy a replacement head for $130. Naturally I decided to attempt a repair! Previous to this I had zero experience with soldering. Thankfully everyone has an AI in their pocket these days and it guided me through a lot of the things I didn't know! 

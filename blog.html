@@ -25,14 +25,11 @@ permalink: /blog/
 
     <div class="blog-feed">
       {% for post in site.posts %}
-        <article id="{{ post.title | slugify }}" class="blog-feed-item">
+        <article id="{{ post.title | slugify }}" data-post-id="{{ post.post_id | default: post.title | slugify }}" class="blog-feed-item">
           <div class="blog-card-meta">
+            <h2 class="blog-card-title">{{ post.title }}</h2>
             <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
           </div>
-          <h2 class="blog-card-title">{{ post.title }}</h2>
-          {% if post.subtitle %}
-            <p class="blog-subtitle">{{ post.subtitle }}</p>
-          {% endif %}
           
           <div class="blog-content">
             {{ post.content }}

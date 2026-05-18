@@ -1,8 +1,7 @@
 ---
-title: Electric Outline Effect in Blender
+title: Blender Geometry Nodes
+post_id: blender-geo-nodes-electric-outline
 date: 2025-06-10
-subtitle: Transforming any 3D model into colorful dots connected by lightning, in Blender with Geometry Nodes.
-excerpt: Transforming any 3D model into colorful dots connected by lightning, in Blender with Geometry Nodes.
 ---
 
 I wanted to create an effect that could take any arbitrary mesh and convert it into something that looked like an electrical schematic come to life: points of light connected by arcing, noisy lightning bolts, all wrapped in a color gradient.

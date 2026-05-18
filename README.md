@@ -9,7 +9,7 @@ The blog/blog now uses Jekyll posts instead of hand-authored HTML pages.
 Important: `index.html`, `blog.html`, `_layouts/`, and `_includes/` are now Jekyll source files. If you open them directly in a browser or static preview, you will see raw front matter and Liquid tags. They only render correctly after a Jekyll build.
 
 - Write new posts in `_posts/` using the filename format `YYYY-MM-DD-slug.md`
-- Add front matter for `title`, `date`, `tags`, `subtitle`, and `excerpt`
+- Add front matter for `title`, `date`, `subtitle`, `excerpt`, and a stable `post_id`
 - The blog listing page at `blog.html` builds itself from those posts and publishes at `/blog/`
 - Posts publish to `/blog/slug/`
 - GitHub Pages deploys through `.github/workflows/pages.yml`
@@ -20,10 +20,8 @@ Example post:
 ```md
 ---
 title: My New Post
+post_id: my-unique-identifier
 date: 2026-04-21
-tags:
-  - Blender
-  - Pipeline
 subtitle: A short one-line summary for the post header.
 excerpt: A short summary used on the blog listing page.
 ---

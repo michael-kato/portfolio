@@ -591,7 +591,7 @@ async function setupComments() {
   }
 
   targets.forEach(async (target) => {
-    const slug = target.id || window.location.pathname.split('/').filter(Boolean).pop();
+    const slug = target.dataset.postId || target.id || window.location.pathname.split('/').filter(Boolean).pop();
     if (!slug || slug === 'blog') return;
 
     const commentWrapper = document.createElement('div');

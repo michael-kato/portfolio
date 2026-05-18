@@ -11,7 +11,7 @@
   {% include site-nav.html %}
   <main>
     <section id="blog-post">
-      <div class="container">
+      <div class="container" data-post-id="{{ page.post_id | default: page.title | slugify }}">
         <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Blog' }}</a>
 
         <div class="section-header">
@@ -22,9 +22,6 @@
           <div class="blog-card-meta">
             <span class="blog-date">{{ page.date | date: "%B %-d, %Y" }}</span>
           </div>
-          {% if page.subtitle %}
-            <p class="blog-subtitle">{{ page.subtitle }}</p>
-          {% endif %}
         </div>
 
         <div class="blog-content">

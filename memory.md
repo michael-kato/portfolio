@@ -21,13 +21,15 @@ This keeps alternate URLs from duplicating the full homepage markup.
 
 ## Recent updates
 
-- A recruiter chat widget has been added. The UI is placed at the root of `_layouts/home.html` to bypass stacking context issues, ensuring it draws on top of all elements (z-index: 99999).
+- **Custom Domain**: Site is now hosted at `michaelkato.work` with forced HTTPS.
+- **Deep Learning Section**: A dedicated landing page at `/deep_learning/` showcases AI research and hosts a live Hugging Face Spaces inference iframe.
+- **Recruiter Chat**: Powered by a Cloudflare Worker at `portfolio-chat.mkato.workers.dev`. It uses GPT-4o-mini to answer questions based on a `CAREER_OVERVIEW` stored in KV.
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
 - `/_layouts/post.html` now includes the blog post lightbox container so full-size image zoom works on post pages as well.
 - `shaders.js` now has inline comments for both `protean-clouds` and `star-nest` shaders, exposing tunable parameters like tunnel exit size, glow intensity, sparkle brightness, and star size clamping.
-- Cloudflare Worker files power the chat API: `chat.js` handles requests, while `wrangler.toml` manages deployment. The worker queries GPT-4o-mini via GitHub's Azure AI inference.
 - **Chat UI Features**: Supports Markdown rendering via `marked.js`, inherits blog styling via the `blog-content` class, and features a pulsing notification animation on the toggle bubble.
 - **Desktop GUI Logic**: The chat window is resizable from the **top-left corner**. This is implemented via a CSS trick: rotating the entire window 180 degrees to move the native resize handle, then rotating internal containers back to keep text upright.
+- **Stable Comments**: Comments are now linked via `post_id` in front matter rather than the URL slug, preventing comment loss if a post is renamed or moved.
 
 ## Navigation
 
@@ -46,19 +48,21 @@ The cards and section structure live in `_includes/home-content.html`. The inter
 
 ## Blog System (formerly blogs)
 
-The site now uses a single-page blog feed at `/blog/` (source: `blog.html`).
+The site uses the standard Jekyll `_posts/` directory to manage blog content.
 - **Feed Structure:** All posts are rendered in full within a vertical feed.
-- **Navigation:** A Table of Contents (ToC) at the top allows jumping to specific posts using anchor links (`#post-title-slug`).
-- **Redirects:** The homepage "Read more" links now point directly to the post's anchor on the blog page rather than separate pages.
+- **Filenames**: Must follow the `YYYY-MM-DD-title.md` format.
+- **Navigation**: A Table of Contents (ToC) at the top allows jumping to specific posts using anchor links (`#post-title-slug`).
+- **Redirects:** The homepage blog cards point directly to the post's anchor on the blog page rather than separate pages.
 
 ## Comment System
 
 Anonymous comments are supported on blog posts using Cloudflare D1 and a dedicated Worker.
 - **Storage:** Cloudflare D1 (SQL) with table `comments`.
 - **Moderation:** Handled via Cloudflare D1 dashboard (SQL `is_approved` flag).
-- **Backend:** `portfolio-comments.mkato.workers.dev` handles GET/POST.
+- **Backend:** `portfolio-comments.mkato.workers.dev` handles API requests.
 - **Email:** Sends notifications upon new comment submissions via Resend API or Cloudflare Email Routing.
 - **Frontend:** Injected dynamically into `.blog-content` containers via `setupComments()` in `index.js`.
+- **Stability**: Uses `data-post-id` attribute; lookups prioritize `post_id` from front matter, falling back to slug.
 
 ## Variant system
 

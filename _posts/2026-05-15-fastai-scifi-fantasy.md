@@ -1,8 +1,7 @@
 ---
-title: FastAI Progress - Sci-Fi vs. Fantasy Classifier
+title: FastAI Course - My First Image Classifier Model
+post_id: fastai-scifi-fantasy
 date: 2026-05-15
-subtitle: Building and deploying a vision model to distinguish concept art genres using ResNet-18.
-excerpt: A look at my journey through the fastai course, from training a vision model to deploying it on Hugging Face Spaces.
 ---
 
 As part of my deep learning journey through the [fastai course](https://course.fast.ai/), I built a binary classifier to solve a classic Technical Artist dilemma: Is this concept art piece **Sci-Fi** or **Fantasy**? 
