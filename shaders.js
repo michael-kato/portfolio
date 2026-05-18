@@ -44,6 +44,12 @@ async function loadShaders() {
       const response = await fetch(baseUrl + path);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       shaders[key] = await response.text();
+
+      // Explicitly find any elements requesting this shader's source via data attribute
+      const displayElements = document.querySelectorAll(`[data-shader-source="${key}"]`);
+      displayElements.forEach(el => {
+        el.textContent = shaders[key].trim();
+      });
     } catch (e) {
       console.error(`Failed to load shader: ${path}`, e);
     }
