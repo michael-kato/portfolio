@@ -49,6 +49,7 @@
   --tertiary-color: rgba(var(--wheat-rgb), 0.74);
   --card-bg: var(--dark-slate-grey);
   --card-bg-trans: rgba(var(--dark-slate-grey-rgb), 0.7);
+  --card-bg-trans-er: rgba(var(--dark-slate-grey-rgb), 0.4);
   --border-color: rgba(var(--wheat-rgb), 0.2);
   --header-bg: var(--douglas-fir);
   --header-bg-trans: rgba(var(--douglas-fir-rgb), 0.7);
@@ -386,7 +387,7 @@ section {
   color: var(--light-wheat);
   color: var(--accent-color);
   margin-bottom: 15px;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 600;
 }
 
@@ -1024,7 +1025,7 @@ section {
 
 /* ===== Blog Feed Styles ===== */
 .toc-container {
-  background-color: var(--card-bg-trans);
+  background-color: var(--card-bg-trans-er);
   border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 20px;
@@ -1065,7 +1066,6 @@ section {
   margin-bottom: 20px;
   background-color: rgba(var(--dark-slate-grey-rgb), 0.4);
   padding: 20px;
-  border-radius: 12px;
   border: 1px solid var(--border-color);
   backdrop-filter: blur(8px);
   box-shadow: 0 10px 30px var(--shadow-color);
@@ -1127,7 +1127,7 @@ section {
 
 .blog-card-title {
   color: var(--burnt-orange);
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 0;
   line-height: 1.4;
