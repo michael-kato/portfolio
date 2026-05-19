@@ -107,8 +107,11 @@ vec3 iLerp(vec3 a, vec3 b, float x) {
 
 // === MAIN IMAGE - CAMERA SETUP AND COMPOSITING ===
 void mainImage( out vec4 O, vec2 u ) {	
-    vec2 R = uResolution.xy, q = u/R, p = (u - 0.5*R ) / R.y;
-    bsMo = clamp((0.5*R - uMouse) / R.y, vec2(-0.65), vec2(0.65));
+    vec2 R = uResolution.xy;
+    vec2 q = u/R;
+    vec2 p = (u - 0.5*R ) / R.y;
+
+    bsMo = (0.5*R - uMouse) / R.y;
     
     prm1 = 0.0; // Stabilize prm1 to remove procedural color/cam shifting
     float time = uTime*1.5;
@@ -116,7 +119,8 @@ void mainImage( out vec4 O, vec2 u ) {
     
     // === TUNNEL EXIT POINT SETUP ===
     // Aim the tunnel toward a distant exit that follows the mouse pointer
-    vec3 exitPoint = vec3(bsMo * vec2(3.2, 2.4), 7.0);  // Adjust 3.2, 2.4 to scale tunnel exit size
+    vec2 exitSize = vec2(3.2, 2.4);
+    vec3 exitPoint = vec3(bsMo * exitSize, 7.0);
     vec3 target = normalize(exitPoint),
          rightdir = normalize(cross(target, vec3(0,1,0))),
          updir = normalize(cross(rightdir, target)),
