@@ -24,6 +24,8 @@ uniform vec2 uMouse;
 #define distfading 0.730      // How much distance fading occurs per step (higher = fades faster)
 #define saturation 0.950      // Color saturation (1.0 = full color, 0.0 = grayscale)
 
+#define rotationspeed 1.0  // Rotation speed (controls how fast the view rotates based on mouse movement)
+
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     // === SETUP: Normalize coordinates and create view ray ===
     vec2 uv = fragCoord.xy / uResolution.xy - 0.5;
@@ -33,8 +35,8 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     float time = uTime*speed + .25;
     
     // === MOUSE CONTROL: Rotate view based on mouse position ===
-    float a1 = .5 - uMouse.x/uResolution.x*2.;
-    float a2 = .8 - uMouse.y/uResolution.y*2.;
+    float a1 = .5 - uMouse.x/uResolution.x * rotationspeed;
+    float a2 = .8 - uMouse.y/uResolution.y * rotationspeed;
     mat2 rot1 = mat2(cos(a1), sin(a1), -sin(a1), cos(a1));
     mat2 rot2 = mat2(cos(a2), sin(a2), -sin(a2), cos(a2));
     dir.xz *= rot1;

@@ -43,18 +43,23 @@ export default {
       });
     }
 
-    try {
-      const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          messages: [
-            {
-              role: "system",
-              content: `
+    // Define fallback models available on the GitHub/Azure inference endpoint
+    const modelsToTry = ["gpt-4o-mini", "meta-llama-3.1-70b-instruct"];
+    let lastError = null;
+
+    for (const currentModel of modelsToTry) {
+      try {
+        const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            messages: [
+              {
+                role: "system",
+                content: `
 You are Michael's career advocate and technical interpreter.
 Your role is to help recruiters and hiring managers understand how Michael's real-world experience maps to new roles, especially when his background is unconventional or cross-disciplinary.
 
@@ -78,34 +83,41 @@ Guidelines:
 Use the provided career history to answer questions:
 ${careerSecret}
 `
-            },
-            { role: "user", content: prompt }
-          ],
-          model: modelName,
-          temperature: 0.7
-        })
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        return new Response(JSON.stringify({ error: error.error?.message || "AI API Error" }), { 
-          status: 500,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+              },
+              { role: "user", content: prompt }
+            ],
+            model: currentModel,
+            temperature: 0.7
+          })
         });
+
+        if (response.ok) {
+          const data = await response.json();
+          const reply = data.choices[0].message.content;
+          return new Response(JSON.stringify({ reply, modelUsed: currentModel }), {
+            status: 200,
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+          });
+        }
+
+        const errorData = await response.json();
+        lastError = errorData.error?.message || `Status ${response.status}`;
+
+        if (response.status === 429 || response.status >= 500) {
+          console.warn(`Model ${currentModel} failed with ${response.status}. Trying fallback...`);
+          continue;
+        }
+
+        break;
+      } catch (err) {
+        lastError = err.message;
+        continue;
       }
-
-      const data = await response.json();
-      const reply = data.choices[0].message.content;
-
-      return new Response(JSON.stringify({ reply }), {
-        status: 200,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    } catch (err) {
-      return new Response(JSON.stringify({ error: "Failed to connect to AI" }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
     }
+
+    return new Response(JSON.stringify({ error: lastError || "Failed to connect to AI" }), {
+      status: 500,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    });
   }
 };
