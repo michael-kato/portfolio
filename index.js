@@ -507,7 +507,13 @@ function setupChatBot() {
 
   if (!toggle || !chatWindow) return;
 
-  toggle.onclick = () => chatWindow.classList.toggle('active');
+  toggle.onclick = () => {
+    const isActive = chatWindow.classList.toggle('active');
+    if (isActive) {
+      // Focus the input field after a short delay for the window transition
+      setTimeout(() => input.focus(), 150);
+    }
+  };
   close.onclick = () => chatWindow.classList.remove('active');
 
   const handleSend = async () => {

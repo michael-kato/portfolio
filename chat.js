@@ -34,8 +34,6 @@ export default {
       console.error("KV Error:", kvError);
     }
 
-    const modelName = "gpt-4o-mini";
-
     if (!careerSecret) {
       return new Response(JSON.stringify({ error: "Career data not found in KV" }), { 
         status: 500,
@@ -94,6 +92,20 @@ ${careerSecret}
         if (response.ok) {
           const data = await response.json();
           const reply = data.choices[0].message.content;
+
+          if (env.DB) {
+            ctx.waitUntil(
+              env.DB.prepare(
+                "INSERT INTO chat_logs (prompt, reply, model) VALUES (?, ?, ?)"
+              )
+              .bind(prompt, reply, currentModel)
+              .run()
+              .catch(err => console.error(`[D1 Error] Failed to log chat: ${err.message}`))
+            );
+          } else {
+            console.error("D1 Binding 'DB' not found.");
+          }
+
           return new Response(JSON.stringify({ reply, modelUsed: currentModel }), {
             status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }

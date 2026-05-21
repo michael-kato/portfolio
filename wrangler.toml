@@ -9,3 +9,10 @@ command = "echo 'No build step'"
 [[kv_namespaces]]
 binding = "PORTFOLIO_KV"
 id = "fbb8db04d8a447768a7878b087c8c328"
+
+[[d1_databases]]
+binding = "DB"
+database_id = "7e95f11e-5b06-4313-ae28-5a0c7d4a523c"
+
+[observability.logs]
+enabled = true
