@@ -1,0 +1,12 @@
+name = "portfolio-analytics"
+main = "analytics-worker.js"
+compatibility_date = "2024-01-01"
+workers_dev = true
+
+[build]
+command = "echo 'No build step'"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "portfolio-db"
+database_id = "7e95f11e-5b06-4313-ae28-5a0c7d4a523c"
