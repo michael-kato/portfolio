@@ -23,10 +23,8 @@ CREATE TABLE IF NOT EXISTS analytics_events (
   ttfb_ms INTEGER,
   max_scroll_depth INTEGER,
   click_count INTEGER,
-  ip_address TEXT,
+  organization TEXT,
   country TEXT,
   city TEXT,
-  latitude REAL,
-  longitude REAL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

@@ -24,22 +24,28 @@ export default {
     try {
       const rawBody = await request.text();
       const data = JSON.parse(rawBody);
-      
+
+      const rawIp = request.headers.get("cf-connecting-ip") || "";
       const asnOrg = request.cf?.asOrganization || "Unknown";
       const country = request.cf?.country || "";
       const city = request.cf?.city || "";
-      const latitude = request.cf?.latitude || null;
-      const longitude = request.cf?.longitude || null;
+
+      // Generate daily fingerprint session ID
+      const today = new Date().toISOString().split('T')[0];
+      const fingerprintRaw = `${rawIp}-${data.userAgent}-${data.screenRes}-${data.language}-${data.deviceMemory}-${data.cores}-${data.timezone}-${country}-${city}-${today}`;
+      const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fingerprintRaw));
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const sessionHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
 
       const stmt = env.DB.prepare(`
         INSERT INTO analytics_events (
           session_id, url, referrer, user_agent, language, timezone,
           screen_res, device_memory, cores, conn_type, load_time_ms,
           ttfb_ms, max_scroll_depth, click_count,
-          ip_address, country, city, latitude, longitude
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          organization, country, city
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
-        null,
+        sessionHash,
         data.url || null,
         data.referrer || null,
         data.userAgent || null,
@@ -53,7 +59,7 @@ export default {
         data.ttfbMs || null,
         data.maxScrollDepth || 0,
         data.clickCount || 0,
-        asnOrg, country, city, latitude, longitude
+        asnOrg, country, city
       );
 
       await stmt.run();
