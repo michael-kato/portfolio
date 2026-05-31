@@ -1,10 +1,5 @@
 (function() {
   const endpoint = "https://portfolio-analytics.mkato.workers.dev/api/analytics";
-  let sessionId = sessionStorage.getItem("analytics_session");
-  if (!sessionId) {
-    sessionId = Math.random().toString(36).substring(2, 15);
-    sessionStorage.setItem("analytics_session", sessionId);
-  }
 
   let maxScroll = 0;
   let clicks = 0;
@@ -47,7 +42,6 @@
     } catch (e) {}
 
     const payload = {
-      sessionId: sessionId,
       url: window.location.href,
       referrer: document.referrer,
       userAgent: navigator.userAgent,

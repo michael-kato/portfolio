@@ -25,7 +25,7 @@ export default {
       const rawBody = await request.text();
       const data = JSON.parse(rawBody);
       
-      const ip = request.headers.get("cf-connecting-ip") || "";
+      const asnOrg = request.cf?.asOrganization || "Unknown";
       const country = request.cf?.country || "";
       const city = request.cf?.city || "";
       const latitude = request.cf?.latitude || null;
@@ -39,7 +39,7 @@ export default {
           ip_address, country, city, latitude, longitude
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
-        data.sessionId || null,
+        null,
         data.url || null,
         data.referrer || null,
         data.userAgent || null,
@@ -53,7 +53,7 @@ export default {
         data.ttfbMs || null,
         data.maxScrollDepth || 0,
         data.clickCount || 0,
-        ip, country, city, latitude, longitude
+        asnOrg, country, city, latitude, longitude
       );
 
       await stmt.run();
