@@ -64,9 +64,41 @@ export default {
 
       await stmt.run();
 
+      ctx.waitUntil(this.sendNotification(env, data, { sessionHash, asnOrg, country, city }));
+
       return new Response(JSON.stringify({ success: true }), { headers: corsHeaders });
     } catch (error) {
       return new Response(JSON.stringify({ error: error.message }), { status: 500, headers: corsHeaders });
     }
+  },
+
+  async sendNotification(env, data, extra) {
+    if (!env.EMAIL_API_KEY || !env.NOTIFICATION_EMAIL) return;
+    const htmlTable = `
+      <table border="1" cellpadding="5" style="border-collapse: collapse; font-family: sans-serif;">
+        <tr><th colspan="2" style="background:#eee;">New Site Visitor</th></tr>
+        <tr><td><strong>Session</strong></td><td>${extra.sessionHash}</td></tr>
+        <tr><td><strong>URL</strong></td><td>${data.url}</td></tr>
+        <tr><td><strong>Referrer</strong></td><td>${data.referrer || 'Direct'}</td></tr>
+        <tr><td><strong>Organization</strong></td><td>${extra.asnOrg}</td></tr>
+        <tr><td><strong>Location</strong></td><td>${extra.city || 'Unknown'}, ${extra.country || 'Unknown'}</td></tr>
+        <tr><td><strong>Device</strong></td><td>${data.deviceMemory || '?'}GB, ${data.cores || '?'} cores</td></tr>
+        <tr><td><strong>Screen</strong></td><td>${data.screenRes || 'Unknown'}</td></tr>
+        <tr><td><strong>Connection</strong></td><td>${data.connType || 'Unknown'}</td></tr>
+        <tr><td><strong>Load Time</strong></td><td>${data.loadTimeMs || 0}ms (TTFB: ${data.ttfbMs || 0}ms)</td></tr>
+        <tr><td><strong>Scroll Depth</strong></td><td>${data.maxScrollDepth || 0}%</td></tr>
+        <tr><td><strong>Clicks</strong></td><td>${data.clickCount || 0}</td></tr>
+      </table>
+    `;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${env.EMAIL_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Portfolio <contact@michaelkato.work>',
+        to: env.NOTIFICATION_EMAIL,
+        subject: 'New Portfolio Visitor',
+        html: htmlTable
+      })
+    }).catch(console.error);
   }
 };

@@ -106,6 +106,8 @@ export default {
             console.error("D1 Binding 'DB' not found.");
           }
 
+          ctx.waitUntil(this.sendNotification(env, { prompt, reply, currentModel }));
+
           return new Response(JSON.stringify({ reply, modelUsed: currentModel }), {
             status: 200,
             headers: { ...corsHeaders, 'Content-Type': 'application/json' }
@@ -131,5 +133,27 @@ export default {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' }
     });
+  },
+
+  async sendNotification(env, data) {
+    if (!env.EMAIL_API_KEY || !env.NOTIFICATION_EMAIL) return;
+    const htmlTable = `
+      <table border="1" cellpadding="5" style="border-collapse: collapse; font-family: sans-serif;">
+        <tr><th colspan="2" style="background:#eee;">New Chatbot Usage</th></tr>
+        <tr><td><strong>Model</strong></td><td>${data.currentModel}</td></tr>
+        <tr><td><strong>Prompt</strong></td><td>${data.prompt.replace(/</g, "&lt;")}</td></tr>
+        <tr><td><strong>Reply</strong></td><td>${data.reply.replace(/</g, "&lt;")}</td></tr>
+      </table>
+    `;
+    await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${env.EMAIL_API_KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Portfolio <contact@michaelkato.work>',
+        to: env.NOTIFICATION_EMAIL,
+        subject: 'New Chatbot Usage',
+        html: htmlTable
+      })
+    }).catch(console.error);
   }
 };

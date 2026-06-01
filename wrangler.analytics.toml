@@ -10,3 +10,6 @@ command = "echo 'No build step'"
 binding = "DB"
 database_name = "portfolio-db"
 database_id = "7e95f11e-5b06-4313-ae28-5a0c7d4a523c"
+
+[vars]
+NOTIFICATION_EMAIL = "contact@michaelkato.work"

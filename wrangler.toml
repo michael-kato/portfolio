@@ -16,3 +16,6 @@ database_id = "7e95f11e-5b06-4313-ae28-5a0c7d4a523c"
 
 [observability.logs]
 enabled = true
+
+[vars]
+NOTIFICATION_EMAIL = "contact@michaelkato.work"
