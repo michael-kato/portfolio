@@ -5,8 +5,8 @@
 
 
 window.projectData = {
-  "project-code-contributions": {
-    title: "Performance Code Contributions",
+  "project-code-fixes": {
+    title: "Performance Code Fixes",
     summary: "Contributed directly to the Horizon Worlds game code as a technical artist, submitting dozens of C# performance fixes.",
     tags: ["C#", "Unity", "Optimization"],
     description: `

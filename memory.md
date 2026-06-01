@@ -23,7 +23,7 @@ This keeps alternate URLs from duplicating the full homepage markup.
 
 - **Custom Domain**: Site is now hosted at `michaelkato.work` with forced HTTPS.
 - **Deep Learning Section**: A dedicated landing page at `/deep_learning/` showcases AI research and hosts a live Hugging Face Spaces inference iframe.
-- **Recruiter Chat**: Powered by a Cloudflare Worker at `portfolio-chat.mkato.workers.dev`. It uses GPT-4o-mini to answer questions based on a `CAREER_OVERVIEW` stored in KV.
+- **Recruiter Chat**: Powered by a Cloudflare Worker at `portfolio-chat.mkato.workers.dev`. It uses GPT-4o-mini to answer questions based on a `CAREER_OVERVIEW` stored in KV, logs interactions to D1, and sends email notifications via the Resend API.
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
 - `/_layouts/post.html` now includes the blog post lightbox container so full-size image zoom works on post pages as well.
 - `shaders.js` now has inline comments for both `protean-clouds` and `star-nest` shaders, exposing tunable parameters like tunnel exit size, glow intensity, sparkle brightness, and star size clamping.
@@ -63,6 +63,15 @@ Anonymous comments are supported on blog posts using Cloudflare D1 and a dedicat
 - **Email:** Sends notifications upon new comment submissions via Resend API or Cloudflare Email Routing.
 - **Frontend:** Injected dynamically into `.blog-content` containers via `setupComments()` in `index.js`.
 - **Stability**: Uses `data-post-id` attribute; lookups prioritize `post_id` from front matter, falling back to slug.
+
+## Analytics System
+
+The site uses a custom cookieless analytics system to track visitor metrics while respecting GDPR and ePrivacy directives.
+- **Storage:** Cloudflare D1 (SQL) with table `analytics_events`.
+- **Backend:** `portfolio-analytics.mkato.workers.dev` handles `/api/analytics` POST requests.
+- **Frontend:** Collects `maxScrollDepth`, `loadTimeMs`, `ttfbMs`, and `clickCount` via `analytics.js` without setting cookies or `sessionStorage`.
+- **Privacy:** IP addresses are NOT stored. Instead, the backend captures `request.cf.asOrganization` to log B2B corporate network traffic, and generates an ephemeral daily device fingerprint hash for session linking.
+- **Email:** Sends real-time notifications with tabular session data upon each visit via the Resend API.
 
 ## Variant system
 
