@@ -15,9 +15,9 @@ export default {
     }
 
     if (request.method !== 'POST') {
-      return new Response('Method not allowed', { 
+      return new Response('Method not allowed', {
         status: 405,
-        headers: corsHeaders 
+        headers: corsHeaders
       });
     }
 
@@ -35,7 +35,7 @@ export default {
     }
 
     if (!careerSecret) {
-      return new Response(JSON.stringify({ error: "Career data not found in KV" }), { 
+      return new Response(JSON.stringify({ error: "Career data not found in KV" }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
@@ -80,7 +80,7 @@ export default {
 
                   Use the provided career history to answer questions:
                   ${careerSecret}
-`
+                `
               },
               { role: "user", content: prompt }
             ],
@@ -98,9 +98,9 @@ export default {
               env.DB.prepare(
                 "INSERT INTO chat_logs (prompt, reply, model) VALUES (?, ?, ?)"
               )
-              .bind(prompt, reply, currentModel)
-              .run()
-              .catch(err => console.error(`[D1 Error] Failed to log chat: ${err.message}`))
+                .bind(prompt, reply, currentModel)
+                .run()
+                .catch(err => console.error(`[D1 Error] Failed to log chat: ${err.message}`))
             );
           } else {
             console.error("D1 Binding 'DB' not found.");
