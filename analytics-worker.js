@@ -1,3 +1,5 @@
+import { generateSessionHash } from './session.js';
+
 export default {
   async fetch(request, env, ctx) {
     // Handle CORS preflight
@@ -30,12 +32,7 @@ export default {
       const country = request.cf?.country || "";
       const city = request.cf?.city || "";
 
-      // Generate daily fingerprint session ID
-      const today = new Date().toISOString().split('T')[0];
-      const fingerprintRaw = `${rawIp}-${data.userAgent}-${data.screenRes}-${data.language}-${data.deviceMemory}-${data.cores}-${data.timezone}-${country}-${city}-${today}`;
-      const hashBuffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(fingerprintRaw));
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const sessionHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').substring(0, 16);
+      const sessionHash = await generateSessionHash(request, data);
 
       const stmt = env.DB.prepare(`
         INSERT INTO analytics_events (
@@ -97,7 +94,7 @@ async function sendNotification(env, data, extra) {
     body: JSON.stringify({
       from: 'Portfolio <contact@michaelkato.work>',
       to: env.NOTIFICATION_EMAIL,
-      subject: 'New Portfolio Visitor',
+      subject: `Portfolio Activity [Session: ${extra.sessionHash}]`,
       html: htmlTable
     })
   }).catch(console.error);

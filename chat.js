@@ -1,3 +1,5 @@
+import { generateSessionHash } from './session.js';
+
 export default {
   async fetch(request, env, ctx) {
     const corsHeaders = {
@@ -21,7 +23,10 @@ export default {
       });
     }
 
-    const { prompt, timestamp } = await request.json();
+    const data = await request.json();
+    const { prompt, timestamp } = data;
+
+    const sessionHash = await generateSessionHash(request, data);
 
     const token = env.GITHUB_TOKEN;
     // Retrieve the large text from KV instead of environment variables
@@ -106,7 +111,7 @@ export default {
             console.error("D1 Binding 'DB' not found.");
           }
 
-          ctx.waitUntil(sendNotification(env, { prompt, reply, currentModel }));
+          ctx.waitUntil(sendNotification(env, { prompt, reply, currentModel, sessionHash }));
 
           return new Response(JSON.stringify({ reply, modelUsed: currentModel }), {
             status: 200,
@@ -152,7 +157,7 @@ async function sendNotification(env, data) {
     body: JSON.stringify({
       from: 'Portfolio <contact@michaelkato.work>',
       to: env.NOTIFICATION_EMAIL,
-      subject: 'New Chatbot Usage',
+      subject: `Portfolio Activity [Session: ${data.sessionHash}]`,
       html: htmlTable
     })
   }).catch(console.error);

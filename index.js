@@ -532,13 +532,24 @@ function setupChatBot() {
     messages.scrollTop = messages.scrollHeight;
 
     try {
+      let timezone = "unknown";
+      try {
+        timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      } catch (e) {}
+
       // Update this URL to your actual worker URL after running 'wrangler deploy'
       const response = await fetch('https://portfolio-chat.mkato.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify({ 
           prompt: text,
-          timestamp: new Date().toISOString() 
+          timestamp: new Date().toISOString(),
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          timezone: timezone,
+          screenRes: `${window.screen.width}x${window.screen.height}`,
+          deviceMemory: navigator.deviceMemory || null,
+          cores: navigator.hardwareConcurrency || null
         })
       });
 
@@ -652,10 +663,25 @@ async function setupComments() {
       status.textContent = 'Posting...';
 
       try {
+        let timezone = "unknown";
+        try {
+          timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        } catch (e) {}
+
         const response = await fetch('https://portfolio-comments.mkato.workers.dev/comments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ slug, author, text })
+          body: JSON.stringify({ 
+            slug, 
+            author, 
+            text,
+            userAgent: navigator.userAgent,
+            language: navigator.language,
+            timezone: timezone,
+            screenRes: `${window.screen.width}x${window.screen.height}`,
+            deviceMemory: navigator.deviceMemory || null,
+            cores: navigator.hardwareConcurrency || null
+          })
         });
 
         if (response.ok) {
