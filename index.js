@@ -187,11 +187,6 @@ function initCareerSection() {
             otherCategory.classList.remove('active');
           }
         });
-
-        // Scroll to the top of the category after a short delay for the transition
-        setTimeout(() => {
-          category.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
       }
     });
   });
@@ -280,6 +275,7 @@ function openProjectModal(project) {
   // Update and show modal
   projectModal.innerHTML = modalContent;
   projectModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
   
   // Add image click handlers for lightbox
   if (project.images && project.images.length > 0) {
@@ -297,6 +293,7 @@ function openProjectModal(project) {
   if (closeBtn) {
     closeBtn.addEventListener('click', () => {
       projectModal.classList.remove('active');
+      document.body.style.overflow = '';
     });
   }
 }
@@ -456,13 +453,7 @@ function expandArtItem(item) {
   item.style.height = 'auto';
   item.style.aspectRatio = 'auto';
   
-  // Add expanded class last to trigger animations
   item.classList.add('expanded');
-
-  // Scroll to the top of the art item
-  setTimeout(() => {
-    item.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, 150);
 }
 
 /**
@@ -722,6 +713,7 @@ function setupModalHandlers() {
     modal.addEventListener('click', (e) => {
       if (!e.target.closest('.modal-content')) {
         modal.classList.remove('active');
+        document.body.style.overflow = '';
       }
     });
   });
@@ -731,6 +723,7 @@ function setupModalHandlers() {
       const clickedControls = e.target.closest('.lightbox-image, .lightbox-nav, .lightbox-close');
       if (!clickedControls) {
         lightbox.classList.remove('active');
+        document.body.style.overflow = '';
       }
     });
   }
@@ -745,9 +738,9 @@ function setupModalHandlers() {
     if (projectOpen || artOpen || lightboxOpen) {
       if (e.key === 'Escape') {
         // Close all modals
-        if (projectModal) projectModal.classList.remove('active');
-        if (artModal) artModal.classList.remove('active');
-        if (lightbox) lightbox.classList.remove('active');
+        if (projectModal) { projectModal.classList.remove('active'); document.body.style.overflow = ''; }
+        if (artModal) { artModal.classList.remove('active'); document.body.style.overflow = ''; }
+        if (lightbox) { lightbox.classList.remove('active'); document.body.style.overflow = ''; }
       } else if (e.key === 'ArrowLeft' && lightboxOpen) {
         // Previous image in lightbox
         const prevBtn = lightbox.querySelector('.lightbox-prev');
@@ -816,12 +809,14 @@ function openLightbox(images, startIndex = 0) {
   if (closeButton) {
     closeButton.onclick = () => {
       lightbox.classList.remove('active');
+      document.body.style.overflow = '';
     };
   }
   
   // Show lightbox with current image
   updateLightbox();
   lightbox.classList.add('active');
+  document.body.style.overflow = 'hidden';
 }
 
 // Global to track the last used header image to prevent consecutive repeats

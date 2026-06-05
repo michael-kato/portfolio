@@ -1,9 +1,10 @@
-(function() {
+(function () {
   const endpoint = "https://portfolio-analytics.mkato.workers.dev/api/analytics";
 
   let maxScroll = 0;
   let clicks = 0;
   let dataSent = false;
+  const startTime = Date.now();
 
   window.addEventListener("scroll", () => {
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
@@ -39,7 +40,7 @@
     let timezone = "unknown";
     try {
       timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    } catch (e) {}
+    } catch (e) { }
 
     const payload = {
       url: window.location.href,
@@ -54,7 +55,8 @@
       loadTimeMs: loadTime > 0 ? loadTime : null,
       ttfbMs: ttfb > 0 ? ttfb : null,
       maxScrollDepth: maxScroll,
-      clickCount: clicks
+      clickCount: clicks,
+      timeSpent: (Date.now() - startTime) / 1000
     };
 
     if (navigator.sendBeacon) {

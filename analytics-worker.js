@@ -38,9 +38,9 @@ export default {
         INSERT INTO analytics_events (
           session_id, url, referrer, user_agent, language, timezone,
           screen_res, device_memory, cores, conn_type, load_time_ms,
-          ttfb_ms, max_scroll_depth, click_count,
+          ttfb_ms, max_scroll_depth, click_count, time_spent_ms,
           organization, country, city
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         sessionHash,
         data.url || null,
@@ -56,6 +56,7 @@ export default {
         data.ttfbMs || null,
         data.maxScrollDepth || 0,
         data.clickCount || 0,
+        data.timeSpentSeconds || 0,
         asnOrg, country, city
       );
 
@@ -86,6 +87,7 @@ async function sendNotification(env, data, extra) {
         <tr><td><strong>Load Time</strong></td><td>${data.loadTimeMs || 0}ms (TTFB: ${data.ttfbMs || 0}ms)</td></tr>
         <tr><td><strong>Scroll Depth</strong></td><td>${data.maxScrollDepth || 0}%</td></tr>
         <tr><td><strong>Clicks</strong></td><td>${data.clickCount || 0}</td></tr>
+        <tr><td><strong>Time Spent</strong></td><td>${Math.round(data.timeSpentSeconds || 0)}s</td></tr>
       </table>
     `;
   const response = await fetch('https://api.resend.com/emails', {
