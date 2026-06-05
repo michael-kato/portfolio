@@ -38,7 +38,7 @@ export default {
         INSERT INTO analytics_events (
           session_id, url, referrer, user_agent, language, timezone,
           screen_res, device_memory, cores, conn_type, load_time_ms,
-          ttfb_ms, max_scroll_depth, click_count, time_spent_ms,
+          ttfb_ms, max_scroll_depth, click_count, time_spent,
           organization, country, city
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(

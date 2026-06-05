@@ -502,10 +502,13 @@ section {
   position: relative;
 }
 
+.art-item:hover {
+  border-color: var(--accent-color);
+}
+
 .art-item:not(.expanded):hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px var(--shadow-color);
-  border-color: var(--accent-color);
 }
 
 .art-item img {
@@ -646,6 +649,7 @@ section {
 .expanded-image-container:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 12px var(--shadow-color);
+  border-color: var(--accent-color);
 }
 
 .expanded-image {
