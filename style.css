@@ -502,7 +502,7 @@ section {
   position: relative;
 }
 
-.art-item:hover {
+.art-item:not(.expanded):hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px var(--shadow-color);
   border-color: var(--accent-color);
@@ -515,7 +515,7 @@ section {
   transition: transform 0.3s;
 }
 
-.art-item:hover img {
+.art-item:not(.expanded):hover img {
   transform: scale(1.05);
 }
 
@@ -531,7 +531,7 @@ section {
   transition: transform 0.3s;
 }
 
-.art-item:hover .art-title {
+.art-item:not(.expanded):hover .art-title {
   transform: translateY(0);
 }
 

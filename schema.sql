@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS analytics_events (
   ttfb_ms INTEGER,
   max_scroll_depth INTEGER,
   click_count INTEGER,
-  time_spent_ms INTEGER,
+  time_spent INTEGER,
   organization TEXT,
   country TEXT,
   city TEXT,
