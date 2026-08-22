@@ -22,6 +22,10 @@ This keeps alternate URLs from duplicating the full homepage markup.
 ## Recent updates
 
 - **Custom Domain**: Site is now hosted at `michaelkato.work` with forced HTTPS.
+- **Vertical Card Architecture (Career & Art)**: Replaced pop-up modals and interactive thumbnails with static, always-expanded vertical inline cards for both Career projects and Art entries.
+- **Data Cleanup**: Pruned obsolete `summary` and `tags` fields from `site-content.js` to simplify data structures.
+- **Career Section Accordion & Auto-Scroll**: Opening a category auto-scrolls the container to the top of the viewport (respecting sticky-nav offsets via `scroll-margin-top: 80px`). Headers feature Apple-style specular inner glow gradients in dark slate grey.
+- **Art Cards & Lightbox**: Art entries render inline as vertical cards (`renderArtCards()`). Clicking thumbnail images opens the interactive Lightbox, which features a fixed top-right close button and backdrop click delegation for quick dismissal.
 - **Deep Learning Section**: A dedicated landing page at `/deep_learning/` showcases AI research and hosts a live Hugging Face Spaces inference iframe.
 - **Recruiter Chat**: Powered by a Cloudflare Worker at `portfolio-chat.mkato.workers.dev`. It uses GPT-4o-mini to answer questions based on a `CAREER_OVERVIEW` stored in KV, logs interactions to D1, and sends email notifications via the Resend API.
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
@@ -39,12 +43,12 @@ For Jekyll-rendered pages, `_includes/site-nav.html` is the active nav include. 
 
 ## Content/data split
 
-Project and art modal content (used for dynamic injection) lives in `portfolio-data.js`:
+Project and art content lives in `site-content.js`:
 
-- `projectData` powers project modal details.
-- `artData` powers expanded art gallery details.
+- `window.projectData` powers inline project card details inside career category accordions.
+- `window.artData` powers inline art card details in the art section.
 
-The cards and section structure live in `_includes/home-content.html`. The interactive behavior for those cards lives in `index.js`.
+The cards and section structure live in `_includes/home-content.html`. Dynamic rendering logic (`renderProjectCards()`, `renderArtCards()`) and interactive handlers live in `index.js`. Pop-up modals have been completely retired in favor of vertical inline card rendering.
 
 ## Blog System (formerly blogs)
 

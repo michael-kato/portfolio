@@ -12,14 +12,14 @@ This project started to refresh my knowledge of Unity especially in the realm of
 
 ## Highlights
 
-- **Dynamic tentacles** play proceedural idle animations, then seek out and eat loot drops.
+- **Dynamic tentacles** play procedural idle animations, then seek out and eat loot drops.
 - **Custom shaders** including dissolve, fog swirl, and god rays.
 - **Custom particle systems** using Shuriken for impact, pickup, and ambient FX. 
 - **Everything is animated**
 
 ## Technical Approach
 
-The tentacle system uses a chain of IK targets that smoothly interpolate toward loot drop positions. The fog swirl shader combines scrolling noise textures with a radial distortion pass. The card flips used to operate on a state machine, but that turned out have a surprising amount of overhead and wasn't worth it for just a couple of states, so I moved it to C# only. 
+The tentacle system uses a chain of IK targets that smoothly interpolate toward loot drop positions. The fog swirl shader combines scrolling noise textures with a radial distortion pass. The card flips used to operate on a state machine, but that turned out to have a surprising amount of overhead and wasn't worth it for just a couple of states, so I moved it to C# only. 
 
 ## Tools
 

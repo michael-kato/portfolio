@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPortfolioVariant();
 
   initCareerSection();
-  setupProjectCards();
-  setupArtItems();
+  renderProjectCards();
+  renderArtCards();
   setupBlogImages();
   setupModalHandlers();
   setupChatBot();
@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Delay decryption and rendering to prioritize initial page load
   setTimeout(() => {
     renderProjectCards();
+    renderArtCards();
     initDynamicBackground();
   }, 400);
 });
@@ -128,7 +129,7 @@ function hideVariantSections(sectionIds) {
 }
 
 /**
- * Dynamically render project cards based on data-project-ids attribute
+ * Dynamically render project cards inline based on data-project-ids attribute
  */
 function renderProjectCards() {
   const containers = document.querySelectorAll('.career-projects');
@@ -148,21 +149,64 @@ function renderProjectCards() {
       const project = data[projectId];
       if (!project) return;
 
-      const tags = project.tags || [];
-      const tagsHtml = tags.length > 0 
-        ? `<div class="project-tags">${tags.map(tag => `<span class="project-tag">${tag}</span>`).join('')}</div>`
-        : '';
-      
-      // Support up to 3 cards side-by-side as per CSS grid
+      let imagesHtml = '';
+      if (project.images && project.images.length > 0) {
+        imagesHtml += `<div class="project-images">`;
+        project.images.forEach((img, idx) => {
+          const src = typeof img === 'string' ? img : img.src;
+          const caption = typeof img === 'object' && img.caption ? img.caption : '';
+          imagesHtml += `
+            <div class="project-image-container" data-index="${idx}">
+              <img src="${src}" alt="${project.title}" class="project-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
+              ${caption ? `<div class="project-image-caption">${caption}</div>` : ''}
+            </div>`;
+        });
+        imagesHtml += `</div>`;
+      }
+
+      let videoHtml = '';
+      if (project.video) {
+        const embedUrl = typeof getYouTubeEmbedUrl === 'function' ? getYouTubeEmbedUrl(project.video) : null;
+        if (Array.isArray(embedUrl)) {
+          embedUrl.forEach(url => {
+            videoHtml += `<div class="project-video-container"><iframe src="${url}" frameborder="0" allowfullscreen></iframe></div>`;
+          });
+        } else if (embedUrl) {
+          videoHtml += `<div class="project-video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+        }
+      }
+
       html += `
         <div class="project-card" id="${projectId}">
           <h3 class="project-header">${project.title}</h3>
-          <p class="project-description">${project.summary || ''}</p>
-          ${tagsHtml}
+          <div class="project-body">
+            ${project.description || ''}
+            ${imagesHtml}
+            ${videoHtml}
+          </div>
         </div>`;
     });
     container.innerHTML = html;
   });
+
+  // Attach lightbox click handlers for images inside project cards
+  containers.forEach(container => {
+    container.querySelectorAll('.project-card').forEach(card => {
+      const projectId = card.id;
+      const project = data[projectId];
+      if (!project || !project.images || project.images.length === 0) return;
+      const processedImages = typeof normalizeImageData === 'function' ? normalizeImageData(project.images) : [];
+      card.querySelectorAll('.project-image-container').forEach(imgContainer => {
+        imgContainer.addEventListener('click', () => {
+          const index = parseInt(imgContainer.dataset.index) || 0;
+          if (typeof openLightbox === 'function') {
+            openLightbox(processedImages, index);
+          }
+        });
+      });
+    });
+  });
+
   return true;
 }
 
@@ -177,16 +221,21 @@ function initCareerSection() {
     if (!header) return;
     
     header.addEventListener('click', () => {
-      // Toggle active class
+      const isOpening = !category.classList.contains('active');
       category.classList.toggle('active');
       
       // If opening this category, close others (accordion style)
-      if (category.classList.contains('active')) {
+      if (isOpening) {
         careerCategories.forEach((otherCategory, otherIndex) => {
           if (index !== otherIndex) {
             otherCategory.classList.remove('active');
           }
         });
+
+        // Scroll category to top of viewport (respecting scroll-margin-top)
+        setTimeout(() => {
+          category.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 60);
       }
     });
   });
@@ -198,27 +247,10 @@ function initCareerSection() {
 }
 
 /**
- * Set up event handlers for project cards
+ * Project cards are rendered fixed inline; no modal setup required.
  */
 function setupProjectCards() {
-  const projectModal = document.getElementById('project-modal');
-  if (!projectModal) return;
-
-  // EVENT DELEGATION: Attach to document to handle dynamically rendered cards
-  document.addEventListener('click', (e) => {
-    const card = e.target.closest('.project-card');
-    if (!card) return;
-
-    const projectId = card.id;
-    const project = getProjectData()[projectId] || {
-      title: card.querySelector('.project-header')?.textContent || 'Project',
-      description: `<p>${card.querySelector('.project-description')?.textContent || ''}</p>`,
-      images: null,
-      video: null
-    };
-    
-    openProjectModal(project);
-  });
+  // No modal click handlers needed
 }
 
 /**
@@ -301,188 +333,65 @@ function openProjectModal(project) {
 /**
  * Set up event handlers for art items
  */
-function setupArtItems() {
-  // First make sure any existing expanded items are collapsed
-  collapseAllArtItems();
-  
-  document.querySelectorAll('.art-item').forEach(item => {
-    // Store original dimensions for restoration
-    if (!item.dataset.originalWidth) {
-      item.dataset.originalWidth = item.offsetWidth + 'px';
-      item.dataset.originalHeight = item.offsetHeight + 'px';
-    }
-    
-    // Store original content for restoration
-    if (!item.dataset.originalContent) {
-      item.dataset.originalContent = item.innerHTML;
-    }
-    
-    // Add click handler
-    item.addEventListener('click', function(e) {
-      // Check if we're clicking on an already expanded item
-      if (this.classList.contains('expanded')) {
-        // If clicking on the header, collapse the item
-        if (e.target.closest('.expanded-art-header')) {
-          collapseArtItem(this);
-          return;
-        }
-        
-        // If clicking on an image in the expanded view, handle lightbox
-        if (e.target.closest('.expanded-image-container')) {
-          const container = e.target.closest('.expanded-image-container');
-          const artId = this.id;
-          const art = getArtData()[artId];
-          if (!art) return;
-          const processedImages = normalizeImageData(art.images);
-          const imageIndex = parseInt(container.dataset.index);
-          openLightbox(processedImages, imageIndex);
-        }
-        return;
-      }
-      
-      // First, collapse any already expanded items
-      collapseAllArtItems();
-      
-      // Now expand this item
-      expandArtItem(this);
-    });
-  });
-}
-
 /**
- * Set up expansion handlers for images within blog/blog content
+ * Dynamically render art items inline within .art-grid
  */
-function setupBlogImages() {
-  const blogPosts = document.querySelectorAll('.blog-content');
-  if (blogPosts.length === 0) return;
+function renderArtCards() {
+  const artItems = document.querySelectorAll('.art-item');
+  const data = typeof getArtData === 'function' ? getArtData() : (window.artData || {});
+  if (!artItems.length || Object.keys(data).length === 0) return;
 
-  blogPosts.forEach(post => {
-    // Find all images within this specific post
-    const imgElements = Array.from(post.querySelectorAll('img'));
-    const imageData = imgElements.map(img => ({
-      src: img.src,
-      caption: img.alt || img.title || ''
-    }));
+  artItems.forEach(item => {
+    const artId = item.id;
+    const art = data[artId];
+    if (!art) return;
 
-    // Add click listeners to each image to open in a gallery for this post
-    imgElements.forEach((img, index) => {
-      img.addEventListener('click', () => {
-        openLightbox(imageData, index);
-      });
-    });
-  });
-}
+    const processedImages = typeof normalizeImageData === 'function' ? normalizeImageData(art.images) : [];
 
-/**
- * Expand an art item with detailed content
- */
-function expandArtItem(item) {
-  const artId = item.id;
-  const art = getArtData()[artId] || {
-    title: item.querySelector('.art-title')?.textContent || 'Artwork',
-    description: `<p>Detailed information about this artwork is coming soon.</p>`,
-    images: [{
-      src: item.querySelector('img')?.src || '',
-      caption: item.querySelector('.art-title')?.textContent || ''
-    }],
-    video: null
-  };
-  
-  const processedImages = normalizeImageData(art.images);
-  
-  // Build expanded content
-  let expandedContent = `
-    <div class="expanded-art-container">
-      <div class="expanded-art-header">
-        <h3>${art.title}</h3>
-        <button class="collapse-button" aria-label="Collapse">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="18 15 12 9 6 15"></polyline>
-          </svg>
-        </button>
-      </div>
-      <div class="expanded-art-description">
-        ${art.description}
-      </div>
-      <div class="expanded-art-gallery">`;
-  
-  // Add images
-  processedImages.forEach((image, index) => {
-    expandedContent += `
-      <div class="expanded-image-container" data-index="${index}">
-        <img src="${image.src}" alt="${art.title}" class="expanded-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
-        ${image.caption ? `<div class="expanded-image-caption">${image.caption}</div>` : ''}
-      </div>`;
-  });
-
-  expandedContent += `</div>`;
-  
-  // Add video if available
-  if (art.video) {
-    const embedUrl = getYouTubeEmbedUrl(art.video);
-    expandedContent += `<div class="expanded-art-videos">`;
-    
-    if (Array.isArray(embedUrl)) {
-      // Multiple videos
-      embedUrl.forEach(url => {
-        expandedContent += `
-          <div class="expanded-video-container">
-            <iframe class="expanded-video" src="${url}" frameborder="0" allowfullscreen></iframe>
+    let imagesHtml = '';
+    if (processedImages && processedImages.length > 0) {
+      imagesHtml += `<div class="art-images">`;
+      processedImages.forEach((img, idx) => {
+        imagesHtml += `
+          <div class="art-image-container" data-index="${idx}">
+            <img src="${img.src}" alt="${art.title}" class="art-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
+            ${img.caption ? `<div class="art-image-caption">${img.caption}</div>` : ''}
           </div>`;
       });
-    } else if (embedUrl) {
-      // Single video
-      expandedContent += `
-        <div class="expanded-video-container">
-          <iframe class="expanded-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
-        </div>`;
+      imagesHtml += `</div>`;
     }
-    
-    expandedContent += `</div>`;
-  }
-  
-  expandedContent += `</div>`;
-  
-  // Update content and add expanded class
-  item.innerHTML = expandedContent;
-  
-  // Need to set some explicit styles to ensure expansion works correctly
-  item.style.position = 'relative';
-  item.style.gridColumn = '1 / -1';
-  item.style.width = '100%';
-  item.style.height = 'auto';
-  item.style.aspectRatio = 'auto';
-  
-  item.classList.add('expanded');
-}
 
-/**
- * Collapse all expanded art items
- */
-function collapseAllArtItems() {
-  document.querySelectorAll('.art-item.expanded').forEach(item => {
-    collapseArtItem(item);
+    let videoHtml = '';
+    if (art.video) {
+      const embedUrl = typeof getYouTubeEmbedUrl === 'function' ? getYouTubeEmbedUrl(art.video) : null;
+      if (Array.isArray(embedUrl)) {
+        embedUrl.forEach(url => {
+          videoHtml += `<div class="art-video-container"><iframe src="${url}" frameborder="0" allowfullscreen></iframe></div>`;
+        });
+      } else if (embedUrl) {
+        videoHtml += `<div class="art-video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+      }
+    }
+
+    item.innerHTML = `
+      <div class="art-card">
+        <h3 class="art-header">${art.title}</h3>
+        <div class="art-body">
+          ${art.description || ''}
+          ${imagesHtml}
+          ${videoHtml}
+        </div>
+      </div>`;
+
+    item.querySelectorAll('.art-image-container').forEach(imgContainer => {
+      imgContainer.addEventListener('click', () => {
+        const index = parseInt(imgContainer.dataset.index) || 0;
+        if (typeof openLightbox === 'function') {
+          openLightbox(processedImages, index);
+        }
+      });
+    });
   });
-}
-
-/**
- * Collapse an expanded art item back to its original state
- */
-function collapseArtItem(item) {
-  // Restore original content
-  if (item.dataset.originalContent) {
-    item.innerHTML = item.dataset.originalContent;
-  }
-  
-  // Remove inline styles
-  item.style.position = '';
-  item.style.gridColumn = '';
-  item.style.width = '';
-  item.style.height = '';
-  item.style.aspectRatio = '';
-  
-  // Remove expanded class
-  item.classList.remove('expanded');
 }
 
 /**
@@ -720,8 +629,9 @@ function setupModalHandlers() {
 
   if (lightbox) {
     lightbox.addEventListener('click', (e) => {
-      const clickedControls = e.target.closest('.lightbox-image, .lightbox-nav, .lightbox-close');
-      if (!clickedControls) {
+      const isImage = e.target.closest('.lightbox-image');
+      const isNav = e.target.closest('.lightbox-prev, .lightbox-next, .lightbox-counter');
+      if (!isImage && !isNav) {
         lightbox.classList.remove('active');
         document.body.style.overflow = '';
       }
@@ -805,9 +715,19 @@ function openLightbox(images, startIndex = 0) {
     }
   };
   
-  // Close lightbox when clicking X
+  // Close lightbox when clicking X or outside the image
+  lightbox.onclick = (e) => {
+    const isImage = e.target.closest('.lightbox-image');
+    const isNav = e.target.closest('.lightbox-prev, .lightbox-next, .lightbox-counter');
+    if (!isImage && !isNav) {
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  };
+
   if (closeButton) {
-    closeButton.onclick = () => {
+    closeButton.onclick = (e) => {
+      e.stopPropagation();
       lightbox.classList.remove('active');
       document.body.style.overflow = '';
     };

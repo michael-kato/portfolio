@@ -7,11 +7,9 @@
 window.projectData = {
   "project-code-fixes": {
     title: "Performance Code Fixes",
-    summary: "Contributed directly to the Horizon Worlds game code as a technical artist, submitting dozens of C# performance fixes.",
-    tags: ["C#", "Unity", "Optimization"],
     description: `
 <div class="project-section">
-  <p>In addition to many other duties I accumulated at Meta, I also contributed directly to Horizon Worlds' game code as a technical artist, with a commit volume comparable to an average Meta software engineer.</p>
+  <p>I contributed significantly to Horizon Worlds' Unity C# code as an honorary performance engineer.</p>
 
   <p>Highlights include:</p>
   <ul class="project-list">
@@ -26,17 +24,15 @@ window.projectData = {
   },
   "project-perf-framework": {
     title: "Performance Automation Framework",
-    summary: "Collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds.",
-    tags: ["C#", "Unity", "Analytics"],
     description: `
 <div class="project-section">
   <p>I collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds' weekly release cadence, starting as a solo initiative before growing into a dedicated team effort.</p>
 
   <p>The framework:</p>
   <ul class="project-list">
-    <li>Instrumented majority of our game code with a custom C# profiling system I helped develop, running in all builds including live production</li>
+    <li>Instrumented the majority of our game code with a custom C# profiling system I helped develop, running in all builds including live production</li>
     <li>Tracked systems like physics, scripting, animation, rendering, VFX, audio, and even garbage collection</li>
-    <li>Ran on pre-submission, continuous integration, and on-demand for developer testing, and in live user build. It was quite versitile.</li>
+    <li>Ran on pre-submission, continuous integration, and on-demand for developer testing, and in live user builds. It was quite versatile.</li>
     <li>Detected regressions within hours of a code change landing and generated downloadable profiler artifacts for debugging</li>
   </ul>
 </div>
@@ -47,11 +43,9 @@ window.projectData = {
 
   "project-perf-dashboards": {
     title: "Performance Visualization Dashboards",
-    summary: "Created configurable performance dashboards displaying Horizon Worlds live production, automation, and internal testing data.",
-    tags: ["Data Visualization", "SQL", "Analytics"],
     description: `
 <div class="project-section">
-  <p>Horizon Worlds collected a massive amount of performance data from multiple sources: automation, developer testing, and production. When I first started at Meta most of this data was not being surfaced anywhere, so in order make this information accessible to all team members, I created lots of dashboards showing performance trends using SQL.</p>
+  <p>Horizon Worlds collected a massive amount of performance data from multiple sources: automation, developer testing, and production. When I first started at Meta most of this data was not being surfaced anywhere, so in order to make this information accessible to all team members, I created lots of dashboards showing performance trends using SQL.</p>
   
   <p>These dashboards:</p>
   <ul class="project-list">
@@ -70,8 +64,6 @@ window.projectData = {
   },
   "project-outsourcing-pipeline": {
     title: "Outsourcing Pipeline",
-    summary: "Built an end-to-end automated pipeline handling both the delivery of tools packages to vendors and ingestion of completed assets.",
-    tags: ["Python", "AWS", "Perforce"],
     description: `
 <div class="project-section">
   <p>To support a high-volume outsourcing operation, I built an end-to-end automated pipeline handling both the delivery of tools packages to vendors and the ingestion of completed assets back into our perforce depot.</p>
@@ -89,8 +81,6 @@ window.projectData = {
   },
   "project-asset-qa": {
     title: "Asset Validation QA Tools",
-    summary: "Collaborated with other tech artists to create comprehensive QA tooling for thousands of 3D assets.",
-    tags: ["Python", "Pipeline", "Maya"],
     description: `
 <div class="project-section">
   <p>At Apple, we processed thousands of 3D models from internal teams and external vendors. Quality issues frequently caused pipeline failures, wasting resources during training data generation and artist time. Together with the TA team, we developed validation tools that helped smooth things out.</p>
@@ -98,7 +88,7 @@ window.projectData = {
   <p>These QA tools:</p>
   <ul class="project-list">
     <li>Checked for a host of common asset importation errors such as abnormal size, missing textures, improper material settings, etc.</li>
-    <li>Generated thumbnail images automatically for use the asset browser</li>
+    <li>Generated thumbnail images automatically for use in the asset browser</li>
     <li>Standardized quality and saved artists time</li>
   </ul>
 </div>
@@ -109,17 +99,15 @@ window.projectData = {
 
   "project-proc-scene": {
     title: "Procedural Scene Generation",
-    summary: "Developed procedural scene generation systems for Apple Vision Pro training data.",
-    tags: ["Python", "Maya", "Procedural"],
     description: `
 <div class="project-section">
-  <p>Apple Vision Pro required massive amounts of photoreal images to train it's visual recognition. Working with a lead TA, I developed a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
+  <p>Apple Vision Pro required massive amounts of photoreal images to train its visual recognition. Working with a lead TA, I developed a procedural generation system that created semi-randomized sets of interior layouts to help generate new data overnight without the need for additional artists.</p>
   
   <p>The system:</p>
   <ul class="project-list">
     <li>Procedurally modified the floorplan of existing interior scenes and dynamically extruded new walls, windows, and crevices</li>
     <li>Randomly repositioned furniture and props to create new arrangements</li>
-    <li>Automatically submitted to perforce, Deadline for rendering, and an email announcement to key stakeholders</li>
+    <li>Automatically submitted to Perforce, Deadline for rendering, and an email announcement to key stakeholders</li>
   </ul>
 </div>
   `,
@@ -127,18 +115,17 @@ window.projectData = {
     video: null
   },
   "project-perf-ownership": {
-    title: "Broad Performance Ownership",
-    summary: "Primary performance stakeholder responsible for maintaining 60fps across the the majority of Call of Duty: WWII.",
-    tags: ["Analysis", "Performance", "Triage"],
+    title: "Performance Ownership",
     description: `
 <div class="project-section">
-  <p>For Call of Duty: WWII, I was the primary performance stakeholder responsible for maintaining 60fps across the entire singleplayer campaign, zombies mode, hub world, and multiple DLC multiplayer maps, covering every art discipline on a 300+ person team.</p>
+  <p>For Call of Duty: WWII, I was the primary performance stakeholder responsible for maintaining 60fps across the entire singleplayer campaign, zombies mode, hub world, and several multiplayer maps.</p>
 
   <p>This role included:</p>
   <ul class="project-list">
     <li>Weekly performance reviews with art and design leads across environment, lighting, VFX, and design disciplines</li>
-    <li>Deep enough familiarity with every team's toolchain to diagnose performance issues and propose targeted fixes to stakeholders</li>
-    <li>Identified a cross-studio team that had fallen behind on performance optimization for their assigned level, escalated to production, and coordinated resources to close the gap before it became a ship risk</li>
+    <li>Deep enough familiarity with every team's toolchain to diagnose performance issues and either directly resolve them, or propose specific fixes to stakeholders if large changes were required.
+    Common fixes included adding occluders to block rendering visibility, reducing physics impacts in VFX, reducing count/size of dynamic lights, adding LODs, culling bones on characters, tweaking rendering features in game script, etc.</li>
+    <li>Identified a cross-studio team that had fallen behind on performance optimization for their assigned level, escalated to production, and coordinated resources to close the gap before it became a shipping risk</li>
   </ul>
 </div>
   `,
@@ -147,11 +134,9 @@ window.projectData = {
   },
   "project-lod-pipeline": {
     title: "LOD Generation Pipeline",
-    summary: "Integrated a proprietary LOD generation algorithm into the asset pipeline, replacing hand-authored LODs for every 3D asset.",
-    tags: ["C++", "C#", "Optimization"],
     description: `
 <div class="project-section">
-  <p>For Call of Duty: WWII, I partnered with the central technology group to integrate a proprietary LOD generation algorithm into Sledgehammer's asset pipeline,replacing hand-authored LODs for every 3D asset in the game.</p>
+  <p>For Call of Duty: WWII, I partnered with the central technology group to integrate a proprietary LOD generation algorithm into Sledgehammer's asset pipeline, replacing hand-authored LODs for every 3D asset in the game.</p>
 
   <p>The system:</p>
   <ul class="project-list">
@@ -168,8 +153,6 @@ window.projectData = {
 
   "project-edge-cleanup": {
     title: "Edge Cleanup Tool",
-    summary: "Created a Maya tool that detects non-optimal edges/vertices in regards to performance.",
-    tags: ["Python", "Maya", "Optimization"],
     description: `
 <div class="project-section">
   <p>During modeling, artists often create additional edges for construction that don't contribute to the final appearance but increase polygon counts, and in our engine there was an issue where tangents would be explicitly imported in a broken state due to data moving between programs, which caused vertex counts to massively inflate. I developed a Maya Python tool that analyzes mesh topology to identify redundant edges.</p>
@@ -208,7 +191,7 @@ window.artData = {
       },
       {
         src: "https://i.imgur.com/6nSUBCj.jpg",
-        caption: "Level 01, this a recycling facility where the player, a robot, is discarded into."
+        caption: "Level 01, this is a recycling facility into which the player, a robot, is discarded."
       },
       {
         src: "https://i.imgur.com/jMMIZtA.png",
@@ -328,7 +311,7 @@ window.artData = {
       },
       {
         src: "https://i.imgur.com/JmRB0.jpg",
-        caption: "Character from Star Wars: Clone Wars. I modelled, texture, rigged, and animated this character but the files are lost."
+        caption: "Character from Star Wars: Clone Wars. I modeled, textured, rigged, and animated this character but the files are lost."
       }
     ],
     video: ""

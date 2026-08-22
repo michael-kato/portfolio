@@ -26,7 +26,7 @@ The pipeline is built with Blender's Geometry Nodes and a little shader magic. I
 The geometry node setup.
 {% include post-image.html src="/resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" %}
 
-The slowest part is the inner loop (in blue) where each point finds it's nearest neighbors, which is currently an O(n^2) distance check operation. I might optimize it using the new raycast node, but it still ran real-time-enough for me. 
+The slowest part is the inner loop (in blue) where each point finds its nearest neighbors, which is currently an O(n^2) distance check operation. I might optimize it using the new raycast node, but it still ran real-time-enough for me. 
 
 ## Tools
 
