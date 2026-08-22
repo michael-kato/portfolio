@@ -1,4 +1,9 @@
 (function () {
+  // Skip analytics in local development (Jekyll serves on localhost, not 127.0.0.1)
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    return;
+  }
+
   const endpoint = "https://portfolio-analytics.mkato.workers.dev/api/analytics";
 
   let maxScroll = 0;

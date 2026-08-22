@@ -4,7 +4,7 @@ post_id: blender-geo-nodes-electric-outline
 date: 2025-06-10
 ---
 
-I wanted to create an effect that could take any arbitrary mesh and convert it into something that looked like an electrical schematic come to life: points of light connected by arcing, noisy lightning bolts, all wrapped in a color gradient.
+I wanted to create an effect that could take any arbitrary mesh and convert it into something that looked like an art installation or sci-fi hologram.
 
 The entire effect is non-destructive and works on any mesh.
 
@@ -14,24 +14,19 @@ The entire effect is non-destructive and works on any mesh.
 
 The pipeline is built with Blender's Geometry Nodes and a little shader magic. It works like so:
 
-1. **Mesh to Point Cloud** - The input mesh is converted to a point cloud.
-2. **Nearest-Neighbor Connections** - Each point connects to its closest neighbors via splines.
-3. **Subdivide + Noise** - The splines are subdivided and random noise is applied to create an electric feel.
-4. **Cylinder Extrusion** - A cylinder is extruded along each spline path.
-5. **Color Ramp** - A color gradient is applied along the Z axis. 
-6. **Shader Hookup** - The stored color attribute is piped into the emissive channel.
+1. The input mesh is converted to a point cloud.
+2. Each point connects to its closest neighbors via splines.
+3. The splines are subdivided and random noise is applied to create an electric feel.
+4. A cylinder is extruded along each spline path.
+5. A color gradient is applied along the Z axis. 
+6. The stored color attribute is piped into the emissive channel via shader nodes.
 
 ## The Node Graph
 
-The geometry node setup above shows the full pipeline.
-
+The geometry node setup.
 {% include post-image.html src="/resources/geo_nodes.PNG" alt="Geometry Nodes setup in Blender" %}
 
-The slowest part is the inner loop where each point finds it's nearest neighbors. I'd like to optimize it one day by using the new raycast node.
-
-## What I Learned
-
-Geometry Nodes reward thinking in terms of data flow rather than traditional modeling operations. The "subdivide then displace" pattern is surprisingly versatile.
+The slowest part is the inner loop (in blue) where each point finds it's nearest neighbors, which is currently an O(n^2) distance check operation. I might optimize it using the new raycast node, but it still ran real-time-enough for me. 
 
 ## Tools
 

@@ -60,7 +60,7 @@ async function loadShaders() {
 
 function initShader() {
   const canvases = document.getElementsByTagName('canvas');
-  for (let i=0; i < canvases.length; i++) {
+  for (let i = 0; i < canvases.length; i++) {
     const canvas = canvases[i];
     if (!canvas) continue;
 
@@ -150,10 +150,10 @@ function initShader() {
       then = now;
 
       let smoothness;
-      if(programInfo.currentKey == "star-nest") {
-        smoothness = 0.5;
+      if (programInfo.currentKey == "star-nest") {
+        smoothness = 0.001;
       } else {
-        smoothness = 0.008; // Strong lag for smooth motion
+        smoothness = 0.0005; // Strong lag for smooth motion
       }
 
       currentMouseX += (targetMouseX - currentMouseX) * smoothness;
@@ -215,14 +215,14 @@ function setupShaderControls() {
  */
 function switchBackgroundShader(direction) {
   if (!bgState) return;
-  
+
   const nextIndex = (bgState.currentIndex + direction + backgroundShaderKeys.length) % backgroundShaderKeys.length;
   const newKey = backgroundShaderKeys[nextIndex];
   const fs = shaders[newKey];
-  
+
   const newProgram = initShaderProgram(bgState.gl, bgState.vs, fs);
   if (!newProgram) return;
-  
+
   // Update programInfo in place so the render loop picks it up
   bgState.programInfo.program = newProgram;
   bgState.currentIndex = nextIndex;
@@ -232,7 +232,7 @@ function switchBackgroundShader(direction) {
     time: bgState.gl.getUniformLocation(newProgram, 'uTime'),
     mouse: bgState.gl.getUniformLocation(newProgram, 'uMouse'),
   };
-  
+
   console.info('Switched background shader to:', newKey);
 }
 

@@ -5,7 +5,7 @@
   --cornsilk: #fefae0;
   --sunlit-clay: #dda15e;
   --copperwood: #d87721;
-  --dark-burnt-orange: #a73d00;
+  --dark-burnt-orange: #b86231;
 
   /* RGB helpers for transparent variations of the pasted palette. */
   --olive-leaf-rgb: 96, 108, 56;
@@ -34,7 +34,7 @@
   --dark-slate-grey: #163a38;
   --wheat: #efd6ac;
   --light-wheat: #f5ead7;
-  --burnt-orange: #f15900;
+  --burnt-orange: #f37b35;
   --midnight-violet: #432534;
   --ink-black-rgb: 4, 21, 31;
   --dark-slate-grey-rgb: 24, 58, 55;
@@ -137,7 +137,8 @@ p {
   height: 100%;
   background-size: cover;
   background-position: center;
-  opacity: 0.25; /* Increased slightly to support images with alpha transparency */
+  opacity: 0.25;
+  /* Increased slightly to support images with alpha transparency */
   transition: opacity 0.5s ease;
   z-index: 0;
 }
@@ -234,10 +235,11 @@ section {
 .section-header {
   margin-bottom: 14px;
   text-align: center;
-  scroll-margin-top: 80px; /* Offset for sticky nav */
+  scroll-margin-top: 80px;
+  /* Offset for sticky nav */
 }
 
-.section-header > :is(h1, h2) {
+.section-header> :is(h1, h2) {
   display: inline-block;
   font-size: 1.5rem;
   color: var(--light-wheat);
@@ -265,7 +267,8 @@ section {
   border-radius: 4px;
   overflow: hidden;
   transition: box-shadow 0.3s;
-  scroll-margin-top: 80px; /* Offset for sticky nav */
+  scroll-margin-top: 80px;
+  /* Offset for sticky nav */
 }
 
 .career-category:not(:last-child)::after {
@@ -313,12 +316,17 @@ section {
   background-color: var(--hover-tint);
 }
 
+.career-category-header:hover h3 {
+  color: #ffcba6;
+}
+
 .career-category-header h3 {
   color: var(--light-wheat);
   color: var(--burnt-orange);
   font-size: 1.3rem;
   font-weight: 600;
   margin: 0;
+  transition: color 0.2s ease;
 }
 
 .toggle-icon {
@@ -356,16 +364,51 @@ section {
   padding: 16px;
 }
 
+@keyframes card-glow {
+
+  0%,
+  100% {
+    border-color: var(--border-color);
+    box-shadow: 0 0 2px rgba(var(--wheat-rgb), 0.1);
+  }
+
+  50% {
+    border-color: rgb(145, 98, 71);
+  }
+}
+
 .project-card {
   border: 1px solid var(--border-color);
   padding: 12px;
   border-radius: 4px;
   background-color: var(--card-bg);
-  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
+  animation: card-glow 2s ease-in-out infinite;
   cursor: pointer;
   height: 100%;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle "click to open" arrow badge */
+.project-card::after {
+  content: "↗";
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 0.85rem;
+  color: var(--accent-color);
+  opacity: 0;
+  transform: translate(4px, -4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  pointer-events: none;
+}
+
+.project-card:hover::after {
+  opacity: 1;
+  transform: translate(0, 0);
 }
 
 .modal-body ul,
@@ -378,9 +421,10 @@ section {
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px var(--shadow-color);
+  transform: translateY(-6px);
+  box-shadow: 0 10px 24px var(--shadow-color), 0 0 0 1px var(--accent-color);
   border-color: var(--accent-color);
+  animation-play-state: paused;
 }
 
 .project-header {
@@ -389,6 +433,8 @@ section {
   margin-bottom: 15px;
   font-size: 1.2rem;
   font-weight: 600;
+  padding-right: 1.4rem;
+  /* room for the ↗ badge */
 }
 
 .project-description {
@@ -396,6 +442,7 @@ section {
   color: var(--wheat);
   flex-grow: 1;
 }
+
 
 .project-tags {
   display: flex;
@@ -549,7 +596,8 @@ section {
   z-index: 2;
   animation: expandArt 0.3s ease forwards;
   overflow: visible !important;
-  scroll-margin-top: 80px; /* Offset for sticky nav */
+  scroll-margin-top: 80px;
+  /* Offset for sticky nav */
 }
 
 @keyframes expandArt {
@@ -1333,7 +1381,8 @@ section {
 
 .video-vertical-wrap {
   width: 100%;
-  max-width: 320px; /* Constrains vertical videos to about half the 800px content width */
+  max-width: 320px;
+  /* Constrains vertical videos to about half the 800px content width */
   margin: 0 auto;
 }
 
@@ -1494,8 +1543,8 @@ footer {
 }
 
 .chat-toggle {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background-color: var(--accent-color);
   color: var(--douglas-fir);
@@ -1507,6 +1556,7 @@ footer {
   justify-content: center;
   transition: transform 0.2s;
   animation: chat-pulse 3s infinite ease-in-out;
+  font-size: 32px;
 }
 
 .chat-toggle:hover {
@@ -1524,7 +1574,7 @@ footer {
   max-height: 80vh;
   min-width: 320px;
   min-height: 400px;
-  
+
   /* Native resize is bottom-right; rotating 180deg moves it to top-left */
   resize: both;
   overflow: hidden;
@@ -1541,7 +1591,8 @@ footer {
   border: 1px solid var(--border-color);
   border-radius: 12px;
   display: none;
-  flex-direction: column-reverse; /* Reverses order so rotation puts header back at top */
+  flex-direction: column-reverse;
+  /* Reverses order so rotation puts header back at top */
   box-shadow: 0 10px 30px var(--shadow-color);
   backdrop-filter: blur(10px);
 }
@@ -1572,9 +1623,17 @@ footer {
 }
 
 @keyframes chatFadeIn {
+
   /* Maintain the 180deg rotation during the entrance animation */
-  from { opacity: 0; transform: rotate(180deg) translateY(20px); }
-  to { opacity: 1; transform: rotate(180deg) translateY(0); }
+  from {
+    opacity: 0;
+    transform: rotate(180deg) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(180deg) translateY(0);
+  }
 }
 
 @keyframes chat-pulse {
@@ -1582,10 +1641,12 @@ footer {
     transform: scale(1);
     box-shadow: 0 4px 15px var(--shadow-color);
   }
+
   50% {
     transform: scale(1.08);
     box-shadow: 0 0 20px var(--accent-glow);
   }
+
   100% {
     transform: scale(1);
     box-shadow: 0 4px 15px var(--shadow-color);
@@ -1601,7 +1662,8 @@ footer {
   align-items: center;
   color: var(--accent-color);
   font-weight: 600;
-  transform: rotate(180deg); /* Flip content back upright */
+  transform: rotate(180deg);
+  /* Flip content back upright */
 }
 
 .chat-close {
@@ -1625,7 +1687,8 @@ footer {
   border: none;
   box-shadow: none;
   backdrop-filter: none;
-  transform: rotate(180deg); /* Flip content back upright */
+  transform: rotate(180deg);
+  /* Flip content back upright */
 }
 
 .message {
@@ -1669,7 +1732,8 @@ footer {
   border-top: 1px solid var(--border-color);
   display: flex;
   gap: 8px;
-  transform: rotate(180deg); /* Flip content back upright */
+  transform: rotate(180deg);
+  /* Flip content back upright */
 }
 
 .chat-input-area input {

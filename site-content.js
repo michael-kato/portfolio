@@ -30,7 +30,7 @@ window.projectData = {
     tags: ["C#", "Unity", "Analytics"],
     description: `
 <div class="project-section">
-  <p>I collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds' weekly release cadence,starting as a solo initiative before growing into a dedicated team effort.</p>
+  <p>I collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds' weekly release cadence, starting as a solo initiative before growing into a dedicated team effort.</p>
 
   <p>The framework:</p>
   <ul class="project-list">
@@ -51,15 +51,15 @@ window.projectData = {
     tags: ["Data Visualization", "SQL", "Analytics"],
     description: `
 <div class="project-section">
-  <p>Horizon Worlds collected a massive amount of performance data from multiple sources: automation, developer testing, and production. When I first started at Meta most of this data was unused, so in order make this information accessible to all team members, I created lots of dashboards showing performance trends. The amount of SQL code I wrote for these dashboards was roughly equivalent to the average Data Scientist at Meta.</p>
+  <p>Horizon Worlds collected a massive amount of performance data from multiple sources: automation, developer testing, and production. When I first started at Meta most of this data was not being surfaced anywhere, so in order make this information accessible to all team members, I created lots of dashboards showing performance trends using SQL.</p>
   
   <p>These dashboards:</p>
   <ul class="project-list">
-    <li>Enabled users to filter down performance queries including by world, player count, device type, time of day, etc.</li>
-    <li>Automatically detected regressions and emailed alerts to relevant stakeholders</li>
-    <li>Helped non-technical stakeholders understand and share performance trends</li>
-    <li>Enabled data-driven prioritization of optimizations and helped teams demonstrate impact of performance work</li>
+    <li>Allowed users to aggregate performance characteristics including by world, player count, hardware SKU, game version, time of day, etc. I created separate dashboards for automation results, generic perf queries, more specialized "hitch" (aka CPU bubble) trackers, and more.</li>
+    <li>Automated the detection of regressions and emailed alerts to relevant stakeholders</li>
+    <li>Enabled data-driven prioritization of optimizations and helped teams prove the impact of performance work</li>
   </ul>
+  <p>Because these tools were internal to Meta, the mockups below are a rough approximation of what they looked like.</p>
 </div>
   `,
     images: [
@@ -249,10 +249,6 @@ window.artData = {
         caption: "Collage of props"
       },
       {
-        src: "https://i.imgur.com/UOpEx.jpg",
-        caption: "AO renders were my go to for showing off models back then"
-      },
-      {
         src: "https://i.imgur.com/vzDNH.png",
         caption: "Lexus IS 300"
       },
@@ -323,14 +319,6 @@ window.artData = {
         caption: "Soviet 2s7 Pion"
       },
       {
-        src: "https://i.imgur.com/ZwzAT.png",
-        caption: "WIP Notre Dame cathedral"
-      },
-      {
-        src: "https://i.imgur.com/DaRyA.jpg",
-        caption: "Laser cube from Portal 2"
-      },
-      {
         src: "https://i.imgur.com/bMGks.jpg",
         caption: "Test chamber from Portal 2. The finished version was lost."
       },
@@ -354,11 +342,7 @@ window.artData = {
     images: [
       {
         src: "https://i.imgur.com/AKTrC.png",
-        caption: "Recreation of a Caldari Caracal from EVE: Online. Probably my first high-poly model. I went way too far with the details."
-      },
-      {
-        src: "https://i.imgur.com/NINiT.jpg",
-        caption: "Inspired by Silent Hill 3"
+        caption: "Recreation of a Caldari Caracal from EVE: Online. My first high-poly model!"
       },
       {
         src: "https://i.imgur.com/zcL8d.png",
@@ -376,10 +360,6 @@ window.artData = {
         src: "https://i.imgur.com/7RAEA.png",
         caption: "Vista building for an HL2 mod"
       }
-    ],
-    video: [
-      "https://www.youtube.com/watch?v=Ks5aLLREdqA",
-      "https://www.youtube.com/watch?v=9AEscHkULjU"
     ]
   },
 
@@ -419,7 +399,7 @@ window.artData = {
       },
       {
         src: "https://i.imgur.com/bP6i3.jpg",
-        caption: "3DS Max handicap"
+        caption: "Learning 3DS Max"
       },
       {
         src: "https://i.imgur.com/QcLAR.png",
