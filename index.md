@@ -6,7 +6,7 @@ permalink: /deep_learning/
 
 <div class="blog-content" markdown="1">
 
-Welcome to my deep learning research page. Here I document my progress through the [FastAI course](https://course.fast.ai/) and various AI-driven experiments.
+Welcome to my deep learning research page. Here I document my progress through the [fastai course](https://course.fast.ai/) and various AI-driven experiments.
 
 ## Sci-Fi vs. Fantasy Classifier
 
@@ -24,7 +24,7 @@ This is a binary classifier trained on a dataset of concept art images to distin
 </div>
 
 ### Project Notes
-- **Framework:** FastAI / PyTorch
+- **Framework:** fastai / PyTorch
 - **Deployment:** Hugging Face Spaces + Gradio
 - **Dataset:** Scraped concept art via DuckDuckGo API
 - **Goal:** Automate genre classification for large asset libraries.

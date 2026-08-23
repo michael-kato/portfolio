@@ -1,5 +1,5 @@
 ---
-title: FastAI Course - My First Image Classifier Model
+title: fastai Course - My First Image Classifier Model
 post_id: fastai-scifi-fantasy
 date: 2026-05-15
 ---

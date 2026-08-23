@@ -15,7 +15,7 @@ window.projectData = {
   <ul class="project-list">
     <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events and memory fragmentation which often led to OOM crashes.</li>
     <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and game script, batching/caching Unity native calls, and eliminating other wasteful work. Swept nearly the entire codebase to batch apply performance fixes in hundreds of C# files.</li>
-    <li>Regularly resolved ship-blocking performance regressions through profiling and collaboration with other engineers and management. Went full cycle from profiling, to using a suite of internal tools to narrow down likely code culprits, to reverting/disabling/rate limiting offending changes or reaching out for responsible parties to do the same.</li>
+    <li>Regularly resolved ship-blocking performance regressions. Went full cycle from profiling, to using a suite of internal tools to narrow down likely code culprits, to reverting/disabling/rate limiting offending changes, or reaching out to responsible parties to do the same.</li>
     </ul>
 </div>
   `,
@@ -287,7 +287,7 @@ window.artData = {
       },
       {
         src: "https://i.imgur.com/R6wXnNE.png",
-        caption: "Zbrush tactical glove"
+        caption: "ZBrush tactical glove"
       },
       {
         src: "https://i.imgur.com/n6MVQ2g.jpg",
@@ -349,7 +349,7 @@ window.artData = {
   "art-speed-challenge": {
     title: "2-Hour Speed Challenges",
     description: `
-      <p>Models created for a speed modelling competition I used to run on Interlopers.net. Usually a 2 hour time limit. (2009-2012)</p>
+      <p>Models created for a speed modelling competition I used to run on Interlopers.net. Usually a 2-hour time limit. (2009-2012)</p>
     `,
     images: [
       {
@@ -382,7 +382,7 @@ window.artData = {
       },
       {
         src: "https://i.imgur.com/bP6i3.jpg",
-        caption: "Learning 3DS Max"
+        caption: "Learning 3ds Max"
       },
       {
         src: "https://i.imgur.com/QcLAR.png",
