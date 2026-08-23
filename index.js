@@ -394,6 +394,19 @@ function renderArtCards() {
   });
 }
 
+function setupBlogImages() {
+  document.querySelectorAll('.blog-content').forEach((content) => {
+    const images = Array.from(content.querySelectorAll('img')).map((image) => ({
+      src: image.currentSrc || image.src,
+      caption: image.closest('figure')?.querySelector('figcaption')?.textContent.trim() || image.alt || ''
+    }));
+
+    content.querySelectorAll('img').forEach((image, index) => {
+      image.addEventListener('click', () => openLightbox(images, index));
+    });
+  });
+}
+
 /**
  * Set up the AI Career Assistant widget
  */

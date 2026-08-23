@@ -325,8 +325,8 @@ section {
 .career-category-header:hover {
   background: linear-gradient(180deg,
       rgba(255, 255, 255, 0.22) 0%,
-      rgba(255, 255, 255, 0.08) 48%,
-      rgba(0, 0, 0, 0.08) 50%,
+      rgba(255, 255, 255, 0.08) 38%,
+      rgba(0, 0, 0, 0.08) 60%,
       rgba(0, 0, 0, 0.2) 100%), var(--card-bg);
   border-color: rgba(var(--burnt-orange-rgb), 0.5);
   box-shadow:
@@ -400,26 +400,12 @@ section {
   padding: 16px;
 }
 
-@keyframes card-glow {
-
-  0%,
-  100% {
-    border-color: var(--border-color);
-    box-shadow: 0 0 2px rgba(var(--wheat-rgb), 0.1);
-  }
-
-  50% {
-    border-color: rgb(145, 98, 71);
-  }
-}
-
 .project-card {
   border: 1px solid var(--border-color);
   padding: 12px 14px;
   border-radius: 4px;
   background-color: var(--card-bg);
   transition: box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
-  animation: card-glow 2s ease-in-out infinite;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -436,10 +422,6 @@ section {
 
 .project-card li {
   margin-bottom: 4px;
-}
-
-.project-card:hover {
-  animation-play-state: paused;
 }
 
 .project-header {
@@ -588,14 +570,9 @@ section {
   border-radius: 4px;
   background-color: var(--card-bg);
   transition: box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
-  animation: card-glow 2s ease-in-out infinite;
   display: flex;
   flex-direction: column;
   position: relative;
-}
-
-.art-card:hover {
-  animation-play-state: paused;
 }
 
 .art-header {
@@ -1479,7 +1456,7 @@ footer {
   border: none;
   cursor: pointer;
   box-shadow: 0 4px 15px var(--shadow-color);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   transition: transform 0.2s;

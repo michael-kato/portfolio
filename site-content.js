@@ -6,24 +6,24 @@
 
 window.projectData = {
   "project-code-fixes": {
-    title: "Performance Code Fixes",
+    title: "Code Contributions",
     description: `
 <div class="project-section">
-  <p>I contributed significantly to Horizon Worlds' Unity C# code as an honorary performance engineer.</p>
+  <p>I contributed to the Horizon Worlds Unity C# codebase through performance fixes and code instrumentation.</p>
 
   <p>Highlights include:</p>
   <ul class="project-list">
-    <li>Regularly resolved ship-blocking performance regressions through profiling and collaboration with engineers and management. Utilized a suite of internal tools to identify regressive code changes after culprits found through profiling.</li>
-    <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events. Swept nearly the entire codebase to batch apply performance fixes in hundreds of files.</li>
-    <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and many more</li>
-  </ul>
+    <li>Identified and patched dozens of wasteful memory allocations throughout the codebase, reducing expensive garbage collection events and memory fragmentation which often led to OOM crashes.</li>
+    <li>Submitted performance fixes for avatars, particle systems, navigation portals, collision, and game script, batching/caching Unity native calls, and eliminating other wasteful work. Swept nearly the entire codebase to batch apply performance fixes in hundreds of C# files.</li>
+    <li>Regularly resolved ship-blocking performance regressions through profiling and collaboration with other engineers and management. Went full cycle from profiling, to using a suite of internal tools to narrow down likely code culprits, to reverting/disabling/rate limiting offending changes or reaching out for responsible parties to do the same.</li>
+    </ul>
 </div>
   `,
     images: null,
     video: null
   },
   "project-perf-framework": {
-    title: "Performance Automation Framework",
+    title: "Automation Framework",
     description: `
 <div class="project-section">
   <p>I collaborated with lead engineers to design and instrument a comprehensive performance monitoring system for Horizon Worlds' weekly release cadence, starting as a solo initiative before growing into a dedicated team effort.</p>
@@ -42,14 +42,14 @@ window.projectData = {
   },
 
   "project-perf-dashboards": {
-    title: "Performance Visualization Dashboards",
+    title: "Visualization Dashboards",
     description: `
 <div class="project-section">
-  <p>Horizon Worlds collected a massive amount of performance data from multiple sources: automation, developer testing, and production. When I first started at Meta most of this data was not being surfaced anywhere, so in order to make this information accessible to all team members, I created lots of dashboards showing performance trends using SQL.</p>
+  <p>Horizon Worlds collected a massive amount of data from multiple sources: automation, developer testing, and live users. When I first started at Meta much of this data was not being surfaced anywhere, so in order to make this information accessible to all team members, I created lots of dashboards showing performance trends using SQL.</p>
   
   <p>These dashboards:</p>
   <ul class="project-list">
-    <li>Allowed users to aggregate performance characteristics including by world, player count, hardware SKU, game version, time of day, etc. I created separate dashboards for automation results, generic perf queries, more specialized "hitch" (aka CPU bubble) trackers, and more.</li>
+    <li>Allowed users to aggregate performance characteristics including by world, player count, hardware SKU, game version, time of day, etc. I created separate dashboards showing automation results, generic perf queries, more specialized "hitch" (aka CPU bubble) trackers, and more.</li>
     <li>Automated the detection of regressions and emailed alerts to relevant stakeholders</li>
     <li>Enabled data-driven prioritization of optimizations and helped teams prove the impact of performance work</li>
   </ul>

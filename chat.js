@@ -28,7 +28,14 @@ export default {
 
     const sessionHash = await generateSessionHash(request, data);
 
-    const token = env.GITHUB_TOKEN;
+    const modelEndpoint = env.AZURE_AI_ENDPOINT;
+    const modelApiKey = env.AZURE_AI_API_KEY;
+    if (!modelEndpoint || !modelApiKey) {
+      return new Response(JSON.stringify({ error: "Azure AI configuration is missing" }), {
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      });
+    }
     // Retrieve the large text from KV instead of environment variables
     let careerSecret = null;
     try {
@@ -52,11 +59,11 @@ export default {
 
     for (const currentModel of modelsToTry) {
       try {
-        const response = await fetch("https://models.inference.ai.azure.com/chat/completions", {
+        const response = await fetch(modelEndpoint, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            "api-key": modelApiKey
           },
           body: JSON.stringify({
             messages: [
@@ -119,8 +126,13 @@ export default {
           });
         }
 
-        const errorData = await response.json();
-        lastError = errorData.error?.message || `Status ${response.status}`;
+        const errorText = await response.text();
+        let errorMessage = errorText;
+        try {
+          const errorData = JSON.parse(errorText);
+          errorMessage = errorData.error?.message || errorData.error || errorText;
+        } catch (parseError) {}
+        lastError = errorMessage || `Status ${response.status}`;
 
         if (response.status === 429 || response.status >= 500) {
           console.warn(`Model ${currentModel} failed with ${response.status}. Trying fallback...`);

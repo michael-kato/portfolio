@@ -24,14 +24,14 @@ This keeps alternate URLs from duplicating the full homepage markup.
 - **Custom Domain**: Site is now hosted at `michaelkato.work` with forced HTTPS.
 - **Vertical Card Architecture (Career & Art)**: Replaced pop-up modals and interactive thumbnails with static, always-expanded vertical inline cards for both Career projects and Art entries.
 - **Data Cleanup**: Pruned obsolete `summary` and `tags` fields from `site-content.js` to simplify data structures.
-- **Career Section Accordion & Auto-Scroll**: Opening a category auto-scrolls the container to the top of the viewport (respecting sticky-nav offsets via `scroll-margin-top: 80px`). Headers feature Apple-style specular inner glow gradients in dark slate grey.
+- **Career Section Accordion**: Multiple categories can remain open simultaneously. Headers feature Apple-style specular inner glow gradients in dark slate grey.
 - **Art Cards & Lightbox**: Art entries render inline as vertical cards (`renderArtCards()`). Clicking thumbnail images opens the interactive Lightbox, which features a fixed top-right close button and backdrop click delegation for quick dismissal.
 - **Deep Learning Section**: A dedicated landing page at `/deep_learning/` showcases AI research and hosts a live Hugging Face Spaces inference iframe.
-- **Recruiter Chat**: Powered by a Cloudflare Worker at `portfolio-chat.mkato.workers.dev`. It uses GPT-4o-mini to answer questions based on a `CAREER_OVERVIEW` stored in KV, logs interactions to D1, and sends email notifications via the Resend API.
+- **Recruiter Chat**: The chat bubble is currently hidden in `style.css` while the backend is being migrated. The Cloudflare Worker at `portfolio-chat.mkato.workers.dev` still contains the chat implementation, but production must be redeployed after configuring a replacement Azure AI Foundry endpoint.
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
 - `/_layouts/post.html` now includes the blog post lightbox container so full-size image zoom works on post pages as well.
 - `shaders.js` now has inline comments for both `protean-clouds` and `star-nest` shaders, exposing tunable parameters like tunnel exit size, glow intensity, sparkle brightness, and star size clamping.
-- **Chat UI Features**: Supports Markdown rendering via `marked.js`, inherits blog styling via the `blog-content` class, and features a pulsing notification animation on the toggle bubble.
+- **Chat UI Features**: Supports Markdown rendering via `marked.js`, inherits blog styling via the `blog-content` class, and previously featured a pulsing notification animation on the toggle bubble. The toggle is currently disabled with `display: none`.
 - **Desktop GUI Logic**: The chat window is resizable from the **top-left corner**. This is implemented via a CSS trick: rotating the entire window 180 degrees to move the native resize handle, then rotating internal containers back to keep text upright.
 - **Stable Comments**: Comments are now linked via `post_id` in front matter rather than the URL slug, preventing comment loss if a post is renamed or moved.
 
@@ -108,7 +108,7 @@ The current `programming` variant:
   - `dark-burnt-orange`: Used for accent lines, arrows, logos, and UI-specific links (Read more).
 - **Lists:** Bullets in cards and modals are explicitly indented.
 - **Overlays:** Header background overlays and canvas opacities are tuned to ensure the shader remains visible; modal backdrops use higher opacity (0.92) for better legibility.
-- **Scrolling:** `scroll-behavior: smooth` is enabled globally. Career categories and Art items use `scrollIntoView` when expanded to align with the top of the viewport, using `scroll-margin-top` (80px) to account for the sticky navigation bar.
+- **Scrolling:** `scroll-behavior: smooth` is enabled globally. Anchor links use `scroll-margin-top` (80px) to account for the sticky navigation bar.
 
 Variant styling lives in `style.css` as body-level CSS custom property overrides.
 
@@ -140,7 +140,7 @@ http://127.0.0.1:4000/programming/
 
 ## Cloudflare Worker Deployment
 
-The chat API is powered by a Cloudflare Worker that handles POST requests to `/api/chat`.
+The chat API is powered by a Cloudflare Worker that handles POST requests. GitHub Models inference was retired on July 30, 2026, so the former GitHub/Azure endpoint is no longer available. The Worker source now expects an Azure AI Foundry-compatible endpoint and API key.
 
 ### Files
 
@@ -150,8 +150,11 @@ The chat API is powered by a Cloudflare Worker that handles POST requests to `/a
 
 ### Environment Variables
 
-Set these in your Cloudflare dashboard or via Wrangler:
-- `GITHUB_TOKEN`: GitHub token for Azure AI inference API access
+Set these as Cloudflare Worker secrets via Wrangler:
+- `AZURE_AI_ENDPOINT`: Complete Azure AI Foundry chat completions endpoint, including any required API version.
+- `AZURE_AI_API_KEY`: Azure AI Foundry API key.
+
+The Worker returns `Azure AI configuration is missing` until both secrets are set. The live deployment may still be running the previous code until it is redeployed.
 
 ### Data Storage (KV)
 
@@ -161,7 +164,7 @@ Due to size limits (5KB) on environment variables, the career history is stored 
 
 ### Deployment
 
-Install Wrangler CLI:
+Install Wrangler CLI if needed:
 
 ```sh
 npm install -g wrangler
@@ -171,7 +174,9 @@ Login and deploy:
 
 ```sh
 wrangler auth login
-wrangler deploy
+wrangler secret put AZURE_AI_ENDPOINT
+wrangler secret put AZURE_AI_API_KEY
+wrangler deploy --config wrangler.toml
 ```
 
 The worker will be available at the configured route (e.g., `https://portfolio-chat.mkato.workers.dev`).
