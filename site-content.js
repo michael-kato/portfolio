@@ -155,20 +155,27 @@ window.projectData = {
     title: "Edge Cleanup Tool",
     description: `
 <div class="project-section">
-  <p>During modeling, artists often create additional edges for construction that don't contribute to the final appearance but increase polygon counts, and in our engine there was an issue where tangents would be explicitly imported in a broken state due to data moving between programs, which caused vertex counts to massively inflate. I developed a Maya Python tool that analyzes mesh topology to identify redundant edges.</p>
+  <p>I developed a Maya tool that analyzes mesh topology to identify redundant edges for deletion and unneccessary hard edges that could be made soft, which helps with vertex counts. Niether of these operations drastically affects the final look of the model and both of them can save significant amounts of geo complexity in certain cases.</p>
   
   <p>This optimization tool:</p>
   <ul class="project-list">
-    <li>Uses adjustable thresholds to determine which edges to remove</li>
-    <li>Maintains UV mapping and vertex color boundaries during optimization</li>
-    <li>Automatically smooths normals, if possible, which can result in lower vertex counts on the GPU in edge cases</li>
-    <li>Became a standard part of our asset export process</li>
+    <li>Uses adjustable thresholds to determine which edges to delete or soften</li>
+    <li>Is aware of UV seams and will not delete edges that would break UVs.</li>
+    <li>Uses a greedy triangulation algorithm, which can help objects retain their shape better during decimation</li>
+    <li>Became a standard part of our asset export process. The normal softening feature in particular saved us a full millisecond in some environments.</li>
   </ul>
 </div>
   `,
     images: [
-      "https://lh5.googleusercontent.com/1Q15n_Eyxk7RXPCthwuFvqyC_ft8RIm3ck0GY4xiK1JibG90slSW-vA8LJOwcp75kZ17NjMkCX9MFC6Pqgb1VbnJxP7bsbj6djgqvwdn9H3jHrYDnQPD2KUrP55MYmSOeMB37CHH",
-      "https://lh3.googleusercontent.com/pKYtVNI01Qr9OcI4gQvu0w_j_8lqGlx6iVZIW3JHJdVTIDT9OtAZbM8iaFV4sun43ve0_4CAaZ-9muuxgQkyyeSzGkhRVI78GPVcLW08G-khNAhlZrzA9qOlvcTwqiJHIj591a14"
+      "/resources/delete_edges_01.png",
+      "/resources/delete_edges_02.png",
+      "/resources/delete_edges_03.png",
+      "/resources/delete_edges_04.png",
+      "/resources/smooth_edges_01.png",
+      "/resources/smooth_edges_02.png",
+      "/resources/smooth_edges_03.png",
+      "/resources/triangulation.png"
+      
     ],
     video: null
   }

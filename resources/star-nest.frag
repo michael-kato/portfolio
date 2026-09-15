@@ -16,7 +16,7 @@ uniform vec2 uMouse;
 // === CAMERA/VIEW PARAMETERS ===
 #define zoom   0.800          // Camera zoom level (affects how close/far the stars appear)
 #define tile   0.850          // Tiling scale (controls star spacing)
-#define speed  0.0001          // Animation speed
+#define speed  0.00000000001          // Animation speed
 
 // === BRIGHTNESS AND VISUAL CONTROLS ===
 #define brightness 0.002     // *** MAIN SPARKLE CONTROL *** Lower = fewer/dimmer sparkles, Higher = more/brighter sparkles
@@ -24,7 +24,7 @@ uniform vec2 uMouse;
 #define distfading 0.730      // How much distance fading occurs per step (higher = fades faster)
 #define saturation 0.950      // Color saturation (1.0 = full color, 0.0 = grayscale)
 
-#define rotationspeed 1.0  // Rotation speed (controls how fast the view rotates based on mouse movement)
+#define rotationspeed 0.5  // Rotation speed (controls how fast the view rotates based on mouse movement)
 
 void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     // === SETUP: Normalize coordinates and create view ray ===
@@ -32,7 +32,7 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
     uv.y *= uResolution.y / uResolution.x;
     vec3 dir = vec3(uv*zoom, 1.);  // View direction
     
-    float time = uTime*speed + .25;
+    float time = uTime*speed;
     
     // === MOUSE CONTROL: Rotate view based on mouse position ===
     float a1 = .5 - uMouse.x/uResolution.x * rotationspeed;

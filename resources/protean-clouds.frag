@@ -114,7 +114,7 @@ void mainImage( out vec4 O, vec2 u ) {
     bsMo = (0.5*R - uMouse) / R.y;
     
     prm1 = 0.0; // Stabilize prm1 to remove procedural color/cam shifting
-    float time = uTime*1.5;
+    float time = uTime*0.7;
     vec3 P = vec3(0.0, 0.0, time);  // Ray origin (camera position)
     
     // === TUNNEL EXIT POINT SETUP ===
