@@ -5,12 +5,21 @@ uniform vec2 uResolution;
 uniform float uTime;
 uniform vec2 uMouse;
 
+// === QUALITY KNOBS ===
+// LOW_QUALITY is defined by shaders.js when WebGL runs without a GPU
+// (or with ?quality=low in the URL). Cost scales with iterations x volsteps.
+#ifdef LOW_QUALITY
+  #define iterations 15       // Fractal iteration depth (higher = more complex detail = more sparkles, lower = simpler/fewer sparkles)
+  #define volsteps   14       // Volume steps. Steps past ~14 are faded to ~1%, so dropping them is nearly invisible
+#else
+  #define iterations 15
+  #define volsteps   20       // Number of steps to march through the volume (fewer = less sparkle accumulation)
+#endif
+
 // === FRACTAL PARAMETERS ===
-#define iterations 15        // Fractal iteration depth (higher = more complex detail = more sparkles, lower = simpler/fewer sparkles)
 #define formuparam 0.53       // Fractal formula parameter (controls the shape)
 
 // === VOLUMETRIC RAYMARCHING PARAMETERS ===
-#define volsteps 20           // Number of steps to march through the volume (fewer = less sparkle accumulation)
 #define stepsize 0.1          // Distance between each volumetric step
 
 // === CAMERA/VIEW PARAMETERS ===

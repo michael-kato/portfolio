@@ -79,6 +79,11 @@ body {
   scroll-behavior: smooth;
 }
 
+/* Low quality (no GPU): re-blurring the animated background every frame is expensive on the CPU */
+.low-power * {
+  backdrop-filter: none !important;
+}
+
 #background-canvas {
   position: fixed;
   top: 0;

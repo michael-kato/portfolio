@@ -8,6 +8,41 @@ let bgState = null;
 let backgroundShaderKeys = [];
 const shaders = {};
 
+// === LOW QUALITY KNOBS ===
+// Used when WebGL runs without a GPU (CPU rendering). Per-shader knobs live at
+// the top of each .frag file under LOW_QUALITY.
+// Add ?quality=low to the URL to preview low quality on a GPU, or ?quality=high to force full quality.
+const LOW_QUALITY_SETTINGS = {
+  disableBlur: true,  // Turn off backdrop-filter blur on panels (re-blurring an animated background is expensive on CPU)
+};
+
+// Background shaders too expensive to run without a GPU (protean-clouds renders
+// at ~4fps on CPU). In low quality these are skipped by the random pick and the switcher.
+const GPU_ONLY_SHADERS = ['protean-clouds'];
+
+let lowQuality = false;
+
+/**
+ * Detect CPU-backed WebGL (hardware acceleration disabled or unavailable)
+ */
+function isSoftwareRenderer(gl) {
+  const probe = document.createElement('canvas').getContext('webgl2', { failIfMajorPerformanceCaveat: true });
+  if (!probe) return true;
+  probe.getExtension('WEBGL_lose_context')?.loseContext();
+
+  const info = gl.getExtension('WEBGL_debug_renderer_info');
+  const renderer = info ? gl.getParameter(info.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
+  return /swiftshader|llvmpipe|softpipe|software|basic render/i.test(renderer);
+}
+
+/**
+ * Define LOW_QUALITY right after the mandatory #version line
+ */
+function withQualityDefines(src) {
+  if (!lowQuality) return src;
+  return src.replace(/^(\s*#version[^\n]*\n)/, '$1#define LOW_QUALITY\n');
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   // Ensure canvas is properly positioned
   const bgCanvas = document.getElementById('background-canvas');
@@ -64,11 +99,16 @@ function initShader() {
     const canvas = canvases[i];
     if (!canvas) continue;
 
-    const gl = canvas.getContext('webgl2');
+    const gl = canvas.getContext('webgl2', { antialias: false, depth: false, stencil: false });
     if (!gl) {
       console.warn('WebGL2 not supported, shader demo will not be displayed');
       return;
     }
+
+    const forced = new URLSearchParams(location.search).get('quality');
+    lowQuality = forced ? forced === 'low' : isSoftwareRenderer(gl);
+    if (lowQuality && LOW_QUALITY_SETTINGS.disableBlur) document.documentElement.classList.add('low-power');
+    if (lowQuality) backgroundShaderKeys = backgroundShaderKeys.filter(key => !GPU_ONLY_SHADERS.includes(key));
 
     // Vertex shader program
     const vs = `#version 300 es
@@ -202,6 +242,12 @@ function setupShaderControls() {
     }
   }
 
+  // Nothing to switch between (only one shader available without a GPU, or no WebGL2 at all)
+  if (!bgState || backgroundShaderKeys.length < 2) {
+    [prevBtn, nextBtn].forEach(btn => { if (btn) btn.style.display = 'none'; });
+    return;
+  }
+
   if (prevBtn) {
     prevBtn.onclick = (e) => { e.preventDefault(); switchBackgroundShader(-1); };
   }
@@ -241,7 +287,7 @@ function switchBackgroundShader(direction) {
  */
 function initShaderProgram(gl, vs, fs) {
   const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vs);
-  const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fs);
+  const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, withQualityDefines(fs));
 
   if (!vertexShader || !fragmentShader) return null;
 
