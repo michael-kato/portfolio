@@ -4,11 +4,16 @@ precision highp float;
 uniform vec2 uResolution;
 uniform float uTime;
 uniform vec2 uMouse;
+uniform vec2 uSeed;   // Random [0,1) values picked once per page load
+
+// Random start position along the tunnel, in the same units the camera flies (0.7 per second).
+// Kept moderate: far down the tunnel, float precision in the fine cloud detail starts to break up.
+#define STARTRANGE 200.0
 
 // === HELPER MACROS ===
 #define rot(a)         mat2(cos( a +vec4(0,11,33,0)))  // Rotation matrix
 #define linstep(m,M,x) clamp((x - m)/(M - m), 0., 1.)  // Linear interpolation clamped to [0,1]
-#define disp(t)        vec2(sin(t*1.7 + uTime*0.35), cos(t*1.3 - uTime*0.32)) * 0.22  // Displacement offset
+#define disp(t)        vec2(sin(t*1. + uTime*0.35), cos(t*1. - uTime*0.32)) * 0.22  // Displacement offset
 
 float prm1;
 vec2  bsMo;
@@ -19,9 +24,6 @@ vec2 map(vec3 p) {
     // Displace space based on depth
     vec2 q = p.xy - disp(p.z);
     
-    // Rotate tunnel around its axis (slower rotation)
-    p.xy *= rot( sin(p.z * 1.8) * .45 + uTime * .08 ); // Reduce 0.45 to rotate slower, increase to rotate faster
-    
     // Add undulating motion to tunnel walls
     p.xy += 0.01 * vec2(sin(p.y*2.4 + uTime*0.42), cos(p.x*2.2 - uTime*0.38));
     
@@ -29,8 +31,8 @@ vec2 map(vec3 p) {
     float d;
     float z = 1.;
     float trk = .1;
-    float dspAmp = .2; // dspAmp controls cloud density/sharpness
-    p *= .57;  // Scale down for fractal
+    float dspAmp = .1; // dspAmp controls cloud density/sharpness
+    p *= .37;  // Scale down for fractal
     
     // Iterate to create layered cloud structure
     for(int i=0; i < 4; i++, z *= .57, trk *= 1.4 )
@@ -85,7 +87,7 @@ vec4 render( in vec3 ro, in vec3 rd, float time )
     
     // === FOG BLENDING ===
     float fogC = exp(t * 0.2 - 2.2);
-    col.rgba += vec4(0.06, 0.10, 0.14, 0.22) * clamp(fogC - fogT, 0., 1.);
+    col.rgba += vec4(0.06, 0.10, 0.14, 0.12) * clamp(fogC - fogT, 0., 1.);
     fogT = fogC;
     rez = rez + col*(1. - rez.a);  // Blend with accumulated color
     t += clamp(0.5 - dn*dn*.05, 0.09, 0.3);  // Adaptive step size
@@ -114,7 +116,7 @@ void mainImage( out vec4 O, vec2 u ) {
     bsMo = (0.5*R - uMouse) / R.y;
     
     prm1 = 0.0; // Stabilize prm1 to remove procedural color/cam shifting
-    float time = uTime*0.7;
+    float time = uTime*0.7 + uSeed.x * STARTRANGE;  // Distance flown along the tunnel
     vec3 P = vec3(0.0, 0.0, time);  // Ray origin (camera position)
     
     // === TUNNEL EXIT POINT SETUP ===

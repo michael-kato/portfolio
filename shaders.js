@@ -8,6 +8,9 @@ let bgState = null;
 let backgroundShaderKeys = [];
 const shaders = {};
 
+// Random per page load, passed to shaders as uSeed (e.g. star-nest's starting view)
+const shaderSeed = [Math.random(), Math.random()];
+
 // === LOW QUALITY KNOBS ===
 // Used when WebGL runs without a GPU (CPU rendering). Per-shader knobs live at
 // the top of each .frag file under LOW_QUALITY.
@@ -144,6 +147,7 @@ function initShader() {
         resolution: gl.getUniformLocation(shaderProgram, 'uResolution'),
         time: gl.getUniformLocation(shaderProgram, 'uTime'),
         mouse: gl.getUniformLocation(shaderProgram, 'uMouse'),
+        seed: gl.getUniformLocation(shaderProgram, 'uSeed'),
       },
       currentKey: currentKey
     };
@@ -277,6 +281,7 @@ function switchBackgroundShader(direction) {
     resolution: bgState.gl.getUniformLocation(newProgram, 'uResolution'),
     time: bgState.gl.getUniformLocation(newProgram, 'uTime'),
     mouse: bgState.gl.getUniformLocation(newProgram, 'uMouse'),
+    seed: bgState.gl.getUniformLocation(newProgram, 'uSeed'),
   };
 
   console.info('Switched background shader to:', newKey);
@@ -368,6 +373,7 @@ function drawScene(gl, programInfo, buffers, time, mouseX, mouseY) {
   gl.uniform2f(programInfo.uniformLocations.resolution, gl.canvas.width, gl.canvas.height);
   gl.uniform1f(programInfo.uniformLocations.time, time);
   gl.uniform2f(programInfo.uniformLocations.mouse, mouseX, mouseY); // Pass mouse coordinates to shader
+  gl.uniform2f(programInfo.uniformLocations.seed, shaderSeed[0], shaderSeed[1]); // No-op for shaders without uSeed
 
   // Set up position attribute
   gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position);
