@@ -1,7 +1,7 @@
 /**
  * WebGL Shader implementation for Michael Kato's portfolio
- * Based on "Protean clouds" by nimitz (@stormoid)
- * Adapted from Shadertoy: https://www.shadertoy.com/view/3l23Rh
+ * Background based on "Star Nest" by Kali
+ * Adapted from Shadertoy: https://www.shadertoy.com/view/XlfGRj
  */
 
 let bgState = null;
@@ -18,10 +18,6 @@ const shaderSeed = [Math.random(), Math.random()];
 const LOW_QUALITY_SETTINGS = {
   disableBlur: true,  // Turn off backdrop-filter blur on panels (re-blurring an animated background is expensive on CPU)
 };
-
-// Background shaders too expensive to run without a GPU (protean-clouds renders
-// at ~4fps on CPU). In low quality these are skipped by the random pick and the switcher.
-const GPU_ONLY_SHADERS = ['protean-clouds'];
 
 let lowQuality = false;
 
@@ -69,7 +65,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 async function loadShaders() {
   const shaderFiles = {
     'tutorial-shader-canvas': 'resources/tutorial.frag',
-    'protean-clouds': 'resources/protean-clouds.frag',
     'star-nest': 'resources/star-nest.frag'
   };
 
@@ -111,7 +106,6 @@ function initShader() {
     const forced = new URLSearchParams(location.search).get('quality');
     lowQuality = forced ? forced === 'low' : isSoftwareRenderer(gl);
     if (lowQuality && LOW_QUALITY_SETTINGS.disableBlur) document.documentElement.classList.add('low-power');
-    if (lowQuality) backgroundShaderKeys = backgroundShaderKeys.filter(key => !GPU_ONLY_SHADERS.includes(key));
 
     // Vertex shader program
     const vs = `#version 300 es
@@ -246,7 +240,7 @@ function setupShaderControls() {
     }
   }
 
-  // Nothing to switch between (only one shader available without a GPU, or no WebGL2 at all)
+  // Nothing to switch between (only one background shader, or no WebGL2 at all)
   if (!bgState || backgroundShaderKeys.length < 2) {
     [prevBtn, nextBtn].forEach(btn => { if (btn) btn.style.display = 'none'; });
     return;

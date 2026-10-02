@@ -4,7 +4,7 @@ post_id: unity-2d-game
 date: 2026-02-11
 ---
 
-This project started to refresh my knowledge of Unity especially in the realm of 2D which I've never really touched, but had a couple of job interviews to prepare for. I tried to make as much as possible dynamic and interactive. The main focus was adding visual flair and polish to the interactions, otherwise known as "juice".
+This project started as a way to refresh my Unity knowledge, especially 2D, which I hadn't worked in before. I tried to make as much as possible dynamic and interactive. The main focus was adding visual flair and polish to the interactions, otherwise known as "juice".
 
 <div class="video-vertical-wrap">
   {% include post-video.html src="/resources/2d_game_03.mp4" volume=0.3 %}

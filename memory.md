@@ -27,11 +27,11 @@ This keeps alternate URLs from duplicating the full homepage markup.
 - **Career Section Accordion**: Multiple categories can remain open simultaneously. Headers feature Apple-style specular inner glow gradients in dark slate grey.
 - **Art Cards & Lightbox**: Art entries render inline as vertical cards (`renderArtCards()`). Clicking thumbnail images opens the interactive Lightbox, which features a fixed top-right close button and backdrop click delegation for quick dismissal.
 - **Deep Learning Section**: A dedicated landing page at `/deep_learning/` showcases AI research and hosts a live Hugging Face Spaces inference iframe.
-- **Recruiter Chat**: The chat bubble is currently hidden in `style.css` while the backend is being migrated. The Cloudflare Worker at `portfolio-chat.mkato.workers.dev` still contains the chat implementation, but production must be redeployed after configuring a replacement Azure AI Foundry endpoint.
+- **Recruiter Chat**: The chat bubble is live. The Cloudflare Worker at `portfolio-chat.mkato.workers.dev` runs on Cloudflare Workers AI.
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
 - `/_layouts/post.html` now includes the blog post lightbox container so full-size image zoom works on post pages as well.
-- `shaders.js` now has inline comments for both `protean-clouds` and `star-nest` shaders, exposing tunable parameters like tunnel exit size, glow intensity, sparkle brightness, and star size clamping.
-- **Chat UI Features**: Supports Markdown rendering via `marked.js`, inherits blog styling via the `blog-content` class, and previously featured a pulsing notification animation on the toggle bubble. The toggle is currently disabled with `display: none`.
+- The background uses the `star-nest` shader only (protean-clouds was removed). `resources/star-nest.frag` has inline comments exposing tunable parameters like sparkle brightness and star size clamping.
+- **Chat UI Features**: Supports Markdown rendering via `marked.js`, inherits blog styling via the `blog-content` class, and previously featured a pulsing notification animation on the toggle bubble.
 - **Desktop GUI Logic**: The chat window is resizable from the **top-left corner**. This is implemented via a CSS trick: rotating the entire window 180 degrees to move the native resize handle, then rotating internal containers back to keep text upright.
 - **Stable Comments**: Comments are now linked via `post_id` in front matter rather than the URL slug, preventing comment loss if a post is renamed or moved.
 
@@ -140,7 +140,7 @@ http://127.0.0.1:4000/programming/
 
 ## Cloudflare Worker Deployment
 
-The chat API is powered by a Cloudflare Worker that handles POST requests. GitHub Models inference was retired on July 30, 2026, so the former GitHub/Azure endpoint is no longer available. The Worker source now expects an Azure AI Foundry-compatible endpoint and API key.
+The chat API is powered by a Cloudflare Worker that handles POST requests. GitHub Models inference was retired on July 30, 2026, so the Worker now uses Cloudflare Workers AI through the `AI` binding in `wrangler.toml`. It tries `@cf/meta/llama-3.3-70b-instruct-fp8-fast` first, then falls back to `@cf/meta/llama-4-scout-17b-16e-instruct`. No model API keys are needed.
 
 ### Files
 
@@ -150,11 +150,8 @@ The chat API is powered by a Cloudflare Worker that handles POST requests. GitHu
 
 ### Environment Variables
 
-Set these as Cloudflare Worker secrets via Wrangler:
-- `AZURE_AI_ENDPOINT`: Complete Azure AI Foundry chat completions endpoint, including any required API version.
-- `AZURE_AI_API_KEY`: Azure AI Foundry API key.
-
-The Worker returns `Azure AI configuration is missing` until both secrets are set. The live deployment may still be running the previous code until it is redeployed.
+- `EMAIL_API_KEY` (secret, optional): Resend key for usage notification emails.
+- `NOTIFICATION_EMAIL` (var): Recipient for notifications.
 
 ### Data Storage (KV)
 
@@ -174,8 +171,6 @@ Login and deploy:
 
 ```sh
 wrangler auth login
-wrangler secret put AZURE_AI_ENDPOINT
-wrangler secret put AZURE_AI_API_KEY
 wrangler deploy --config wrangler.toml
 ```
 

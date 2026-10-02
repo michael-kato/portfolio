@@ -19,3 +19,6 @@ enabled = true
 
 [vars]
 NOTIFICATION_EMAIL = "contact@michaelkato.work"
+
+[ai]
+binding = "AI"

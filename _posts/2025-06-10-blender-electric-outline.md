@@ -1,5 +1,5 @@
 ---
-title: Blender Geometry Nodes
+title: Procedural Mesh Effects with Blender Geometry Nodes
 post_id: blender-geo-nodes-electric-outline
 date: 2025-06-10
 ---

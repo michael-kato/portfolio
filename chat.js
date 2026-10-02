@@ -28,10 +28,8 @@ export default {
 
     const sessionHash = await generateSessionHash(request, data);
 
-    const modelEndpoint = env.AZURE_AI_ENDPOINT;
-    const modelApiKey = env.AZURE_AI_API_KEY;
-    if (!modelEndpoint || !modelApiKey) {
-      return new Response(JSON.stringify({ error: "Azure AI configuration is missing" }), {
+    if (!env.AI) {
+      return new Response(JSON.stringify({ error: "Workers AI binding is missing" }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' }
       });
@@ -53,58 +51,51 @@ export default {
       });
     }
 
-    // Define fallback models available on the GitHub/Azure inference endpoint
-    const modelsToTry = ["gpt-4o-mini", "meta-llama-3.1-70b-instruct"];
+    // Workers AI models, tried in order
+    const modelsToTry = ["@cf/meta/llama-3.3-70b-instruct-fp8-fast", "@cf/meta/llama-4-scout-17b-16e-instruct"];
     let lastError = null;
 
     for (const currentModel of modelsToTry) {
       try {
-        const response = await fetch(modelEndpoint, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "api-key": modelApiKey
-          },
-          body: JSON.stringify({
-            messages: [
-              {
-                role: "system",
-                content: `
-                  You are Michael's career advocate and technical interpreter.
-                  Your role is to help recruiters and hiring managers understand how Michael's real-world experience maps to new roles, especially when his background is unconventional or cross-disciplinary.
+        const result = await env.AI.run(currentModel, {
+          messages: [
+            {
+              role: "system",
+              content: `
+                You are Michael's career advocate and technical interpreter.
+                Your role is to help recruiters and hiring managers understand how Michael's real-world experience maps to new roles, especially when his background is unconventional or cross-disciplinary.
 
-                  Guidelines:
-                  - Be optimistic but grounded.
-                  - Do not exaggerate qualifications or invent experience.
-                  - Clearly distinguish between:
-                    - directly demonstrated experience
-                    - transferable skills
-                    - likely ramp-up areas
-                  - Emphasize systems thinking, automation, technical problem solving, operational reliability, performance engineering, tooling, cross-functional collaboration, and large-scale production support where relevant.
-                  - Recognize that game industry titles may understate technical scope.
-                  - Do not assume Michael is qualified for licensed engineering, medical, legal, civil infrastructure, or highly specialized regulated roles unless explicitly supported by the provided experience.
-                  - If there are meaningful gaps, explain them honestly while evaluating whether his underlying technical background suggests strong adaptability.
-                  - Prioritize practical evidence from shipped systems, production ownership, debugging complexity, and cross-team technical leadership over formal credentials alone.
-                  - Keep responses concise, direct, and recruiter-friendly.
-                  - Please do not use the term "technical artistry"
-                  - Stay focused on Michael's professional background. If asked about unrelated topics, redirect politely.
-                  - Speak conversationally, not like a recruiter or HR document.
+                Guidelines:
+                - Be optimistic but grounded.
+                - Do not exaggerate qualifications or invent experience.
+                - Only claim a tool, language, engine, or skill if it appears in the career history below. If it does not appear, say plainly that Michael's history doesn't show it, then mention the closest related experience that does appear, if any. Never imply he has used something he hasn't.
+                - Do not guess at dates, team sizes, metrics, titles, or employers that are not in the career history.
+                - Clearly distinguish between:
+                  - directly demonstrated experience
+                  - transferable skills
+                  - likely ramp-up areas
+                - Emphasize systems thinking, automation, technical problem solving, operational reliability, performance engineering, tooling, cross-functional collaboration, and large-scale production support where relevant.
+                - Recognize that game industry titles may understate technical scope.
+                - Do not assume Michael is qualified for licensed engineering, medical, legal, civil infrastructure, or highly specialized regulated roles unless explicitly supported by the provided experience.
+                - If there are meaningful gaps, explain them honestly while evaluating whether his underlying technical background suggests strong adaptability.
+                - Prioritize practical evidence from shipped systems, production ownership, debugging complexity, and cross-team technical leadership over formal credentials alone.
+                - Keep responses concise, direct, and recruiter-friendly.
+                - Please do not use the term "technical artistry"
+                - Stay focused on Michael's professional background. If asked about unrelated topics, redirect politely.
+                - Speak conversationally, not like a recruiter or HR document.
 
-                  Use the provided career history to answer questions:
-                  ${careerSecret}
-                `
-              },
-              { role: "user", content: prompt }
-            ],
-            model: currentModel,
-            temperature: 0.7
-          })
+                Use the provided career history to answer questions:
+                ${careerSecret}
+              `
+            },
+            { role: "user", content: prompt }
+          ],
+          temperature: 0.3,
+          max_tokens: 700
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          const reply = data.choices[0].message.content;
-
+        const reply = typeof result?.response === "string" ? result.response.trim() : "";
+        if (reply) {
           if (env.DB) {
             ctx.waitUntil(
               env.DB.prepare(
@@ -126,23 +117,10 @@ export default {
           });
         }
 
-        const errorText = await response.text();
-        let errorMessage = errorText;
-        try {
-          const errorData = JSON.parse(errorText);
-          errorMessage = errorData.error?.message || errorData.error || errorText;
-        } catch (parseError) {}
-        lastError = errorMessage || `Status ${response.status}`;
-
-        if (response.status === 429 || response.status >= 500) {
-          console.warn(`Model ${currentModel} failed with ${response.status}. Trying fallback...`);
-          continue;
-        }
-
-        break;
+        lastError = `Empty response from ${currentModel}`;
       } catch (err) {
+        console.warn(`Model ${currentModel} failed: ${err.message}. Trying fallback...`);
         lastError = err.message;
-        continue;
       }
     }
 
