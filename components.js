@@ -78,7 +78,7 @@
         <li><a href="${indexBase}#contact">Contact</a></li>
         <li><a href="${root}blog/">Blog</a></li>
       </ul>
-      <a class="btn btn--accent btn--sm" href="${root}resources/Michael_Kato_Resume.pdf" download>Résumé ↓</a>
+      <a class="btn btn--accent btn--sm" href="${root}resources/Michael_Kato_Resume.pdf" download>Resume ↓</a>
     </div>
   `;
 

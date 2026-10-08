@@ -14,7 +14,9 @@ export default {
       });
     }
 
-    if (request.method !== "POST" || !new URL(request.url).pathname.endsWith("/api/analytics")) {
+    // "/api/v" is the first-party route on michaelkato.work; "/api/analytics" is the legacy workers.dev path
+    const path = new URL(request.url).pathname;
+    if (request.method !== "POST" || !(path.endsWith("/api/v") || path.endsWith("/api/analytics"))) {
       return new Response("Not found", { status: 404 });
     }
 

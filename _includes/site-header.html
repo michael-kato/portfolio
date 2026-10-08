@@ -4,24 +4,23 @@
 {% if include.title %}{% assign header_link = nil %}{% endif %}
 
 <header id="dynamic-header" class="hero{% if include.is_home %} hero--home{% endif %}">
-  <!-- The background shader lives here only, and pauses once scrolled out of view -->
-  <canvas id="background-canvas" aria-hidden="true"></canvas>
   <div class="container header-content">
     {% if header_subtitle %}
       <p class="eyebrow header-subtitle">{{ header_subtitle }}</p>
     {% endif %}
-    <h1 class="header-title">
-      {% if header_link %}
-        <a href="{{ header_link | relative_url }}">{{ header_title }}</a>
-      {% else %}
-        {{ header_title }}
-      {% endif %}
-    </h1>
     {% if include.is_home %}
       {% include home-hero.html %}
+    {% else %}
+      <h1 class="header-title">
+        {% if header_link %}
+          <a href="{{ header_link | relative_url }}">{{ header_title }}</a>
+        {% else %}
+          {{ header_title }}
+        {% endif %}
+      </h1>
     {% endif %}
   </div>
-  {% include moon-horizon.html %}
+  {% include horizon.html %}
   <div class="shader-controls">
     <button id="prev-shader" class="shader-toggle-btn" type="button" title="Previous background" aria-label="Previous background">
       <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>

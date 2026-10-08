@@ -5,6 +5,7 @@
 </head>
 <body data-page="blog">
   {% capture post_eyebrow %}Blog · {{ page.date | date: "%B %-d, %Y" }}{% endcapture %}
+  <canvas id="background-canvas" aria-hidden="true"></canvas>
   {% include site-nav.html %}
   {% include site-header.html title=page.title subtitle=post_eyebrow %}
   <main>

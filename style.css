@@ -1,12 +1,11 @@
 /* ===== Tokens ===== */
-/* ===== Tokens ===== */
 :root {
   color-scheme: dark;
 
-  /* Palette: deep space for the header, warm lunar-dust grey below it, suit-white text,
-     and international orange for things you can act on. Gold is for patch thread and "GO". */
+  /* Palette: deep space behind everything (the shader shows the whole way down), warm grey
+     equipment panels, suit-white text, and international orange for things you can act on.
+     Gold is for patch thread, green for "GO". */
   --space: oklch(9% .015 265);
-  --bg: oklch(17% .005 70);
   --surface: oklch(21.5% .006 70);
   --surface-2: oklch(25% .007 70);
   --surface-sunken: oklch(13% .004 70);
@@ -19,8 +18,8 @@
   --accent-hover: color-mix(in oklch, var(--accent), white 14%);
   --on-accent: oklch(14% .01 50);
   --gold: oklch(80% .12 85);
+  --go: oklch(78% .19 145);
   --label-tape: oklch(13% .005 260);
-  --duct-tape: oklch(63% .006 90 / .9);
   --shadow-color: oklch(4% .01 265 / .6);
 
   /* Older names, still referenced by inline styles in vfx.html. */
@@ -50,11 +49,13 @@
   --radius: 4px;
   --radius-sm: 3px;
   --shadow-lg: 0 12px 32px var(--shadow-color);
+  --video-width: 40rem;
 
-  /* Textures (inline SVG, no requests): fine grain, sparse dust specks, film-plate crosses */
+  /* Content sits on a dimmed veil over the stars so text stays readable. */
+  --veil: oklch(9% .015 265 / .62);
+
+  /* Texture (inline SVG, no request): fine grain */
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  --specks: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='1' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 .85  0 0 0 0 .82  0 0 0 0 .76  0 0 0 9 -7.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
-  --reseau: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cpath d='M45 39v12M39 45h12' stroke='white' stroke-opacity='.7' stroke-width='1.2'/%3E%3C/svg%3E");
 
   /* Motion: strong ease-out for things entering, leaving, or responding to input. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -85,7 +86,7 @@
 
 body {
   min-height: 100svh;
-  background-color: var(--bg);
+  background-color: var(--space);
   color: var(--text);
   font: 400 1rem/1.6 var(--font-sans);
 }
@@ -348,12 +349,11 @@ html:has(dialog:modal) {
   }
 }
 
-/* ===== Page header (the only place the background shader lives) ===== */
+/* ===== Page header ===== */
 .hero {
   position: relative;
   isolation: isolate;
   overflow: clip;
-  background-color: var(--space);
   padding-block-start: clamp(3.5rem, 2.5rem + 5vw, 6.5rem);
 }
 
@@ -362,9 +362,9 @@ html:has(dialog:modal) {
 }
 
 #background-canvas {
-  position: absolute;
+  position: fixed;
   inset: 0;
-  z-index: -2;
+  z-index: -1;
   display: block;
   inline-size: 100%;
   block-size: 100%;
@@ -489,7 +489,7 @@ html:has(dialog:modal) {
 }
 
 .stats .go {
-  color: var(--gold);
+  color: var(--go);
 }
 
 .stats .go::before {
@@ -498,20 +498,19 @@ html:has(dialog:modal) {
   vertical-align: 0.15em;
 }
 
-/* Lunar horizon under every page header; it fades into the page's dust grey. */
-.moon {
+/* Soft planetary limb under every page header */
+.horizon {
   display: block;
   inline-size: 100%;
-  block-size: clamp(110px, 8vw + 60px, 190px);
+  block-size: clamp(80px, 6vw + 50px, 150px);
   margin-block-start: clamp(1.5rem, 1rem + 2vw, 3rem);
+  /* Glow fades out before the section below begins, so there's no hard edge */
+  -webkit-mask-image: linear-gradient(to bottom, #000 25%, transparent 95%);
+  mask-image: linear-gradient(to bottom, #000 25%, transparent 95%);
 }
 
-.hero:not(.hero--home) .moon {
-  block-size: clamp(70px, 5vw + 40px, 120px);
-}
-
-.moon-settle-stop {
-  stop-color: var(--bg);
+.hero:not(.hero--home) .horizon {
+  block-size: clamp(60px, 4vw + 36px, 100px);
 }
 
 .shader-controls {
@@ -549,21 +548,9 @@ html:has(dialog:modal) {
 /* ===== Sections ===== */
 main > section {
   position: relative;
-  isolation: isolate;
   padding-block: var(--space-section);
   border-block-start: 1px solid var(--line);
-}
-
-/* Sparse bright dust specks on the "surface" */
-main > section::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: var(--specks);
-  background-size: 320px;
-  opacity: 0.35;
+  background: var(--veil);
 }
 
 main > section:first-child {
@@ -765,27 +752,20 @@ main > section:first-child {
 }
 
 .career-projects {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
 }
 
-/* Cards with screenshots or video, and an odd card out at the end, get the full row. */
-.career-projects > .project-card:has(.project-images, .project-video-container),
-.career-projects > .project-card:last-child:nth-child(odd) {
-  grid-column: 1 / -1;
-}
-
-.career-video-container,
 .video-container {
   margin-block-start: 1.5rem;
 }
 
-.career-video-container iframe,
 .video-container iframe {
   display: block;
   inline-size: 100%;
-  max-inline-size: 52rem;
+  max-inline-size: var(--video-width);
+  margin-inline: auto;
   height: auto;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--line);
@@ -826,7 +806,7 @@ main > section:first-child {
     radial-gradient(circle at 11px calc(100% - 11px), var(--screw)),
     radial-gradient(circle at calc(100% - 11px) calc(100% - 11px), var(--screw)),
     linear-gradient(160deg, oklch(100% 0 0 / .03), transparent 40%),
-    var(--surface);
+    oklch(21.5% .006 70 / .92);
   border: 1px solid oklch(0% 0 0 / .5);
   border-radius: var(--radius-sm);
   box-shadow: inset 0 1px 0 oklch(100% 0 0 / .05), 0 10px 30px oklch(0% 0 0 / .25);
@@ -883,35 +863,9 @@ main > section:first-child {
   border-radius: var(--radius);
 }
 
-.project-images::before,
-.project-images::after,
-.art-images::before,
-.art-images::after {
-  content: "";
-  position: absolute;
-  z-index: 2;
-  inline-size: 110px;
-  block-size: 28px;
-  pointer-events: none;
-  background:
-    repeating-linear-gradient(90deg, oklch(100% 0 0 / .07) 0 2px, transparent 2px 5px),
-    repeating-linear-gradient(0deg, oklch(0% 0 0 / .06) 0 1px, transparent 1px 3px),
-    var(--duct-tape);
-  clip-path: polygon(2% 0, 98% 0, 100% 16%, 97% 32%, 100% 50%, 96% 68%, 100% 84%, 98% 100%, 2% 100%, 0 84%, 4% 66%, 0 50%, 3% 32%, 0 16%);
-}
-
-.project-images::before,
-.art-images::before {
-  inset-block-start: -11px;
-  inset-inline-start: -20px;
-  rotate: -32deg;
-}
-
-.project-images::after,
-.art-images::after {
-  inset-block-end: -9px;
-  inset-inline-end: -18px;
-  rotate: -28deg;
+/* Project screenshots (UI, wireframes) need size to stay legible: two across, never cropped. */
+.project-images {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
 }
 
 /* Gallery tiles are <button>s so they're keyboard reachable; strip button chrome. */
@@ -927,7 +881,7 @@ main > section:first-child {
   border-radius: var(--radius-sm);
   overflow: clip;
   cursor: zoom-in;
-  transition: border-color 0.2s;
+  transition: border-color 0.08s;
 }
 
 .project-image,
@@ -939,13 +893,19 @@ main > section:first-child {
   object-position: top;
 }
 
+.project-image {
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+  background: var(--surface-sunken);
+}
+
 @media (hover: hover) and (pointer: fine) {
   .project-image-container:hover,
   .art-image-container:hover {
     border-color: var(--accent);
   }
 
-  .project-image-container:hover img,
   .art-image-container:hover img {
     scale: 1.04;
   }
@@ -961,18 +921,8 @@ main > section:first-child {
 }
 
 .art-image-frame {
-  position: relative;
   display: block;
   overflow: clip;
-}
-
-/* Réseau crosses, as on Apollo Hasselblad frames */
-.art-image-frame::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--reseau) center / 90px 90px;
 }
 
 .art-image-caption {
@@ -992,6 +942,8 @@ main > section:first-child {
 .art-video-container iframe {
   display: block;
   inline-size: 100%;
+  max-inline-size: var(--video-width);
+  margin-inline: auto;
   height: auto;
   aspect-ratio: 16 / 9;
   margin-block-start: 0.75rem;
@@ -1314,6 +1266,11 @@ main > section:first-child {
   cursor: zoom-in;
 }
 
+.single-video {
+  max-inline-size: var(--video-width);
+  margin-inline: auto;
+}
+
 .media-item,
 .single-video {
   padding: 0.5rem;
@@ -1324,6 +1281,10 @@ main > section:first-child {
 
 .blog-content > :is(.media-item, .single-video, .video-vertical-wrap) {
   margin-block: 2rem;
+}
+
+.blog-content > .single-video {
+  margin-inline: auto;
 }
 
 .media-item img,
@@ -1588,6 +1549,7 @@ main > section:first-child {
 .site-footer {
   padding-block: 2rem 2.5rem;
   border-block-start: 1px solid var(--line);
+  background: var(--veil);
 }
 
 /* Leave room for the chat button on pages that have it. */
@@ -1895,13 +1857,13 @@ body:has(.chat-widget) .site-footer {
 
   .project-image-container,
   .art-image-container {
-    transition: border-color 0.2s, scale 0.16s var(--ease-out);
+    transition: border-color 0.08s, scale 0.16s var(--ease-out);
   }
 
   .project-image,
   .art-image,
   .blog-card-thumb :is(img, video) {
-    transition: scale 0.4s var(--ease-out);
+    transition: scale 0.25s var(--ease-out);
   }
 
   .blog-card,

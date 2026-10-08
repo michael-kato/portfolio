@@ -1,0 +1,16 @@
+<!-- Soft planetary limb: a gradient ellipse with a thin rim of light -->
+<svg class="horizon" viewBox="0 0 1440 160" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+  <defs>
+    <radialGradient id="horizon-glow" cx=".5" cy="0" r=".55" fx=".5" fy="0">
+      <stop offset="0" stop-color="#5a87c4" stop-opacity=".55"/>
+      <stop offset=".45" stop-color="#2e4777" stop-opacity=".22"/>
+      <stop offset="1" stop-color="#0c1528" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="horizon-rim" x1="0" x2="1">
+      <stop offset="0" stop-color="#cfe0f5" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#cfe0f5" stop-opacity=".8"/>
+      <stop offset="1" stop-color="#cfe0f5" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <ellipse cx="720" cy="1080" rx="1600" ry="1000" fill="url(#horizon-glow)" stroke="url(#horizon-rim)" stroke-width="1.2"/>
+</svg>

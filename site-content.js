@@ -328,6 +328,7 @@ window.artData = {
     title: "Misc Personal Work",
     description: `
       <p>Creative explorations and fun projects I've worked on in my spare time. (2009-2012)</p>
+      <p>Also includes models created for a speed modelling competition I used to run on Interlopers.net. Usually a 2-hour time limit.</p>
     `,
     images: [
       {
@@ -349,16 +350,7 @@ window.artData = {
       {
         src: "https://i.imgur.com/7RAEA.png",
         caption: "Vista building for an HL2 mod"
-      }
-    ]
-  },
-
-  "art-speed-challenge": {
-    title: "2-Hour Speed Challenges",
-    description: `
-      <p>Models created for a speed modelling competition I used to run on Interlopers.net. Usually a 2-hour time limit. (2009-2012)</p>
-    `,
-    images: [
+      },
       {
         src: "https://i.imgur.com/tiUt0.png",
         caption: "Faithfully low-poly Conker."

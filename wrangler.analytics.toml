@@ -3,6 +3,11 @@ main = "analytics-worker.js"
 compatibility_date = "2024-01-01"
 workers_dev = true
 
+# Serve the endpoint first-party so tracking prevention doesn't block it
+routes = [
+  { pattern = "michaelkato.work/api/v", zone_name = "michaelkato.work" }
+]
+
 [build]
 command = "echo 'No build step'"
 

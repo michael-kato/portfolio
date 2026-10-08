@@ -4,7 +4,8 @@
     return;
   }
 
-  const endpoint = "https://portfolio-analytics.mkato.workers.dev/api/analytics";
+  // Same-origin route to the analytics worker (third-party workers.dev URLs get blocked by tracking prevention)
+  const endpoint = "/api/v";
 
   let maxScroll = 0;
   let clicks = 0;

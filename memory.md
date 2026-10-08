@@ -100,11 +100,12 @@ The current `programming` variant:
 
 ## Layout & Styling Notes
 
-- **Theme:** "Space, but lived-in." The page header is orbit (Star Nest shader + `_includes/moon-horizon.html`), everything below is the lunar surface (dust-grey `--bg`, a fixed grain overlay on `body::after`, sparse specks on each section).
-- **Tokens:** all colors live on `:root` in `style.css` as OKLCH. `--space` (header), `--bg` / `--surface` / `--surface-2` (page, panels), `--text` / `--text-strong` / `--text-muted`, `--line` / `--line-strong`, `--accent` (international orange: buttons, links, open state), `--gold` (patch thread, "GO").
+- **Theme:** space, but lived-in. The Star Nest shader is a fixed full-page canvas, so stars show the whole way down; sections sit on a translucent `--veil` for legibility, and a fixed grain overlay (`body::after`) adds grit. Every page header ends in a soft gradient ellipse (`_includes/horizon.html`).
+- **Tokens:** all colors live on `:root` in `style.css` as OKLCH. `--space` (page), `--surface` / `--surface-2` (panels), `--text` / `--text-strong` / `--text-muted`, `--line` / `--line-strong`, `--accent` (international orange: buttons, links, open state), `--gold` (patch thread), `--go` (green status).
 - **Type:** Jost for display (`--font-display`), IBM Plex Sans for reading, IBM Plex Mono for small uppercase labels (`.mono`). Loaded from Google Fonts in `_includes/page_head.html`.
-- **Theme details, used sparingly on purpose:** `.tape-label` (label-maker tape) on section names, embroidered `.patch` SVGs on career rows, duct tape on screenshot trays, screw heads on cards, film-plate crosses + `MK-0103` frame codes on art. Themed wording is limited to "GO" in the hero stats and the art frame codes.
-- **Shader:** the canvas lives inside the page header and pauses when scrolled out of view. `.low-power` (no GPU) drops blur and the grain overlay.
+- **Theme details, used sparingly on purpose:** `.tape-label` (label-maker tape) on section names, embroidered `.patch` SVGs on career rows, screw heads on cards, `MK-0103` frame codes on art. Themed wording is limited to "GO" in the hero stats and the art frame codes.
+- **Videos:** embeds are centered and capped at `--video-width` (40rem).
+- **Shader:** `#background-canvas` is fixed behind the page (in each layout). `.low-power` (no GPU) drops blur and the grain overlay.
 - **Scrolling:** `scroll-behavior: smooth` is set on `html` only under `prefers-reduced-motion: no-preference`. Anchor targets clear the sticky nav via `html { scroll-padding-top: var(--nav-offset) }`.
 
 ## Local preview
