@@ -1,33 +1,33 @@
+<!-- Shared pieces for the embroidered studio patches -->
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <path id="patch-ring" d="M 50 50 m -35.5 0 a 35.5 35.5 0 1 1 71 0 a 35.5 35.5 0 1 1 -71 0"/>
+    <filter id="patch-thread"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="1.2"/></filter>
+  </defs>
+</svg>
+
 <main>
-  <section id="about">
-    <div class="container">
-      <div class="about-content" style="text-align: center; max-width: 800px; margin: 0 auto;">
-        <p>
-          Hi, I'm a tech artist with 10 years of experience in games, tech, and VR. I'm passionate about game development in general but specialize in performance optimization, tools development, and pipeline improvements. 
-        </p>
-      </div>
-
-    </div>
-  </section>
-
   <section id="career">
     <div class="container">
       <div class="section-header">
+        <div class="section-rule"><span class="tape-label">01 Career</span><span class="section-rule__line"></span><span class="mono">3 studios · 9 projects</span></div>
         <h2>Career</h2>
       </div>
 
       <div class="career-categories">
         <!-- Meta -->
-        <div class="career-category">
-          <div class="career-category-header">
-            <h3>Meta - Horizon Worlds (VR)</h3>
-            <div class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
+        <details class="career-category" name="career" open>
+          <summary class="career-category-header">
+            <svg class="patch" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="47" class="patch__border" filter="url(#patch-thread)"/>
+              <circle cx="50" cy="50" r="42.5" class="patch__inner"/>
+              <text class="patch__ring"><textPath href="#patch-ring" textLength="222" lengthAdjust="spacing">META REALITY LABS · HORIZON WORLDS ·</textPath></text>
+              <polyline class="patch__icon" points="30,58 39,55 45,57 51,38 56,57 63,53 70,55"/>
+            </svg>
+            <h3>Horizon Worlds<small>Meta Reality Labs</small></h3>
+            <span class="mono career-meta">VR · Performance</span>
+            <span class="toggle-icon" aria-hidden="true"></span>
+          </summary>
           <div class="career-category-content">
             <p class="career-category-summary">
               My primary role at Meta Reality Labs was to look at performance as a problem holistically.
@@ -36,7 +36,7 @@
             </p>
             <div class="career-projects"
               data-project-ids="project-code-fixes, project-perf-framework, project-perf-dashboards">
-              <!-- Dynamically populated from portfolio-data.js -->
+              <!-- Dynamically populated from site-content.js -->
             </div>
             <div class="career-video-container">
               <iframe width="100%" height="350" src="https://www.youtube.com/embed/02kCEurWkqU" title="Horizon Worlds"
@@ -45,19 +45,21 @@
                 allowfullscreen></iframe>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- Apple - Synthetic Data -->
-        <div class="career-category">
-          <div class="career-category-header">
-            <h3>Apple</h3>
-            <div class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>/
-            </div>
-          </div>
+        <details class="career-category" name="career">
+          <summary class="career-category-header">
+            <svg class="patch" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="47" class="patch__border" filter="url(#patch-thread)"/>
+              <circle cx="50" cy="50" r="42.5" class="patch__inner"/>
+              <text class="patch__ring"><textPath href="#patch-ring" textLength="222" lengthAdjust="spacing">APPLE · SYNTHETIC DATA · VISION PRO ·</textPath></text>
+              <path class="patch__icon" d="M30 50 C 38 39, 62 39, 70 50 C 62 61, 38 61, 30 50 Z"/><circle cx="50" cy="50" r="5.5" class="patch__dot"/>
+            </svg>
+            <h3>Apple Vision Pro<small>Apple</small></h3>
+            <span class="mono career-meta">Synthetic data · Pipelines</span>
+            <span class="toggle-icon" aria-hidden="true"></span>
+          </summary>
           <div class="career-category-content">
             <p class="career-category-summary">
               At Apple I was tasked with building out features to support a fast-paced synthetic data pipeline
@@ -66,7 +68,7 @@
             </p>
             <div class="career-projects"
               data-project-ids="project-outsourcing-pipeline, project-asset-qa, project-proc-scene">
-              <!-- Dynamically populated from portfolio-data.js -->
+              <!-- Dynamically populated from site-content.js -->
             </div>
             <div class="career-video-container">
               <iframe width="100%" height="350" src="https://www.youtube.com/embed/Btf4mN37OsU" title="Apple Vision Pro"
@@ -75,19 +77,21 @@
                 allowfullscreen></iframe>
             </div>
           </div>
-        </div>
+        </details>
 
         <!-- Sledgehammer Games -->
-        <div class="career-category">
-          <div class="career-category-header">
-            <h3>Sledgehammer Games</h3>
-            <div class="toggle-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </div>
-          </div>
+        <details class="career-category" name="career">
+          <summary class="career-category-header">
+            <svg class="patch" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+              <circle cx="50" cy="50" r="47" class="patch__border" filter="url(#patch-thread)"/>
+              <circle cx="50" cy="50" r="42.5" class="patch__inner"/>
+              <text class="patch__ring"><textPath href="#patch-ring" textLength="222" lengthAdjust="spacing">SLEDGEHAMMER GAMES · CALL OF DUTY: WWII ·</textPath></text>
+              <path class="patch__icon" d="M34 61 L50 35 L66 61 Z M50 35 L50 61 M34 61 L58 48"/>
+            </svg>
+            <h3>Call of Duty: WWII<small>Sledgehammer Games</small></h3>
+            <span class="mono career-meta">VFX · Performance · Tools</span>
+            <span class="toggle-icon" aria-hidden="true"></span>
+          </summary>
           <div class="career-category-content">
             <p class="career-category-summary">
               I started in this role as a VFX tech artist making destructible and dynamic props and eventually shifted
@@ -95,7 +99,7 @@
             </p>
             <div class="career-projects"
               data-project-ids="project-perf-ownership, project-lod-pipeline, project-edge-cleanup">
-              <!-- Dynamically populated from portfolio-data.js -->
+              <!-- Dynamically populated from site-content.js -->
             </div>
             <div class="career-video-container">
               <iframe width="100%" height="350" src="https://www.youtube.com/embed/D4Q_XYVescc"
@@ -104,67 +108,47 @@
                 allowfullscreen></iframe>
             </div>
           </div>
-        </div>
+        </details>
       </div>
 
       <!-- GitHub Link -->
-      <div class="github-link-container">
-        <a href="https://github.com/michael-kato" target="_blank" class="github-link">
-          <div class="github-link-content">
-            <svg class="github-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-              fill="currentColor">
-              <path
-                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-            </svg>
-            <div class="github-link-text">
-              <span class="github-link-title">More Projects</span>
-              <span class="github-link-description">Check out my GitHub!</span>
-            </div>
-            <svg class="github-arrow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </div>
-        </a>
-      </div>
+      <a href="https://github.com/michael-kato" target="_blank" rel="noopener" class="link-row github-link">
+        <span class="mono">GitHub</span>
+        <span class="github-link-text">
+          <span class="github-link-title">More Projects</span>
+          <span class="github-link-description">Check out my GitHub!</span>
+        </span>
+        <span class="link-row__arrow" aria-hidden="true">↗</span>
+      </a>
     </div>
   </section>
-
-
-
 
   <section id="blog">
     <div class="container">
       <div class="section-header">
+        <div class="section-rule"><span class="tape-label">02 Blog</span><span class="section-rule__line"></span><a class="mono" href="{{ '/blog/' | relative_url }}">All posts →</a></div>
         <h2>Blog</h2>
       </div>
       <div class="blog-grid">
         {% for post in site.posts limit: 3 %}
         {% assign content_parts = post.content | split: 'src="' %}
         <a href="{{ '/blog/' | relative_url }}#{{ post.title | slugify }}" class="blog-card">
-          <div class="blog-card-meta">
-            <h3 class="blog-card-title">{{ post.title }}</h3>
-            <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
-          </div>
-          <div class="blog-card-row">
-            <p class="blog-card-excerpt">{{ post.content | strip_html | truncate: 160 }}</p>
+          <div class="blog-card-thumb">
             {% if content_parts.size > 1 %}
             {% assign first_media = content_parts[1] | split: '"' | first %}
-            <div class="blog-card-thumb">
-              {% if first_media contains '.mp4' or first_media contains '.webm' or first_media contains '.mov' %}
-              <video src="{{ first_media | relative_url }}" muted autoplay loop playsinline></video>
-              {% else %}
-              <img src="{{ first_media | relative_url }}" alt="{{ post.title }}">
-              {% endif %}
-            </div>
+            {% if first_media contains '.mp4' or first_media contains '.webm' or first_media contains '.mov' %}
+            <video src="{{ first_media | relative_url }}" muted autoplay loop playsinline></video>
+            {% else %}
+            <img src="{{ first_media | relative_url }}" alt="" loading="lazy">
+            {% endif %}
             {% endif %}
           </div>
+          <span class="mono blog-date">{{ post.date | date: "%b %-d, %Y" }}</span>
+          <h3 class="blog-card-title">{{ post.title }}</h3>
+          <p class="blog-card-excerpt">{{ post.content | strip_html | truncate: 140 }}</p>
+          <span class="blog-read-more">Read post →</span>
         </a>
         {% endfor %}
-      </div>
-      <div class="blog-view-all">
-        <a href="{{ '/blog/' | relative_url }}" class="blog-view-all-link">View all blog posts &rarr;</a>
       </div>
     </div>
   </section>
@@ -172,14 +156,15 @@
   <section id="art">
     <div class="container">
       <div class="section-header">
+        <div class="section-rule"><span class="tape-label">03 Art</span><span class="section-rule__line"></span><span class="mono">Before the career</span></div>
         <h2>Art</h2>
+        <p class="section-lede">
+          Some of this work goes back to well before my professional career. I keep it here because it reflects the path that
+          eventually led me into technical art, tools development, and systems work.
+          I wouldn't call this a reflection of where I am currently as an artist... these days I prefer to work on tech
+          projects rather than art in my free time.
+        </p>
       </div>
-      <p style="text-align: center; margin-bottom: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
-        Some of this work goes back to well before my professional career. I keep it here because it reflects the path that
-        eventually led me into technical art, tools development, and systems work.
-        I wouldn't call this a reflection of where I am currently as an artist... these days I prefer to work on tech
-        projects rather than art in my free time.
-      </p>
 
       <div class="art-grid">
         <div class="art-item" id="art-escape-game"></div>
@@ -188,95 +173,55 @@
         <div class="art-item" id="art-personal"></div>
         <div class="art-item" id="art-speed-challenge"></div>
       </div>
+
+      <div class="video-container">
+        <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animations" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
+      </div>
     </div>
   </section>
 
-  <div class="video-container">
-    <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animations" frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen></iframe>
-
-
-
-    <section id="contact">
-      <div class="container">
-        <div class="section-header">
-          <h2>Contact Me</h2>
-        </div>
-
-
-        <div class="contact-grid">
-          <div class="contact-box">
-            <div class="contact-item">
-              <div class="contact-label">
-                <span>📧 Email</span>
-              </div>
-              <div class="contact-value">
-                <a href="mailto:michaelakato@gmail.com">michaelakato@gmail.com</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-label">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path
-                    d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                </svg>
-                <span>LinkedIn</span>
-              </div>
-              <div class="contact-value">
-                <a href="https://linkedin.com/in/michael-kato" target="_blank">linkedin.com/in/michael-kato</a>
-              </div>
-            </div>
-          </div>
-        </div>
+  <section id="contact">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-rule"><span class="tape-label">04 Contact</span><span class="section-rule__line"></span><span class="mono">Open to roles</span></div>
+        <h2>Let's work together.</h2>
       </div>
 
-      <!-- Resume download button -->
-      <div class="resume-download">
-        <a href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" class="download-button" download>
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
-          Download Resume
+      <div class="contact-list">
+        <a class="link-row" href="mailto:michaelakato@gmail.com">
+          <span class="mono">Email</span>
+          <span>michaelakato@gmail.com</span>
+          <span class="link-row__arrow" aria-hidden="true">→</span>
+        </a>
+        <a class="link-row" href="https://linkedin.com/in/michael-kato" target="_blank" rel="noopener">
+          <span class="mono">LinkedIn</span>
+          <span>linkedin.com/in/michael-kato</span>
+          <span class="link-row__arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="link-row" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>
+          <span class="mono">Résumé</span>
+          <span>Download PDF</span>
+          <span class="link-row__arrow" aria-hidden="true">↓</span>
         </a>
       </div>
 
-    </section>
-
+      <p class="dev-link"><a class="mono" href="{{ '/test.html' | relative_url }}">Test page</a></p>
+    </div>
+  </section>
 </main>
 
-
-<div class="section-header">
-  <a href="{{ '/test.html' | relative_url }}">Test</a>
-</div>
-
-
-
-
-<!-- Modal container for project details -->
-<div id="project-modal" class="modal">
-  <!-- Modal content will be dynamically inserted here -->
-</div>
-
-<!-- Modal container for art details -->
-<div id="art-modal" class="modal">
-  <!-- Art modal content will be dynamically inserted here -->
-</div>
-
 <!-- Lightbox container for fullscreen images -->
-<div id="lightbox-container" class="lightbox">
-  <span class="lightbox-close" title="Close (Esc)">&times;</span>
+<dialog id="lightbox-container" class="lightbox" aria-label="Image viewer">
+  <button type="button" class="lightbox-close" aria-label="Close" title="Close (Esc)">&times;</button>
   <div class="lightbox-content">
-    <img id="lightbox-image" class="lightbox-image" referrerpolicy="no-referrer">
+    <img id="lightbox-image" class="lightbox-image" alt="" referrerpolicy="no-referrer">
     <div class="lightbox-caption"></div>
     <div class="lightbox-nav">
-      <button class="lightbox-prev">←</button>
-      <span class="lightbox-counter"></span>
-      <button class="lightbox-next">→</button>
+      <button type="button" class="lightbox-prev" aria-label="Previous image">←</button>
+      <span class="mono lightbox-counter"></span>
+      <button type="button" class="lightbox-next" aria-label="Next image">→</button>
     </div>
   </div>
-</div>
+</dialog>

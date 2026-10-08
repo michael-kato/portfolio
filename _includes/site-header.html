@@ -1,19 +1,33 @@
-{% assign header_title = page.header_title | default: site.title %}
-{% assign header_subtitle = page.header_subtitle %}
+{% assign header_title = include.title | default: page.header_title | default: page.title | default: site.title %}
+{% assign header_subtitle = include.subtitle | default: page.header_subtitle %}
 {% assign header_link = page.header_link %}
+{% if include.title %}{% assign header_link = nil %}{% endif %}
 
-<header id="dynamic-header">
-  <div class="header-background"></div>
-  <div class="header-content">
+<header id="dynamic-header" class="hero{% if include.is_home %} hero--home{% endif %}">
+  <!-- The background shader lives here only, and pauses once scrolled out of view -->
+  <canvas id="background-canvas" aria-hidden="true"></canvas>
+  <div class="container header-content">
+    {% if header_subtitle %}
+      <p class="eyebrow header-subtitle">{{ header_subtitle }}</p>
+    {% endif %}
     <h1 class="header-title">
       {% if header_link %}
-        <a href="{{ header_link | relative_url }}" style="color: inherit; text-decoration: none;">{{ header_title }}</a>
+        <a href="{{ header_link | relative_url }}">{{ header_title }}</a>
       {% else %}
         {{ header_title }}
       {% endif %}
     </h1>
-    {% if header_subtitle %}
-      <p class="header-subtitle">{{ header_subtitle }}</p>
+    {% if include.is_home %}
+      {% include home-hero.html %}
     {% endif %}
+  </div>
+  {% include moon-horizon.html %}
+  <div class="shader-controls">
+    <button id="prev-shader" class="shader-toggle-btn" type="button" title="Previous background" aria-label="Previous background">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"></polyline></svg>
+    </button>
+    <button id="next-shader" class="shader-toggle-btn" type="button" title="Next background" aria-label="Next background">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </button>
   </div>
 </header>

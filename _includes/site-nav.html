@@ -8,11 +8,22 @@
   {% assign contact_link = "/" | relative_url | append: "#contact" %}
 {% endif %}
 
-<nav>
-  <ul>
-    <li><a href="{{ career_link }}">Career</a></li>
-    <li><a href="{{ art_link }}">Art</a></li>
-    <li><a href="{{ contact_link }}">Contact</a></li>
-    <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
-  </ul>
+<nav class="topbar" aria-label="Main">
+  <div class="container topbar__row">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <svg class="brand__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+        <circle cx="50" cy="50" r="46" class="brand__disc"/>
+        <ellipse cx="50" cy="52" rx="38" ry="13" class="brand__orbit" transform="rotate(-18 50 52)"/>
+        <text x="50" y="60" text-anchor="middle" class="brand__initials">MK</text>
+      </svg>
+      <span class="brand__name">Michael Kato</span>
+    </a>
+    <ul>
+      <li><a href="{{ career_link }}">Career</a></li>
+      <li><a href="{{ art_link }}">Art</a></li>
+      <li><a href="{{ contact_link }}">Contact</a></li>
+      <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
+    </ul>
+    <a class="btn btn--accent btn--sm" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>Résumé ↓</a>
+  </div>
 </nav>

@@ -43,11 +43,7 @@ function withQualityDefines(src) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Ensure canvas is properly positioned
-  const bgCanvas = document.getElementById('background-canvas');
-  if (bgCanvas) {
-    bgCanvas.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -100; pointer-events: none; display: block; border: none; margin: 0; padding: 0;';
-  }
+  // The background canvas is positioned by style.css (it fills the page header)
 
   // Load external shader files before initializing
   await loadShaders();
@@ -181,8 +177,24 @@ function initShader() {
       if (touch) updateMousePosition(touch);
     }, { passive: true });
 
+    // Only render while the canvas is on screen; the loop restarts when it scrolls back in
+    let visible = true;
+    let running = true;
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      if (visible && !running) {
+        running = true;
+        requestAnimationFrame(render);
+      }
+    }).observe(canvas);
+
     let then = 0;
     function render(now) {
+      if (!visible) {
+        running = false;
+        return;
+      }
+
       now *= 0.001;  // convert to seconds
       const deltaTime = now - then;
       then = now;
@@ -225,7 +237,7 @@ function setupShaderControls() {
           prevBtn.title = 'Previous Background';
           prevBtn.setAttribute('aria-label', 'Previous Background');
           prevBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>';
-          nav.insertBefore(prevBtn, ul);
+          ul.before(prevBtn);
         }
         if (!nextBtn) {
           nextBtn = document.createElement('button');
@@ -234,7 +246,7 @@ function setupShaderControls() {
           nextBtn.title = 'Next Background';
           nextBtn.setAttribute('aria-label', 'Next Background');
           nextBtn.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>';
-          nav.appendChild(nextBtn);
+          ul.after(nextBtn);
         }
       }
     }
@@ -243,6 +255,7 @@ function setupShaderControls() {
   // Nothing to switch between (only one background shader, or no WebGL2 at all)
   if (!bgState || backgroundShaderKeys.length < 2) {
     [prevBtn, nextBtn].forEach(btn => { if (btn) btn.style.display = 'none'; });
+    document.querySelector('.shader-controls')?.setAttribute('hidden', '');
     return;
   }
 

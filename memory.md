@@ -100,17 +100,12 @@ The current `programming` variant:
 
 ## Layout & Styling Notes
 
-- **Color Hierarchy:**
-  - `bright-wheat`: Used for site and blog post titles.
-  - `light-wheat`: Used for section headers (About, Career, etc.), nav links, and tags.
-  - `accent-color` (Orange): Used for career category headers and project titles.
-  - `wheat`: Used for standard body and descriptive text.
-  - `dark-burnt-orange`: Used for accent lines, arrows, logos, and UI-specific links (Read more).
-- **Lists:** Bullets in cards and modals are explicitly indented.
-- **Overlays:** Header background overlays and canvas opacities are tuned to ensure the shader remains visible; modal backdrops use higher opacity (0.92) for better legibility.
-- **Scrolling:** `scroll-behavior: smooth` is enabled globally. Anchor links use `scroll-margin-top` (80px) to account for the sticky navigation bar.
-
-Variant styling lives in `style.css` as body-level CSS custom property overrides.
+- **Theme:** "Space, but lived-in." The page header is orbit (Star Nest shader + `_includes/moon-horizon.html`), everything below is the lunar surface (dust-grey `--bg`, a fixed grain overlay on `body::after`, sparse specks on each section).
+- **Tokens:** all colors live on `:root` in `style.css` as OKLCH. `--space` (header), `--bg` / `--surface` / `--surface-2` (page, panels), `--text` / `--text-strong` / `--text-muted`, `--line` / `--line-strong`, `--accent` (international orange: buttons, links, open state), `--gold` (patch thread, "GO").
+- **Type:** Jost for display (`--font-display`), IBM Plex Sans for reading, IBM Plex Mono for small uppercase labels (`.mono`). Loaded from Google Fonts in `_includes/page_head.html`.
+- **Theme details, used sparingly on purpose:** `.tape-label` (label-maker tape) on section names, embroidered `.patch` SVGs on career rows, duct tape on screenshot trays, screw heads on cards, film-plate crosses + `MK-0103` frame codes on art. Themed wording is limited to "GO" in the hero stats and the art frame codes.
+- **Shader:** the canvas lives inside the page header and pauses when scrolled out of view. `.low-power` (no GPU) drops blur and the grain overlay.
+- **Scrolling:** `scroll-behavior: smooth` is set on `html` only under `prefers-reduced-motion: no-preference`. Anchor targets clear the sticky nav via `html { scroll-padding-top: var(--nav-offset) }`.
 
 ## Local preview
 

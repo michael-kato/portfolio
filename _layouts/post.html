@@ -4,24 +4,13 @@
   {% include page_head.html style_path="/style.css" %}
 </head>
 <body data-page="blog">
-  <canvas id="background-canvas"></canvas>
-  
-  {% include site-header.html %}
+  {% capture post_eyebrow %}Blog · {{ page.date | date: "%B %-d, %Y" }}{% endcapture %}
   {% include site-nav.html %}
+  {% include site-header.html title=page.title subtitle=post_eyebrow %}
   <main>
     <section id="blog-post">
       <div class="container" data-post-id="{{ page.post_id | default: page.title | slugify }}">
         <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Blog' }}</a>
-
-        <div class="section-header">
-          <h1>{{ page.title }}</h1>
-        </div>
-
-        <div class="content-narrow">
-          <div class="blog-card-meta">
-            <span class="blog-date">{{ page.date | date: "%B %-d, %Y" }}</span>
-          </div>
-        </div>
 
         <div class="blog-content">
           {{ content }}
@@ -33,18 +22,18 @@
       </div>
     </section>
 
-    <div id="lightbox-container" class="lightbox">
+    <dialog id="lightbox-container" class="lightbox" aria-label="Image viewer">
+      <button type="button" class="lightbox-close" aria-label="Close" title="Close (Esc)">&times;</button>
       <div class="lightbox-content">
-        <span class="lightbox-close">&times;</span>
-        <img id="lightbox-image" class="lightbox-image" referrerpolicy="no-referrer">
+        <img id="lightbox-image" class="lightbox-image" alt="" referrerpolicy="no-referrer">
         <div class="lightbox-caption"></div>
         <div class="lightbox-nav">
-          <button class="lightbox-prev">←</button>
+          <button type="button" class="lightbox-prev" aria-label="Previous image">←</button>
           <span class="lightbox-counter"></span>
-          <button class="lightbox-next">→</button>
+          <button type="button" class="lightbox-next" aria-label="Next image">→</button>
         </div>
       </div>
-    </div>
+    </dialog>
   </main>
 
   {% include site-footer.html %}

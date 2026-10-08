@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jekyll",
+      "runtimeExecutable": "bundle",
+      "runtimeArgs": [
+        "exec",
+        "jekyll",
+        "serve",
+        "--port",
+        "4000"
+      ],
+      "port": 4000
+    },
+    {
+      "name": "mockup",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "4100",
+        "--directory",
+        "C:/Users/me/AppData/Local/Temp/claude/C--Users-me-Documents-GitHub-portfolio/3ed9bb6a-ea45-4cef-9075-df892c08adaf/scratchpad/mockup"
+      ],
+      "port": 4100
+    }
+  ]
+}

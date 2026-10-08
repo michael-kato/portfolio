@@ -6,7 +6,7 @@
  *        before any other scripts. Set data attributes on <body> to customize:
  *
  *   data-header-title   - Header h1 text (default: "Michael Kato")
- *   data-header-subtitle - Header subtitle (default: "Technically an artist!")
+ *   data-header-subtitle - Header subtitle (default: none)
  *   data-header-link    - If set, header title becomes a link to this URL
  */
 
@@ -35,7 +35,7 @@
   // Read customisation from body data attributes
   const body = document.body;
   const headerTitle = body.dataset.headerTitle || 'Michael Kato';
-  const headerSubtitle = body.dataset.headerSubtitle || 'Technically an artist!';
+  const headerSubtitle = body.dataset.headerSubtitle || '';
   const headerLink = body.dataset.headerLink || '';
 
   // ── Header ──────────────────────────────────────────────────────────
@@ -45,11 +45,19 @@
 
   const headerEl = document.createElement('header');
   headerEl.id = 'dynamic-header';
+  headerEl.className = 'hero';
   headerEl.innerHTML = `
-    <div class="header-background"></div>
-    <div class="header-content">
+    <div class="container header-content">
+      ${headerSubtitle ? `<p class="eyebrow header-subtitle">${headerSubtitle}</p>` : ''}
       <h1 class="header-title">${titleHtml}</h1>
-      ${headerSubtitle ? `<p class="header-subtitle">${headerSubtitle}</p>` : ''}
+    </div>
+    <div class="shader-controls">
+      <button id="prev-shader" class="shader-toggle-btn" type="button" title="Previous background" aria-label="Previous background">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+      <button id="next-shader" class="shader-toggle-btn" type="button" title="Next background" aria-label="Next background">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
     </div>
   `;
 
@@ -59,34 +67,35 @@
   const indexBase = isIndex ? '' : `${root}index.html`;
 
   const navEl = document.createElement('nav');
+  navEl.className = 'topbar';
+  navEl.setAttribute('aria-label', 'Main');
   navEl.innerHTML = `
-    <button id="prev-shader" class="shader-toggle-btn" title="Previous Background" aria-label="Previous Background">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
-    </button>
-    <ul>
-      <li><a href="${indexBase}#career">Career</a></li>
-      <li><a href="${indexBase}#art">Art</a></li>
-      <li><a href="${indexBase}#contact">Contact</a></li>
-      <li><a href="${root}blog/">Blog</a></li>
-    </ul>
-    <button id="next-shader" class="shader-toggle-btn" title="Next Background" aria-label="Next Background">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </button>
+    <div class="container topbar__row">
+      <a class="brand" href="${root}index.html"><svg class="brand__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><circle cx="50" cy="50" r="46" class="brand__disc"/><ellipse cx="50" cy="52" rx="38" ry="13" class="brand__orbit" transform="rotate(-18 50 52)"/><text x="50" y="60" text-anchor="middle" class="brand__initials">MK</text></svg><span class="brand__name">Michael Kato</span></a>
+      <ul>
+        <li><a href="${indexBase}#career">Career</a></li>
+        <li><a href="${indexBase}#art">Art</a></li>
+        <li><a href="${indexBase}#contact">Contact</a></li>
+        <li><a href="${root}blog/">Blog</a></li>
+      </ul>
+      <a class="btn btn--accent btn--sm" href="${root}resources/Michael_Kato_Resume.pdf" download>Résumé ↓</a>
+    </div>
   `;
 
   // ── Footer ──────────────────────────────────────────────────────────
   const footerEl = document.createElement('footer');
-  footerEl.innerHTML = `<p>&copy; ${new Date().getFullYear()} Michael Kato. All rights reserved.</p>`;
+  footerEl.className = 'site-footer';
+  footerEl.innerHTML = `<div class="container site-footer__row"><span class="mono">&copy; ${new Date().getFullYear()} Michael Kato</span></div>`;
 
   // ── Inject ──────────────────────────────────────────────────────────
-  // Insert header + nav before <main> (or as first children of body)
+  // Insert nav + header before <main> (or as first children of body)
   const main = document.querySelector('main');
   if (main) {
-    body.insertBefore(navEl, main);
-    body.insertBefore(headerEl, navEl);
+    body.insertBefore(headerEl, main);
+    body.insertBefore(navEl, headerEl);
   } else {
-    body.prepend(navEl);
     body.prepend(headerEl);
+    body.prepend(navEl);
   }
 
   // Append footer at the end of body (before scripts if possible)

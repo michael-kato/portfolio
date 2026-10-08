@@ -1,0 +1,36 @@
+<!-- Lunar limb: fractal regolith lit from the left, fading into the page surface below -->
+<svg class="moon" viewBox="0 0 1440 190" preserveAspectRatio="xMidYMin slice" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="regolith" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="4" seed="5" result="fine"/>
+      <feDiffuseLighting in="fine" surfaceScale="1.8" lighting-color="#b9b4aa" result="lit"><feDistantLight azimuth="200" elevation="38"/></feDiffuseLighting>
+      <feTurbulence type="fractalNoise" baseFrequency=".003 .02" numOctaves="3" seed="9" result="mare"/>
+      <feColorMatrix in="mare" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -3.2 2" result="mareA"/>
+      <feFlood flood-color="#000" flood-opacity=".42"/>
+      <feComposite in2="mareA" operator="in" result="mareDark"/>
+      <feMerge result="surface"><feMergeNode in="lit"/><feMergeNode in="mareDark"/></feMerge>
+      <feComposite in="surface" in2="SourceAlpha" operator="in"/>
+    </filter>
+    <linearGradient id="moon-terminator" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity=".05"/>
+      <stop offset=".55" stop-color="#000" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#000" stop-opacity=".85"/>
+    </linearGradient>
+    <linearGradient id="moon-limb" x1="0" x2="1">
+      <stop offset="0" stop-color="#f3efe6" stop-opacity=".9"/>
+      <stop offset=".6" stop-color="#f3efe6" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#f3efe6" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="moon-settle" x1="0" x2="0" y1="0" y2="1">
+      <stop class="moon-settle-stop" offset=".35" stop-opacity="0"/>
+      <stop class="moon-settle-stop" offset="1" stop-opacity="1"/>
+    </linearGradient>
+    <clipPath id="moon-disc"><circle cx="720" cy="3460" r="3400"/></clipPath>
+  </defs>
+  <g clip-path="url(#moon-disc)">
+    <rect width="1440" height="190" fill="#8f8a80" filter="url(#regolith)" opacity=".75"/>
+    <rect width="1440" height="190" fill="url(#moon-terminator)"/>
+    <rect width="1440" height="190" fill="url(#moon-settle)"/>
+  </g>
+  <circle cx="720" cy="3460" r="3400" fill="none" stroke="url(#moon-limb)" stroke-width="1.5"/>
+</svg>

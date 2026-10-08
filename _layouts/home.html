@@ -5,10 +5,8 @@
 </head>
 
 <body data-page="home"{% if page.variant %} data-variant="{{ page.variant }}"{% endif %}>
-  <canvas id="background-canvas"></canvas>
-  
-  {% include site-header.html %}
   {% include site-nav.html is_home=true %}
+  {% include site-header.html is_home=true %}
 
   {% include home-content.html %}
 

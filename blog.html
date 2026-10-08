@@ -1,34 +1,30 @@
 ---
 layout: blog_index
 title: Blog
-header_title: Michael Kato
-header_subtitle: Blog
+header_title: Blog
+header_subtitle: All posts
 header_link: /
 permalink: /blog/
 ---
 
 <section id="blog-listing">
   <div class="container">
-    <div class="section-header">
-      <h2>Blog Feed</h2>
-    </div>
-
     <!-- Table of Contents -->
-    <div class="toc-container">
-      <h3>Jump To</h3>
-      <ul class="toc-list">
+    <nav class="toc-container" aria-label="Posts">
+      <div class="section-rule"><span class="tape-label">Jump to</span><span class="section-rule__line"></span><span class="mono">{{ site.posts | size }} posts</span></div>
+      <ol class="toc-list">
         {% for post in site.posts %}
-          <li><a href="#{{ post.title | slugify }}">{{ post.title }}</a></li>
+          <li><a href="#{{ post.title | slugify }}"><span class="mono">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>{{ post.title }}<span class="mono toc-date">{{ post.date | date: "%b %-d, %Y" }}</span></a></li>
         {% endfor %}
-      </ul>
-    </div>
+      </ol>
+    </nav>
 
     <div class="blog-feed">
       {% for post in site.posts %}
         <article id="{{ post.title | slugify }}" data-post-id="{{ post.post_id | default: post.title | slugify }}" class="blog-feed-item">
           <div class="blog-card-meta">
-            <h2 class="blog-card-title">{{ post.title }}</h2>
             <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
+            <h2 class="blog-card-title">{{ post.title }}</h2>
           </div>
           
           <div class="blog-content">

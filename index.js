@@ -3,9 +3,8 @@
  * Handles all interactive features including:
  * - Career section tabs
  * - Art gallery expansions
- * - Project modals
  * - Lightbox for images
- * - Dynamic header backgrounds
+ * - Copy-to-clipboard buttons
  */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderArtCards();
   setupBlogImages();
   setupModalHandlers();
+  setupCopyButtons();
   setupChatBot();
   setupComments();
 
@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(() => {
     renderProjectCards();
     renderArtCards();
-    initDynamicBackground();
   }, 400);
 });
 
@@ -71,7 +70,7 @@ function applyPortfolioVariant() {
   }
 
   if (variant.about) {
-    const aboutText = document.querySelector('#about .about-content p');
+    const aboutText = document.querySelector('.hero__lede');
     if (aboutText) aboutText.textContent = variant.about;
   }
 
@@ -79,6 +78,10 @@ function applyPortfolioVariant() {
     Object.entries(variant.labels).forEach(([sectionId, label]) => {
       const sectionHeading = document.querySelector(`#${sectionId} .section-header h2`);
       if (sectionHeading) sectionHeading.textContent = label;
+
+      // Section labels read "01 Career"; keep the number, swap the name
+      const tapeLabel = document.querySelector(`#${sectionId} .tape-label`);
+      if (tapeLabel) tapeLabel.textContent = tapeLabel.textContent.replace(/^(\d+\s+).*/, `$1${label}`);
 
       document.querySelectorAll(`nav a[href="#${sectionId}"]`).forEach(link => {
         link.textContent = label;
@@ -156,10 +159,10 @@ function renderProjectCards() {
           const src = typeof img === 'string' ? img : img.src;
           const caption = typeof img === 'object' && img.caption ? img.caption : '';
           imagesHtml += `
-            <div class="project-image-container" data-index="${idx}">
+            <button type="button" class="project-image-container" data-index="${idx}">
               <img src="${src}" alt="${project.title}" class="project-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
-              ${caption ? `<div class="project-image-caption">${caption}</div>` : ''}
-            </div>`;
+              ${caption ? `<span class="project-image-caption">${caption}</span>` : ''}
+            </button>`;
         });
         imagesHtml += `</div>`;
       }
@@ -211,128 +214,22 @@ function renderProjectCards() {
 }
 
 /**
- * Initialize career section collapsible functionality
+ * Career categories are <details name="career">, so the browser handles
+ * open/close, one-at-a-time, and keyboard. We only scroll the opened one into view.
  */
 function initCareerSection() {
-  const careerCategories = document.querySelectorAll('.career-category');
-  
-  careerCategories.forEach((category, index) => {
+  document.querySelectorAll('.career-category').forEach(category => {
     const header = category.querySelector('.career-category-header');
     if (!header) return;
-    
-    header.addEventListener('click', () => {
-      const isOpening = !category.classList.contains('active');
-      category.classList.toggle('active');
-      
-      // If opening this category, close others (accordion style)
-      if (isOpening) {
-        careerCategories.forEach((otherCategory, otherIndex) => {
-          if (index !== otherIndex) {
-            otherCategory.classList.remove('active');
-          }
-        });
 
-        // Scroll category to top of viewport (respecting scroll-margin-top)
-        setTimeout(() => {
-          category.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 60);
-      }
+    header.addEventListener('click', () => {
+      if (category.open) return;
+      // scroll-behavior and scroll-padding on <html> handle smoothing and the sticky nav offset
+      setTimeout(() => category.scrollIntoView({ block: 'start' }), 60);
     });
   });
-  
-  // Open the first category by default
-  if (careerCategories.length > 0) {
-    careerCategories[0].classList.add('active');
-  }
 }
 
-/**
- * Project cards are rendered fixed inline; no modal setup required.
- */
-function setupProjectCards() {
-  // No modal click handlers needed
-}
-
-/**
- * Open project modal with specified project data
- */
-function openProjectModal(project) {
-  const projectModal = document.getElementById('project-modal');
-  if (!projectModal) return;
-  
-  // Build modal content
-  let modalContent = `
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 class="modal-header">${project.title}</h2>
-      <div class="modal-body">
-        ${project.description}
-      </div>`;
-  
-  // Add images if available
-  if (project.images && project.images.length > 0) {
-    modalContent += `<div class="modal-gallery">`;
-    project.images.forEach((image, index) => {
-      const imageUrl = typeof image === 'string' ? image : image.src;
-      modalContent += `
-        <div class="modal-image-container" data-index="${index}">
-          <img src="${imageUrl}" alt="${project.title}" class="modal-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
-        </div>`;
-    });
-    modalContent += `</div>`;
-  }
-  
-  // Add video if available
-  if (project.video) {
-    const embedUrl = getYouTubeEmbedUrl(project.video);
-    if (Array.isArray(embedUrl)) {
-      // Multiple videos
-      embedUrl.forEach(url => {
-        modalContent += `
-          <div class="modal-video-container">
-            <iframe class="modal-video" src="${url}" frameborder="0" allowfullscreen></iframe>
-          </div>`;
-      });
-    } else if (embedUrl) {
-      // Single video
-      modalContent += `
-        <div class="modal-video-container">
-          <iframe class="modal-video" src="${embedUrl}" frameborder="0" allowfullscreen></iframe>
-        </div>`;
-    }
-  }
-  
-  modalContent += `</div>`;
-  
-  // Update and show modal
-  projectModal.innerHTML = modalContent;
-  projectModal.classList.add('active');
-  document.body.style.overflow = 'hidden';
-  
-  // Add image click handlers for lightbox
-  if (project.images && project.images.length > 0) {
-    const processedImages = normalizeImageData(project.images);
-    projectModal.querySelectorAll('.modal-image-container').forEach(container => {
-      container.addEventListener('click', () => {
-        const imageIndex = parseInt(container.dataset.index);
-        openLightbox(processedImages, imageIndex);
-      });
-    });
-  }
-  
-  // Add close handler
-  const closeBtn = projectModal.querySelector('.close-modal');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      projectModal.classList.remove('active');
-      document.body.style.overflow = '';
-    });
-  }
-}
-
-/**
- * Set up event handlers for art items
- */
 /**
  * Dynamically render art items inline within .art-grid
  */
@@ -341,7 +238,7 @@ function renderArtCards() {
   const data = typeof getArtData === 'function' ? getArtData() : (window.artData || {});
   if (!artItems.length || Object.keys(data).length === 0) return;
 
-  artItems.forEach(item => {
+  artItems.forEach((item, artIndex) => {
     const artId = item.id;
     const art = data[artId];
     if (!art) return;
@@ -352,11 +249,13 @@ function renderArtCards() {
     if (processedImages && processedImages.length > 0) {
       imagesHtml += `<div class="art-images">`;
       processedImages.forEach((img, idx) => {
+        // Film-plate style frame code, e.g. MK-0103 = piece 01, frame 03
+        const frameCode = `MK-${String(artIndex + 1).padStart(2, '0')}${String(idx + 1).padStart(2, '0')}`;
         imagesHtml += `
-          <div class="art-image-container" data-index="${idx}">
-            <img src="${img.src}" alt="${art.title}" class="art-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
-            ${img.caption ? `<div class="art-image-caption">${img.caption}</div>` : ''}
-          </div>`;
+          <button type="button" class="art-image-container" data-index="${idx}">
+            <span class="art-image-frame"><img src="${img.src}" alt="${art.title}" class="art-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;"></span>
+            <span class="art-image-caption"><span class="frame-code">${frameCode}</span>${img.caption || ''}</span>
+          </button>`;
       });
       imagesHtml += `</div>`;
     }
@@ -403,6 +302,24 @@ function setupBlogImages() {
 
     content.querySelectorAll('img').forEach((image, index) => {
       image.addEventListener('click', () => openLightbox(images, index));
+    });
+  });
+}
+
+/**
+ * Buttons with data-copy put that text on the clipboard and confirm briefly
+ */
+function setupCopyButtons() {
+  document.querySelectorAll('[data-copy]').forEach(button => {
+    const label = button.textContent;
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy);
+        button.textContent = 'Copied';
+      } catch (e) {
+        button.textContent = 'Failed';
+      }
+      setTimeout(() => { button.textContent = label; }, 1600);
     });
   });
 }
@@ -498,27 +415,6 @@ async function setupComments() {
   // Target the post containers (cards in the feed or the main container on single pages)
   const targets = document.querySelectorAll('.blog-feed-item, #blog-post .container');
   if (targets.length === 0) return;
-
-  // Inject basic styles for the comment section
-  if (!document.getElementById('comments-style')) {
-    const style = document.createElement('style');
-    style.id = 'comments-style';
-    style.textContent = `
-      .comments-section { margin-top: 1rem; border-top: 1px solid var(--dark-burnt-orange);  max-width: 800px; }
-      .comment-item { margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid #222; }
-      .comment-meta { font-size: 0.85rem; color: var(--light-wheat); margin-bottom: 0.5rem; opacity: 0.8; }
-      .comment-author { font-weight: bold; color: var(--accent-color); margin-right: 0.5rem; }
-      .comment-body { line-height: 1.6; color: var(--wheat); white-space: pre-wrap; }
-      .comment-form { display: flex; flex-direction: column; gap: 1rem; margin-top: 3rem; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 4px; }
-      .comment-name-input, .comment-text-input { background: #0a0a0a; border: 1px solid #333; color: var(--wheat); padding: 0.8rem; font-family: inherit; }
-      .comment-text-input { min-height: 120px; resize: vertical; }
-      .comment-submit-btn { background: var(--dark-burnt-orange); color: white; border: none; padding: 0.8rem; cursor: pointer; font-weight: bold; transition: opacity 0.2s; }
-      .comment-submit-btn:hover { opacity: 0.8; }
-      .comment-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-      .comment-status { font-size: 0.9rem; margin-top: 0.5rem; font-style: italic; color: var(--light-wheat); }
-    `;
-    document.head.appendChild(style);
-  }
 
   targets.forEach(async (target) => {
     const slug = target.dataset.postId || target.id || window.location.pathname.split('/').filter(Boolean).pop();
@@ -622,57 +518,27 @@ function escapeHtml(unsafe) {
 }
 
 /**
- * Set up global modal and lightbox handlers
+ * Set up lightbox handlers. The lightbox is a modal <dialog>, so Esc, focus
+ * trapping, and scroll lock (html:has(dialog:modal) in CSS) come from the browser.
  */
 function setupModalHandlers() {
-  const projectModal = document.getElementById('project-modal');
-  const artModal = document.getElementById('art-modal');
   const lightbox = document.getElementById('lightbox-container');
+  if (!lightbox) return;
 
-  [projectModal, artModal].forEach(modal => {
-    if (!modal) return;
-
-    modal.addEventListener('click', (e) => {
-      if (!e.target.closest('.modal-content')) {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    });
+  // Close when clicking anywhere except the image or the nav controls
+  lightbox.addEventListener('click', (e) => {
+    const isImage = e.target.closest('.lightbox-image');
+    const isNav = e.target.closest('.lightbox-prev, .lightbox-next, .lightbox-counter');
+    if (!isImage && !isNav) lightbox.close();
   });
 
-  if (lightbox) {
-    lightbox.addEventListener('click', (e) => {
-      const isImage = e.target.closest('.lightbox-image');
-      const isNav = e.target.closest('.lightbox-prev, .lightbox-next, .lightbox-counter');
-      if (!isImage && !isNav) {
-        lightbox.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-    });
-  }
-  
-  // Global keyboard navigation
-  window.addEventListener('keydown', (e) => {
-    // Only handle keys if a modal is visible
-    const projectOpen = projectModal?.classList.contains('active');
-    const artOpen = artModal?.classList.contains('active');
-    const lightboxOpen = lightbox?.classList.contains('active');
-
-    if (projectOpen || artOpen || lightboxOpen) {
-      if (e.key === 'Escape') {
-        // Close all modals
-        if (projectModal) { projectModal.classList.remove('active'); document.body.style.overflow = ''; }
-        if (artModal) { artModal.classList.remove('active'); document.body.style.overflow = ''; }
-        if (lightbox) { lightbox.classList.remove('active'); document.body.style.overflow = ''; }
-      } else if (e.key === 'ArrowLeft' && lightboxOpen) {
-        // Previous image in lightbox
-        const prevBtn = lightbox.querySelector('.lightbox-prev');
-        if (prevBtn && !prevBtn.disabled) prevBtn.click();
-      } else if (e.key === 'ArrowRight' && lightboxOpen) {
-        // Next image in lightbox
-        const nextBtn = lightbox.querySelector('.lightbox-next');
-        if (nextBtn && !nextBtn.disabled) nextBtn.click();
-      }
+  lightbox.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      const prevBtn = lightbox.querySelector('.lightbox-prev');
+      if (prevBtn && !prevBtn.disabled) prevBtn.click();
+    } else if (e.key === 'ArrowRight') {
+      const nextBtn = lightbox.querySelector('.lightbox-next');
+      if (nextBtn && !nextBtn.disabled) nextBtn.click();
     }
   });
 }
@@ -689,7 +555,6 @@ function openLightbox(images, startIndex = 0) {
   const lightboxCounter = lightbox.querySelector('.lightbox-counter');
   const prevButton = lightbox.querySelector('.lightbox-prev');
   const nextButton = lightbox.querySelector('.lightbox-next');
-  const closeButton = lightbox.querySelector('.lightbox-close');
   if (!lightboxImage || !lightboxCaption || !lightboxCounter || !prevButton || !nextButton) return;
   
   let currentIndex = startIndex || 0;
@@ -728,110 +593,9 @@ function openLightbox(images, startIndex = 0) {
     }
   };
   
-  // Close lightbox when clicking X or outside the image
-  lightbox.onclick = (e) => {
-    const isImage = e.target.closest('.lightbox-image');
-    const isNav = e.target.closest('.lightbox-prev, .lightbox-next, .lightbox-counter');
-    if (!isImage && !isNav) {
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    }
-  };
-
-  if (closeButton) {
-    closeButton.onclick = (e) => {
-      e.stopPropagation();
-      lightbox.classList.remove('active');
-      document.body.style.overflow = '';
-    };
-  }
-  
   // Show lightbox with current image
   updateLightbox();
-  lightbox.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-// Global to track the last used header image to prevent consecutive repeats
-let lastHeaderImage = '';
-
-/**
- * Function to set a random header background from gallery images
- */
-function initDynamicBackground() {
-  const headerBackground = document.querySelector('.header-background');
-  if (!headerBackground) return;
-  
-  // Get all gallery images
-  const galleryImages = collectGalleryImages();
-  
-  // Set initial background
-  setRandomHeaderBackground(galleryImages);
-  
-  // Change background every 10 seconds
-  setInterval(() => setRandomHeaderBackground(galleryImages), 4000);
-}
-
-/**
- * Set random header background from available images
- */
-function setRandomHeaderBackground(galleryImages) {
-  const headerBackground = document.querySelector('.header-background');
-  if (!headerBackground || !galleryImages.length) return;
-  
-  // Select a random image, ensuring it's not the same as the current one
-  let selectedImage;
-  if (galleryImages.length > 1) {
-    do {
-      selectedImage = galleryImages[Math.floor(Math.random() * galleryImages.length)];
-    } while (selectedImage === lastHeaderImage);
-  } else {
-    selectedImage = galleryImages[0];
-  }
-  
-  lastHeaderImage = selectedImage;
-  
-  // Fade out current background
-  headerBackground.style.opacity = 0;
-  
-  // After fade-out, set new background and fade in
-  setTimeout(() => {
-    headerBackground.style.backgroundImage = `url(${selectedImage})`;
-    headerBackground.style.opacity = 0.25; // Slightly increased for better visibility of alpha images
-  }, 300);
-}
-
-/**
- * Collect all image URLs from art data
- */
-function collectGalleryImages() {
-  const imageUrls = [];
-  
-  Object.values(getArtData()).forEach(artProject => {
-    if (artProject.images && artProject.images.length > 0) {
-      artProject.images.forEach(image => {
-        const imageUrl = typeof image === 'string' ? image : image.src;
-        
-        // Filter out video files which cannot be used as CSS background-images
-        const isVideo = /\.(mp4|webm|ogg|mov)$/i.test(imageUrl);
-        
-        if (imageUrl && !isVideo && !imageUrl.includes('/api/placeholder/') && !imageUrl.includes('placeholder')) {
-          imageUrls.push(imageUrl);
-        }
-      });
-    }
-  });
-  
-  // If no images found in artData, get images from DOM
-  if (imageUrls.length === 0) {
-    document.querySelectorAll('.art-item img').forEach(img => {
-      if (img.src && !img.src.includes('/api/placeholder/') && !img.src.includes('placeholder')) {
-        imageUrls.push(img.src);
-      }
-    });
-  }
-  
-  return imageUrls;
+  if (!lightbox.open) lightbox.showModal();
 }
 
 /**
