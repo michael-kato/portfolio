@@ -50,13 +50,18 @@ Project and art content lives in `site-content.js`:
 
 The cards and section structure live in `_includes/home-content.html`. Dynamic rendering logic (`renderProjectCards()`, `renderArtCards()`) and interactive handlers live in `index.js`. Pop-up modals have been completely retired in favor of vertical inline card rendering.
 
-## Blog System (formerly blogs)
+## Career profiler (/profiler/)
 
-The site uses the standard Jekyll `_posts/` directory to manage blog content.
-- **Feed Structure:** All posts are rendered in full within a vertical feed.
-- **Filenames**: Must follow the `YYYY-MM-DD-title.md` format.
-- **Navigation**: A Table of Contents (ToC) at the top allows jumping to specific posts using anchor links (`#post-title-slug`).
-- **Redirects:** The homepage blog cards point directly to the post's anchor on the blog page rather than separate pages.
+`profiler.html` presents the career as a GPU profiler capture over the Star Nest. The user loves this direction; it's meant to grow into the main site.
+- **Data:** `_data/timeline.yml` holds the career (studios with dates from the resume, and their project ids), art sets, education, `personal` projects and `life` events. Project and art write-ups and images come from `site-content.js` by id. Posts come from `_posts`.
+- **Timeline:** tracks are threads, and studios are zones with their projects nested as child zones. Per-project dates are unknown, so projects split their studio's time evenly. Overlapping studios on one track are drawn from where the previous one ends; the details keep the real dates. Posts and life events are markers. Scroll zooms, drag pans, and double-click zooms to a zone.
+- **Details panel:** clicking a zone shows its write-up, video and bound resources. A post shows its whole content plus comments. The address becomes `/profiler/#slug` (a project or art id, the post title slug, or the slugified name), so zones can be linked.
+- **Resources:** every image is a texture, grouped by the zone ("draw call") that binds it, including post images. Thumbnails anywhere open a texture viewer `<dialog>` over the current view, with zoom, RGB/R/G/B/luma, and previous/next. From the Resources tab it offers "Show in timeline". The art "fake depth" idea belongs in that viewer later.
+
+## Blog System
+
+Posts are Jekyll posts in `_posts/` (`YYYY-MM-DD-title.md`) and appear only on the profiler's Blog track; the blog feed page is gone.
+- **Redirects:** `blog.html` (`/blog/`) redirects to `/profiler/` keeping the `#post-title-slug` anchor, and `_layouts/post.html` makes each post's own page (`/blog/:title/`) redirect to its profiler entry. The homepage blog cards and the nav's Blog link point at the profiler.
 
 ## Comment System
 
@@ -65,7 +70,7 @@ Anonymous comments are supported on blog posts using Cloudflare D1 and a dedicat
 - **Moderation:** Handled via Cloudflare D1 dashboard (SQL `is_approved` flag).
 - **Backend:** `portfolio-comments.mkato.workers.dev` handles API requests.
 - **Email:** Sends notifications upon new comment submissions via Resend API or Cloudflare Email Routing.
-- **Frontend:** Injected dynamically into `.blog-content` containers via `setupComments()` in `index.js`.
+- **Frontend:** `attachComments()` in `profiler.html` adds the comment list and form under a post in the details panel, keyed by `post_id` (or the slugified title).
 - **Stability**: Uses `data-post-id` attribute; lookups prioritize `post_id` from front matter, falling back to slug.
 
 ## Analytics System

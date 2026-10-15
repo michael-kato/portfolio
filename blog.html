@@ -1,41 +1,18 @@
 ---
-layout: blog_index
-title: Blog
-header_title: Blog
-header_subtitle: All posts
-header_link: /
 permalink: /blog/
+sitemap: false
 ---
-
-<section id="blog-listing">
-  <div class="container">
-    <!-- Table of Contents -->
-    <nav class="toc-container" aria-label="Posts">
-      <div class="section-rule"><span class="tape-label">Jump to</span><span class="section-rule__line"></span><span class="mono">{{ site.posts | size }} posts</span></div>
-      <ol class="toc-list">
-        {% for post in site.posts %}
-          <li><a href="#{{ post.title | slugify }}"><span class="mono">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>{{ post.title }}<span class="mono toc-date">{{ post.date | date: "%b %-d, %Y" }}</span></a></li>
-        {% endfor %}
-      </ol>
-    </nav>
-
-    <div class="blog-feed">
-      {% for post in site.posts %}
-        <article id="{{ post.title | slugify }}" data-post-id="{{ post.post_id | default: post.title | slugify }}" class="blog-feed-item">
-          <div class="blog-card-meta">
-            <span class="blog-date">{{ post.date | date: "%B %-d, %Y" }}</span>
-            <h2 class="blog-card-title">{{ post.title }}</h2>
-          </div>
-          
-          <div class="blog-content">
-            {{ post.content }}
-          </div>
-          
-          <div class="blog-feed-footer">
-            <a href="#blog-listing" class="blog-back-link">Back to top ↑</a>
-          </div>
-        </article>
-      {% endfor %}
-    </div>
-  </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- The blog now lives on the profiler timeline; old links (/blog/#post-title) open that post there -->
+  <meta charset="utf-8">
+  <title>Blog | {{ site.title }}</title>
+  <meta name="robots" content="noindex">
+  <script>location.replace({{ '/profiler/' | relative_url | jsonify }} + location.hash);</script>
+  <meta http-equiv="refresh" content="0; url={{ '/profiler/' | relative_url }}">
+</head>
+<body>
+  <p>The blog now lives on the <a href="{{ '/profiler/' | relative_url }}">timeline</a>.</p>
+</body>
+</html>

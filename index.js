@@ -17,7 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
   setupModalHandlers();
   setupCopyButtons();
   setupChatBot();
-  setupComments();
 
   // Delay decryption and rendering to prioritize initial page load
   setTimeout(() => {
@@ -406,115 +405,6 @@ function setupChatBot() {
 
   send.onclick = handleSend;
   input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
-}
-
-/**
- * Setup simple anonymous commenting for blog posts
- */
-async function setupComments() {
-  // Target the post containers (cards in the feed or the main container on single pages)
-  const targets = document.querySelectorAll('.blog-feed-item, #blog-post .container');
-  if (targets.length === 0) return;
-
-  targets.forEach(async (target) => {
-    const slug = target.dataset.postId || target.id || window.location.pathname.split('/').filter(Boolean).pop();
-    if (!slug || slug === 'blog') return;
-
-    const commentWrapper = document.createElement('div');
-    commentWrapper.className = 'comments-section';
-    commentWrapper.innerHTML = `
-      <h3 class="comments-title">Comments</h3>
-      <div class="comments-list" id="comments-list-${slug}">Loading comments...</div>
-      <form class="comment-form" id="comment-form-${slug}">
-        <input type="text" placeholder="Name (anonymous)" class="comment-name-input" maxlength="50">
-        <textarea placeholder="Share your thoughts..." required class="comment-text-input" maxlength="2000"></textarea>
-        <button type="submit" class="comment-submit-btn">Post Comment</button>
-        <div class="comment-status"></div>
-      </form>
-    `;
-    target.appendChild(commentWrapper);
-
-    const listContainer = document.getElementById(`comments-list-${slug}`);
-    const form = document.getElementById(`comment-form-${slug}`);
-    const status = form.querySelector('.comment-status');
-    const submitBtn = form.querySelector('.comment-submit-btn');
-
-    // Load existing approved comments
-    try {
-      const response = await fetch(`https://portfolio-comments.mkato.workers.dev/comments?slug=${slug}`);
-      if (response.ok) {
-        const comments = await response.json();
-        if (comments.length === 0) {
-          listContainer.innerHTML = '<p style="font-style: italic; opacity: 0.6;">No comments yet. Be the first!</p>';
-        } else {
-          listContainer.innerHTML = comments.map(c => `
-            <div class="comment-item">
-              <div class="comment-meta">
-                <span class="comment-author">${escapeHtml(c.author)}</span>
-                <span class="comment-date">${new Date(c.created_at).toLocaleDateString()}</span>
-              </div>
-              <div class="comment-body">${escapeHtml(c.text)}</div>
-            </div>
-          `).join('');
-        }
-      }
-    } catch (e) {
-      listContainer.innerHTML = '<p>Error loading comments.</p>';
-    }
-
-    // Handle submission
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const author = form.querySelector('.comment-name-input').value.trim() || 'Anonymous';
-      const text = form.querySelector('.comment-text-input').value.trim();
-
-      submitBtn.disabled = true;
-      status.textContent = 'Posting...';
-
-      try {
-        let timezone = "unknown";
-        try {
-          timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        } catch (e) {}
-
-        const response = await fetch('https://portfolio-comments.mkato.workers.dev/comments', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            slug, 
-            author, 
-            text,
-            userAgent: navigator.userAgent,
-            language: navigator.language,
-            timezone: timezone,
-            screenRes: `${window.screen.width}x${window.screen.height}`,
-            deviceMemory: navigator.deviceMemory || null,
-            cores: navigator.hardwareConcurrency || null
-          })
-        });
-
-        if (response.ok) {
-          status.textContent = 'Comment submitted! It will appear once approved.';
-          form.reset();
-        } else {
-          throw new Error();
-        }
-      } catch (err) {
-        status.textContent = 'Failed to post. Please try again later.';
-      } finally {
-        submitBtn.disabled = false;
-      }
-    });
-  });
-}
-
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 /**

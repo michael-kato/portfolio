@@ -1,0 +1,49 @@
+# Everything on the career profiler at /profiler/ except the blog, which comes from _posts.
+# Dates are "YYYY-MM" (quoted); leave `to` out for something still going.
+# Project and art write-ups and images live in site-content.js, by id.
+
+career:
+  - name: Sledgehammer Games
+    role: Technical Artist
+    detail: "Call of Duty: Advanced Warfare, WWII, Cold War"
+    from: "2014-01"
+    to: "2019-05"
+    hue: 45
+    projects: [project-perf-ownership, project-lod-pipeline, project-edge-cleanup]
+  - name: Apple
+    role: Technical Artist (contract)
+    detail: Synthetic data for Apple Vision Pro
+    from: "2019-04"
+    to: "2020-08"
+    hue: 220
+    projects: [project-outsourcing-pipeline, project-asset-qa, project-proc-scene]
+  - name: Meta Reality Labs
+    role: Senior Technical Artist (IC5)
+    detail: Horizon Worlds (VR)
+    from: "2020-09"
+    to: "2023-09"
+    hue: 265
+    projects: [project-code-fixes, project-perf-framework, project-perf-dashboards]
+
+# Years only, as the art write-ups give them
+art:
+  - { id: art-personal, from: "2009-01", to: "2012-12" }
+  - { id: art-school-work, from: "2010-01", to: "2013-03" }
+  - { id: art-mod-props, from: "2012-01", to: "2012-12" }
+  - { id: art-escape-game, from: "2013-01", to: "2013-12" }
+
+education:
+  - name: The Art Institute of Silicon Valley
+    detail: BA in Game Art & Design
+    from: "2009-07"
+    to: "2013-03"
+  - name: fast.ai
+    detail: Practical Deep Learning for Coders
+    from: "2026-03"
+
+# Personal projects, drawn like the art sets. Each one:
+#   name, from, to, description (HTML), images: [{ src, caption }], video (YouTube URL), link
+personal: []
+
+# Life events, drawn as markers. Each one: name, date ("YYYY-MM"), note (optional)
+life: []

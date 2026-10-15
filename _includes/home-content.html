@@ -108,13 +108,13 @@
   <section id="blog">
     <div class="container">
       <div class="section-header">
-        <div class="section-rule"><span class="tape-label">02 Blog</span><span class="section-rule__line"></span><a class="mono" href="{{ '/blog/' | relative_url }}">All posts →</a></div>
+        <div class="section-rule"><span class="tape-label">02 Blog</span><span class="section-rule__line"></span><a class="mono" href="{{ '/profiler/' | relative_url }}">All posts →</a></div>
         <h2>Blog</h2>
       </div>
       <div class="blog-grid">
         {% for post in site.posts limit: 3 %}
         {% assign content_parts = post.content | split: 'src="' %}
-        <a href="{{ '/blog/' | relative_url }}#{{ post.title | slugify }}" class="blog-card">
+        <a href="{{ '/profiler/' | relative_url }}#{{ post.title | slugify }}" class="blog-card">
           <div class="blog-card-thumb">
             {% if content_parts.size > 1 %}
             {% assign first_media = content_parts[1] | split: '"' | first %}

@@ -1,0 +1,749 @@
+---
+layout: null
+permalink: /profiler/
+title: Career Profiler
+sitemap: false
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include page_head.html style_path="/style.css" %}
+  <style>
+    /* Prototype: the career as a profiler capture. Panels sit over the Star Nest. */
+    .profiler-page { height: 100dvh; overflow: hidden; }
+    .prof {
+      --panel: oklch(9% .015 265 / .8);
+      --row: 38px;
+      --gutter: 150px;
+      position: relative;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      height: 100dvh;
+      font-family: var(--font-mono);
+    }
+    .prof-bar {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: .6rem 1rem;
+      background: var(--panel);
+      border-block-end: 1px solid var(--line);
+    }
+    .prof-brand { display: flex; align-items: center; gap: .6rem; color: var(--text-strong); font-size: .85rem; }
+    .prof-brand__mark { padding: .2rem .4rem; border: 1px solid var(--line-strong); border-radius: 3px; font-weight: 600; }
+    .prof-brand__ext { color: var(--text-muted); }
+    .prof-tabs { display: flex; gap: .25rem; }
+    .prof-tabs button {
+      padding: .4rem .8rem; border: 1px solid transparent; border-radius: 3px;
+      background: none; color: var(--text-muted); font: 500 .72rem/1 var(--font-mono);
+      letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+    }
+    .prof-tabs button[aria-selected="true"] { color: var(--text-strong); border-color: var(--line-strong); background: oklch(100% 0 0 / .04); }
+    .prof-links { display: flex; align-items: center; gap: 1.1rem; margin-inline-start: auto; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+    .prof-links a:not(.btn) { color: var(--text-muted); }
+    .prof-links a:not(.btn):hover { color: var(--text-strong); }
+
+    /* Overview: the whole capture, with the visible range highlighted */
+    .prof-overview {
+      position: relative; height: 34px; margin-inline-start: var(--gutter);
+      background: oklch(9% .015 265 / .55);
+      border-block-end: 1px solid var(--line);
+      cursor: pointer;
+    }
+    .prof-overview__bar { position: absolute; height: 5px; border-radius: 1px; background: oklch(60% .1 var(--hue) / .8); }
+    .prof-overview__window {
+      position: absolute; inset-block: 0;
+      border: 1px solid oklch(93% .01 85 / .5); background: oklch(93% .01 85 / .06);
+      cursor: grab;
+    }
+
+    .prof-main { position: relative; display: flex; min-height: 0; }
+    .prof-timeline { position: relative; flex: 1; min-width: 0; overflow: hidden auto; background: var(--panel); touch-action: none; }
+    .prof-ruler {
+      position: sticky; inset-block-start: 0; z-index: 2;
+      height: 26px; margin-inline-start: var(--gutter);
+      border-block-end: 1px solid var(--line);
+      background: oklch(9% .015 265 / .92);
+      overflow: hidden;
+    }
+    .prof-tick { position: absolute; inset-block: 0; border-inline-start: 1px solid var(--line); padding: 6px 0 0 5px; font-size: .68rem; color: var(--text-muted); white-space: nowrap; }
+    .prof-grid { position: absolute; inset-block: 0; inset-inline-start: var(--gutter); inset-inline-end: 0; pointer-events: none; }
+    .prof-grid div { position: absolute; inset-block: 0; border-inline-start: 1px solid oklch(93% .01 85 / .05); }
+
+    .prof-track { position: relative; display: flex; border-block-end: 1px solid var(--line); }
+    .prof-track__name {
+      flex: none; inline-size: var(--gutter); padding: 10px 12px;
+      font-size: .78rem; color: var(--text); letter-spacing: .04em;
+      border-inline-end: 1px solid var(--line);
+    }
+    .prof-track__name small { display: block; color: var(--text-muted); font-size: .64rem; margin-block-start: 2px; }
+    .prof-track__lanes { position: relative; flex: 1; min-width: 0; overflow: hidden; }
+
+    .zone {
+      position: absolute; top: calc(var(--depth) * var(--row) + 3px); left: 0;
+      display: flex; align-items: center; gap: .6em;
+      height: calc(var(--row) - 4px); padding: 0 6px;
+      border: 1px solid oklch(72% .1 var(--hue) / .55); border-radius: 2px;
+      background: oklch(calc(42% - var(--shade, 0) * 7%) .09 var(--hue) / .88);
+      color: oklch(97% .02 var(--hue));
+      font: 500 .78rem/1 var(--font-mono);
+      white-space: nowrap; overflow: hidden; cursor: pointer;
+    }
+    .zone:hover, .zone:focus-visible { background: oklch(52% .11 var(--hue) / .95); }
+    .zone.is-selected { outline: 2px solid var(--accent); outline-offset: 1px; z-index: 1; }
+    .zone span { overflow: hidden; text-overflow: ellipsis; }
+    .zone__time { color: oklch(97% .02 var(--hue) / .65); flex: none; }
+    .zone.is-narrow .zone__time, .zone.is-tiny span { display: none; }
+    .marker {
+      position: absolute; top: 11px; left: 0; width: 15px; height: 15px; margin-left: -7.5px;
+      rotate: 45deg; border: 1px solid oklch(90% .1 var(--hue)); background: oklch(80% .12 var(--hue) / .85);
+      cursor: pointer; padding: 0;
+    }
+    .marker[data-kind="life"] { rotate: none; border-radius: 50%; }
+    .marker.is-selected { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .prof-tip {
+      position: fixed; z-index: 10; max-width: 320px; padding: .5rem .65rem;
+      background: oklch(13% .01 265 / .96); border: 1px solid var(--line-strong); border-radius: 3px;
+      font-size: .7rem; line-height: 1.5; color: var(--text); pointer-events: none;
+    }
+    .prof-tip b { color: var(--text-strong); font-weight: 600; }
+
+    /* Details: what a clicked zone holds */
+    .prof-details {
+      flex: none; inline-size: min(440px, 42vw); overflow: auto;
+      background: oklch(11% .012 265 / .94); border-inline-start: 1px solid var(--line-strong);
+      font-family: var(--font-sans);
+    }
+    .prof-details.is-reading { inline-size: min(760px, 58vw); }
+    .prof-details__head { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 1.1rem; background: inherit; border-block-end: 1px solid var(--line); }
+    .prof-details__path { font: 500 .66rem/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+    .prof-details__close { border: 0; background: none; color: var(--text-muted); font-size: 1.3rem; line-height: 1; cursor: pointer; }
+    .prof-details__body { padding: 1rem 1.1rem 2rem; display: grid; gap: 1rem; font-size: .9rem; line-height: 1.55; }
+    .prof-details__body h2 { font-size: 1.35rem; }
+    .prof-details .blog-content { max-inline-size: none; font-size: 1rem; }
+    .prof-details .blog-content img { cursor: zoom-in; }
+    .prof-stats { display: grid; grid-template-columns: auto 1fr; gap: .25rem 1rem; font: .72rem/1.5 var(--font-mono); }
+    .prof-stats dt { color: var(--text-muted); text-transform: uppercase; letter-spacing: .06em; }
+    .prof-stats dd { color: var(--text-strong); }
+    .prof-section-title { font: 500 .66rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+    .prof-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(88px, 1fr)); gap: 6px; }
+    .prof-thumbs button { padding: 0; border: 1px solid var(--line); background: #000; aspect-ratio: 4 / 3; cursor: zoom-in; overflow: hidden; }
+    .prof-thumbs img { inline-size: 100%; block-size: 100%; object-fit: cover; }
+    .prof-video { position: relative; aspect-ratio: 16 / 9; }
+    .prof-video iframe { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; border: 0; }
+    .prof-list { display: grid; gap: 4px; }
+    .prof-list button { text-align: start; padding: .45rem .6rem; border: 1px solid var(--line); border-radius: 3px; background: oklch(100% 0 0 / .03); color: var(--text); font: .78rem/1.3 var(--font-mono); cursor: pointer; }
+    .prof-list button:hover { border-color: var(--line-strong); color: var(--text-strong); }
+
+    /* Resources: every image as a texture, grouped by the draw call (zone) that binds it */
+    .prof-resources { flex: 1; min-width: 0; overflow: auto; padding-block-end: 2rem; background: var(--panel); }
+    .prof-res-group { padding: .9rem 1rem .3rem; font-size: .68rem; color: var(--text-muted); letter-spacing: .04em; }
+    .prof-res-group b { color: var(--text); font-weight: 500; }
+    .prof-res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; padding: .25rem 1rem .5rem; }
+    .prof-tex { display: grid; gap: 4px; padding: 4px; border: 1px solid var(--line); border-radius: 3px; background: none; color: var(--text-muted); font: .62rem/1.3 var(--font-mono); text-align: start; cursor: zoom-in; }
+    .prof-tex:hover { border-color: var(--line-strong); color: var(--text); }
+    .prof-tex img { inline-size: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: repeating-conic-gradient(#222 0 25%, #333 0 50%) 0 0 / 12px 12px; }
+    .prof-tex span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+    /* Texture viewer: opens over whatever view you're in, and closes back to it */
+    .prof-viewer {
+      inset: 3vh 3vw; inline-size: auto; block-size: auto; max-inline-size: none; max-block-size: none;
+      padding: 0; border: 1px solid var(--line-strong); border-radius: 4px;
+      background: oklch(9% .015 265 / .97); color: var(--text); font-family: var(--font-mono);
+    }
+    .prof-viewer[open] { display: grid; grid-template-rows: auto 1fr auto; }
+    .prof-viewer::backdrop { background: oklch(4% .01 265 / .7); }
+    .prof-viewer__bar { display: flex; align-items: center; gap: .4rem; padding: .55rem .8rem; border-block-end: 1px solid var(--line); font-size: .7rem; color: var(--text-muted); }
+    .prof-viewer__bar button { padding: .3rem .6rem; border: 1px solid var(--line); border-radius: 3px; background: none; color: var(--text-muted); font: 500 .68rem/1 var(--font-mono); cursor: pointer; }
+    .prof-viewer__bar button:hover { color: var(--text-strong); border-color: var(--line-strong); }
+    .prof-viewer__bar button[aria-pressed="true"] { color: var(--text-strong); border-color: var(--line-strong); background: oklch(100% 0 0 / .06); }
+    .prof-viewer__name { color: var(--text-strong); margin-inline-end: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .prof-viewer__gap { inline-size: .6rem; }
+    .prof-viewer__canvas { position: relative; overflow: hidden; background: repeating-conic-gradient(#151515 0 25%, #1d1d1d 0 50%) 0 0 / 20px 20px; cursor: grab; touch-action: none; }
+    .prof-viewer__canvas img { position: absolute; inset: 0; margin: auto; max-inline-size: 100%; max-block-size: 100%; transform-origin: center; user-select: none; -webkit-user-drag: none; }
+    .prof-viewer__info { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem .8rem; border-block-start: 1px solid var(--line); font: .9rem/1.5 var(--font-sans); }
+    .prof-viewer__info button { flex: none; border: 0; background: none; color: var(--accent); font: 500 .7rem/1.5 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+
+    .prof-status { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 1rem; background: var(--panel); border-block-start: 1px solid var(--line); font-size: .66rem; }
+
+    @media (max-width: 52rem) {
+      .prof { --gutter: 92px; }
+      .prof-links a:not(.btn) { display: none; }
+      .prof-details, .prof-details.is-reading { position: absolute; inset: auto 0 0; inline-size: auto; max-block-size: 70%; border-inline-start: 0; border-block-start: 1px solid var(--line-strong); z-index: 5; }
+    }
+  </style>
+</head>
+<body class="profiler-page">
+  <canvas id="background-canvas" aria-hidden="true"></canvas>
+  <div class="prof">
+    <header class="prof-bar">
+      <a class="prof-brand" href="{{ '/' | relative_url }}"><span class="prof-brand__mark">MK</span><span>michael_kato<span class="prof-brand__ext">.capture</span></span></a>
+      <div class="prof-tabs" role="tablist" aria-label="Views">
+        <button role="tab" aria-selected="true" data-view="timeline">Timeline</button>
+        <button role="tab" aria-selected="false" data-view="resources">Resources</button>
+      </div>
+      <nav class="prof-links" aria-label="Links">
+        <a href="https://github.com/michael-kato" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://linkedin.com/in/michael-kato" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="mailto:michaelakato@gmail.com">Email</a>
+        <a class="btn btn--accent btn--sm" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>Resume ↓</a>
+      </nav>
+    </header>
+
+    <div class="prof-overview" aria-hidden="true"><div class="prof-overview__window"></div></div>
+
+    <div class="prof-main">
+      <section class="prof-timeline" aria-label="Career timeline">
+        <div class="prof-ruler"></div>
+        <div class="prof-grid"></div>
+        <div class="prof-tracks"></div>
+      </section>
+      <section class="prof-resources" aria-label="Resources" hidden></section>
+      <aside class="prof-details" aria-label="Details" hidden>
+        <div class="prof-details__head">
+          <span class="prof-details__path"></span>
+          <button type="button" class="prof-details__close" aria-label="Close details">×</button>
+        </div>
+        <div class="prof-details__body"></div>
+      </aside>
+    </div>
+
+    <footer class="prof-status">
+      <span class="prof-status__hover">Michael Kato · Technical Artist</span>
+      <span class="prof-status__view"></span>
+    </footer>
+  </div>
+  <div class="prof-tip" hidden></div>
+
+  <dialog class="prof-viewer" aria-label="Texture viewer">
+    <div class="prof-viewer__bar">
+      <span class="prof-viewer__name"></span>
+      <button type="button" data-channel="" aria-pressed="true">RGB</button>
+      <button type="button" data-channel="ch-r" aria-pressed="false">R</button>
+      <button type="button" data-channel="ch-g" aria-pressed="false">G</button>
+      <button type="button" data-channel="ch-b" aria-pressed="false">B</button>
+      <button type="button" data-channel="ch-l" aria-pressed="false">Luma</button>
+      <span class="prof-viewer__gap"></span>
+      <button type="button" class="prof-viewer__prev" aria-label="Previous texture">←</button>
+      <span class="prof-viewer__count"></span>
+      <button type="button" class="prof-viewer__next" aria-label="Next texture">→</button>
+      <button type="button" class="prof-viewer__close" aria-label="Close viewer">Close ✕</button>
+    </div>
+    <div class="prof-viewer__canvas"><img alt="" referrerpolicy="no-referrer"></div>
+    <div class="prof-viewer__info"><span class="prof-viewer__caption"></span><button type="button" class="prof-viewer__owner"></button></div>
+  </dialog>
+
+  <!-- Channel views for the texture viewer: one channel as grey, or luma -->
+  <svg width="0" height="0" aria-hidden="true" style="position: absolute">
+    <filter id="ch-r"><feColorMatrix values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 1 0"/></filter>
+    <filter id="ch-g"><feColorMatrix values="0 1 0 0 0  0 1 0 0 0  0 1 0 0 0  0 0 0 1 0"/></filter>
+    <filter id="ch-b"><feColorMatrix values="0 0 1 0 0  0 0 1 0 0  0 0 1 0 0  0 0 0 1 0"/></filter>
+    <filter id="ch-l"><feColorMatrix values=".2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  .2126 .7152 .0722 0 0  0 0 0 1 0"/></filter>
+  </svg>
+
+  <!-- Each post's full content, shown in the details panel -->
+  {% for post in site.posts %}<template id="post-{{ post.title | slugify }}">{{ post.content }}</template>
+  {% endfor %}
+
+  <script src="{{ 'site-content.js' | relative_url }}"></script>
+  <script src="{{ 'shaders.js' | relative_url }}"></script>
+  <script>
+  'use strict';
+  (() => {
+    const TIMELINE = {{ site.data.timeline | jsonify }};
+    const POSTS = [{% for post in site.posts %}
+      { title: {{ post.title | jsonify }}, date: {{ post.date | date: "%Y-%m-%d" | jsonify }}, slug: {{ post.title | slugify | jsonify }}, commentId: {{ post.post_id | default: post.title | slugify | jsonify }} },{% endfor %}
+    ];
+    const COMMENTS_API = 'https://portfolio-comments.mkato.workers.dev/comments';
+
+    // ===== Time =====
+    const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const today = new Date();
+    const NOW = today.getFullYear() + today.getMonth() / 12;
+    const startOf = ym => { const [y, m] = ym.split('-').map(Number); return y + (m - 1) / 12; };
+    const endOf = ym => ym ? startOf(ym) + 1 / 12 : NOW + 1 / 12;
+    const monthName = t => { const m = Math.round(t * 12); return `${MONTHS[((m % 12) + 12) % 12]} ${Math.floor(m / 12)}`; };
+    const duration = (a, b) => {
+      const months = Math.round((b - a) * 12), y = Math.floor(months / 12), m = months % 12;
+      return [y && `${y}y`, m && `${m}mo`].filter(Boolean).join(' ') || '<1mo';
+    };
+    const period = z => z.to > NOW ? `${monthName(z.from)} – now` : `${monthName(z.from)} – ${monthName(z.to - 1 / 12)}`;
+    const slugify = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+    // ===== Zones, by track =====
+    const tracks = [];
+    const track = (name, note) => { const t = { name, note, zones: [] }; tracks.push(t); return t; };
+    /** Puts each zone in the first lane free when it starts */
+    const stack = zones => {
+      const lanes = [];
+      for (const z of zones.sort((a, b) => a.from - b.from)) {
+        let lane = lanes.findIndex(end => end <= z.from);
+        if (lane < 0) lane = lanes.push(0) - 1;
+        lanes[lane] = z.to;
+        z.depth = lane;
+      }
+      return zones;
+    };
+
+    const career = track('Career', `${TIMELINE.career.length} studios`);
+    let shownUntil = -Infinity;
+    for (const s of TIMELINE.career) {
+      const from = startOf(s.from), to = endOf(s.to);
+      // A thread can't overlap itself: a studio is drawn from where the previous one ends (details keep the real dates)
+      const shownFrom = Math.max(from, shownUntil);
+      shownUntil = to;
+      const studio = { kind: 'studio', track: career, depth: 0, name: s.name, role: s.role, detail: s.detail, from, to, shownFrom, hue: s.hue, children: [] };
+      career.zones.push(studio);
+      // No dates per project yet: they share the studio's time evenly
+      const step = (to - shownFrom) / s.projects.length;
+      s.projects.forEach((id, i) => {
+        const data = window.projectData[id];
+        const project = { kind: 'project', track: career, depth: 1, id, data, name: data.title,
+          from: shownFrom + i * step, to: shownFrom + (i + 1) * step, hue: s.hue, shade: i % 2, parent: studio };
+        studio.children.push(project);
+        career.zones.push(project);
+      });
+    }
+    const art = track('Art', `${TIMELINE.art.length} sets`);
+    art.zones = stack(TIMELINE.art.map(a => ({ kind: 'art', track: art, id: a.id, data: window.artData[a.id], name: window.artData[a.id].title,
+      from: startOf(a.from), to: endOf(a.to), hue: 320 })));
+    if (TIMELINE.personal.length) {
+      const personal = track('Personal', `${TIMELINE.personal.length} projects`);
+      personal.zones = stack(TIMELINE.personal.map(p => ({ kind: 'personal', track: personal, name: p.name, data: p,
+        from: startOf(p.from), to: endOf(p.to), hue: 190 })));
+    }
+    const education = track('Education', '');
+    education.zones = stack(TIMELINE.education.map(e => ({ kind: 'education', track: education, name: e.name, detail: e.detail,
+      from: startOf(e.from), to: endOf(e.to), hue: 150 })));
+    if (TIMELINE.life.length) {
+      const life = track('Life', '');
+      life.zones = TIMELINE.life.map(e => ({ kind: 'life', track: life, depth: 0, name: e.name, note: e.note, from: startOf(e.date) + 0.5 / 12, hue: 10 }));
+    }
+    const blog = track('Blog', `${POSTS.length} posts`);
+    blog.zones = POSTS.map(p => {
+      const [y, m, d] = p.date.split('-').map(Number);
+      return { kind: 'post', track: blog, depth: 0, name: p.title, post: p, from: y + (m - 1 + (d - 1) / 31) / 12, hue: 85 };
+    });
+
+    const allZones = tracks.flatMap(t => t.zones);
+    const isMarker = z => z.kind === 'post' || z.kind === 'life';
+    for (const z of allZones) {
+      z.slug = z.id ?? z.post?.slug ?? slugify(z.name);
+      z.shownFrom ??= z.from;
+    }
+    const FULL = { from: 2008.5, to: NOW + 0.4 };
+    const MIN_SPAN = 0.25;
+    let view = { ...FULL };
+
+    // ===== Textures: every image, grouped by the zone (draw call) that binds it =====
+    const textureName = (caption, src) => 'T_' + ((caption || '').match(/[A-Za-z0-9]+/g)?.slice(0, 3)
+      .map(w => w[0].toUpperCase() + w.slice(1)).join('') || src.split('/').pop().split('.')[0]);
+    const textures = [];
+    const bind = (z, images) => {
+      z.textures = images.map(({ src, caption }) => {
+        const texture = { src, caption, name: textureName(caption, src), zone: z, index: textures.length };
+        textures.push(texture);
+        return texture;
+      });
+    };
+    for (const z of allZones) {
+      if (z.kind === 'post') {
+        const images = document.getElementById(`post-${z.post.slug}`).content.querySelectorAll('img');
+        bind(z, [...images].map(img => ({ src: img.getAttribute('src'),
+          caption: img.closest('figure')?.querySelector('figcaption')?.textContent.trim() || img.alt })));
+      } else {
+        bind(z, (z.data?.images ?? []).map(img => typeof img === 'string' ? { src: img, caption: '' } : img));
+      }
+    }
+
+    // ===== Elements =====
+    const $ = s => document.querySelector(s);
+    const timeline = $('.prof-timeline'), ruler = $('.prof-ruler'), grid = $('.prof-grid'), tracksEl = $('.prof-tracks');
+    const details = $('.prof-details'), detailsPath = $('.prof-details__path'), detailsBody = $('.prof-details__body');
+    const tip = $('.prof-tip'), statusHover = $('.prof-status__hover'), statusView = $('.prof-status__view');
+    const overview = $('.prof-overview'), overviewWindow = $('.prof-overview__window');
+    const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' })[c]);
+
+    for (const t of tracks) {
+      const row = document.createElement('div');
+      row.className = 'prof-track';
+      const depth = Math.max(1, ...t.zones.map(z => z.depth + 1));
+      row.innerHTML = `<div class="prof-track__name">${t.name}<small>${t.note}</small></div><div class="prof-track__lanes" style="height: calc(${depth} * var(--row) + 2px)"></div>`;
+      for (const z of t.zones) {
+        const el = document.createElement('button');
+        el.type = 'button';
+        z.el = el;
+        el.zone = z;
+        el.dataset.kind = z.kind;
+        el.style.setProperty('--hue', z.hue);
+        if (isMarker(z)) {
+          el.className = 'marker';
+          el.setAttribute('aria-label', `${z.name}, ${monthName(z.from)}`);
+        } else {
+          el.className = 'zone';
+          el.style.setProperty('--depth', z.depth);
+          if (z.shade) el.style.setProperty('--shade', z.shade);
+          el.innerHTML = `<span>${esc(z.name)}</span><span class="zone__time">${duration(z.from, z.to)}</span>`;
+          el.setAttribute('aria-label', `${z.name}, ${period(z)}, ${duration(z.from, z.to)}`);
+        }
+        row.lastChild.append(el);
+      }
+      tracksEl.append(row);
+    }
+    // Overview bars: the top level of each track
+    tracks.forEach((t, i) => {
+      for (const z of t.zones.filter(z => z.depth === 0 && !isMarker(z))) {
+        const bar = document.createElement('div');
+        bar.className = 'prof-overview__bar';
+        bar.style.cssText = `--hue: ${z.hue}; top: ${4 + i * 5}px; left: ${(z.shownFrom - FULL.from) / (FULL.to - FULL.from) * 100}%; width: ${(z.to - z.shownFrom) / (FULL.to - FULL.from) * 100}%`;
+        overview.prepend(bar);
+      }
+    });
+
+    // ===== Drawing: zones, ruler and overview follow the view =====
+    const width = () => tracksEl.querySelector('.prof-track__lanes').clientWidth;
+    function draw() {
+      const w = width(), span = view.to - view.from;
+      const x = t => (t - view.from) / span * w;
+      for (const z of allZones) {
+        if (isMarker(z)) {
+          z.el.style.translate = `${x(z.from)}px 0`;
+          continue;
+        }
+        // 1px apart, so neighbours never read as overlapping
+        const left = x(z.shownFrom) + 1, right = x(z.to) - 1, px = right - left;
+        z.el.hidden = right < -20 || left > w + 20;
+        z.el.style.translate = `${Math.max(left, -2)}px 0`;
+        z.el.style.width = `${Math.max(2, Math.min(right, w + 2) - Math.max(left, -2))}px`;
+        z.el.classList.toggle('is-narrow', px < 150);
+        z.el.classList.toggle('is-tiny', px < 26);
+      }
+      // Ticks every year, or finer when zoomed in
+      const perYear = w / span;
+      const step = [1 / 12, 1 / 4, 1 / 2, 1, 2, 5].find(s => s * perYear >= 72) ?? 5;
+      const ticks = [];
+      for (let t = Math.ceil(view.from / step - 1e-6) * step; t <= view.to; t += step) ticks.push([x(t), step >= 1 ? Math.round(t) : monthName(t)]);
+      ruler.innerHTML = ticks.map(([px, label]) => `<div class="prof-tick" style="left: ${px}px">${label}</div>`).join('');
+      grid.innerHTML = ticks.map(([px]) => `<div style="left: ${px}px"></div>`).join('');
+      overviewWindow.style.left = `${(view.from - FULL.from) / (FULL.to - FULL.from) * 100}%`;
+      overviewWindow.style.width = `${span / (FULL.to - FULL.from) * 100}%`;
+      statusView.textContent = `${monthName(view.from)} – ${monthName(view.to)} · ${duration(view.from, view.to)} visible · scroll to zoom · drag to pan · click to inspect`;
+    }
+    const setView = (from, to) => {
+      const span = Math.min(Math.max(to - from, MIN_SPAN), FULL.to - FULL.from);
+      from = Math.min(Math.max(from, FULL.from), FULL.to - span);
+      view = { from, to: from + span };
+      draw();
+    };
+    const zoomTo = z => {
+      if (isMarker(z)) return setView(z.from - 1, z.from + 1);
+      const pad = Math.max((z.to - z.shownFrom) * 0.08, 1 / 12);
+      setView(z.shownFrom - pad, z.to + pad);
+    };
+
+    // ===== Zoom and pan =====
+    timeline.addEventListener('wheel', e => {
+      const lanesBox = tracksEl.querySelector('.prof-track__lanes').getBoundingClientRect();
+      const px = e.clientX - lanesBox.left;
+      if (px < 0) return; // over the track names: scroll the tracks as usual
+      e.preventDefault();
+      const unit = e.deltaMode === 1 ? 30 : 1, span = view.to - view.from;
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        const shift = e.deltaX * unit / lanesBox.width * span;
+        return setView(view.from + shift, view.to + shift);
+      }
+      const at = view.from + px / lanesBox.width * span;
+      const next = span * Math.exp(e.deltaY * unit * 0.0015);
+      setView(at - px / lanesBox.width * next, at - px / lanesBox.width * next + next);
+    }, { passive: false });
+
+    let drag = null, dragged = false;
+    const startDrag = (e, perPx) => {
+      if (e.button !== 0) return;
+      drag = { x: e.clientX, from: view.from, to: view.to, perPx };
+      dragged = false;
+    };
+    timeline.addEventListener('pointerdown', e => startDrag(e, -(view.to - view.from) / width()));
+    overviewWindow.addEventListener('pointerdown', e => { e.stopPropagation(); startDrag(e, (FULL.to - FULL.from) / overview.clientWidth); });
+    overview.addEventListener('pointerdown', e => {
+      const at = FULL.from + (e.clientX - overview.getBoundingClientRect().left) / overview.clientWidth * (FULL.to - FULL.from);
+      const span = view.to - view.from;
+      setView(at - span / 2, at + span / 2);
+      startDrag(e, (FULL.to - FULL.from) / overview.clientWidth);
+    });
+    addEventListener('pointermove', e => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x;
+      if (Math.abs(dx) > 4) dragged = true;
+      if (dragged) setView(drag.from + dx * drag.perPx, drag.to + dx * drag.perPx);
+    });
+    addEventListener('pointerup', () => { drag = null; });
+
+    // ===== Hover: tooltip and status line =====
+    const when = z => isMarker(z) ? monthName(z.from) : `${period(z)} · ${duration(z.from, z.to)}`;
+    timeline.addEventListener('pointerover', e => {
+      const z = e.target.closest('.zone, .marker')?.zone;
+      if (!z) { tip.hidden = true; return; }
+      const sub = { studio: `${z.role} · ${z.detail}`, education: z.detail, project: `${z.parent?.name} · timing approximate`, life: z.note }[z.kind];
+      tip.innerHTML = `<b>${esc(z.name)}</b><br>${when(z)}${sub ? `<br>${esc(sub)}` : ''}`;
+      tip.hidden = false;
+      statusHover.textContent = `${z.track.name} › ${z.name} · ${when(z)}`;
+    });
+    timeline.addEventListener('pointermove', e => {
+      if (tip.hidden) return;
+      tip.style.left = `${Math.min(e.clientX + 14, innerWidth - tip.offsetWidth - 8)}px`;
+      tip.style.top = `${e.clientY + 16}px`;
+    });
+    timeline.addEventListener('pointerleave', () => { tip.hidden = true; });
+
+    // ===== Comments on posts (moderated; approved ones are listed) =====
+    async function attachComments(target, slug) {
+      const section = document.createElement('div');
+      section.className = 'comments-section';
+      section.innerHTML = `
+        <h3 class="comments-title">Comments</h3>
+        <div class="comments-list">Loading comments...</div>
+        <form class="comment-form">
+          <input type="text" placeholder="Name (anonymous)" class="comment-name-input" maxlength="50">
+          <textarea placeholder="Share your thoughts..." required class="comment-text-input" maxlength="2000"></textarea>
+          <button type="submit" class="comment-submit-btn">Post Comment</button>
+          <div class="comment-status"></div>
+        </form>`;
+      target.append(section);
+      const list = section.querySelector('.comments-list'), form = section.querySelector('form');
+      const status = form.querySelector('.comment-status'), submit = form.querySelector('.comment-submit-btn');
+      form.addEventListener('submit', async e => {
+        e.preventDefault();
+        submit.disabled = true;
+        status.textContent = 'Posting...';
+        let timezone = 'unknown';
+        try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch {}
+        try {
+          const response = await fetch(COMMENTS_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              slug,
+              author: form.querySelector('.comment-name-input').value.trim() || 'Anonymous',
+              text: form.querySelector('.comment-text-input').value.trim(),
+              userAgent: navigator.userAgent,
+              language: navigator.language,
+              timezone,
+              screenRes: `${screen.width}x${screen.height}`,
+              deviceMemory: navigator.deviceMemory || null,
+              cores: navigator.hardwareConcurrency || null,
+            }),
+          });
+          if (!response.ok) throw new Error();
+          status.textContent = 'Comment submitted! It will appear once approved.';
+          form.reset();
+        } catch {
+          status.textContent = 'Failed to post. Please try again later.';
+        } finally {
+          submit.disabled = false;
+        }
+      });
+      try {
+        const response = await fetch(`${COMMENTS_API}?slug=${encodeURIComponent(slug)}`);
+        if (!response.ok) throw new Error();
+        const comments = await response.json();
+        list.innerHTML = comments.length ? comments.map(c => `
+          <div class="comment-item">
+            <div class="comment-meta"><span class="comment-author">${esc(c.author)}</span><span class="comment-date">${new Date(c.created_at).toLocaleDateString()}</span></div>
+            <div class="comment-body">${esc(c.text)}</div>
+          </div>`).join('') : '<p style="font-style: italic; opacity: 0.6;">No comments yet. Be the first!</p>';
+      } catch {
+        list.innerHTML = '<p>Error loading comments.</p>';
+      }
+    }
+
+    // ===== Selecting a zone: details on the right; the address links straight to it =====
+    let selected = null;
+    const thumbs = list => `<div class="prof-thumbs">${list.map(t =>
+      `<button type="button" data-texture="${t.index}" title="${esc(t.name)}"><img src="${esc(t.src)}" alt="${esc(t.caption)}" loading="lazy" referrerpolicy="no-referrer"></button>`).join('')}</div>`;
+    const youtube = url => url?.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)?.[1];
+    function select(z) {
+      selected?.el.classList.remove('is-selected');
+      selected = z;
+      z.el.classList.add('is-selected');
+      history.replaceState(null, '', `#${z.slug}`);
+      const stats = [['Track', z.track.name]];
+      let path = z.track.name, body = '';
+      if (z.kind === 'studio') {
+        stats.push(['Role', z.role], ['Titles', z.detail], ['Period', period(z)], ['Duration', duration(z.from, z.to)]);
+        body = `<p class="prof-section-title">Zones (${z.children.length})</p><div class="prof-list">${z.children.map(c =>
+          `<button type="button" data-zone="${allZones.indexOf(c)}">${esc(c.name)}</button>`).join('')}</div>`;
+      } else if (z.kind === 'project') {
+        path += ` › ${z.parent.name}`;
+        stats.push(['Studio', z.parent.name], ['Period', `${period(z.parent)} (project timing approximate)`]);
+        body = z.data.description;
+      } else if (z.kind === 'art' || z.kind === 'personal') {
+        const last = Math.floor(z.to - 1 / 12);
+        stats.push(['Period', z.kind === 'art' ? `${Math.floor(z.from)}${last > Math.floor(z.from) ? `–${last}` : ''}` : period(z)]);
+        if (z.textures.length) stats.push(['Resources', `${z.textures.length} textures`]);
+        body = (z.data.description ?? '') + (z.data.link ? `<p><a href="${esc(z.data.link)}" target="_blank" rel="noopener">${esc(z.data.link)} ↗</a></p>` : '');
+      } else if (z.kind === 'education') {
+        stats.push(['Program', z.detail], ['Period', period(z)], ['Duration', duration(z.from, z.to)]);
+      } else if (z.kind === 'life') {
+        stats.push(['Date', monthName(z.from)]);
+        body = z.note ? `<p>${esc(z.note)}</p>` : '';
+      } else if (z.kind === 'post') {
+        stats.push(['Posted', new Date(`${z.post.date}T12:00`).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })]);
+      }
+      const video = youtube(z.data?.video);
+      detailsPath.textContent = path;
+      detailsBody.innerHTML = `<h2>${esc(z.name)}</h2>
+        <dl class="prof-stats">${stats.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>
+        ${body}
+        ${video ? `<div class="prof-video"><iframe src="https://www.youtube.com/embed/${video}" title="${esc(z.name)} video" allow="encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe></div>` : ''}
+        ${z.kind !== 'post' && z.textures.length ? `<p class="prof-section-title">Bound resources (${z.textures.length})</p>${thumbs(z.textures)}` : ''}`;
+      if (z.kind === 'post') {
+        // The whole post, its images opening in the texture viewer, then its comments
+        const content = document.createElement('div');
+        content.className = 'blog-content';
+        content.append(document.getElementById(`post-${z.post.slug}`).content.cloneNode(true));
+        content.querySelectorAll('img').forEach((img, i) => { img.dataset.texture = z.textures[i].index; });
+        content.querySelectorAll('video[data-default-volume]').forEach(v => v.addEventListener('loadedmetadata', () => {
+          v.volume = Number(v.dataset.defaultVolume);
+        }, { once: true }));
+        detailsBody.append(content);
+        attachComments(detailsBody, z.post.commentId);
+      }
+      details.classList.toggle('is-reading', z.kind === 'post');
+      details.hidden = false;
+      details.scrollTop = 0;
+      draw(); // the timeline is narrower with the details open
+    }
+    timeline.addEventListener('click', e => {
+      const z = e.target.closest('.zone, .marker')?.zone;
+      if (!z || (dragged && e.detail)) return; // a drag's release isn't a click; keyboard clicks have no detail
+      select(z);
+    });
+    timeline.addEventListener('dblclick', e => {
+      const z = e.target.closest('.zone')?.zone;
+      if (z) zoomTo(z);
+    });
+    detailsBody.addEventListener('click', e => {
+      const zoneButton = e.target.closest('[data-zone]');
+      if (zoneButton) {
+        const z = allZones[zoneButton.dataset.zone];
+        select(z);
+        zoomTo(z.parent ?? z);
+      }
+      const textureEl = e.target.closest('[data-texture]');
+      if (textureEl) openViewer(textures[textureEl.dataset.texture]);
+    });
+    const closeDetails = () => {
+      details.hidden = true;
+      selected?.el.classList.remove('is-selected');
+      selected = null;
+      history.replaceState(null, '', location.pathname);
+      draw();
+    };
+    $('.prof-details__close').addEventListener('click', closeDetails);
+    addEventListener('keydown', e => {
+      if (viewer.open) return; // the viewer handles its own keys
+      if (e.key === 'Escape') closeDetails();
+      if (e.key === 'Home') setView(FULL.from, FULL.to);
+    });
+
+    // ===== Texture viewer: over the current view, stepping through the zone's textures =====
+    const viewer = $('.prof-viewer'), viewerImg = $('.prof-viewer__canvas img'), viewerCanvas = $('.prof-viewer__canvas');
+    const viewerName = $('.prof-viewer__name'), viewerCount = $('.prof-viewer__count');
+    const viewerCaption = $('.prof-viewer__caption'), viewerOwner = $('.prof-viewer__owner');
+    let lens = { scale: 1, x: 0, y: 0 }, shown = null;
+    const applyLens = () => { viewerImg.style.transform = `translate(${lens.x}px, ${lens.y}px) scale(${lens.scale})`; };
+    function openViewer(t) {
+      shown = t;
+      viewerImg.src = t.src;
+      viewerImg.alt = t.caption;
+      lens = { scale: 1, x: 0, y: 0 };
+      applyLens();
+      const siblings = t.zone.textures;
+      viewerName.textContent = t.name;
+      viewerCount.textContent = `${siblings.indexOf(t) + 1} / ${siblings.length}`;
+      viewerCaption.textContent = t.caption || t.name;
+      // Inside the timeline it's already in view; from Resources it's a way there
+      viewerOwner.textContent = timeline.hidden ? `Show ${t.zone.name} in timeline →` : '';
+      viewerOwner.hidden = !timeline.hidden;
+      if (!viewer.open) viewer.showModal();
+    }
+    const step = by => {
+      const siblings = shown.zone.textures;
+      openViewer(siblings[(siblings.indexOf(shown) + by + siblings.length) % siblings.length]);
+    };
+    viewerImg.addEventListener('load', () => {
+      if (shown) viewerName.textContent = `${shown.name} · ${viewerImg.naturalWidth}×${viewerImg.naturalHeight} · sRGB`;
+    });
+    $('.prof-viewer__prev').addEventListener('click', () => step(-1));
+    $('.prof-viewer__next').addEventListener('click', () => step(1));
+    $('.prof-viewer__close').addEventListener('click', () => viewer.close());
+    viewer.addEventListener('keydown', e => {
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+    });
+    viewerOwner.addEventListener('click', () => {
+      const z = shown.zone;
+      viewer.close();
+      showView('timeline');
+      select(z);
+      zoomTo(z);
+    });
+    viewerCanvas.addEventListener('wheel', e => {
+      e.preventDefault();
+      lens.scale = Math.min(Math.max(lens.scale * Math.exp(-e.deltaY * 0.0015), 1), 12);
+      if (lens.scale === 1) lens.x = lens.y = 0;
+      applyLens();
+    }, { passive: false });
+    let pan = null;
+    viewerCanvas.addEventListener('pointerdown', e => { pan = { x: e.clientX - lens.x, y: e.clientY - lens.y }; });
+    addEventListener('pointermove', e => { if (pan) { lens.x = e.clientX - pan.x; lens.y = e.clientY - pan.y; applyLens(); } });
+    addEventListener('pointerup', () => { pan = null; });
+    document.querySelectorAll('[data-channel]').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('[data-channel]').forEach(o => o.setAttribute('aria-pressed', String(o === b)));
+      viewerImg.style.filter = b.dataset.channel ? `url(#${b.dataset.channel})` : '';
+    }));
+
+    // ===== Resources tab: all textures, by draw call =====
+    const resources = $('.prof-resources');
+    resources.innerHTML = allZones.filter(z => z.textures.length).map((z, i) => `
+      <div class="prof-res-group">Draw ${String(i + 1).padStart(2, '0')} · <b>${esc(z.name)}</b> · ${z.track.name} · ${z.textures.length} textures</div>
+      <div class="prof-res-grid">${z.textures.map(t => `
+        <button type="button" class="prof-tex" data-texture="${t.index}">
+          <img src="${esc(t.src)}" alt="" loading="lazy" referrerpolicy="no-referrer">
+          <span>${esc(t.name)}</span><span class="prof-tex__dims">—</span>
+        </button>`).join('')}</div>`).join('');
+    resources.querySelectorAll('.prof-tex img').forEach(img => img.addEventListener('load', () => {
+      img.parentElement.querySelector('.prof-tex__dims').textContent = `${img.naturalWidth}×${img.naturalHeight} · sRGB`;
+    }, { once: true }));
+    resources.addEventListener('click', e => {
+      const b = e.target.closest('[data-texture]');
+      if (b) openViewer(textures[b.dataset.texture]);
+    });
+
+    // ===== Tabs =====
+    function showView(name) {
+      document.querySelectorAll('[data-view]').forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === name)));
+      timeline.hidden = name !== 'timeline';
+      resources.hidden = name !== 'resources';
+      details.hidden = name !== 'timeline' || !selected;
+      overview.style.visibility = name === 'timeline' ? '' : 'hidden';
+      if (name === 'timeline') draw();
+    }
+    document.querySelectorAll('[data-view]').forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
+
+    // ===== Links straight to a zone: /profiler/#slug =====
+    const openFromAddress = () => {
+      const z = allZones.find(z => z.slug === decodeURIComponent(location.hash.slice(1)));
+      if (!z) return;
+      showView('timeline');
+      select(z);
+      zoomTo(z);
+    };
+    addEventListener('hashchange', openFromAddress);
+    addEventListener('resize', draw);
+    draw();
+    openFromAddress();
+  })();
+  </script>
+</body>
+</html>

@@ -13,11 +13,6 @@ defaults:
       type: posts
     values:
       layout: post
-      header_title: Michael Kato
-      header_subtitle: blogs
-      header_link: /
-      blog_link: /blog/
-      back_label: "&larr; Back to blogs"
       permalink: /blog/:title/
 exclude:
   - README.md
