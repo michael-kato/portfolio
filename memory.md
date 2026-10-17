@@ -15,7 +15,7 @@ The homepage now uses a shared layout/content split:
 - `index.html` is only front matter for the default homepage.
 - `programming.html` is front matter for the programming-focused clean URL variant.
 - `_layouts/home.html` contains the shared HTML shell, includes, scripts, and `data-variant` hook.
-- `_includes/home-content.html` contains the shared homepage body: about, career, art, blogs preview, contact, recruiter chat, modals, and lightbox.
+- `_includes/home-content.html` contains the homepage body: the profiler (`_includes/profiler.html`) and Contact.
 
 This keeps alternate URLs from duplicating the full homepage markup.
 
@@ -25,7 +25,6 @@ This keeps alternate URLs from duplicating the full homepage markup.
 - **Vertical Card Architecture (Career & Art)**: Replaced pop-up modals and interactive thumbnails with static, always-expanded vertical inline cards for both Career projects and Art entries.
 - **Data Cleanup**: Pruned obsolete `summary` and `tags` fields from `site-content.js` to simplify data structures.
 - **Career Section Accordion**: Multiple categories can remain open simultaneously. Headers feature Apple-style specular inner glow gradients in dark slate grey.
-- **Art Cards & Lightbox**: Art entries render inline as vertical cards (`renderArtCards()`). Clicking thumbnail images opens the interactive Lightbox, which features a fixed top-right close button and backdrop click delegation for quick dismissal.
 - **Deep Learning Section**: A dedicated landing page at `/deep_learning/` showcases AI research and hosts a live Hugging Face Spaces inference iframe.
 - **Recruiter Chat**: The chat bubble is live. The Cloudflare Worker at `portfolio-chat.mkato.workers.dev` runs on Cloudflare Workers AI.
 - `index.js` now includes `setupChatBot()` for chat open/close behavior and `setupBlogImages()` to make blog images zoomable with the existing lightbox.
@@ -45,23 +44,21 @@ For Jekyll-rendered pages, `_includes/site-nav.html` is the active nav include. 
 
 Project and art content lives in `site-content.js`:
 
-- `window.projectData` powers inline project card details inside career category accordions.
-- `window.artData` powers inline art card details in the art section.
+- `window.projectData` and `window.artData` hold the project and art write-ups and images the profiler shows, by id.
 
-The cards and section structure live in `_includes/home-content.html`. Dynamic rendering logic (`renderProjectCards()`, `renderArtCards()`) and interactive handlers live in `index.js`. Pop-up modals have been completely retired in favor of vertical inline card rendering.
+Which projects and art sets appear, and when, is `_data/timeline.yml`. `index.js` now only handles the copy buttons and the recruiter chat.
 
-## Career profiler (/profiler/)
+## Career profiler (the homepage)
 
-`profiler.html` presents the career as a GPU profiler capture over the Star Nest. The user loves this direction; it's meant to grow into the main site.
-- **Data:** `_data/timeline.yml` holds the career (studios with dates from the resume, and their project ids), art sets, education, `personal` projects and `life` events. Project and art write-ups and images come from `site-content.js` by id. Posts come from `_posts`.
-- **Timeline:** tracks are threads, and studios are zones with their projects nested as child zones. Per-project dates are unknown, so projects split their studio's time evenly. Overlapping studios on one track are drawn from where the previous one ends; the details keep the real dates. Posts and life events are markers. Scroll zooms, drag pans, and double-click zooms to a zone.
-- **Details panel:** clicking a zone shows its write-up, video and bound resources. A post shows its whole content plus comments. The address becomes `/profiler/#slug` (a project or art id, the post title slug, or the slugified name), so zones can be linked.
-- **Resources:** every image is a texture, grouped by the zone ("draw call") that binds it, including post images. Thumbnails anywhere open a texture viewer `<dialog>` over the current view, with zoom, RGB/R/G/B/luma, and previous/next. From the Resources tab it offers "Show in timeline". The art "fake depth" idea belongs in that viewer later.
+The homepage is the nav, the hero, the profiler and Contact; the career, blog and art sections are gone and live in the profiler. Markup is `_includes/profiler.html` (section `#timeline`), code `profiler.js`, styles the Profiler block in `style.css`.
+- **Data:** `_data/timeline.yml` (career jobs with dates, nested `zones` and `events`; art sets; education), posts from `_posts` (both embedded as JSON in `#profiler-data`), write-ups and images from `site-content.js` by id.
+- **Tracks:** Experience (jobs and art sets, each job's zones nested under it and overlapping ones stacked; everything after Meta sits under a "Career Break" job), Education, and Events (job releases, promotions and the kids' births, plus blog posts).
+- **Interaction:** pinch or ctrl+scroll zooms (plain scroll scrolls the page; near the right edge it zooms about the edge, keeping the newest zones in view), drag pans, −/+/Fit buttons, double-click zooms to a zone, F frames the selection (or everything). Once in view it plays a short intro (load bar, UI, zones sweeping in; `data-intro` steps), then shows a controls card over the timeline until the first click. Clicking opens a details window (a modal `<dialog>` in the clicked zone's or marker's color, growing out of it): write-up, video, bound resources, a "media to come" slot for `media: pending`, and for a `link` to a GitHub repo its README (fetched live from raw.githubusercontent.com, rendered with marked). Posts show in full with comments. The address becomes `/#slug`, and loading one scrolls to and opens it (still zoomed out; following a `#slug` link in the page frames it).
+- **Resources:** every image is a texture grouped by its zone ("draw call"); thumbnails open a texture viewer `<dialog>` over the current view (zoom, RGB/R/G/B/luma, previous/next); from the Resources tab it offers "Show in timeline". The art "fake depth" idea belongs in that viewer later.
 
 ## Blog System
 
-Posts are Jekyll posts in `_posts/` (`YYYY-MM-DD-title.md`) and appear only on the profiler's Blog track; the blog feed page is gone.
-- **Redirects:** `blog.html` (`/blog/`) redirects to `/profiler/` keeping the `#post-title-slug` anchor, and `_layouts/post.html` makes each post's own page (`/blog/:title/`) redirect to its profiler entry. The homepage blog cards and the nav's Blog link point at the profiler.
+Posts are Jekyll posts in `_posts/` (`YYYY-MM-DD-title.md`) and appear only on the profiler's Events track. `/blog/`, each post's own page (`/blog/:title/`, via `_layouts/post.html`) and `/profiler/` redirect to the homepage, keeping or adding the `#slug`.
 
 ## Comment System
 
@@ -70,7 +67,7 @@ Anonymous comments are supported on blog posts using Cloudflare D1 and a dedicat
 - **Moderation:** Handled via Cloudflare D1 dashboard (SQL `is_approved` flag).
 - **Backend:** `portfolio-comments.mkato.workers.dev` handles API requests.
 - **Email:** Sends notifications upon new comment submissions via Resend API or Cloudflare Email Routing.
-- **Frontend:** `attachComments()` in `profiler.html` adds the comment list and form under a post in the details panel, keyed by `post_id` (or the slugified title).
+- **Frontend:** `attachComments()` in `profiler.js` adds the comment list and form under a post in the details window, keyed by `post_id` (or the slugified title).
 - **Stability**: Uses `data-post-id` attribute; lookups prioritize `post_id` from front matter, falling back to slug.
 
 ## Analytics System
@@ -105,10 +102,10 @@ The current `programming` variant:
 
 ## Layout & Styling Notes
 
-- **Theme:** space, but lived-in. The Star Nest shader is a fixed full-page canvas, so stars show the whole way down; sections sit on a translucent `--veil` for legibility, and a fixed grain overlay (`body::after`) adds grit. Every page header ends in a soft gradient ellipse (`_includes/horizon.html`).
+- **Theme:** space, but lived-in. The Star Nest shader is a fixed full-page canvas, so stars show the whole way down; one flat translucent `--veil` (`body::before`, fixed, between the shader and the page) dims them for legibility, and a fixed grain overlay (`body::after`) adds grit.
 - **Tokens:** all colors live on `:root` in `style.css` as OKLCH. `--space` (page), `--surface` / `--surface-2` (panels), `--text` / `--text-strong` / `--text-muted`, `--line` / `--line-strong`, `--accent` (international orange: buttons, links, open state), `--gold` (patch thread), `--go` (green status).
 - **Type:** Jost for display (`--font-display`), IBM Plex Sans for reading, IBM Plex Mono for small uppercase labels (`.mono`). Loaded from Google Fonts in `_includes/page_head.html`.
-- **Theme details, used sparingly on purpose:** `.tape-label` (label-maker tape) on section names, embroidered `.patch` SVGs on career rows, screw heads on cards, `MK-0103` frame codes on art. Themed wording is limited to "GO" in the hero stats and the art frame codes.
+- **Theme details, used sparingly on purpose:** `.tape-label` (label-maker tape) on section names; the profiler's GPU-tool wording (zones, draw calls, textures).
 - **Videos:** embeds are centered and capped at `--video-width` (40rem).
 - **Shader:** `#background-canvas` is fixed behind the page (in each layout). `.low-power` (no GPU) drops blur and the grain overlay.
 - **Scrolling:** `scroll-behavior: smooth` is set on `html` only under `prefers-reduced-motion: no-preference`. Anchor targets clear the sticky nav via `html { scroll-padding-top: var(--nav-offset) }`.

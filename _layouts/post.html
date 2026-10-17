@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Posts live on the profiler timeline; a post's own address opens it there -->
-  {% capture target %}{{ '/profiler/' | relative_url }}#{{ page.title | slugify }}{% endcapture %}
+  <!-- Posts live on the homepage timeline; a post's own address opens it there -->
+  {% capture target %}{{ '/' | relative_url }}#{{ page.title | slugify }}{% endcapture %}
   <meta charset="utf-8">
   <title>{{ page.title }} | {{ site.title }}</title>
   <meta name="robots" content="noindex">

@@ -1,10 +1,8 @@
 {% if include.is_home %}
-  {% assign career_link = "#career" %}
-  {% assign art_link = "#art" %}
+  {% assign timeline_link = "#timeline" %}
   {% assign contact_link = "#contact" %}
 {% else %}
-  {% assign career_link = "/" | relative_url | append: "#career" %}
-  {% assign art_link = "/" | relative_url | append: "#art" %}
+  {% assign timeline_link = "/" | relative_url | append: "#timeline" %}
   {% assign contact_link = "/" | relative_url | append: "#contact" %}
 {% endif %}
 
@@ -19,10 +17,8 @@
       <span class="brand__name">Michael Kato</span>
     </a>
     <ul>
-      <li><a href="{{ career_link }}">Career</a></li>
-      <li><a href="{{ art_link }}">Art</a></li>
+      <li><a href="{{ timeline_link }}">Timeline</a></li>
       <li><a href="{{ contact_link }}">Contact</a></li>
-      <li><a href="{{ '/profiler/' | relative_url }}">Blog</a></li>
     </ul>
     <a class="btn btn--accent btn--sm" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>Resume ↓</a>
   </div>

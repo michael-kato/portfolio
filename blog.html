@@ -5,14 +5,14 @@ sitemap: false
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- The blog now lives on the profiler timeline; old links (/blog/#post-title) open that post there -->
+  <!-- The blog now lives on the homepage timeline; old links (/blog/#post-title) open that post there -->
   <meta charset="utf-8">
   <title>Blog | {{ site.title }}</title>
   <meta name="robots" content="noindex">
-  <script>location.replace({{ '/profiler/' | relative_url | jsonify }} + location.hash);</script>
-  <meta http-equiv="refresh" content="0; url={{ '/profiler/' | relative_url }}">
+  <script>location.replace({{ '/' | relative_url | jsonify }} + (location.hash || '#timeline'));</script>
+  <meta http-equiv="refresh" content="0; url={{ '/' | relative_url }}#timeline">
 </head>
 <body>
-  <p>The blog now lives on the <a href="{{ '/profiler/' | relative_url }}">timeline</a>.</p>
+  <p>The blog now lives on the <a href="{{ '/' | relative_url }}#timeline">timeline</a>.</p>
 </body>
 </html>
