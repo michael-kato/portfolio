@@ -9,7 +9,8 @@
 # there's a README to show it), and its
 # own `zones`. Undated zones share their parent's time evenly, in the order listed; overlapping ones stack,
 # each in the highest row free, in the order listed.
-# A job's `events` (releases, promotions) are markers on the Events track: name, date, note (optional).
+# A job's `events` (releases, promotions) are markers on the Events track: name, date, note (optional),
+# images: [{ src, caption }] (optional; shown in the event's window, and in Resources).
 
 career:
   - name: Sledgehammer Games
@@ -66,8 +67,12 @@ career:
     from: "2023-10"
     hue: 205
     events:
-      - { name: Son born, date: "2024-09" }
-      - { name: Daughter born, date: "2026-04" }
+      - name: Son born
+        date: "2024-09"
+        images: []  # e.g. [{ src: /resources/son.jpg, caption: Our son }]
+      - name: Daughter born
+        date: "2026-04"
+        images: []
     zones:
       - name: Unannounced UE5 Game
         id: ue5-game-2024

@@ -15,7 +15,7 @@ The homepage now uses a shared layout/content split:
 - `index.html` is only front matter for the default homepage.
 - `programming.html` is front matter for the programming-focused clean URL variant.
 - `_layouts/home.html` contains the shared HTML shell, includes, scripts, and `data-variant` hook.
-- `_includes/home-content.html` contains the homepage body: the profiler (`_includes/profiler.html`) and Contact.
+- `_includes/home-content.html` contains the homepage body: the profiler (`_includes/profiler.html`).
 
 This keeps alternate URLs from duplicating the full homepage markup.
 
@@ -36,7 +36,7 @@ This keeps alternate URLs from duplicating the full homepage markup.
 
 ## Navigation
 
-For Jekyll-rendered pages, `_includes/site-nav.html` is the active nav include. On home-style pages it links directly to same-page anchors such as `#career`, `#art`, `#contact`
+For Jekyll-rendered pages other than the homepage (which has no nav bar), `_includes/site-nav.html` is the active nav include; it links to the homepage's `#timeline`.
 
 `components.js` is a legacy dynamic header/nav/footer loader used by older/static pages. It still contains older assumptions, so check whether a page uses Jekyll includes or `components.js` before changing navigation globally.
 
@@ -50,7 +50,7 @@ Which projects and art sets appear, and when, is `_data/timeline.yml`. `index.js
 
 ## Career profiler (the homepage)
 
-The homepage is the nav, the hero, the profiler and Contact; the career, blog and art sections are gone and live in the profiler. Markup is `_includes/profiler.html` (section `#timeline`), code `profiler.js`, styles the Profiler block in `style.css`.
+The homepage is the hero (with the contact links: resume, email, GitHub, LinkedIn) and the profiler (no nav bar, no Contact section); the career, blog and art sections are gone and live in the profiler. Markup is `_includes/profiler.html` (section `#timeline`), code `profiler.js`, styles the Profiler block in `style.css`.
 - **Data:** `_data/timeline.yml` (career jobs with dates, nested `zones` and `events`; art sets; education), posts from `_posts` (both embedded as JSON in `#profiler-data`), write-ups and images from `site-content.js` by id.
 - **Tracks:** Experience (jobs and art sets, each job's zones nested under it and overlapping ones stacked; everything after Meta sits under a "Career Break" job), Education, and Events (job releases, promotions and the kids' births, plus blog posts).
 - **Interaction:** pinch or ctrl+scroll zooms (plain scroll scrolls the page; near the right edge it zooms about the edge, keeping the newest zones in view), drag pans, −/+/Fit buttons, double-click zooms to a zone, F frames the selection (or everything). Once in view it plays a short intro (load bar, UI, zones sweeping in; `data-intro` steps), then shows a controls card over the timeline until the first click. Clicking opens a details window (a modal `<dialog>` in the clicked zone's or marker's color, growing out of it): write-up, video, bound resources, a "media to come" slot for `media: pending`, and for a `link` to a GitHub repo its README (fetched live from raw.githubusercontent.com, rendered with marked). Posts show in full with comments. The address becomes `/#slug`, and loading one scrolls to and opens it (still zoomed out; following a `#slug` link in the page frames it).

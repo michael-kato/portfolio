@@ -96,7 +96,7 @@
   // Events: releases and promotions from the jobs, and blog posts
   const events = track('Events');
   events.zones = [
-    ...jobs.flatMap(job => job.events.map(e => ({ kind: 'event', track: events, depth: 0, name: e.name, note: e.note,
+    ...jobs.flatMap(job => job.events.map(e => ({ kind: 'event', track: events, depth: 0, name: e.name, note: e.note, data: e,
       from: startOf(e.date) + 0.5 / 12, hue: job.hue, job }))),
     ...POSTS.map(p => {
       const [y, m, d] = p.date.split('-').map(Number);
@@ -401,6 +401,29 @@
   const zoneList = z => z.children?.length ? `<p class="prof-section-title">Zones (${z.children.length})</p><div class="prof-list">${z.children.map(c =>
     `<button type="button" data-zone="${allZones.indexOf(c)}">${esc(c.name)}</button>`).join('')}</div>` : '';
   const youtube = url => url?.match(/(?:v=|youtu\.be\/|embed\/)([\w-]{11})/)?.[1];
+  /** Swaps a thumbnail for a sharper one: the image cropped to cover its box, halved step by step (like mips)
+      so every source pixel counts, then resampled to the box's device pixels. The browser's own scaling
+      skips pixels when shrinking a lot, and aliases. */
+  const loaded = img => img.complete ? Promise.resolve() : new Promise(done => img.addEventListener('load', done, { once: true }));
+  const sharpen = img => loaded(img).then(() => {
+    const w = Math.round(img.clientWidth * devicePixelRatio), h = Math.round(img.clientHeight * devicePixelRatio);
+    const scale = Math.max(w / img.naturalWidth, h / img.naturalHeight);
+    if (!w || !h || scale >= 1) return;
+    let src = img, sw = w / scale, sh = h / scale, sx = (img.naturalWidth - sw) / 2, sy = (img.naturalHeight - sh) / 2;
+    const draw = (cw, ch) => {
+      const canvas = Object.assign(document.createElement('canvas'), { width: cw, height: ch });
+      const g = canvas.getContext('2d');
+      g.imageSmoothingQuality = 'high';
+      g.drawImage(src, sx, sy, sw, sh, 0, 0, cw, ch);
+      [src, sx, sy, sw, sh] = [canvas, 0, 0, cw, ch];
+      return canvas;
+    };
+    while (sw / 2 >= w * 1.5) draw(Math.round(sw / 2), Math.round(sh / 2));
+    const thumb = draw(w, h);
+    thumb.setAttribute('role', 'img');
+    thumb.setAttribute('aria-label', img.alt);
+    img.replaceWith(thumb);
+  }).catch(() => {}); // can't draw it: the plain image stays
   function select(z) {
     selected?.el.classList.remove('is-selected');
     selected = z;
@@ -454,6 +477,7 @@
       attachComments(detailsBody, z.post.commentId);
     }
     if (repo) showReadme(z, repo);
+    detailsBody.querySelectorAll('.prof-thumbs img').forEach(sharpen);
     details.classList.toggle('is-reading', z.kind === 'post' || Boolean(repo));
     // The window has the zone's or marker's color (markers are light)
     details.style.setProperty('--hue', z.hue);
