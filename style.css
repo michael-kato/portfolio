@@ -879,8 +879,8 @@ main > .prof {
 
 .zone {
   position: absolute; top: calc(var(--depth) * var(--row) + 3px); left: 0;
-  display: flex; align-items: center; gap: .6em;
-  height: calc(var(--row) - 4px); padding: 0 6px;
+  display: flex; align-items: center; gap: .45em;
+  height: calc(var(--row) - 4px); padding: 0 4px;
   border: 1px solid oklch(72% .1 var(--hue) / .55); border-radius: 2px;
   background: oklch(calc(42% - var(--shade, 0) * 7%) .09 var(--hue) / .88);
   color: oklch(97% .02 var(--hue));
