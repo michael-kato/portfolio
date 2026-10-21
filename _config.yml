@@ -14,6 +14,8 @@ defaults:
     values:
       layout: post
       permalink: /blog/:title/
+include:
+  - .well-known
 exclude:
   - README.md
   - CLAUDE.md
