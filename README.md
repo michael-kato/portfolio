@@ -10,9 +10,8 @@ Important: `index.html`, `blog.html`, `_layouts/`, and `_includes/` are now Jeky
 
 - Write new posts in `_posts/` using the filename format `YYYY-MM-DD-slug.md`
 - Add front matter for `title`, `date`, `subtitle`, `excerpt`, and a stable `post_id`
-- Posts show on the Events track of the homepage timeline; clicking one opens the whole post, with comments
-- `/blog/` and each post's own address (`/blog/slug/`) redirect to the post on the homepage (`/#post-title`)
-- Everything else on the timeline lives in `_data/timeline.yml`
+- The blog listing page at `blog.html` builds itself from those posts and publishes at `/blog/`
+- Posts publish to `/blog/slug/`
 - GitHub Pages deploys through `.github/workflows/pages.yml`
 - Local preview uses `bundle exec jekyll serve`
 

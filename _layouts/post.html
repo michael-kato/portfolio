@@ -1,15 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Posts live on the homepage timeline; a post's own address opens it there -->
-  {% capture target %}{{ '/' | relative_url }}#{{ page.title | slugify }}{% endcapture %}
-  <meta charset="utf-8">
-  <title>{{ page.title }} | {{ site.title }}</title>
-  <meta name="robots" content="noindex">
-  <script>location.replace({{ target | jsonify }});</script>
-  <meta http-equiv="refresh" content="0; url={{ target }}">
+  {% include page_head.html style_path="/style.css" %}
 </head>
-<body>
-  <p>This post now lives on the <a href="{{ target }}">timeline</a>.</p>
+<body data-page="blog">
+  {% capture post_eyebrow %}Blog · {{ page.date | date: "%B %-d, %Y" }}{% endcapture %}
+  <canvas id="background-canvas" aria-hidden="true"></canvas>
+  {% include site-nav.html %}
+  {% include site-header.html title=page.title subtitle=post_eyebrow %}
+  <main>
+    <section id="blog-post">
+      <div class="container" data-post-id="{{ page.post_id | default: page.title | slugify }}">
+        <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to Blog' }}</a>
+
+        <div class="blog-content">
+          {{ content }}
+        </div>
+
+        <div class="blog-footer content-narrow">
+          <a href="{{ page.blog_link | default: '/blog/' | relative_url }}" class="blog-back-link">{{ page.back_label | default: '&larr; Back to blogs' }}</a>
+        </div>
+      </div>
+    </section>
+
+    <dialog id="lightbox-container" class="lightbox" aria-label="Image viewer">
+      <button type="button" class="lightbox-close" aria-label="Close" title="Close (Esc)">&times;</button>
+      <div class="lightbox-content">
+        <img id="lightbox-image" class="lightbox-image" alt="" referrerpolicy="no-referrer">
+        <div class="lightbox-caption"></div>
+        <div class="lightbox-nav">
+          <button type="button" class="lightbox-prev" aria-label="Previous image">←</button>
+          <span class="lightbox-counter"></span>
+          <button type="button" class="lightbox-next" aria-label="Next image">→</button>
+        </div>
+      </div>
+    </dialog>
+  </main>
+
+  {% include site-footer.html %}
+
+  <script src="{{ 'site-content.js' | relative_url }}"></script>
+  <script src="{{ 'shaders.js' | relative_url }}"></script>
+  <script src="{{ 'index.js' | relative_url }}"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('video[data-default-volume]').forEach((video) => {
+        const volume = Number.parseFloat(video.dataset.defaultVolume);
+        if (!Number.isNaN(volume)) {
+          video.addEventListener('loadedmetadata', () => {
+            video.volume = volume;
+          }, { once: true });
+        }
+      });
+    });
+  </script>
 </body>
 </html>
