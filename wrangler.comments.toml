@@ -8,6 +8,7 @@ command = "echo 'No build step'"
 
 [vars]
 NOTIFICATION_EMAIL = "contact@michaelkato.work"
+TURNSTILE_HOSTNAMES = "michaelkato.work"
 
 [[d1_databases]]
 binding = "DB"

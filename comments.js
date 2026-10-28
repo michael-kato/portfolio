@@ -1,5 +1,24 @@
 import { generateSessionHash } from './session.js';
 
+// Fails closed: any missing config, bad token, or siteverify error rejects the comment
+async function verifyTurnstile(env, token, remoteip) {
+  const hostnames = new Set((env.TURNSTILE_HOSTNAMES ?? '').split(',').map(h => h.trim()).filter(Boolean));
+  if (typeof token !== 'string' || !token || token.length > 2048 || !hostnames.size || !env.TURNSTILE_SECRET) return false;
+  try {
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      signal: AbortSignal.timeout(10_000),
+      body: new URLSearchParams({ secret: env.TURNSTILE_SECRET, response: token, remoteip: remoteip ?? '' }),
+    });
+    if (!r.ok) return false;
+    const result = await r.json();
+    return result.success === true && result.action === 'comment' && hostnames.has(result.hostname);
+  } catch {
+    return false;
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -35,6 +54,9 @@ export default {
         const data = await request.json();
         const { slug, author, text } = data;
         if (!slug || !text) return new Response('Invalid data', { status: 400, headers: corsHeaders });
+        if (!(await verifyTurnstile(env, data.turnstileToken, request.headers.get('CF-Connecting-IP')))) {
+          return new Response('forbidden', { status: 403, headers: corsHeaders });
+        }
 
         const sessionHash = await generateSessionHash(request, data);
 
