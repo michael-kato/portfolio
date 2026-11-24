@@ -17,5 +17,5 @@ stack:
   - Unreal Engine 5
   - Niagara VFX
   - Unity
-summary: "Real-time VFX and vehicle prototypes: Unreal Engine 5 Niagara beam and sci-fi blaster weapon studies alongside a personal Unity Clone Gunship flight and combat demo."
+summary: "A few VFX and vehicle experiments. The Unity gunship started because I think the Clone gunship from Star Wars is one of the coolest sci-fi vehicles ever and can't recall a game doing it justice. The Unreal clips are Niagara weapon effects I built while learning UE5 VFX, aiming for something along the lines of Star Wars or Starship Troopers."
 ---

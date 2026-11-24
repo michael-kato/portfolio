@@ -5,11 +5,11 @@
       <div class="section-head">
         <div class="section-head__top">
           <span class="section-num mono">01</span>
-          <h2 class="section-title">Recent Projects &amp; Tools</h2>
+          <h2 class="section-title">Personal Projects &amp; Tools</h2>
           <span class="section-count mono" id="projects-count">{{ site.projects | size }} items</span>
         </div>
         <p class="section-lede">
-          Independent pipeline tools, synthetic data experiments, real-time shaders, and game prototypes, sorted newest first.
+          Things I've been building in my own time: pipeline tools, synthetic data experiments, shaders, VFX tests, and small games, newest first.
         </p>
         <div class="filter-bar" role="toolbar" aria-label="Filter projects by category">
           <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
@@ -40,8 +40,6 @@
                   <h3 class="project-entry__title">
                     {% if project.repo %}
                       <a href="{{ project.repo }}" target="_blank" rel="noopener">{{ project.title }}</a>
-                    {% elsif project.writeup %}
-                      <a href="{{ project.writeup | relative_url }}">{{ project.title }}</a>
                     {% else %}
                       {{ project.title }}
                     {% endif %}
@@ -56,9 +54,6 @@
                       <button type="button" class="action-chip" data-lightbox-src="{{ project.image_lightbox | relative_url }}" data-lightbox-caption="{{ project.title }}: {{ project.image_lightbox_label | default: 'Diagram' }}">
                         {{ project.image_lightbox_label | default: "Inspect image" }}
                       </button>
-                    {% endif %}
-                    {% if project.writeup %}
-                      <a class="action-chip" href="{{ project.writeup | relative_url }}">Writeup →</a>
                     {% endif %}
                     {% if project.repo %}
                       <a class="action-chip" href="{{ project.repo }}" target="_blank" rel="noopener">GitHub ↗</a>
@@ -111,7 +106,7 @@
       <a href="https://github.com/michael-kato?tab=repositories" target="_blank" rel="noopener" class="directory-row">
         <span class="mono directory-row__label">GitHub</span>
         <span class="directory-row__body">
-          <strong>Browse all public repositories</strong>
+          <strong>All public repositories</strong>
           <span>github.com/michael-kato</span>
         </span>
         <span class="directory-row__arrow" aria-hidden="true">↗</span>
@@ -119,17 +114,17 @@
     </div>
   </section>
 
-  <!-- 02 · PRODUCTION EXPERIENCE -->
+  <!-- 02 · WORK HISTORY -->
   <section id="experience" class="section section--bordered">
     <div class="container">
       <div class="section-head">
         <div class="section-head__top">
           <span class="section-num mono">02</span>
-          <h2 class="section-title">Production Experience</h2>
+          <h2 class="section-title">Work Experience</h2>
           <span class="section-count mono">2014 - 2023</span>
         </div>
         <p class="section-lede">
-          Ten years shipping real-time performance systems, automated content pipelines, and artist tooling across AAA console games, spatial computing, and VR.
+          Most of my professional work is behind NDAs or lived inside internal pipelines, so here is a breakdown of what I actually worked on at Meta, Apple, and Sledgehammer Games.
         </p>
       </div>
 
@@ -139,7 +134,7 @@
           <aside class="studio-meta">
             <span class="studio-period mono">Sep 2020 - Sep 2023</span>
             <h3 class="studio-name">Meta Reality Labs</h3>
-            <p class="studio-product">Horizon Worlds · VR</p>
+            <p class="studio-product">Horizon Worlds (VR)</p>
             <p class="studio-role">Senior Technical Artist (IC5)</p>
             <ul class="studio-badges mono">
               <li>300k MAU</li>
@@ -150,7 +145,7 @@
 
           <div class="studio-body">
             <p class="studio-summary">
-              Embedded directly with a performance engineering team to approach mobile VR performance holistically, spanning Unity C# optimization, custom profiling instrumentation, automated regression detection, live telemetry dashboards, and emergency ship-blocking triage.
+              My main role at Meta Reality Labs was looking at performance as a problem holistically while embedded with a performance engineering team. That meant deep dives with RenderDoc, Unity Profiler, and Perfetto, direct C# fixes, instrumentation, automated performance testing, emergency triage, education initiatives, cross-functional outreach, and a lot of one-off debugging tasks.
             </p>
 
             <!-- Custom SVG Pipeline Diagram: Meta Perf Automation -->
@@ -191,35 +186,38 @@
                   <text x="756" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">Alerts &amp; Fixes</text>
                 </g>
               </svg>
-              <figcaption class="mono">End-to-end VR performance loop · caught regressions within hours of code landing</figcaption>
+              <figcaption class="mono">How the Horizon Worlds performance automation loop fit together</figcaption>
             </figure>
 
             <div class="impact-grid">
               <div class="impact-card">
-                <h4>Unity C# Codebase Optimization</h4>
-                <ul>
-                  <li>Patched dozens of wasteful memory allocations across the codebase, cutting GC spikes and fragmentation that triggered OOM crashes on Quest.</li>
-                  <li>Swept hundreds of C# files to batch/cache native Unity calls and optimize avatars, particle systems, navigation portals, collision, and game script.</li>
-                  <li>Owned full-cycle regression triage: profiling builds with RenderDoc, Unity Profiler, and Perfetto to isolate culprits and land or coordinate fixes.</li>
-                </ul>
+                <h4>Code Contributions</h4>
+                <p>
+                  I contributed directly to the Horizon Worlds Unity C# codebase with performance fixes and instrumentation. I tracked down and patched dozens of wasteful memory allocations that were causing garbage collection spikes and memory fragmentation (which often led to OOM crashes on Quest).
+                </p>
+                <p>
+                  I also swept through hundreds of C# files to batch or cache Unity native calls and clean up wasteful work in avatars, particles, navigation portals, collision, and game script. Whenever a ship-blocking regression showed up, I handled it full cycle: profiling, narrowing down the likely culprit with internal tools, and either reverting, disabling, or rate-limiting the change or working with the owner to fix it.
+                </p>
               </div>
 
               <div class="impact-card">
-                <h4>Automated Performance Framework</h4>
-                <ul>
-                  <li>Co-designed a C# profiling and automated testing system for Horizon Worlds' weekly release cadence, starting as a solo initiative before growing into a dedicated team effort.</li>
-                  <li>Tracked physics, scripting, animation, rendering, VFX, audio, and garbage collection across pre-submit, CI, developer tests, and live production builds.</li>
-                  <li>Ran per-commit A/B benchmark comparisons and surfaced downloadable profiler artifacts within hours of a regression.</li>
-                </ul>
+                <h4>Performance Automation Framework</h4>
+                <p>
+                  I worked with lead engineers to build a performance monitoring system for Horizon Worlds' weekly release cadence. It started as a solo initiative and eventually grew into a dedicated team effort.
+                </p>
+                <p>
+                  We instrumented most of the game code with a custom C# profiling system that ran everywhere: pre-submission, continuous integration, on-demand developer tests, and live user builds. It tracked physics, scripting, animation, rendering, VFX, audio, and garbage collection, ran per-commit A/B comparisons against benchmarks, and caught regressions within hours along with downloadable profiler artifacts for debugging.
+                </p>
               </div>
 
               <div class="impact-card">
-                <h4>SQL Telemetry &amp; Hitch Dashboards</h4>
-                <ul>
-                  <li>Surfaced previously buried automation, test, and live-user telemetry into SQL dashboards aggregated by world, player count, hardware SKU, build version, and time of day.</li>
-                  <li>Built specialized CPU hitch ("bubble") trackers and automated email regression alerts to stakeholders.</li>
-                  <li>Enabled engineering and leadership to prioritize optimizations using live data rather than guesswork.</li>
-                </ul>
+                <h4>SQL Dashboards &amp; Telemetry</h4>
+                <p>
+                  Horizon Worlds collected a huge amount of data from automation, developer testing, and live users, and when I first started much of it wasn't being surfaced anywhere. I built a bunch of SQL dashboards so anyone on the team could actually see performance trends.
+                </p>
+                <p>
+                  People could slice data by world, player count, hardware SKU, game version, or time of day. I set up separate dashboards for automation runs, general perf queries, and specialized "hitch" (CPU bubble) trackers, plus automated email alerts when a regression popped up. It made it much easier for teams to prioritize optimization work and prove whether a fix actually helped.
+                </p>
               </div>
             </div>
 
@@ -230,9 +228,8 @@
                   <span class="telemetry-card__title">CPU Hitch Analysis</span>
                   <span class="mono telemetry-card__meta">Quest 2 · 30ms threshold</span>
                 </div>
-                <svg viewBox="0 0 460 220" role="img" aria-label="Illustrative reconstruction of CPU hitch breakdown by subsystem">
+                <svg viewBox="0 0 460 220" role="img" aria-label="Rough mockup of CPU hitch breakdown by subsystem">
                   <g font-family="IBM Plex Mono, monospace" font-size="10">
-                    <!-- Grid lines -->
                     <line x1="110" y1="14" x2="110" y2="190" stroke="#262a34"/>
                     <line x1="176" y1="14" x2="176" y2="190" stroke="#262a34" stroke-dasharray="3 3"/>
                     <line x1="242" y1="14" x2="242" y2="190" stroke="#262a34" stroke-dasharray="3 3"/>
@@ -240,7 +237,6 @@
                     <line x1="374" y1="14" x2="374" y2="190" stroke="#262a34" stroke-dasharray="3 3"/>
                     <text x="308" y="10" text-anchor="middle" fill="#e05d68" font-size="9">30ms budget</text>
 
-                    <!-- Bars (scale: 0..50ms -> 330px, 6.6px/ms) -->
                     <text x="102" y="34" text-anchor="end" fill="#d8dae0">Physics</text>
                     <rect x="110" y="23" width="252" height="14" rx="2" fill="#e05d68"/>
                     <text x="368" y="34" fill="#f4f5f7">38.2ms</text>
@@ -269,7 +265,6 @@
                     <rect x="110" y="161" width="105" height="14" rx="2" fill="#4f5769"/>
                     <text x="221" y="172" fill="#d8dae0">16.0ms</text>
 
-                    <!-- Axis labels -->
                     <text x="110" y="206" text-anchor="middle" fill="#8b909c">0</text>
                     <text x="176" y="206" text-anchor="middle" fill="#8b909c">10ms</text>
                     <text x="242" y="206" text-anchor="middle" fill="#8b909c">20ms</text>
@@ -277,17 +272,16 @@
                     <text x="374" y="206" text-anchor="middle" fill="#8b909c">40ms</text>
                   </g>
                 </svg>
-                <figcaption class="mono">Illustrative reconstruction · internal Meta tooling</figcaption>
+                <figcaption class="mono">Rough mockup (original tools were internal to Meta)</figcaption>
               </figure>
 
               <figure class="telemetry-card">
                 <div class="telemetry-card__head">
                   <span class="telemetry-card__title">FPS Trends by World &amp; Build</span>
-                  <span class="mono telemetry-card__meta">Target 72 fps · Regression flagged</span>
+                  <span class="mono telemetry-card__meta">Target 72 fps</span>
                 </div>
-                <svg viewBox="0 0 460 220" role="img" aria-label="Illustrative reconstruction of FPS trends across builds with regression marker">
+                <svg viewBox="0 0 460 220" role="img" aria-label="Rough mockup of FPS trends across builds with regression marker">
                   <g font-family="IBM Plex Mono, monospace" font-size="9.5">
-                    <!-- Horizontal grid -->
                     <line x1="42" y1="24" x2="438" y2="24" stroke="#262a34"/>
                     <line x1="42" y1="68" x2="438" y2="68" stroke="#e86a33" stroke-dasharray="5 4" stroke-opacity="0.8"/>
                     <line x1="42" y1="118" x2="438" y2="118" stroke="#262a34"/>
@@ -298,31 +292,27 @@
                     <text x="34" y="121" text-anchor="end" fill="#8b909c">60</text>
                     <text x="34" y="171" text-anchor="end" fill="#8b909c">45</text>
 
-                    <!-- Build vertical markers -->
                     <line x1="158" y1="20" x2="158" y2="180" stroke="#5c9ce6" stroke-dasharray="3 3" stroke-opacity="0.65"/>
                     <text x="158" y="14" text-anchor="middle" fill="#5c9ce6">v1.244</text>
 
                     <line x1="296" y1="20" x2="296" y2="180" stroke="#5c9ce6" stroke-dasharray="3 3" stroke-opacity="0.65"/>
                     <text x="296" y="14" text-anchor="middle" fill="#5c9ce6">v1.245</text>
 
-                    <!-- Series lines -->
                     <polyline fill="none" stroke="#4cc38a" stroke-width="2" points="42,60 98,55 158,52 224,48 296,46 364,42 432,38"/>
                     <polyline fill="none" stroke="#5c9ce6" stroke-width="2" points="42,84 98,78 158,72 224,66 296,62 364,58 432,54"/>
                     <polyline fill="none" stroke="#e05d68" stroke-width="2" points="42,108 98,100 158,92 224,84 296,80 342,96 392,82 432,72"/>
 
-                    <!-- Regression annotation -->
                     <circle cx="342" cy="96" r="4.5" fill="#e05d68"/>
                     <rect x="318" y="106" width="114" height="22" rx="3" fill="#1b1e25" stroke="#e05d68" stroke-opacity="0.6"/>
                     <text x="375" y="120" text-anchor="middle" fill="#f4f5f7" font-size="9">Regression alert</text>
 
-                    <!-- Legend -->
                     <circle cx="52" cy="200" r="3.5" fill="#4cc38a"/><text x="61" y="203" fill="#8b909c">Theater</text>
                     <circle cx="132" cy="200" r="3.5" fill="#5c9ce6"/><text x="141" y="203" fill="#8b909c">Plaza</text>
                     <circle cx="204" cy="200" r="3.5" fill="#e05d68"/><text x="213" y="203" fill="#8b909c">Arena</text>
                     <text x="436" y="203" text-anchor="end" fill="#e86a33">--- 72fps target</text>
                   </g>
                 </svg>
-                <figcaption class="mono">Illustrative reconstruction · internal Meta tooling</figcaption>
+                <figcaption class="mono">Rough mockup (original tools were internal to Meta)</figcaption>
               </figure>
             </div>
           </div>
@@ -333,7 +323,7 @@
           <aside class="studio-meta">
             <span class="studio-period mono">Apr 2019 - Aug 2020</span>
             <h3 class="studio-name">Apple <span class="studio-tag mono">Contract</span></h3>
-            <p class="studio-product">Apple Vision Pro · Synthetic Data</p>
+            <p class="studio-product">Apple Vision Pro (Synthetic Data)</p>
             <p class="studio-role">Technical Artist</p>
             <ul class="studio-badges mono">
               <li>Python · Maya</li>
@@ -344,7 +334,7 @@
 
           <div class="studio-body">
             <p class="studio-summary">
-              Built Python pipeline automation supporting a high-volume synthetic data operation that rendered photorealistic interior environments to train Apple Vision Pro's computer-vision tracking models.
+              At Apple I built pipeline features and tools for a fast-moving synthetic data team that rendered photoreal video of everyday environments to help train the Apple Vision Pro headset tracking system.
             </p>
 
             <!-- Custom SVG Pipeline Diagram: Apple Synthetic Data -->
@@ -385,35 +375,38 @@
                   <text x="757" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">ML Datasets</text>
                 </g>
               </svg>
-              <figcaption class="mono">Automated Python pipeline across thousands of Maya scenes · overnight farm rendering</figcaption>
+              <figcaption class="mono">Overview of the Maya, Perforce, AWS, and Deadline synthetic data flow</figcaption>
             </figure>
 
             <div class="impact-grid">
               <div class="impact-card">
-                <h4>End-to-End Outsourcing Pipeline</h4>
-                <ul>
-                  <li>Automated outbound vendor delivery: packaged Python dependencies in-place, bundled metadata references, zipped environments, pushed to AWS, and emailed confirmations.</li>
-                  <li>Automated inbound ingestion: pulled completed assets into Perforce, ran the full QA validation suite, and notified artists for manual sign-off.</li>
-                  <li>Eliminated manual handoffs on both ends so broken environments never polluted ML training jobs.</li>
-                </ul>
+                <h4>Outsourcing Pipeline</h4>
+                <p>
+                  To support a high-volume outsourcing operation, I built an automated pipeline for both sending our tools out to vendors and bringing completed assets back into our Perforce depot.
+                </p>
+                <p>
+                  On the delivery side it packaged up all Python dependencies in-place, bundled metadata file references, zipped the environment, pushed it to AWS, and emailed confirmation to the vendor. On ingestion it pulled finished assets into Perforce, ran our QA checks automatically, and pinged artists when new assets were ready for manual review, cutting out a lot of manual handoff errors.
+                </p>
               </div>
 
               <div class="impact-card">
-                <h4>Asset Validation &amp; Thumbnail QA</h4>
-                <ul>
-                  <li>Processed thousands of 3D models from internal teams and external vendors with automated checks for scale anomalies, missing textures, and bad material configurations.</li>
-                  <li>Generated asset-browser thumbnails and automated LOD steps across Maya scenes in Python.</li>
-                  <li>Caught upstream failures before expensive farm renders ran.</li>
-                </ul>
+                <h4>Asset Validation QA Tools</h4>
+                <p>
+                  We were processing thousands of 3D models from both internal teams and external vendors, and asset quality issues kept causing pipeline failures that wasted render farm time and artist hours.
+                </p>
+                <p>
+                  Together with the TA team, we built Python validation tools in Maya that checked for common import problems like abnormal scale, missing textures, and bad material settings. It also generated thumbnail images automatically for the asset browser and automated LOD prep across Maya scenes so things stayed consistent.
+                </p>
               </div>
 
               <div class="impact-card">
-                <h4>Procedural Interior Scene Generation</h4>
-                <ul>
-                  <li>Built a procedural layout generator with a lead TA to synthesize new photoreal interior training data overnight without additional artist headcount.</li>
-                  <li>Dynamically modified floorplans (extruding walls, windows, and crevices) and randomized furniture/prop arrangements.</li>
-                  <li>Auto-submitted scenes to Perforce, dispatched Deadline render jobs, and emailed stakeholder reports.</li>
-                </ul>
+                <h4>Procedural Scene Generation</h4>
+                <p>
+                  Apple Vision Pro needed huge amounts of photoreal imagery for visual recognition training. Working with a lead TA, I built a procedural system that generated semi-randomized interior layouts overnight without needing more artists to build rooms by hand.
+                </p>
+                <p>
+                  It took existing interior scenes, modified the floorplan by dynamically extruding new walls, windows, and crevices, and rearranged furniture and props into new layouts. Then it submitted the new scenes to Perforce, kicked off Deadline renders, and emailed stakeholders when jobs went out.
+                </p>
               </div>
             </div>
           </div>
@@ -424,7 +417,7 @@
           <aside class="studio-meta">
             <span class="studio-period mono">Jan 2014 - May 2019</span>
             <h3 class="studio-name">Sledgehammer Games</h3>
-            <p class="studio-product">Call of Duty: WWII · AW · Cold War</p>
+            <p class="studio-product">Call of Duty: WWII, AW, Cold War</p>
             <p class="studio-role">QA → Assoc. TA → Technical Artist</p>
             <ul class="studio-badges mono">
               <li>60 fps Console</li>
@@ -435,35 +428,38 @@
 
           <div class="studio-body">
             <p class="studio-summary">
-              Started in QA, moved into VFX destructibles (shipping hundreds of physics, rigged, and scripted props), and became the primary performance stakeholder and pipeline tools TA for <em>Call of Duty: WWII</em>, holding 60fps across consoles and automating LODs game-wide.
+              I started at Sledgehammer in QA, moved into a VFX technical artist role building destructible and dynamic props (integrating VFX, audio, physics, collision, rigging, and scripting across hundreds of props), and eventually shifted over to focus on performance optimization, tools, and pipeline work supporting over 300 developers.
             </p>
 
             <div class="impact-grid">
               <div class="impact-card">
-                <h4>Game-Wide 60fps Performance Ownership</h4>
-                <ul>
-                  <li>Primary performance stakeholder across singleplayer campaign, zombies, hub world, and multiplayer maps on console.</li>
-                  <li>Ran weekly reviews across environment, lighting, VFX, and design, diagnosing and fixing occluders, dynamic lights, physics VFX, bone culling, LODs, and game script.</li>
-                  <li>Identified and escalated a cross-studio team falling behind performance targets early enough to close the gap before ship.</li>
-                </ul>
+                <h4>Performance Ownership</h4>
+                <p>
+                  For <em>Call of Duty: WWII</em>, I was the main performance stakeholder keeping 60fps across the singleplayer campaign, zombies mode, hub world, and several multiplayer maps on console.
+                </p>
+                <p>
+                  I ran weekly perf reviews with art and design leads across environment, lighting, VFX, and design, and learned enough of each team's toolchain to either fix issues myself or give specific recommendations. Common fixes were adding occluders, dialing back VFX physics, reducing dynamic light counts and radii, adding LODs, culling character bones, or tweaking rendering flags in game script. I also caught a cross-studio team falling behind on their level early enough to escalate to production and get help in place before ship.
+                </p>
               </div>
 
               <div class="impact-card">
-                <h4>Automated LOD Generation Pipeline</h4>
-                <ul>
-                  <li>Partnered with central technology to integrate a proprietary LOD algorithm into Sledgehammer's pipeline, replacing hand-authored LODs for nearly every prop, vehicle, weapon, and character in <em>Call of Duty: WWII</em>.</li>
-                  <li>Tuned geometry presets for hard surface, organic, and foliage assets so one TA could tune LODs for almost an entire Call of Duty title.</li>
-                  <li>Extended into a Maya tool atlasing textures for ultra-cheap final LODs, combining decimation, skinning, and Python automation.</li>
-                </ul>
+                <h4>LOD Generation Pipeline</h4>
+                <p>
+                  I partnered with Activision's central technology group to integrate a proprietary LOD generation algorithm into Sledgehammer's asset pipeline, replacing hand-authored LODs across nearly every environment prop, vehicle, character, and weapon in <em>Call of Duty: WWII</em>.
+                </p>
+                <p>
+                  We set up presets tuned for hard surface, organic, and foliage meshes, and it worked well enough that I was able to add and tune LODs for most of a full Call of Duty title pretty much on my own. I also extended it into a Maya tool that atlased textures for ultra-cheap final LODs, combining decimation, custom skinning tools, and Python automation.
+                </p>
               </div>
 
               <div class="impact-card">
-                <h4>Maya Edge Cleanup &amp; Triangulation Tool</h4>
-                <ul>
-                  <li>Analyzed mesh topology to strip redundant coplanar edges and soften unnecessary hard edges that split vertex normals, while preserving UV seams and silhouettes.</li>
-                  <li>Implemented greedy triangulation so meshes retained clean silhouettes through downstream decimation.</li>
-                  <li>Adopted into the standard asset export process; normal softening alone saved a <strong>full millisecond</strong> in some environments.</li>
-                </ul>
+                <h4>Edge Cleanup Tool (Maya)</h4>
+                <p>
+                  I wrote a Maya tool that inspects mesh topology to find redundant edges that can be deleted and unnecessary hard edges that can be softened to bring vertex counts down. Neither operation changes the silhouette much, and both can cut out a lot of wasted geo complexity.
+                </p>
+                <p>
+                  It uses adjustable angle thresholds, checks UV seams so it won't delete edges that break UVs, and includes a greedy triangulation pass that helps assets hold their shape better during decimation. It became a regular step in our export process, and the normal softening pass alone saved us a <strong>full millisecond</strong> in some environments.
+                </p>
               </div>
             </div>
 
@@ -471,12 +467,12 @@
             <div class="mesh-showcase" data-mesh-showcase>
               <div class="mesh-showcase__head">
                 <div>
-                  <span class="mono mesh-showcase__eyebrow">Production Tool Artifact · Maya</span>
-                  <h4 class="mesh-showcase__title">MeshOptimizer: Interactive Step &amp; Before/After Inspector</h4>
+                  <span class="mono mesh-showcase__eyebrow">Maya Tool Demo</span>
+                  <h4 class="mesh-showcase__title">MeshOptimizer: Edge Cleanup, Normal Softening &amp; Triangulation</h4>
                 </div>
                 <div class="media-tabs" role="tablist" aria-label="MeshOptimizer modes">
                   <button type="button" class="media-tab is-active" role="tab" aria-selected="true" data-mesh-mode="delete">Redundant Edges</button>
-                  <button type="button" class="media-tab" role="tab" aria-selected="false" data-mesh-mode="smooth">Normal Softening (−1ms)</button>
+                  <button type="button" class="media-tab" role="tab" aria-selected="false" data-mesh-mode="smooth">Normal Softening (-1ms)</button>
                   <button type="button" class="media-tab" role="tab" aria-selected="false" data-mesh-mode="triangulate">Greedy Triangulation</button>
                 </div>
               </div>
@@ -486,10 +482,10 @@
                 <div class="mesh-mode-toggle">
                   <div class="step-pills" role="group" aria-label="Redundant edge cleanup steps">
                     <button type="button" class="step-pill is-active" data-step-view="compare">Drag Before / After</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_01.png' | relative_url }}" data-step-note="1 · Original dense planar grid and torus topology">1. Source</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_02.png' | relative_url }}" data-step-note="2 · Redundant coplanar edges flagged in orange while preserving UV seams">2. Detect</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_03.png' | relative_url }}" data-step-note="3 · Redundant interior edges deleted with zero silhouette loss">3. Delete</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_04.png' | relative_url }}" data-step-note="4 · Greedy triangulation applied for clean downstream decimation">4. Triangulate</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_01.png' | relative_url }}" data-step-note="1 · Original dense planar grid and torus before running cleanup">1. Source</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_02.png' | relative_url }}" data-step-note="2 · Redundant coplanar edges highlighted in orange (UV seams are skipped)">2. Detect</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_03.png' | relative_url }}" data-step-note="3 · Redundant edges deleted without changing the silhouette">3. Delete</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_04.png' | relative_url }}" data-step-note="4 · Greedy triangulation pass applied for cleaner LOD decimation">4. Triangulate</button>
                   </div>
                 </div>
 
@@ -499,8 +495,8 @@
                     <div class="ba-overlay">
                       <img class="ba-img ba-img--before" src="{{ '/resources/delete_edges_01.png' | relative_url }}" alt="Before MeshOptimizer redundant edge removal" loading="lazy">
                     </div>
-                    <span class="ba-badge ba-badge--before mono">Before · Source</span>
-                    <span class="ba-badge ba-badge--after mono">After · Cleaned</span>
+                    <span class="ba-badge ba-badge--before mono">Before</span>
+                    <span class="ba-badge ba-badge--after mono">After</span>
                     <div class="ba-divider" aria-hidden="true">
                       <span class="ba-handle">↔</span>
                     </div>
@@ -510,7 +506,7 @@
                     <img src="{{ '/resources/delete_edges_01.png' | relative_url }}" alt="MeshOptimizer step preview" loading="lazy">
                   </div>
                 </div>
-                <p class="mesh-caption mono" data-mesh-caption>Drag handle to compare raw Maya topology (left) vs. cleaned &amp; triangulated mesh (right)</p>
+                <p class="mesh-caption mono" data-mesh-caption>Drag the slider to compare the original mesh (left) vs. cleaned and triangulated result (right)</p>
               </div>
 
               <!-- Mode 2: Normal Softening -->
@@ -518,9 +514,9 @@
                 <div class="mesh-mode-toggle">
                   <div class="step-pills" role="group" aria-label="Normal softening steps">
                     <button type="button" class="step-pill is-active" data-step-view="compare">Drag Before / After</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_01.png' | relative_url }}" data-step-note="1 · Solid wireframe = hard edges splitting GPU vertex counts">1. Hard Edges</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_01.png' | relative_url }}" data-step-note="1 · Solid wireframe = hard edges (which split vertices at render time)">1. Hard Edges</button>
                     <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_02.png' | relative_url }}" data-step-note="2 · Smoothable hard edges within angle tolerance highlighted in orange">2. Detect</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_03.png' | relative_url }}" data-step-note="3 · Dotted wireframe = soft edges, eliminating unnecessary vertex splits (-1ms in some environments)">3. Softened</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_03.png' | relative_url }}" data-step-note="3 · Dotted wireframe = soft edges, cutting unnecessary vertex splits (-1ms in some environments)">3. Softened</button>
                   </div>
                 </div>
 
@@ -530,8 +526,8 @@
                     <div class="ba-overlay">
                       <img class="ba-img ba-img--before" src="{{ '/resources/smooth_edges_01.png' | relative_url }}" alt="Before MeshOptimizer hard edge softening" loading="lazy">
                     </div>
-                    <span class="ba-badge ba-badge--before mono">Before · Hard</span>
-                    <span class="ba-badge ba-badge--after mono">After · Soft</span>
+                    <span class="ba-badge ba-badge--before mono">Hard edges</span>
+                    <span class="ba-badge ba-badge--after mono">Soft edges</span>
                     <div class="ba-divider" aria-hidden="true">
                       <span class="ba-handle">↔</span>
                     </div>
@@ -541,7 +537,7 @@
                     <img src="{{ '/resources/smooth_edges_01.png' | relative_url }}" alt="Normal softening step preview" loading="lazy">
                   </div>
                 </div>
-                <p class="mesh-caption mono" data-mesh-caption>Drag handle to compare unnecessary hard edges (solid wireframe) vs. softened normals (dotted)</p>
+                <p class="mesh-caption mono" data-mesh-caption>Drag the slider to compare solid hard edges (left) vs. softened normals (right)</p>
               </div>
 
               <!-- Mode 3: Triangulation -->
@@ -551,7 +547,7 @@
                     <img src="{{ '/resources/triangulation.png' | relative_url }}" alt="Maya Default triangulation vs MeshOptimizer greedy triangulation" loading="lazy">
                   </button>
                 </div>
-                <p class="mesh-caption mono">Maya default fan triangulation (left) vs. greedy triangulation (right) for cleaner LOD decimation · click to zoom</p>
+                <p class="mesh-caption mono">Maya default fan triangulation (left) vs. greedy triangulation (right). Click to zoom.</p>
               </div>
             </div>
           </div>
@@ -560,13 +556,13 @@
     </div>
   </section>
 
-  <!-- 03 · TECHNICAL CAPABILITIES -->
+  <!-- 03 · SKILLS -->
   <section id="skills" class="section section--bordered">
     <div class="container">
       <div class="section-head">
         <div class="section-head__top">
           <span class="section-num mono">03</span>
-          <h2 class="section-title">Core Stack</h2>
+          <h2 class="section-title">Tools &amp; Tech I Use</h2>
         </div>
       </div>
 
@@ -578,7 +574,7 @@
             <li>C#</li>
             <li>C++</li>
             <li>SQL</li>
-            <li>JavaScript · HTML/CSS</li>
+            <li>JavaScript, HTML/CSS</li>
             <li>MEL</li>
           </ul>
         </div>
@@ -602,13 +598,13 @@
           </ul>
         </div>
         <div class="skill-col">
-          <h3 class="mono">Pipelines &amp; Systems</h3>
+          <h3 class="mono">Pipelines &amp; Other</h3>
           <ul>
-            <li>Perforce · Git · Mercurial</li>
+            <li>Perforce, Git, Mercurial</li>
             <li>Automated Perf Testing &amp; CI</li>
             <li>LOD &amp; Asset QA Pipelines</li>
             <li>Procedural &amp; Synthetic Data</li>
-            <li>PyTorch / fastai · Local VLMs</li>
+            <li>PyTorch / fastai, Local VLMs</li>
           </ul>
         </div>
       </div>
@@ -622,14 +618,14 @@
         <div class="contact-intro">
           <div class="section-head__top">
             <span class="section-num mono">04</span>
-            <h2 class="section-title">Get in touch</h2>
+            <h2 class="section-title">Contact</h2>
           </div>
           <p class="section-lede">
-            Open to full-time or contract roles in games, XR, simulation, and 3D tooling. If your team needs a hand with pipelines, tools, or real-time performance, feel free to reach out.
+            I'm looking for full-time or contract technical artist roles in games, XR, simulation, or 3D tooling. If your team could use help with pipelines, tools, or performance, send me an email or message on LinkedIn.
           </p>
           <p class="archive-note">
-            Curious about my earlier 3D modeling, animation, and mod work from 2009-2013?
-            <a href="{{ '/archive/' | relative_url }}">Browse the pre-career archive →</a>
+            If you want to see my much older 3D modeling, modding, and college work from 2009-2013, I kept it on the
+            <a href="{{ '/archive/' | relative_url }}">archive page →</a>
           </p>
         </div>
 

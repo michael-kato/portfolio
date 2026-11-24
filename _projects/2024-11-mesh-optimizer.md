@@ -9,5 +9,5 @@ stack:
   - Wolfram Language
   - 3D Geometry
   - Optimization
-summary: Personal geometry-processing sandbox exploring automated 3D mesh simplification and topology optimization.
+summary: "A personal project exploring 3D model optimization ideas and mesh topology analysis in Wolfram Language."
 ---

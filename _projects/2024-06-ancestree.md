@@ -8,5 +8,5 @@ repo: https://github.com/michael-kato/ancestree
 stack:
   - JavaScript
   - Web
-summary: Interactive browser-based JavaScript tool and visualization experiment.
+summary: "A small JavaScript web project I put together on the side."
 ---

@@ -14,5 +14,5 @@ stack:
   - Blender 4.5
   - Geometry Nodes
   - Shader Nodes
-summary: Non-destructive Blender Geometry Nodes setup that turns any arbitrary 3D mesh into an animated electric hologram by sampling a point cloud, connecting nearest neighbors with noisy splines, and driving emissive Z-gradients in shaders.
+summary: "A non-destructive Blender Geometry Nodes setup that turns any 3D mesh into colorful dots connected by lightning, kind of like an art installation or hologram. It converts the mesh to a point cloud, connects nearby points with noisy splines, extrudes cylinders along them, and passes a Z-axis color gradient into the emissive shader. The nearest-neighbor inner loop is O(n^2), which isn't ideal, but it still ran real-time enough for what I needed."
 ---

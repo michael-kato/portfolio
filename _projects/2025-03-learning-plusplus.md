@@ -8,5 +8,5 @@ repo: https://github.com/michael-kato/learning_plusplus
 stack:
   - C++
   - Unreal Engine 5
-summary: Unreal Engine 5 C++ systems and gameplay engineering exercises.
+summary: "A sandbox project for getting more comfortable with Unreal Engine 5 C++ gameplay and systems work."
 ---
