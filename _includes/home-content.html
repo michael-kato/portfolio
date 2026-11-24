@@ -9,7 +9,7 @@
           <span class="section-count mono" id="projects-count">{{ site.projects | size }} items</span>
         </div>
         <p class="section-lede">
-          Independent pipeline tools, synthetic data experiments, real-time shaders, and game prototypes—sorted newest first.
+          Independent pipeline tools, synthetic data experiments, real-time shaders, and game prototypes, sorted newest first.
         </p>
         <div class="filter-bar" role="toolbar" aria-label="Filter projects by category">
           <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
@@ -53,7 +53,7 @@
                       </button>
                     {% endif %}
                     {% if project.image_lightbox %}
-                      <button type="button" class="action-chip" data-lightbox-src="{{ project.image_lightbox | relative_url }}" data-lightbox-caption="{{ project.title }} — {{ project.image_lightbox_label | default: 'Diagram' }}">
+                      <button type="button" class="action-chip" data-lightbox-src="{{ project.image_lightbox | relative_url }}" data-lightbox-caption="{{ project.title }}: {{ project.image_lightbox_label | default: 'Diagram' }}">
                         {{ project.image_lightbox_label | default: "Inspect image" }}
                       </button>
                     {% endif %}
@@ -126,7 +126,7 @@
         <div class="section-head__top">
           <span class="section-num mono">02</span>
           <h2 class="section-title">Production Experience</h2>
-          <span class="section-count mono">2014 — 2023</span>
+          <span class="section-count mono">2014 - 2023</span>
         </div>
         <p class="section-lede">
           Ten years shipping real-time performance systems, automated content pipelines, and artist tooling across AAA console games, spatial computing, and VR.
@@ -137,7 +137,7 @@
         <!-- META REALITY LABS -->
         <article class="studio-block" id="exp-meta">
           <aside class="studio-meta">
-            <span class="studio-period mono">Sep 2020 — Sep 2023</span>
+            <span class="studio-period mono">Sep 2020 - Sep 2023</span>
             <h3 class="studio-name">Meta Reality Labs</h3>
             <p class="studio-product">Horizon Worlds · VR</p>
             <p class="studio-role">Senior Technical Artist (IC5)</p>
@@ -150,7 +150,7 @@
 
           <div class="studio-body">
             <p class="studio-summary">
-              Embedded directly with a performance engineering team to approach mobile VR performance holistically—spanning Unity C# optimization, custom profiling instrumentation, automated regression detection, live telemetry dashboards, and emergency ship-blocking triage.
+              Embedded directly with a performance engineering team to approach mobile VR performance holistically, spanning Unity C# optimization, custom profiling instrumentation, automated regression detection, live telemetry dashboards, and emergency ship-blocking triage.
             </p>
 
             <!-- Custom SVG Pipeline Diagram: Meta Perf Automation -->
@@ -207,7 +207,7 @@
               <div class="impact-card">
                 <h4>Automated Performance Framework</h4>
                 <ul>
-                  <li>Co-designed a C# profiling and automated testing system for Horizon Worlds' weekly release cadence—starting as a solo initiative before growing into a dedicated team effort.</li>
+                  <li>Co-designed a C# profiling and automated testing system for Horizon Worlds' weekly release cadence, starting as a solo initiative before growing into a dedicated team effort.</li>
                   <li>Tracked physics, scripting, animation, rendering, VFX, audio, and garbage collection across pre-submit, CI, developer tests, and live production builds.</li>
                   <li>Ran per-commit A/B benchmark comparisons and surfaced downloadable profiler artifacts within hours of a regression.</li>
                 </ul>
@@ -331,7 +331,7 @@
         <!-- APPLE -->
         <article class="studio-block" id="exp-apple">
           <aside class="studio-meta">
-            <span class="studio-period mono">Apr 2019 — Aug 2020</span>
+            <span class="studio-period mono">Apr 2019 - Aug 2020</span>
             <h3 class="studio-name">Apple <span class="studio-tag mono">Contract</span></h3>
             <p class="studio-product">Apple Vision Pro · Synthetic Data</p>
             <p class="studio-role">Technical Artist</p>
@@ -411,7 +411,7 @@
                 <h4>Procedural Interior Scene Generation</h4>
                 <ul>
                   <li>Built a procedural layout generator with a lead TA to synthesize new photoreal interior training data overnight without additional artist headcount.</li>
-                  <li>Dynamically modified floorplans—extruding walls, windows, and crevices—and randomized furniture/prop arrangements.</li>
+                  <li>Dynamically modified floorplans (extruding walls, windows, and crevices) and randomized furniture/prop arrangements.</li>
                   <li>Auto-submitted scenes to Perforce, dispatched Deadline render jobs, and emailed stakeholder reports.</li>
                 </ul>
               </div>
@@ -422,7 +422,7 @@
         <!-- SLEDGEHAMMER GAMES -->
         <article class="studio-block" id="exp-shg">
           <aside class="studio-meta">
-            <span class="studio-period mono">Jan 2014 — May 2019</span>
+            <span class="studio-period mono">Jan 2014 - May 2019</span>
             <h3 class="studio-name">Sledgehammer Games</h3>
             <p class="studio-product">Call of Duty: WWII · AW · Cold War</p>
             <p class="studio-role">QA → Assoc. TA → Technical Artist</p>
@@ -435,7 +435,7 @@
 
           <div class="studio-body">
             <p class="studio-summary">
-              Started in QA, moved into VFX destructibles (shipping hundreds of physics/rigged/scripted props), and became the primary performance stakeholder and pipeline tools TA for <em>Call of Duty: WWII</em>—holding 60fps across consoles and automating LODs game-wide.
+              Started in QA, moved into VFX destructibles (shipping hundreds of physics, rigged, and scripted props), and became the primary performance stakeholder and pipeline tools TA for <em>Call of Duty: WWII</em>, holding 60fps across consoles and automating LODs game-wide.
             </p>
 
             <div class="impact-grid">
@@ -443,7 +443,7 @@
                 <h4>Game-Wide 60fps Performance Ownership</h4>
                 <ul>
                   <li>Primary performance stakeholder across singleplayer campaign, zombies, hub world, and multiplayer maps on console.</li>
-                  <li>Ran weekly reviews across environment, lighting, VFX, and design—diagnosing and fixing occluders, dynamic lights, physics VFX, bone culling, LODs, and game script.</li>
+                  <li>Ran weekly reviews across environment, lighting, VFX, and design, diagnosing and fixing occluders, dynamic lights, physics VFX, bone culling, LODs, and game script.</li>
                   <li>Identified and escalated a cross-studio team falling behind performance targets early enough to close the gap before ship.</li>
                 </ul>
               </div>
@@ -451,7 +451,7 @@
               <div class="impact-card">
                 <h4>Automated LOD Generation Pipeline</h4>
                 <ul>
-                  <li>Partnered with central technology to integrate a proprietary LOD algorithm into Sledgehammer's pipeline—replacing hand-authored LODs for nearly every prop, vehicle, weapon, and character in <em>Call of Duty: WWII</em>.</li>
+                  <li>Partnered with central technology to integrate a proprietary LOD algorithm into Sledgehammer's pipeline, replacing hand-authored LODs for nearly every prop, vehicle, weapon, and character in <em>Call of Duty: WWII</em>.</li>
                   <li>Tuned geometry presets for hard surface, organic, and foliage assets so one TA could tune LODs for almost an entire Call of Duty title.</li>
                   <li>Extended into a Maya tool atlasing textures for ultra-cheap final LODs, combining decimation, skinning, and Python automation.</li>
                 </ul>
@@ -460,7 +460,7 @@
               <div class="impact-card">
                 <h4>Maya Edge Cleanup &amp; Triangulation Tool</h4>
                 <ul>
-                  <li>Analyzed mesh topology to strip redundant coplanar edges and soften unnecessary hard edges that split vertex normals—preserving UV seams and silhouettes.</li>
+                  <li>Analyzed mesh topology to strip redundant coplanar edges and soften unnecessary hard edges that split vertex normals, while preserving UV seams and silhouettes.</li>
                   <li>Implemented greedy triangulation so meshes retained clean silhouettes through downstream decimation.</li>
                   <li>Adopted into the standard asset export process; normal softening alone saved a <strong>full millisecond</strong> in some environments.</li>
                 </ul>
@@ -472,7 +472,7 @@
               <div class="mesh-showcase__head">
                 <div>
                   <span class="mono mesh-showcase__eyebrow">Production Tool Artifact · Maya</span>
-                  <h4 class="mesh-showcase__title">MeshOptimizer — Interactive Step &amp; Before/After Inspector</h4>
+                  <h4 class="mesh-showcase__title">MeshOptimizer: Interactive Step &amp; Before/After Inspector</h4>
                 </div>
                 <div class="media-tabs" role="tablist" aria-label="MeshOptimizer modes">
                   <button type="button" class="media-tab is-active" role="tab" aria-selected="true" data-mesh-mode="delete">Redundant Edges</button>
@@ -520,7 +520,7 @@
                     <button type="button" class="step-pill is-active" data-step-view="compare">Drag Before / After</button>
                     <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_01.png' | relative_url }}" data-step-note="1 · Solid wireframe = hard edges splitting GPU vertex counts">1. Hard Edges</button>
                     <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_02.png' | relative_url }}" data-step-note="2 · Smoothable hard edges within angle tolerance highlighted in orange">2. Detect</button>
-                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_03.png' | relative_url }}" data-step-note="3 · Dotted wireframe = soft edges — eliminated unnecessary vertex splits (−1ms in some environments)">3. Softened</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_03.png' | relative_url }}" data-step-note="3 · Dotted wireframe = soft edges, eliminating unnecessary vertex splits (-1ms in some environments)">3. Softened</button>
                   </div>
                 </div>
 
@@ -615,57 +615,20 @@
     </div>
   </section>
 
-  <!-- 04 · WRITING -->
-  <section id="writing" class="section section--bordered">
-    <div class="container">
-      <div class="section-head">
-        <div class="section-head__top">
-          <span class="section-num mono">04</span>
-          <h2 class="section-title">Writing &amp; Breakdowns</h2>
-          <a class="section-more mono" href="{{ '/blog/' | relative_url }}">All posts →</a>
-        </div>
-      </div>
-
-      <div class="writing-grid">
-        {% for post in site.posts limit: 3 %}
-          {% assign content_parts = post.content | split: 'src="' %}
-          <a href="{{ '/blog/' | relative_url }}#{{ post.title | slugify }}" class="writing-card">
-            <div class="writing-card__thumb">
-              {% if content_parts.size > 1 %}
-                {% assign first_media = content_parts[1] | split: '"' | first %}
-                {% if first_media contains '.mp4' or first_media contains '.webm' or first_media contains '.mov' %}
-                  <video src="{{ first_media | relative_url }}" muted autoplay loop playsinline preload="metadata"></video>
-                {% else %}
-                  <img src="{{ first_media | relative_url }}" alt="" loading="lazy">
-                {% endif %}
-              {% endif %}
-            </div>
-            <div class="writing-card__body">
-              <span class="mono writing-card__date">{{ post.date | date: "%b %-d, %Y" }}</span>
-              <h3 class="writing-card__title">{{ post.title }}</h3>
-              <p class="writing-card__excerpt">{{ post.content | strip_html | truncate: 150 }}</p>
-              <span class="writing-card__cta mono">Read breakdown →</span>
-            </div>
-          </a>
-        {% endfor %}
-      </div>
-    </div>
-  </section>
-
-  <!-- 05 · CONTACT -->
+  <!-- 04 · CONTACT -->
   <section id="contact" class="section section--bordered">
     <div class="container">
       <div class="contact-layout">
         <div class="contact-intro">
           <div class="section-head__top">
-            <span class="section-num mono">05</span>
-            <h2 class="section-title">Let's work together.</h2>
+            <span class="section-num mono">04</span>
+            <h2 class="section-title">Get in touch</h2>
           </div>
           <p class="section-lede">
-            Looking for a Senior Technical Artist who can own frame budgets, automate painful pipelines, and bridge art and engineering. Open to full-time and contract roles in games, XR, robotics simulation, and 3D tooling.
+            Open to full-time or contract roles in games, XR, simulation, and 3D tooling. If your team needs a hand with pipelines, tools, or real-time performance, feel free to reach out.
           </p>
           <p class="archive-note">
-            Curious about my earlier 3D modeling, animation, and mod work from 2009–2013?
+            Curious about my earlier 3D modeling, animation, and mod work from 2009-2013?
             <a href="{{ '/archive/' | relative_url }}">Browse the pre-career archive →</a>
           </p>
         </div>

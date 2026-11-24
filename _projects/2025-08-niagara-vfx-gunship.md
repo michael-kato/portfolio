@@ -17,5 +17,5 @@ stack:
   - Unreal Engine 5
   - Niagara VFX
   - Unity
-summary: Real-time VFX and vehicle prototypes—Unreal Engine 5 Niagara beam and sci-fi blaster weapon studies alongside a personal Unity Clone Gunship flight and combat demo.
+summary: "Real-time VFX and vehicle prototypes: Unreal Engine 5 Niagara beam and sci-fi blaster weapon studies alongside a personal Unity Clone Gunship flight and combat demo."
 ---

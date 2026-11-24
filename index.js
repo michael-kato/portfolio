@@ -35,9 +35,9 @@ function getArtData() {
 const portfolioVariants = {
   programming: {
     bodyClass: 'variant-programming',
-    title: 'Michael Kato — Tools & Pipeline Engineering',
+    title: 'Michael Kato | Tools & Pipeline Engineering',
     about: 'Software-focused Technical Artist with 10+ years building production tools, automation frameworks, performance workflows, telemetry dashboards, and content pipelines for games, XR, and synthetic data teams.',
-    hiddenSections: ['writing']
+    hiddenSections: []
   }
 };
 
@@ -208,7 +208,7 @@ function setupPlayableModal() {
     btn.addEventListener('click', () => {
       const url = btn.dataset.playable;
       if (!url) return;
-      if (titleEl) titleEl.textContent = `${btn.dataset.playableTitle || 'Unity WebGL Build'} — Interactive`;
+      if (titleEl) titleEl.textContent = `${btn.dataset.playableTitle || 'Unity WebGL Build'} (Interactive)`;
       if (openLink) openLink.href = url;
       iframe.src = url;
       modal.showModal();

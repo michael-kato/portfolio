@@ -13,8 +13,7 @@ This is a Jekyll / GitHub Pages portfolio site hosted at `https://michaelkato.wo
   2. **01 · Recent Projects & Tools (`#projects`)**: Chronological feed powered by the `_projects/` Jekyll collection, sorted newest-first with category filter pills (`All`, `Pipelines & Tools`, `Real-Time & Games`, `ML & Sim`), inline video previews, multi-clip tabs, and an on-demand modal launcher for the playable Unity 2D WebGL build (`/resources/match2/index.html`).
   3. **02 · Production Experience (`#experience`)**: Always-open studio blocks for Meta Reality Labs, Apple (Vision Pro synthetic data), and Sledgehammer Games (Call of Duty), featuring custom SVG pipeline diagrams, vector dashboard reconstructions, and an interactive before/after + step inspector for the Maya MeshOptimizer tool.
   4. **03 · Core Stack (`#skills`)**: 4-column technical spec sheet.
-  5. **04 · Writing & Breakdowns (`#writing`)**: Latest posts from `_posts/`.
-  6. **05 · Contact (`#contact`)**: Direct links and pointer to `/archive/`.
+  5. **04 · Contact (`#contact`)**: Direct links and pointer to `/archive/`.
 
 ## Adding New Projects Chronologically
 
@@ -22,9 +21,8 @@ Drop a new Markdown file into `_projects/` named `YYYY-MM-slug.md` with front ma
 
 ## Subpages
 
-- `/blog/` (`blog.html` + `_layouts/blog_index.html` + `_layouts/post.html`): Technical writing feed with ToC, lightbox zoom on images, and Cloudflare D1 comments (`portfolio-comments.mkato.workers.dev`).
 - `/archive/` (`archive.html` + `_layouts/page.html`): Pre-career 3D art, HL2 mod props, solo Unity game, college work, and animation reel (2009–2013), populated from `window.artData` in `site-content.js`.
-- `/programming/` (`programming.html`): Clean URL variant hiding the Writing section and tuning hero copy for software/tools roles.
+- `/programming/` (`programming.html`): Clean URL variant tuning hero copy for software/tools roles.
 
 ## Cloudflare Workers (Preserved)
 
