@@ -1,29 +1,31 @@
 {% if include.is_home %}
-  {% assign career_link = "#career" %}
-  {% assign art_link = "#art" %}
+  {% assign projects_link = "#projects" %}
+  {% assign experience_link = "#experience" %}
   {% assign contact_link = "#contact" %}
 {% else %}
-  {% assign career_link = "/" | relative_url | append: "#career" %}
-  {% assign art_link = "/" | relative_url | append: "#art" %}
+  {% assign projects_link = "/" | relative_url | append: "#projects" %}
+  {% assign experience_link = "/" | relative_url | append: "#experience" %}
   {% assign contact_link = "/" | relative_url | append: "#contact" %}
 {% endif %}
 
-<nav class="topbar" aria-label="Main">
+<nav class="topbar" aria-label="Main navigation">
   <div class="container topbar__row">
     <a class="brand" href="{{ '/' | relative_url }}">
-      <svg class="brand__mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-        <circle cx="50" cy="50" r="46" class="brand__disc"/>
-        <ellipse cx="50" cy="52" rx="38" ry="13" class="brand__orbit" transform="rotate(-18 50 52)"/>
-        <text x="50" y="60" text-anchor="middle" class="brand__initials">MK</text>
-      </svg>
-      <span class="brand__name">Michael Kato</span>
+      <span class="brand__mark" aria-hidden="true">MK</span>
+      <span class="brand__text">
+        <span class="brand__name">Michael Kato</span>
+        <span class="brand__role">Technical Artist</span>
+      </span>
     </a>
-    <ul>
-      <li><a href="{{ career_link }}">Career</a></li>
-      <li><a href="{{ art_link }}">Art</a></li>
+
+    <ul class="nav-links">
+      <li><a href="{{ projects_link }}">Projects</a></li>
+      <li><a href="{{ experience_link }}">Experience</a></li>
+      <li><a href="{{ '/blog/' | relative_url }}"{% if page.url contains '/blog' %} aria-current="page"{% endif %}>Writing</a></li>
+      <li><a href="{{ '/archive/' | relative_url }}"{% if page.url contains '/archive' %} aria-current="page"{% endif %}>Archive</a></li>
       <li><a href="{{ contact_link }}">Contact</a></li>
-      <li><a href="{{ '/blog/' | relative_url }}">Blog</a></li>
     </ul>
+
     <a class="btn btn--accent btn--sm" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>Resume ↓</a>
   </div>
 </nav>

@@ -1,6 +1,12 @@
 <footer class="site-footer">
   <div class="container site-footer__row">
     <span class="mono">&copy; {{ site.time | date: "%Y" }} Michael Kato</span>
-    <span class="mono">Background shader: modified <a href="https://www.shadertoy.com/view/XlfGRj" target="_blank" rel="noopener">Star Nest</a> by Kali</span>
+    <div class="site-footer__links mono">
+      <a href="https://github.com/michael-kato" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://linkedin.com/in/michael-kato" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="{{ '/blog/' | relative_url }}">Writing</a>
+      <a href="{{ '/archive/' | relative_url }}">Archive</a>
+      <a href="mailto:michaelakato@gmail.com">Email</a>
+    </div>
   </div>
 </footer>

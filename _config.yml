@@ -1,5 +1,5 @@
 title: Michael Kato
-description: Michael Kato's portfolio.
+description: Technical Artist specializing in pipelines, tools, and real-time 3D performance optimization.
 encoding: utf-8
 timezone: America/Los_Angeles
 url: https://michaelkato.work
@@ -7,6 +7,11 @@ baseurl: ""
 markdown: kramdown
 kramdown:
   input: GFM
+
+collections:
+  projects:
+    output: false
+
 defaults:
   - scope:
       path: ""
@@ -14,14 +19,25 @@ defaults:
     values:
       layout: post
       header_title: Michael Kato
-      header_subtitle: blogs
+      header_subtitle: Writing
       header_link: /
       blog_link: /blog/
-      back_label: "&larr; Back to blogs"
+      back_label: "&larr; Back to Writing"
       permalink: /blog/:title/
+
 include:
   - .well-known
+
 exclude:
   - README.md
   - CLAUDE.md
   - .codex
+  - memory.md
+  - _projects/README.md
+  - analytics-worker.js
+  - chat.js
+  - comments.js
+  - schema.sql
+  - wrangler.toml
+  - wrangler.analytics.toml
+  - wrangler.comments.toml

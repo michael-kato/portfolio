@@ -1,199 +1,703 @@
-<!-- Shared pieces for the embroidered studio patches -->
-<svg class="svg-defs" aria-hidden="true" focusable="false">
-  <defs>
-    <path id="patch-ring" d="M 50 50 m -35.5 0 a 35.5 35.5 0 1 1 71 0 a 35.5 35.5 0 1 1 -71 0"/>
-    <filter id="patch-thread"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="1.2"/></filter>
-  </defs>
-</svg>
-
 <main>
-  <section id="career">
+  <!-- 01 · CHRONOLOGICAL PROJECTS & BUILDS -->
+  <section id="projects" class="section">
     <div class="container">
-      <div class="section-header">
-        <div class="section-rule"><span class="tape-label">01 Career</span><span class="section-rule__line"></span><span class="mono">3 studios · 9 projects</span></div>
-        <h2>Career</h2>
+      <div class="section-head">
+        <div class="section-head__top">
+          <span class="section-num mono">01</span>
+          <h2 class="section-title">Recent Projects &amp; Tools</h2>
+          <span class="section-count mono" id="projects-count">{{ site.projects | size }} items</span>
+        </div>
+        <p class="section-lede">
+          Independent pipeline tools, synthetic data experiments, real-time shaders, and game prototypes—sorted newest first.
+        </p>
+        <div class="filter-bar" role="toolbar" aria-label="Filter projects by category">
+          <button type="button" class="filter-pill is-active" data-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="filter-pill" data-filter="pipelines" aria-pressed="false">Pipelines &amp; Tools</button>
+          <button type="button" class="filter-pill" data-filter="realtime" aria-pressed="false">Real-Time &amp; Games</button>
+          <button type="button" class="filter-pill" data-filter="ml" aria-pressed="false">ML &amp; Sim</button>
+        </div>
       </div>
 
-      <div class="career-categories">
-        <!-- Meta -->
-        <details class="career-category" name="career" open>
-          <summary class="career-category-header">
-            <svg class="patch" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-              <circle cx="50" cy="50" r="47" class="patch__border" filter="url(#patch-thread)"/>
-              <circle cx="50" cy="50" r="42.5" class="patch__inner"/>
-              <text class="patch__ring"><textPath href="#patch-ring" textLength="222" lengthAdjust="spacing">META REALITY LABS · HORIZON WORLDS ·</textPath></text>
-              <polyline class="patch__icon" points="30,58 39,55 45,57 51,38 56,57 63,53 70,55"/>
-            </svg>
-            <h3>Horizon Worlds<small>Meta Reality Labs</small></h3>
-            <span class="mono career-meta">VR · Performance</span>
-            <span class="toggle-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="career-category-content">
-            <p class="career-category-summary">
-              My primary role at Meta Reality Labs was to look at performance as a problem holistically.
-              This included deep dives with profiling, direct fixes, instrumentation, performance test automation, emergency
-              triage, education initiatives, cross-functional outreach, and a ton of other tangential and one-off tasks!
-            </p>
-            <div class="career-projects"
-              data-project-ids="project-code-fixes, project-perf-framework, project-perf-dashboards">
-              <!-- Dynamically populated from site-content.js -->
-            </div>
-          </div>
-        </details>
+      {% assign sorted_projects = site.projects | sort: "date" | reverse %}
+      <div class="projects-stream" id="projects-stream">
+        {% for project in sorted_projects %}
+          {% assign tag_list = project.tags | default: project.category | join: " " %}
+          {% assign has_media = false %}
+          {% if project.media_type == "video" or project.media_type == "video_tabs" or project.media_type == "image" %}
+            {% assign has_media = true %}
+          {% endif %}
 
-        <!-- Apple - Synthetic Data -->
-        <details class="career-category" name="career">
-          <summary class="career-category-header">
-            <svg class="patch" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-              <circle cx="50" cy="50" r="47" class="patch__border" filter="url(#patch-thread)"/>
-              <circle cx="50" cy="50" r="42.5" class="patch__inner"/>
-              <text class="patch__ring"><textPath href="#patch-ring" textLength="222" lengthAdjust="spacing">APPLE · SYNTHETIC DATA · VISION PRO ·</textPath></text>
-              <path class="patch__icon" d="M30 50 C 38 39, 62 39, 70 50 C 62 61, 38 61, 30 50 Z"/><circle cx="50" cy="50" r="5.5" class="patch__dot"/>
-            </svg>
-            <h3>Apple Vision Pro<small>Apple</small></h3>
-            <span class="mono career-meta">Synthetic data · Pipelines</span>
-            <span class="toggle-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="career-category-content">
-            <p class="career-category-summary">
-              At Apple I was tasked with building out features to support a fast-paced synthetic data pipeline
-              which rendered photo real video of various common environments to support the Apple Vision Pro headset
-              tracking system.
-            </p>
-            <div class="career-projects"
-              data-project-ids="project-outsourcing-pipeline, project-asset-qa, project-proc-scene">
-              <!-- Dynamically populated from site-content.js -->
+          <article class="project-entry{% if has_media %} project-entry--media{% endif %}"
+                   data-categories="{{ tag_list }} {{ project.category }}">
+            <div class="project-entry__date mono">
+              <time datetime="{{ project.date | date: '%Y-%m-%d' }}">{{ project.date | date: "%Y · %m" }}</time>
             </div>
-          </div>
-        </details>
 
-        <!-- Sledgehammer Games -->
-        <details class="career-category" name="career">
-          <summary class="career-category-header">
-            <svg class="patch" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-              <circle cx="50" cy="50" r="47" class="patch__border" filter="url(#patch-thread)"/>
-              <circle cx="50" cy="50" r="42.5" class="patch__inner"/>
-              <text class="patch__ring"><textPath href="#patch-ring" textLength="222" lengthAdjust="spacing">SLEDGEHAMMER GAMES · CALL OF DUTY: WWII ·</textPath></text>
-              <path class="patch__icon" d="M34 61 L50 35 L66 61 Z M50 35 L50 61 M34 61 L58 48"/>
-            </svg>
-            <h3>Call of Duty: WWII<small>Sledgehammer Games</small></h3>
-            <span class="mono career-meta">VFX · Performance · Tools</span>
-            <span class="toggle-icon" aria-hidden="true"></span>
-          </summary>
-          <div class="career-category-content">
-            <p class="career-category-summary">
-              I started in this role as a VFX tech artist making destructible and dynamic props and eventually shifted
-              to focus on performance optimization, tools, and pipeline improvements.
-            </p>
-            <div class="career-projects"
-              data-project-ids="project-perf-ownership, project-lod-pipeline, project-edge-cleanup">
-              <!-- Dynamically populated from site-content.js -->
+            <div class="project-entry__card">
+              <div class="project-entry__main">
+                <div class="project-entry__header">
+                  <h3 class="project-entry__title">
+                    {% if project.repo %}
+                      <a href="{{ project.repo }}" target="_blank" rel="noopener">{{ project.title }}</a>
+                    {% elsif project.writeup %}
+                      <a href="{{ project.writeup | relative_url }}">{{ project.title }}</a>
+                    {% else %}
+                      {{ project.title }}
+                    {% endif %}
+                  </h3>
+                  <div class="project-entry__links">
+                    {% if project.playable %}
+                      <button type="button" class="action-chip action-chip--accent" data-playable="{{ project.playable | relative_url }}" data-playable-title="{{ project.title }}">
+                        Play WebGL Build ▶
+                      </button>
+                    {% endif %}
+                    {% if project.image_lightbox %}
+                      <button type="button" class="action-chip" data-lightbox-src="{{ project.image_lightbox | relative_url }}" data-lightbox-caption="{{ project.title }} — {{ project.image_lightbox_label | default: 'Diagram' }}">
+                        {{ project.image_lightbox_label | default: "Inspect image" }}
+                      </button>
+                    {% endif %}
+                    {% if project.writeup %}
+                      <a class="action-chip" href="{{ project.writeup | relative_url }}">Writeup →</a>
+                    {% endif %}
+                    {% if project.repo %}
+                      <a class="action-chip" href="{{ project.repo }}" target="_blank" rel="noopener">GitHub ↗</a>
+                    {% endif %}
+                  </div>
+                </div>
+
+                <p class="project-entry__summary">{{ project.summary }}</p>
+
+                {% if project.stack %}
+                  <ul class="stack-tags" aria-label="Technologies">
+                    {% for item in project.stack %}
+                      <li class="mono">{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+
+              {% if project.media_type == "video" and project.media %}
+                <div class="project-entry__media{% if project.media_aspect == 'portrait' %} project-entry__media--portrait{% endif %}">
+                  <video src="{{ project.media | relative_url }}" controls playsinline muted loop preload="metadata"></video>
+                </div>
+              {% elsif project.media_type == "video_tabs" and project.videos %}
+                <div class="project-entry__media project-entry__media--tabs" data-video-tabs>
+                  <div class="media-tabs" role="tablist" aria-label="{{ project.title }} clips">
+                    {% for vid in project.videos %}
+                      <button type="button"
+                              class="media-tab{% if forloop.first %} is-active{% endif %}"
+                              role="tab"
+                              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                              data-video-src="{{ vid.src | relative_url }}">
+                        {{ vid.label }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                  <video src="{{ project.videos.first.src | relative_url }}" controls playsinline muted loop preload="metadata"></video>
+                </div>
+              {% elsif project.media_type == "image" and project.media %}
+                <div class="project-entry__media">
+                  <button type="button" class="media-zoom-btn" data-lightbox-src="{{ project.media | relative_url }}" data-lightbox-caption="{{ project.title }}">
+                    <img src="{{ project.media | relative_url }}" alt="{{ project.title }}" loading="lazy">
+                  </button>
+                </div>
+              {% endif %}
             </div>
-          </div>
-        </details>
+          </article>
+        {% endfor %}
       </div>
 
-      <!-- GitHub Link -->
-      <a href="https://github.com/michael-kato" target="_blank" rel="noopener" class="link-row github-link">
-        <span class="mono">GitHub</span>
-        <span class="github-link-text">
-          <span class="github-link-title">More Projects</span>
-          <span class="github-link-description">Check out my GitHub!</span>
+      <a href="https://github.com/michael-kato?tab=repositories" target="_blank" rel="noopener" class="directory-row">
+        <span class="mono directory-row__label">GitHub</span>
+        <span class="directory-row__body">
+          <strong>Browse all public repositories</strong>
+          <span>github.com/michael-kato</span>
         </span>
-        <span class="link-row__arrow" aria-hidden="true">↗</span>
+        <span class="directory-row__arrow" aria-hidden="true">↗</span>
       </a>
     </div>
   </section>
 
-  <section id="blog">
+  <!-- 02 · PRODUCTION EXPERIENCE -->
+  <section id="experience" class="section section--bordered">
     <div class="container">
-      <div class="section-header">
-        <div class="section-rule"><span class="tape-label">02 Blog</span><span class="section-rule__line"></span><a class="mono" href="{{ '/blog/' | relative_url }}">All posts →</a></div>
-        <h2>Blog</h2>
+      <div class="section-head">
+        <div class="section-head__top">
+          <span class="section-num mono">02</span>
+          <h2 class="section-title">Production Experience</h2>
+          <span class="section-count mono">2014 — 2023</span>
+        </div>
+        <p class="section-lede">
+          Ten years shipping real-time performance systems, automated content pipelines, and artist tooling across AAA console games, spatial computing, and VR.
+        </p>
       </div>
-      <div class="blog-grid">
-        {% for post in site.posts limit: 3 %}
-        {% assign content_parts = post.content | split: 'src="' %}
-        <a href="{{ '/blog/' | relative_url }}#{{ post.title | slugify }}" class="blog-card">
-          <div class="blog-card-thumb">
-            {% if content_parts.size > 1 %}
-            {% assign first_media = content_parts[1] | split: '"' | first %}
-            {% if first_media contains '.mp4' or first_media contains '.webm' or first_media contains '.mov' %}
-            <video src="{{ first_media | relative_url }}" muted autoplay loop playsinline></video>
-            {% else %}
-            <img src="{{ first_media | relative_url }}" alt="" loading="lazy">
-            {% endif %}
-            {% endif %}
+
+      <div class="studio-list">
+        <!-- META REALITY LABS -->
+        <article class="studio-block" id="exp-meta">
+          <aside class="studio-meta">
+            <span class="studio-period mono">Sep 2020 — Sep 2023</span>
+            <h3 class="studio-name">Meta Reality Labs</h3>
+            <p class="studio-product">Horizon Worlds · VR</p>
+            <p class="studio-role">Senior Technical Artist (IC5)</p>
+            <ul class="studio-badges mono">
+              <li>300k MAU</li>
+              <li>Unity · C#</li>
+              <li>SQL · Perfetto</li>
+            </ul>
+          </aside>
+
+          <div class="studio-body">
+            <p class="studio-summary">
+              Embedded directly with a performance engineering team to approach mobile VR performance holistically—spanning Unity C# optimization, custom profiling instrumentation, automated regression detection, live telemetry dashboards, and emergency ship-blocking triage.
+            </p>
+
+            <!-- Custom SVG Pipeline Diagram: Meta Perf Automation -->
+            <figure class="pipeline-diagram">
+              <svg viewBox="0 0 820 124" role="img" aria-label="Meta Horizon Worlds automated performance monitoring pipeline">
+                <defs>
+                  <marker id="arr-meta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 1 2 L 8 5 L 1 8 z" fill="#8b909c"/>
+                  </marker>
+                </defs>
+                <g font-family="IBM Plex Mono, monospace" font-size="10.5">
+                  <rect x="8" y="24" width="136" height="66" rx="4" fill="#14161b" stroke="#2d323e"/>
+                  <text x="76" y="48" text-anchor="middle" fill="#8b909c">01 · INPUT</text>
+                  <text x="76" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">PR / Weekly Build</text>
+
+                  <line x1="144" y1="57" x2="174" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-meta)"/>
+
+                  <rect x="178" y="24" width="148" height="66" rx="4" fill="#14161b" stroke="#2d323e"/>
+                  <text x="252" y="48" text-anchor="middle" fill="#8b909c">02 · INSTRUMENT</text>
+                  <text x="252" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">Custom C# Profiler</text>
+
+                  <line x1="326" y1="57" x2="356" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-meta)"/>
+
+                  <rect x="360" y="24" width="144" height="66" rx="4" fill="#14161b" stroke="#e86a33" stroke-opacity="0.7"/>
+                  <text x="432" y="48" text-anchor="middle" fill="#e86a33">03 · CI + LIVE</text>
+                  <text x="432" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">Per-Commit A/B</text>
+
+                  <line x1="504" y1="57" x2="534" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-meta)"/>
+
+                  <rect x="538" y="24" width="132" height="66" rx="4" fill="#14161b" stroke="#2d323e"/>
+                  <text x="604" y="48" text-anchor="middle" fill="#8b909c">04 · QUERY</text>
+                  <text x="604" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">SQL Dashboards</text>
+
+                  <line x1="670" y1="57" x2="696" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-meta)"/>
+
+                  <rect x="700" y="24" width="112" height="66" rx="4" fill="#14161b" stroke="#4cc38a" stroke-opacity="0.6"/>
+                  <text x="756" y="48" text-anchor="middle" fill="#4cc38a">05 · ACTION</text>
+                  <text x="756" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">Alerts &amp; Fixes</text>
+                </g>
+              </svg>
+              <figcaption class="mono">End-to-end VR performance loop · caught regressions within hours of code landing</figcaption>
+            </figure>
+
+            <div class="impact-grid">
+              <div class="impact-card">
+                <h4>Unity C# Codebase Optimization</h4>
+                <ul>
+                  <li>Patched dozens of wasteful memory allocations across the codebase, cutting GC spikes and fragmentation that triggered OOM crashes on Quest.</li>
+                  <li>Swept hundreds of C# files to batch/cache native Unity calls and optimize avatars, particle systems, navigation portals, collision, and game script.</li>
+                  <li>Owned full-cycle regression triage: profiling builds with RenderDoc, Unity Profiler, and Perfetto to isolate culprits and land or coordinate fixes.</li>
+                </ul>
+              </div>
+
+              <div class="impact-card">
+                <h4>Automated Performance Framework</h4>
+                <ul>
+                  <li>Co-designed a C# profiling and automated testing system for Horizon Worlds' weekly release cadence—starting as a solo initiative before growing into a dedicated team effort.</li>
+                  <li>Tracked physics, scripting, animation, rendering, VFX, audio, and garbage collection across pre-submit, CI, developer tests, and live production builds.</li>
+                  <li>Ran per-commit A/B benchmark comparisons and surfaced downloadable profiler artifacts within hours of a regression.</li>
+                </ul>
+              </div>
+
+              <div class="impact-card">
+                <h4>SQL Telemetry &amp; Hitch Dashboards</h4>
+                <ul>
+                  <li>Surfaced previously buried automation, test, and live-user telemetry into SQL dashboards aggregated by world, player count, hardware SKU, build version, and time of day.</li>
+                  <li>Built specialized CPU hitch ("bubble") trackers and automated email regression alerts to stakeholders.</li>
+                  <li>Enabled engineering and leadership to prioritize optimizations using live data rather than guesswork.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Crisp Vector Reconstructions of Internal Meta Dashboards -->
+            <div class="telemetry-pair">
+              <figure class="telemetry-card">
+                <div class="telemetry-card__head">
+                  <span class="telemetry-card__title">CPU Hitch Analysis</span>
+                  <span class="mono telemetry-card__meta">Quest 2 · 30ms threshold</span>
+                </div>
+                <svg viewBox="0 0 460 220" role="img" aria-label="Illustrative reconstruction of CPU hitch breakdown by subsystem">
+                  <g font-family="IBM Plex Mono, monospace" font-size="10">
+                    <!-- Grid lines -->
+                    <line x1="110" y1="14" x2="110" y2="190" stroke="#262a34"/>
+                    <line x1="176" y1="14" x2="176" y2="190" stroke="#262a34" stroke-dasharray="3 3"/>
+                    <line x1="242" y1="14" x2="242" y2="190" stroke="#262a34" stroke-dasharray="3 3"/>
+                    <line x1="308" y1="14" x2="308" y2="190" stroke="#e05d68" stroke-dasharray="4 3" stroke-opacity="0.75"/>
+                    <line x1="374" y1="14" x2="374" y2="190" stroke="#262a34" stroke-dasharray="3 3"/>
+                    <text x="308" y="10" text-anchor="middle" fill="#e05d68" font-size="9">30ms budget</text>
+
+                    <!-- Bars (scale: 0..50ms -> 330px, 6.6px/ms) -->
+                    <text x="102" y="34" text-anchor="end" fill="#d8dae0">Physics</text>
+                    <rect x="110" y="23" width="252" height="14" rx="2" fill="#e05d68"/>
+                    <text x="368" y="34" fill="#f4f5f7">38.2ms</text>
+
+                    <text x="102" y="57" text-anchor="end" fill="#d8dae0">Animation</text>
+                    <rect x="110" y="46" width="222" height="14" rx="2" fill="#e86a33"/>
+                    <text x="338" y="57" fill="#f4f5f7">33.6ms</text>
+
+                    <text x="102" y="80" text-anchor="end" fill="#d8dae0">GC Alloc</text>
+                    <rect x="110" y="69" width="212" height="14" rx="2" fill="#e6a94c"/>
+                    <text x="328" y="80" fill="#f4f5f7">32.2ms</text>
+
+                    <text x="102" y="103" text-anchor="end" fill="#d8dae0">Rendering</text>
+                    <rect x="110" y="92" width="165" height="14" rx="2" fill="#5c9ce6"/>
+                    <text x="281" y="103" fill="#d8dae0">25.0ms</text>
+
+                    <text x="102" y="126" text-anchor="end" fill="#d8dae0">Network</text>
+                    <rect x="110" y="115" width="158" height="14" rx="2" fill="#4cc38a"/>
+                    <text x="274" y="126" fill="#d8dae0">24.0ms</text>
+
+                    <text x="102" y="149" text-anchor="end" fill="#d8dae0">Avatars</text>
+                    <rect x="110" y="138" width="132" height="14" rx="2" fill="#6b7a99"/>
+                    <text x="248" y="149" fill="#d8dae0">20.0ms</text>
+
+                    <text x="102" y="172" text-anchor="end" fill="#d8dae0">Audio / UI</text>
+                    <rect x="110" y="161" width="105" height="14" rx="2" fill="#4f5769"/>
+                    <text x="221" y="172" fill="#d8dae0">16.0ms</text>
+
+                    <!-- Axis labels -->
+                    <text x="110" y="206" text-anchor="middle" fill="#8b909c">0</text>
+                    <text x="176" y="206" text-anchor="middle" fill="#8b909c">10ms</text>
+                    <text x="242" y="206" text-anchor="middle" fill="#8b909c">20ms</text>
+                    <text x="308" y="206" text-anchor="middle" fill="#8b909c">30ms</text>
+                    <text x="374" y="206" text-anchor="middle" fill="#8b909c">40ms</text>
+                  </g>
+                </svg>
+                <figcaption class="mono">Illustrative reconstruction · internal Meta tooling</figcaption>
+              </figure>
+
+              <figure class="telemetry-card">
+                <div class="telemetry-card__head">
+                  <span class="telemetry-card__title">FPS Trends by World &amp; Build</span>
+                  <span class="mono telemetry-card__meta">Target 72 fps · Regression flagged</span>
+                </div>
+                <svg viewBox="0 0 460 220" role="img" aria-label="Illustrative reconstruction of FPS trends across builds with regression marker">
+                  <g font-family="IBM Plex Mono, monospace" font-size="9.5">
+                    <!-- Horizontal grid -->
+                    <line x1="42" y1="24" x2="438" y2="24" stroke="#262a34"/>
+                    <line x1="42" y1="68" x2="438" y2="68" stroke="#e86a33" stroke-dasharray="5 4" stroke-opacity="0.8"/>
+                    <line x1="42" y1="118" x2="438" y2="118" stroke="#262a34"/>
+                    <line x1="42" y1="168" x2="438" y2="168" stroke="#262a34"/>
+
+                    <text x="34" y="27" text-anchor="end" fill="#8b909c">90</text>
+                    <text x="34" y="71" text-anchor="end" fill="#e86a33">72</text>
+                    <text x="34" y="121" text-anchor="end" fill="#8b909c">60</text>
+                    <text x="34" y="171" text-anchor="end" fill="#8b909c">45</text>
+
+                    <!-- Build vertical markers -->
+                    <line x1="158" y1="20" x2="158" y2="180" stroke="#5c9ce6" stroke-dasharray="3 3" stroke-opacity="0.65"/>
+                    <text x="158" y="14" text-anchor="middle" fill="#5c9ce6">v1.244</text>
+
+                    <line x1="296" y1="20" x2="296" y2="180" stroke="#5c9ce6" stroke-dasharray="3 3" stroke-opacity="0.65"/>
+                    <text x="296" y="14" text-anchor="middle" fill="#5c9ce6">v1.245</text>
+
+                    <!-- Series lines -->
+                    <polyline fill="none" stroke="#4cc38a" stroke-width="2" points="42,60 98,55 158,52 224,48 296,46 364,42 432,38"/>
+                    <polyline fill="none" stroke="#5c9ce6" stroke-width="2" points="42,84 98,78 158,72 224,66 296,62 364,58 432,54"/>
+                    <polyline fill="none" stroke="#e05d68" stroke-width="2" points="42,108 98,100 158,92 224,84 296,80 342,96 392,82 432,72"/>
+
+                    <!-- Regression annotation -->
+                    <circle cx="342" cy="96" r="4.5" fill="#e05d68"/>
+                    <rect x="318" y="106" width="114" height="22" rx="3" fill="#1b1e25" stroke="#e05d68" stroke-opacity="0.6"/>
+                    <text x="375" y="120" text-anchor="middle" fill="#f4f5f7" font-size="9">Regression alert</text>
+
+                    <!-- Legend -->
+                    <circle cx="52" cy="200" r="3.5" fill="#4cc38a"/><text x="61" y="203" fill="#8b909c">Theater</text>
+                    <circle cx="132" cy="200" r="3.5" fill="#5c9ce6"/><text x="141" y="203" fill="#8b909c">Plaza</text>
+                    <circle cx="204" cy="200" r="3.5" fill="#e05d68"/><text x="213" y="203" fill="#8b909c">Arena</text>
+                    <text x="436" y="203" text-anchor="end" fill="#e86a33">--- 72fps target</text>
+                  </g>
+                </svg>
+                <figcaption class="mono">Illustrative reconstruction · internal Meta tooling</figcaption>
+              </figure>
+            </div>
           </div>
-          <span class="mono blog-date">{{ post.date | date: "%b %-d, %Y" }}</span>
-          <h3 class="blog-card-title">{{ post.title }}</h3>
-          <p class="blog-card-excerpt">{{ post.content | strip_html | truncate: 140 }}</p>
-          <span class="blog-read-more">Read post →</span>
-        </a>
+        </article>
+
+        <!-- APPLE -->
+        <article class="studio-block" id="exp-apple">
+          <aside class="studio-meta">
+            <span class="studio-period mono">Apr 2019 — Aug 2020</span>
+            <h3 class="studio-name">Apple <span class="studio-tag mono">Contract</span></h3>
+            <p class="studio-product">Apple Vision Pro · Synthetic Data</p>
+            <p class="studio-role">Technical Artist</p>
+            <ul class="studio-badges mono">
+              <li>Python · Maya</li>
+              <li>AWS · Perforce</li>
+              <li>Deadline Farm</li>
+            </ul>
+          </aside>
+
+          <div class="studio-body">
+            <p class="studio-summary">
+              Built Python pipeline automation supporting a high-volume synthetic data operation that rendered photorealistic interior environments to train Apple Vision Pro's computer-vision tracking models.
+            </p>
+
+            <!-- Custom SVG Pipeline Diagram: Apple Synthetic Data -->
+            <figure class="pipeline-diagram">
+              <svg viewBox="0 0 820 124" role="img" aria-label="Apple Vision Pro synthetic data and outsourcing pipeline">
+                <defs>
+                  <marker id="arr-apple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                    <path d="M 1 2 L 8 5 L 1 8 z" fill="#8b909c"/>
+                  </marker>
+                </defs>
+                <g font-family="IBM Plex Mono, monospace" font-size="10.5">
+                  <rect x="8" y="24" width="144" height="66" rx="4" fill="#14161b" stroke="#2d323e"/>
+                  <text x="80" y="48" text-anchor="middle" fill="#8b909c">01 · OUTSOURCE</text>
+                  <text x="80" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">AWS Tool Bundles</text>
+
+                  <line x1="152" y1="57" x2="180" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-apple)"/>
+
+                  <rect x="184" y="24" width="146" height="66" rx="4" fill="#14161b" stroke="#2d323e"/>
+                  <text x="257" y="48" text-anchor="middle" fill="#8b909c">02 · VALIDATE</text>
+                  <text x="257" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">QA + Thumbnails</text>
+
+                  <line x1="330" y1="57" x2="358" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-apple)"/>
+
+                  <rect x="362" y="24" width="150" height="66" rx="4" fill="#14161b" stroke="#e86a33" stroke-opacity="0.7"/>
+                  <text x="437" y="48" text-anchor="middle" fill="#e86a33">03 · GENERATE</text>
+                  <text x="437" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">Procedural Scenes</text>
+
+                  <line x1="512" y1="57" x2="540" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-apple)"/>
+
+                  <rect x="544" y="24" width="130" height="66" rx="4" fill="#14161b" stroke="#2d323e"/>
+                  <text x="609" y="48" text-anchor="middle" fill="#8b909c">04 · DISPATCH</text>
+                  <text x="609" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">P4 + Deadline</text>
+
+                  <line x1="674" y1="57" x2="698" y2="57" stroke="#5b6170" stroke-width="1.4" marker-end="url(#arr-apple)"/>
+
+                  <rect x="702" y="24" width="110" height="66" rx="4" fill="#14161b" stroke="#4cc38a" stroke-opacity="0.6"/>
+                  <text x="757" y="48" text-anchor="middle" fill="#4cc38a">05 · OUTPUT</text>
+                  <text x="757" y="69" text-anchor="middle" fill="#f4f5f7" font-family="IBM Plex Sans, sans-serif" font-size="12.5" font-weight="500">ML Datasets</text>
+                </g>
+              </svg>
+              <figcaption class="mono">Automated Python pipeline across thousands of Maya scenes · overnight farm rendering</figcaption>
+            </figure>
+
+            <div class="impact-grid">
+              <div class="impact-card">
+                <h4>End-to-End Outsourcing Pipeline</h4>
+                <ul>
+                  <li>Automated outbound vendor delivery: packaged Python dependencies in-place, bundled metadata references, zipped environments, pushed to AWS, and emailed confirmations.</li>
+                  <li>Automated inbound ingestion: pulled completed assets into Perforce, ran the full QA validation suite, and notified artists for manual sign-off.</li>
+                  <li>Eliminated manual handoffs on both ends so broken environments never polluted ML training jobs.</li>
+                </ul>
+              </div>
+
+              <div class="impact-card">
+                <h4>Asset Validation &amp; Thumbnail QA</h4>
+                <ul>
+                  <li>Processed thousands of 3D models from internal teams and external vendors with automated checks for scale anomalies, missing textures, and bad material configurations.</li>
+                  <li>Generated asset-browser thumbnails and automated LOD steps across Maya scenes in Python.</li>
+                  <li>Caught upstream failures before expensive farm renders ran.</li>
+                </ul>
+              </div>
+
+              <div class="impact-card">
+                <h4>Procedural Interior Scene Generation</h4>
+                <ul>
+                  <li>Built a procedural layout generator with a lead TA to synthesize new photoreal interior training data overnight without additional artist headcount.</li>
+                  <li>Dynamically modified floorplans—extruding walls, windows, and crevices—and randomized furniture/prop arrangements.</li>
+                  <li>Auto-submitted scenes to Perforce, dispatched Deadline render jobs, and emailed stakeholder reports.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- SLEDGEHAMMER GAMES -->
+        <article class="studio-block" id="exp-shg">
+          <aside class="studio-meta">
+            <span class="studio-period mono">Jan 2014 — May 2019</span>
+            <h3 class="studio-name">Sledgehammer Games</h3>
+            <p class="studio-product">Call of Duty: WWII · AW · Cold War</p>
+            <p class="studio-role">QA → Assoc. TA → Technical Artist</p>
+            <ul class="studio-badges mono">
+              <li>60 fps Console</li>
+              <li>Python · MEL · C++</li>
+              <li>300+ Devs Supported</li>
+            </ul>
+          </aside>
+
+          <div class="studio-body">
+            <p class="studio-summary">
+              Started in QA, moved into VFX destructibles (shipping hundreds of physics/rigged/scripted props), and became the primary performance stakeholder and pipeline tools TA for <em>Call of Duty: WWII</em>—holding 60fps across consoles and automating LODs game-wide.
+            </p>
+
+            <div class="impact-grid">
+              <div class="impact-card">
+                <h4>Game-Wide 60fps Performance Ownership</h4>
+                <ul>
+                  <li>Primary performance stakeholder across singleplayer campaign, zombies, hub world, and multiplayer maps on console.</li>
+                  <li>Ran weekly reviews across environment, lighting, VFX, and design—diagnosing and fixing occluders, dynamic lights, physics VFX, bone culling, LODs, and game script.</li>
+                  <li>Identified and escalated a cross-studio team falling behind performance targets early enough to close the gap before ship.</li>
+                </ul>
+              </div>
+
+              <div class="impact-card">
+                <h4>Automated LOD Generation Pipeline</h4>
+                <ul>
+                  <li>Partnered with central technology to integrate a proprietary LOD algorithm into Sledgehammer's pipeline—replacing hand-authored LODs for nearly every prop, vehicle, weapon, and character in <em>Call of Duty: WWII</em>.</li>
+                  <li>Tuned geometry presets for hard surface, organic, and foliage assets so one TA could tune LODs for almost an entire Call of Duty title.</li>
+                  <li>Extended into a Maya tool atlasing textures for ultra-cheap final LODs, combining decimation, skinning, and Python automation.</li>
+                </ul>
+              </div>
+
+              <div class="impact-card">
+                <h4>Maya Edge Cleanup &amp; Triangulation Tool</h4>
+                <ul>
+                  <li>Analyzed mesh topology to strip redundant coplanar edges and soften unnecessary hard edges that split vertex normals—preserving UV seams and silhouettes.</li>
+                  <li>Implemented greedy triangulation so meshes retained clean silhouettes through downstream decimation.</li>
+                  <li>Adopted into the standard asset export process; normal softening alone saved a <strong>full millisecond</strong> in some environments.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Interactive Showcase of Michael's ACTUAL Maya MeshOptimizer Tool -->
+            <div class="mesh-showcase" data-mesh-showcase>
+              <div class="mesh-showcase__head">
+                <div>
+                  <span class="mono mesh-showcase__eyebrow">Production Tool Artifact · Maya</span>
+                  <h4 class="mesh-showcase__title">MeshOptimizer — Interactive Step &amp; Before/After Inspector</h4>
+                </div>
+                <div class="media-tabs" role="tablist" aria-label="MeshOptimizer modes">
+                  <button type="button" class="media-tab is-active" role="tab" aria-selected="true" data-mesh-mode="delete">Redundant Edges</button>
+                  <button type="button" class="media-tab" role="tab" aria-selected="false" data-mesh-mode="smooth">Normal Softening (−1ms)</button>
+                  <button type="button" class="media-tab" role="tab" aria-selected="false" data-mesh-mode="triangulate">Greedy Triangulation</button>
+                </div>
+              </div>
+
+              <!-- Mode 1: Redundant Edges -->
+              <div class="mesh-panel is-active" data-mesh-panel="delete">
+                <div class="mesh-mode-toggle">
+                  <div class="step-pills" role="group" aria-label="Redundant edge cleanup steps">
+                    <button type="button" class="step-pill is-active" data-step-view="compare">Drag Before / After</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_01.png' | relative_url }}" data-step-note="1 · Original dense planar grid and torus topology">1. Source</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_02.png' | relative_url }}" data-step-note="2 · Redundant coplanar edges flagged in orange while preserving UV seams">2. Detect</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_03.png' | relative_url }}" data-step-note="3 · Redundant interior edges deleted with zero silhouette loss">3. Delete</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/delete_edges_04.png' | relative_url }}" data-step-note="4 · Greedy triangulation applied for clean downstream decimation">4. Triangulate</button>
+                  </div>
+                </div>
+
+                <div class="compare-stage" data-compare-stage>
+                  <div class="ba-slider" data-ba-slider>
+                    <img class="ba-img ba-img--after" src="{{ '/resources/delete_edges_04.png' | relative_url }}" alt="After MeshOptimizer redundant edge removal and triangulation" loading="lazy">
+                    <div class="ba-overlay">
+                      <img class="ba-img ba-img--before" src="{{ '/resources/delete_edges_01.png' | relative_url }}" alt="Before MeshOptimizer redundant edge removal" loading="lazy">
+                    </div>
+                    <span class="ba-badge ba-badge--before mono">Before · Source</span>
+                    <span class="ba-badge ba-badge--after mono">After · Cleaned</span>
+                    <div class="ba-divider" aria-hidden="true">
+                      <span class="ba-handle">↔</span>
+                    </div>
+                    <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Compare before and after redundant edge cleanup">
+                  </div>
+                  <div class="step-single" hidden>
+                    <img src="{{ '/resources/delete_edges_01.png' | relative_url }}" alt="MeshOptimizer step preview" loading="lazy">
+                  </div>
+                </div>
+                <p class="mesh-caption mono" data-mesh-caption>Drag handle to compare raw Maya topology (left) vs. cleaned &amp; triangulated mesh (right)</p>
+              </div>
+
+              <!-- Mode 2: Normal Softening -->
+              <div class="mesh-panel" data-mesh-panel="smooth" hidden>
+                <div class="mesh-mode-toggle">
+                  <div class="step-pills" role="group" aria-label="Normal softening steps">
+                    <button type="button" class="step-pill is-active" data-step-view="compare">Drag Before / After</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_01.png' | relative_url }}" data-step-note="1 · Solid wireframe = hard edges splitting GPU vertex counts">1. Hard Edges</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_02.png' | relative_url }}" data-step-note="2 · Smoothable hard edges within angle tolerance highlighted in orange">2. Detect</button>
+                    <button type="button" class="step-pill" data-step-src="{{ '/resources/smooth_edges_03.png' | relative_url }}" data-step-note="3 · Dotted wireframe = soft edges — eliminated unnecessary vertex splits (−1ms in some environments)">3. Softened</button>
+                  </div>
+                </div>
+
+                <div class="compare-stage compare-stage--compact" data-compare-stage>
+                  <div class="ba-slider" data-ba-slider>
+                    <img class="ba-img ba-img--after" src="{{ '/resources/smooth_edges_03.png' | relative_url }}" alt="After MeshOptimizer hard edge softening" loading="lazy">
+                    <div class="ba-overlay">
+                      <img class="ba-img ba-img--before" src="{{ '/resources/smooth_edges_01.png' | relative_url }}" alt="Before MeshOptimizer hard edge softening" loading="lazy">
+                    </div>
+                    <span class="ba-badge ba-badge--before mono">Before · Hard</span>
+                    <span class="ba-badge ba-badge--after mono">After · Soft</span>
+                    <div class="ba-divider" aria-hidden="true">
+                      <span class="ba-handle">↔</span>
+                    </div>
+                    <input type="range" class="ba-range" min="0" max="100" value="50" aria-label="Compare before and after normal softening">
+                  </div>
+                  <div class="step-single" hidden>
+                    <img src="{{ '/resources/smooth_edges_01.png' | relative_url }}" alt="Normal softening step preview" loading="lazy">
+                  </div>
+                </div>
+                <p class="mesh-caption mono" data-mesh-caption>Drag handle to compare unnecessary hard edges (solid wireframe) vs. softened normals (dotted)</p>
+              </div>
+
+              <!-- Mode 3: Triangulation -->
+              <div class="mesh-panel" data-mesh-panel="triangulate" hidden>
+                <div class="compare-stage">
+                  <button type="button" class="media-zoom-btn" data-lightbox-src="{{ '/resources/triangulation.png' | relative_url }}" data-lightbox-caption="Maya Default fan triangulation vs. MeshOptimizer greedy triangulation">
+                    <img src="{{ '/resources/triangulation.png' | relative_url }}" alt="Maya Default triangulation vs MeshOptimizer greedy triangulation" loading="lazy">
+                  </button>
+                </div>
+                <p class="mesh-caption mono">Maya default fan triangulation (left) vs. greedy triangulation (right) for cleaner LOD decimation · click to zoom</p>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 · TECHNICAL CAPABILITIES -->
+  <section id="skills" class="section section--bordered">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__top">
+          <span class="section-num mono">03</span>
+          <h2 class="section-title">Core Stack</h2>
+        </div>
+      </div>
+
+      <div class="skills-grid">
+        <div class="skill-col">
+          <h3 class="mono">Languages</h3>
+          <ul>
+            <li>Python</li>
+            <li>C#</li>
+            <li>C++</li>
+            <li>SQL</li>
+            <li>JavaScript · HTML/CSS</li>
+            <li>MEL</li>
+          </ul>
+        </div>
+        <div class="skill-col">
+          <h3 class="mono">Engines</h3>
+          <ul>
+            <li>Unity (2D, 3D, VR)</li>
+            <li>Unreal Engine 5</li>
+            <li>Call of Duty Engine</li>
+            <li>Source Engine</li>
+          </ul>
+        </div>
+        <div class="skill-col">
+          <h3 class="mono">DCC &amp; Profiling</h3>
+          <ul>
+            <li>Maya</li>
+            <li>Blender (Geometry Nodes)</li>
+            <li>RenderDoc</li>
+            <li>Perfetto &amp; Unity Profiler</li>
+            <li>Photoshop &amp; Substance</li>
+          </ul>
+        </div>
+        <div class="skill-col">
+          <h3 class="mono">Pipelines &amp; Systems</h3>
+          <ul>
+            <li>Perforce · Git · Mercurial</li>
+            <li>Automated Perf Testing &amp; CI</li>
+            <li>LOD &amp; Asset QA Pipelines</li>
+            <li>Procedural &amp; Synthetic Data</li>
+            <li>PyTorch / fastai · Local VLMs</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 · WRITING -->
+  <section id="writing" class="section section--bordered">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-head__top">
+          <span class="section-num mono">04</span>
+          <h2 class="section-title">Writing &amp; Breakdowns</h2>
+          <a class="section-more mono" href="{{ '/blog/' | relative_url }}">All posts →</a>
+        </div>
+      </div>
+
+      <div class="writing-grid">
+        {% for post in site.posts limit: 3 %}
+          {% assign content_parts = post.content | split: 'src="' %}
+          <a href="{{ '/blog/' | relative_url }}#{{ post.title | slugify }}" class="writing-card">
+            <div class="writing-card__thumb">
+              {% if content_parts.size > 1 %}
+                {% assign first_media = content_parts[1] | split: '"' | first %}
+                {% if first_media contains '.mp4' or first_media contains '.webm' or first_media contains '.mov' %}
+                  <video src="{{ first_media | relative_url }}" muted autoplay loop playsinline preload="metadata"></video>
+                {% else %}
+                  <img src="{{ first_media | relative_url }}" alt="" loading="lazy">
+                {% endif %}
+              {% endif %}
+            </div>
+            <div class="writing-card__body">
+              <span class="mono writing-card__date">{{ post.date | date: "%b %-d, %Y" }}</span>
+              <h3 class="writing-card__title">{{ post.title }}</h3>
+              <p class="writing-card__excerpt">{{ post.content | strip_html | truncate: 150 }}</p>
+              <span class="writing-card__cta mono">Read breakdown →</span>
+            </div>
+          </a>
         {% endfor %}
       </div>
     </div>
   </section>
 
-  <section id="art">
+  <!-- 05 · CONTACT -->
+  <section id="contact" class="section section--bordered">
     <div class="container">
-      <div class="section-header">
-        <div class="section-rule"><span class="tape-label">03 Art</span><span class="section-rule__line"></span><span class="mono">Before the career</span></div>
-        <h2>Art</h2>
-        <p class="section-lede">
-          Some of this work goes back to well before my professional career. I keep it here because it reflects the path that
-          eventually led me into technical art, tools development, and systems work.
-          I wouldn't call this a reflection of where I am currently as an artist... these days I prefer to work on tech
-          projects rather than art in my free time.
-        </p>
-      </div>
+      <div class="contact-layout">
+        <div class="contact-intro">
+          <div class="section-head__top">
+            <span class="section-num mono">05</span>
+            <h2 class="section-title">Let's work together.</h2>
+          </div>
+          <p class="section-lede">
+            Looking for a Senior Technical Artist who can own frame budgets, automate painful pipelines, and bridge art and engineering. Open to full-time and contract roles in games, XR, robotics simulation, and 3D tooling.
+          </p>
+          <p class="archive-note">
+            Curious about my earlier 3D modeling, animation, and mod work from 2009–2013?
+            <a href="{{ '/archive/' | relative_url }}">Browse the pre-career archive →</a>
+          </p>
+        </div>
 
-      <div class="art-grid">
-        <div class="art-item" id="art-escape-game"></div>
-        <div class="art-item" id="art-mod-props"></div>
-        <div class="art-item" id="art-school-work"></div>
-        <div class="art-item" id="art-personal"></div>
+        <div class="contact-links">
+          <a class="directory-row" href="mailto:michaelakato@gmail.com">
+            <span class="mono directory-row__label">Email</span>
+            <span class="directory-row__body"><strong>michaelakato@gmail.com</strong></span>
+            <span class="directory-row__arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="directory-row" href="https://linkedin.com/in/michael-kato" target="_blank" rel="noopener">
+            <span class="mono directory-row__label">LinkedIn</span>
+            <span class="directory-row__body"><strong>linkedin.com/in/michael-kato</strong></span>
+            <span class="directory-row__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="directory-row" href="https://github.com/michael-kato" target="_blank" rel="noopener">
+            <span class="mono directory-row__label">GitHub</span>
+            <span class="directory-row__body"><strong>github.com/michael-kato</strong></span>
+            <span class="directory-row__arrow" aria-hidden="true">↗</span>
+          </a>
+          <a class="directory-row" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>
+            <span class="mono directory-row__label">Resume</span>
+            <span class="directory-row__body"><strong>Michael_Kato_Resume.pdf</strong></span>
+            <span class="directory-row__arrow" aria-hidden="true">↓</span>
+          </a>
+        </div>
       </div>
-
-      <div class="video-container">
-        <iframe width="720" height="405" src="https://www.youtube.com/embed/DM5dcPbCSns" title="Animations" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen></iframe>
-      </div>
-    </div>
-  </section>
-
-  <section id="contact">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-rule"><span class="tape-label">04 Contact</span><span class="section-rule__line"></span><span class="mono">Open to roles</span></div>
-        <h2>Let's work together.</h2>
-      </div>
-
-      <div class="contact-list">
-        <a class="link-row" href="mailto:michaelakato@gmail.com">
-          <span class="mono">Email</span>
-          <span>michaelakato@gmail.com</span>
-          <span class="link-row__arrow" aria-hidden="true">→</span>
-        </a>
-        <a class="link-row" href="https://linkedin.com/in/michael-kato" target="_blank" rel="noopener">
-          <span class="mono">LinkedIn</span>
-          <span>linkedin.com/in/michael-kato</span>
-          <span class="link-row__arrow" aria-hidden="true">↗</span>
-        </a>
-        <a class="link-row" href="{{ '/resources/Michael_Kato_Resume.pdf' | relative_url }}" download>
-          <span class="mono">Resume</span>
-          <span>Download PDF</span>
-          <span class="link-row__arrow" aria-hidden="true">↓</span>
-        </a>
-      </div>
-
-      <p class="dev-link"><a class="mono" href="{{ '/test.html' | relative_url }}">Test page</a></p>
     </div>
   </section>
 </main>
 
-<!-- Lightbox container for fullscreen images -->
+<!-- Fullscreen Image Lightbox -->
 <dialog id="lightbox-container" class="lightbox" aria-label="Image viewer">
   <button type="button" class="lightbox-close" aria-label="Close" title="Close (Esc)">&times;</button>
   <div class="lightbox-content">
@@ -204,5 +708,19 @@
       <span class="mono lightbox-counter"></span>
       <button type="button" class="lightbox-next" aria-label="Next image">→</button>
     </div>
+  </div>
+</dialog>
+
+<!-- On-Demand Playable Unity WebGL Modal -->
+<dialog id="playable-modal" class="playable-modal" aria-label="Playable WebGL build">
+  <div class="playable-modal__bar">
+    <span class="mono" id="playable-modal-title">Unity WebGL Build</span>
+    <div class="playable-modal__actions">
+      <a id="playable-modal-open" class="action-chip" href="#" target="_blank" rel="noopener">Open in new tab ↗</a>
+      <button type="button" class="playable-modal__close" id="playable-modal-close" aria-label="Close game">&times;</button>
+    </div>
+  </div>
+  <div class="playable-modal__stage">
+    <iframe id="playable-iframe" title="Playable WebGL Demo" allowfullscreen></iframe>
   </div>
 </dialog>

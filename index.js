@@ -1,260 +1,258 @@
 /**
  * Main JavaScript for Michael Kato's portfolio
- * Handles all interactive features including:
- * - Career section tabs
- * - Art gallery expansions
- * - Lightbox for images
- * - Copy-to-clipboard buttons
+ * - Chronological project category filter
+ * - Multi-video clip tabs
+ * - Interactive Maya MeshOptimizer step & before/after slider
+ * - On-demand Playable Unity WebGL modal
+ * - Archive art renderer + fullscreen lightbox
+ * - Copy buttons, Cloudflare AI Career Assistant, Blog comments
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   applyPortfolioVariant();
-
-  initCareerSection();
-  renderProjectCards();
+  setupProjectFilters();
+  setupVideoTabs();
+  setupMeshShowcase();
+  setupPlayableModal();
+  setupLightboxTriggers();
   renderArtCards();
   setupBlogImages();
   setupModalHandlers();
   setupCopyButtons();
   setupChatBot();
   setupComments();
-
-  // Delay decryption and rendering to prioritize initial page load
-  setTimeout(() => {
-    renderProjectCards();
-    renderArtCards();
-  }, 400);
 });
-
-function getProjectData() {
-  const data = window.projectData || {};
-  if (typeof data === 'string') {
-    try { return JSON.parse(atob(data)); } catch(e) { return {}; }
-  }
-  return data;
-}
 
 function getArtData() {
   const data = window.artData || {};
   if (typeof data === 'string') {
-    try { return JSON.parse(atob(data)); } catch(e) { return {}; }
+    try { return JSON.parse(atob(data)); } catch (e) { return {}; }
   }
   return data;
 }
 
+/* ===== Clean URL Variant Support (/programming/) ===== */
 const portfolioVariants = {
   programming: {
     bodyClass: 'variant-programming',
-    title: 'Michael Kato | Programming Portfolio',
-    about: 'Software-focused Technical Artist with 10+ years building production tools, automation systems, performance workflows, data dashboards, and content pipelines for games, XR, and synthetic data teams.',
-    labels: {
-      career: 'Programming Work'
-    },
-    hiddenSections: ['art', 'blog'],
-    githubTitle: 'More Code',
-    githubDescription: 'Browse additional projects on GitHub.'
+    title: 'Michael Kato — Tools & Pipeline Engineering',
+    about: 'Software-focused Technical Artist with 10+ years building production tools, automation frameworks, performance workflows, telemetry dashboards, and content pipelines for games, XR, and synthetic data teams.',
+    hiddenSections: ['writing']
   }
 };
 
-/**
- * Apply content, nav, and theme changes for clean URL portfolio variants.
- */
 function applyPortfolioVariant() {
-  const variant = getCurrentVariant();
+  const bodyVariant = document.body.dataset.variant;
+  const pathVariant = window.location.pathname.split('/').filter(Boolean).pop();
+  const variant = portfolioVariants[bodyVariant || pathVariant];
   if (!variant) return;
 
   document.body.classList.add(variant.bodyClass);
-
-  if (variant.title) {
-    document.title = variant.title;
-  }
-
+  if (variant.title) document.title = variant.title;
   if (variant.about) {
-    const aboutText = document.querySelector('.hero__lede');
-    if (aboutText) aboutText.textContent = variant.about;
+    const lede = document.querySelector('.hero__lede');
+    if (lede) lede.textContent = variant.about;
   }
+  (variant.hiddenSections || []).forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.hidden = true;
+  });
+}
 
-  if (variant.labels) {
-    Object.entries(variant.labels).forEach(([sectionId, label]) => {
-      const sectionHeading = document.querySelector(`#${sectionId} .section-header h2`);
-      if (sectionHeading) sectionHeading.textContent = label;
+/* ===== Chronological Project Filter ===== */
+function setupProjectFilters() {
+  const buttons = document.querySelectorAll('.filter-pill[data-filter]');
+  const items = document.querySelectorAll('#projects-stream .project-entry');
+  const countEl = document.getElementById('projects-count');
+  if (!buttons.length || !items.length) return;
 
-      // Section labels read "01 Career"; keep the number, swap the name
-      const tapeLabel = document.querySelector(`#${sectionId} .tape-label`);
-      if (tapeLabel) tapeLabel.textContent = tapeLabel.textContent.replace(/^(\d+\s+).*/, `$1${label}`);
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter;
+      buttons.forEach((b) => {
+        const active = b === btn;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', String(active));
+      });
 
-      document.querySelectorAll(`nav a[href="#${sectionId}"]`).forEach(link => {
-        link.textContent = label;
+      let visible = 0;
+      items.forEach((item) => {
+        const cats = (item.dataset.categories || '').split(/\s+/).filter(Boolean);
+        const show = filter === 'all' || cats.includes(filter);
+        item.hidden = !show;
+        if (show) visible++;
+      });
+
+      if (countEl) {
+        countEl.textContent = `${visible} ${visible === 1 ? 'item' : 'items'}`;
+      }
+    });
+  });
+}
+
+/* ===== Multi-Video Clip Switcher ===== */
+function setupVideoTabs() {
+  document.querySelectorAll('[data-video-tabs]').forEach((wrap) => {
+    const tabs = wrap.querySelectorAll('.media-tab[data-video-src]');
+    const video = wrap.querySelector('video');
+    if (!tabs.length || !video) return;
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const src = tab.dataset.videoSrc;
+        if (!src || video.getAttribute('src') === src) return;
+
+        tabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+
+        video.pause();
+        video.setAttribute('src', src);
+        video.load();
+        video.play().catch(() => {});
       });
     });
-  }
-
-  if (variant.githubTitle) {
-    const githubTitle = document.querySelector('.github-link-title');
-    if (githubTitle) githubTitle.textContent = variant.githubTitle;
-  }
-
-  if (variant.githubDescription) {
-    const githubDescription = document.querySelector('.github-link-description');
-    if (githubDescription) githubDescription.textContent = variant.githubDescription;
-  }
-
-  hideVariantSections(variant.hiddenSections || []);
-}
-
-/**
- * Prefer explicit page data, then fall back to the last clean URL segment.
- */
-function getCurrentVariant() {
-  const bodyVariant = document.body.dataset.variant;
-  const pathVariant = window.location.pathname
-    .split('/')
-    .filter(Boolean)
-    .pop();
-  const variantKey = bodyVariant || pathVariant;
-
-  return portfolioVariants[variantKey] || null;
-}
-
-/**
- * Hide sections and their same-page nav links for a focused variant.
- */
-function hideVariantSections(sectionIds) {
-  sectionIds.forEach(sectionId => {
-    const section = document.getElementById(sectionId);
-    if (section) section.hidden = true;
-
-    document.querySelectorAll(`nav a[href="#${sectionId}"]`).forEach(link => {
-      const navItem = link.closest('li');
-      if (navItem) navItem.hidden = true;
-    });
   });
 }
 
-/**
- * Dynamically render project cards inline based on data-project-ids attribute
- */
-function renderProjectCards() {
-  const containers = document.querySelectorAll('.career-projects');
-  const data = getProjectData();
+/* ===== Interactive Maya MeshOptimizer Showcase ===== */
+function setupMeshShowcase() {
+  document.querySelectorAll('[data-mesh-showcase]').forEach((showcase) => {
+    const modeTabs = showcase.querySelectorAll('[data-mesh-mode]');
+    const panels = showcase.querySelectorAll('[data-mesh-panel]');
 
-  if (Object.keys(data).length === 0) {
-    return false;
-  }
-  
-  containers.forEach(container => {
-    const ids = container.dataset.projectIds ? container.dataset.projectIds.split(',') : [];
-    if (ids.length === 0) return;
-    
-    let html = '';
-    ids.forEach(id => {
-      const projectId = id.trim();
-      const project = data[projectId];
-      if (!project) return;
-
-      let imagesHtml = '';
-      if (project.images && project.images.length > 0) {
-        imagesHtml += `<div class="project-images">`;
-        project.images.forEach((img, idx) => {
-          const src = typeof img === 'string' ? img : img.src;
-          const caption = typeof img === 'object' && img.caption ? img.caption : '';
-          imagesHtml += `
-            <button type="button" class="project-image-container" data-index="${idx}">
-              <img src="${src}" alt="${project.title}" class="project-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;">
-              ${caption ? `<span class="project-image-caption">${caption}</span>` : ''}
-            </button>`;
+    modeTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.dataset.meshMode;
+        modeTabs.forEach((t) => {
+          const active = t === tab;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
         });
-        imagesHtml += `</div>`;
-      }
-
-      let videoHtml = '';
-      if (project.video) {
-        const embedUrl = typeof getYouTubeEmbedUrl === 'function' ? getYouTubeEmbedUrl(project.video) : null;
-        if (Array.isArray(embedUrl)) {
-          embedUrl.forEach(url => {
-            videoHtml += `<div class="project-video-container"><iframe src="${url}" frameborder="0" allowfullscreen></iframe></div>`;
-          });
-        } else if (embedUrl) {
-          videoHtml += `<div class="project-video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>`;
-        }
-      }
-
-      html += `
-        <div class="project-card" id="${projectId}">
-          <h3 class="project-header">${project.title}</h3>
-          <div class="project-body">
-            ${project.description || ''}
-            ${imagesHtml}
-            ${videoHtml}
-          </div>
-        </div>`;
+        panels.forEach((panel) => {
+          const active = panel.dataset.meshPanel === target;
+          panel.hidden = !active;
+          panel.classList.toggle('is-active', active);
+        });
+      });
     });
-    container.innerHTML = html;
-  });
 
-  // Attach lightbox click handlers for images inside project cards
-  containers.forEach(container => {
-    container.querySelectorAll('.project-card').forEach(card => {
-      const projectId = card.id;
-      const project = data[projectId];
-      if (!project || !project.images || project.images.length === 0) return;
-      const processedImages = typeof normalizeImageData === 'function' ? normalizeImageData(project.images) : [];
-      card.querySelectorAll('.project-image-container').forEach(imgContainer => {
-        imgContainer.addEventListener('click', () => {
-          const index = parseInt(imgContainer.dataset.index) || 0;
-          if (typeof openLightbox === 'function') {
-            openLightbox(processedImages, index);
+    // Before/After range sliders
+    showcase.querySelectorAll('[data-ba-slider]').forEach((slider) => {
+      const range = slider.querySelector('.ba-range');
+      if (!range) return;
+      const sync = () => slider.style.setProperty('--pos', `${range.value}%`);
+      range.addEventListener('input', sync);
+      sync();
+    });
+
+    // Step pills inside each panel
+    panels.forEach((panel) => {
+      const pills = panel.querySelectorAll('.step-pill');
+      const slider = panel.querySelector('[data-ba-slider]');
+      const singleWrap = panel.querySelector('.step-single');
+      const singleImg = singleWrap?.querySelector('img');
+      const captionEl = panel.querySelector('[data-mesh-caption]');
+      if (!pills.length || !slider || !singleWrap || !singleImg) return;
+
+      const defaultCaption = captionEl ? captionEl.textContent : '';
+
+      pills.forEach((pill) => {
+        pill.addEventListener('click', () => {
+          pills.forEach((p) => p.classList.toggle('is-active', p === pill));
+
+          if (pill.dataset.stepView === 'compare') {
+            slider.hidden = false;
+            singleWrap.hidden = true;
+            if (captionEl) captionEl.textContent = defaultCaption;
+          } else {
+            slider.hidden = true;
+            singleWrap.hidden = false;
+            singleImg.src = pill.dataset.stepSrc;
+            singleImg.alt = pill.dataset.stepNote || 'MeshOptimizer step';
+            if (captionEl) captionEl.textContent = pill.dataset.stepNote || defaultCaption;
           }
         });
       });
-    });
-  });
 
-  return true;
-}
+      // Clicking the single step image opens all steps in lightbox
+      const stepImages = Array.from(pills)
+        .filter((p) => p.dataset.stepSrc)
+        .map((p) => ({ src: p.dataset.stepSrc, caption: p.dataset.stepNote || '' }));
 
-/**
- * Career categories are <details name="career">, so the browser handles
- * open/close, one-at-a-time, and keyboard. We only scroll the opened one into view.
- */
-function initCareerSection() {
-  document.querySelectorAll('.career-category').forEach(category => {
-    const header = category.querySelector('.career-category-header');
-    if (!header) return;
-
-    header.addEventListener('click', () => {
-      if (category.open) return;
-      // scroll-behavior and scroll-padding on <html> handle smoothing and the sticky nav offset
-      setTimeout(() => category.scrollIntoView({ block: 'start' }), 60);
+      singleImg.addEventListener('click', () => {
+        const idx = Math.max(0, stepImages.findIndex((s) => singleImg.src.endsWith(s.src)));
+        if (stepImages.length) openLightbox(stepImages, idx);
+      });
     });
   });
 }
 
-/**
- * Dynamically render art items inline within .art-grid
- */
+/* ===== On-Demand Playable Unity WebGL Modal ===== */
+function setupPlayableModal() {
+  const modal = document.getElementById('playable-modal');
+  const iframe = document.getElementById('playable-iframe');
+  const titleEl = document.getElementById('playable-modal-title');
+  const openLink = document.getElementById('playable-modal-open');
+  const closeBtn = document.getElementById('playable-modal-close');
+  if (!modal || !iframe) return;
+
+  const closeModal = () => {
+    modal.close();
+    iframe.src = 'about:blank';
+  };
+
+  document.querySelectorAll('[data-playable]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const url = btn.dataset.playable;
+      if (!url) return;
+      if (titleEl) titleEl.textContent = `${btn.dataset.playableTitle || 'Unity WebGL Build'} — Interactive`;
+      if (openLink) openLink.href = url;
+      iframe.src = url;
+      modal.showModal();
+    });
+  });
+
+  closeBtn?.addEventListener('click', closeModal);
+  modal.addEventListener('close', () => { iframe.src = 'about:blank'; });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
+
+/* ===== Direct Single-Image Lightbox Triggers ===== */
+function setupLightboxTriggers() {
+  document.querySelectorAll('[data-lightbox-src]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      openLightbox([{
+        src: btn.dataset.lightboxSrc,
+        caption: btn.dataset.lightboxCaption || ''
+      }], 0);
+    });
+  });
+}
+
+/* ===== Archive Page Art Cards ===== */
 function renderArtCards() {
   const artItems = document.querySelectorAll('.art-item');
-  const data = typeof getArtData === 'function' ? getArtData() : (window.artData || {});
+  const data = getArtData();
   if (!artItems.length || Object.keys(data).length === 0) return;
 
-  artItems.forEach((item, artIndex) => {
-    const artId = item.id;
-    const art = data[artId];
+  artItems.forEach((item) => {
+    const art = data[item.id];
     if (!art) return;
 
-    const processedImages = typeof normalizeImageData === 'function' ? normalizeImageData(art.images) : [];
-
+    const processedImages = normalizeImageData(art.images);
     let imagesHtml = '';
-    if (processedImages && processedImages.length > 0) {
+    if (processedImages.length > 0) {
       imagesHtml += `<div class="art-images">`;
       processedImages.forEach((img, idx) => {
-        // Film-plate style frame code, e.g. MK-0103 = piece 01, frame 03
-        const frameCode = `MK-${String(artIndex + 1).padStart(2, '0')}${String(idx + 1).padStart(2, '0')}`;
         imagesHtml += `
           <button type="button" class="art-image-container" data-index="${idx}">
-            <span class="art-image-frame"><img src="${img.src}" alt="${art.title}" class="art-image" referrerpolicy="no-referrer" onerror="this.src='/api/placeholder/640/360'; this.onerror=null;"></span>
-            <span class="art-image-caption"><span class="frame-code">${frameCode}</span>${img.caption || ''}</span>
+            <span class="art-image-frame"><img src="${img.src}" alt="${escapeHtml(img.caption || art.title)}" class="art-image" loading="lazy" referrerpolicy="no-referrer"></span>
+            ${img.caption ? `<span class="art-image-caption">${escapeHtml(img.caption)}</span>` : ''}
           </button>`;
       });
       imagesHtml += `</div>`;
@@ -262,19 +260,15 @@ function renderArtCards() {
 
     let videoHtml = '';
     if (art.video) {
-      const embedUrl = typeof getYouTubeEmbedUrl === 'function' ? getYouTubeEmbedUrl(art.video) : null;
-      if (Array.isArray(embedUrl)) {
-        embedUrl.forEach(url => {
-          videoHtml += `<div class="art-video-container"><iframe src="${url}" frameborder="0" allowfullscreen></iframe></div>`;
-        });
-      } else if (embedUrl) {
-        videoHtml += `<div class="art-video-container"><iframe src="${embedUrl}" frameborder="0" allowfullscreen></iframe></div>`;
+      const embedUrl = getYouTubeEmbedUrl(art.video);
+      if (embedUrl) {
+        videoHtml += `<div class="art-video-container"><iframe src="${embedUrl}" title="${escapeHtml(art.title)}" frameborder="0" allowfullscreen loading="lazy"></iframe></div>`;
       }
     }
 
     item.innerHTML = `
       <div class="art-card">
-        <h3 class="art-header">${art.title}</h3>
+        <h2 class="art-header">${escapeHtml(art.title)}</h2>
         <div class="art-body">
           ${art.description || ''}
           ${imagesHtml}
@@ -282,35 +276,35 @@ function renderArtCards() {
         </div>
       </div>`;
 
-    item.querySelectorAll('.art-image-container').forEach(imgContainer => {
+    item.querySelectorAll('.art-image-container').forEach((imgContainer) => {
       imgContainer.addEventListener('click', () => {
-        const index = parseInt(imgContainer.dataset.index) || 0;
-        if (typeof openLightbox === 'function') {
-          openLightbox(processedImages, index);
-        }
+        const index = parseInt(imgContainer.dataset.index, 10) || 0;
+        openLightbox(processedImages, index);
       });
     });
   });
 }
 
+/* ===== Blog Inline Images -> Lightbox ===== */
 function setupBlogImages() {
   document.querySelectorAll('.blog-content').forEach((content) => {
-    const images = Array.from(content.querySelectorAll('img')).map((image) => ({
+    const imgs = Array.from(content.querySelectorAll('img'));
+    if (!imgs.length) return;
+
+    const images = imgs.map((image) => ({
       src: image.currentSrc || image.src,
       caption: image.closest('figure')?.querySelector('figcaption')?.textContent.trim() || image.alt || ''
     }));
 
-    content.querySelectorAll('img').forEach((image, index) => {
+    imgs.forEach((image, index) => {
       image.addEventListener('click', () => openLightbox(images, index));
     });
   });
 }
 
-/**
- * Buttons with data-copy put that text on the clipboard and confirm briefly
- */
+/* ===== Copy-to-Clipboard Buttons ===== */
 function setupCopyButtons() {
-  document.querySelectorAll('[data-copy]').forEach(button => {
+  document.querySelectorAll('[data-copy]').forEach((button) => {
     const label = button.textContent;
     button.addEventListener('click', async () => {
       try {
@@ -324,9 +318,7 @@ function setupCopyButtons() {
   });
 }
 
-/**
- * Set up the AI Career Assistant widget
- */
+/* ===== Cloudflare AI Career Assistant ===== */
 function setupChatBot() {
   const toggle = document.getElementById('chat-toggle');
   const chatWindow = document.getElementById('chat-window');
@@ -335,48 +327,44 @@ function setupChatBot() {
   const input = document.getElementById('chat-input');
   const messages = document.getElementById('chat-messages');
 
-  if (!toggle || !chatWindow) return;
+  if (!toggle || !chatWindow || !input || !messages) return;
 
-  toggle.onclick = () => {
-    const isActive = chatWindow.classList.toggle('active');
-    if (isActive) {
-      // Focus the input field after a short delay for the window transition
-      setTimeout(() => input.focus(), 150);
-    }
+  const setOpen = (isOpen) => {
+    chatWindow.classList.toggle('active', isOpen);
+    toggle.setAttribute('aria-expanded', String(isOpen));
+    if (isOpen) setTimeout(() => input.focus(), 120);
   };
-  close.onclick = () => chatWindow.classList.remove('active');
+
+  toggle.addEventListener('click', () => setOpen(!chatWindow.classList.contains('active')));
+  close?.addEventListener('click', () => setOpen(false));
 
   const handleSend = async () => {
     const text = input.value.trim();
     if (!text) return;
 
-    // Use markdown for user messages if marked is available
-    const userHtml = typeof marked !== 'undefined' ? marked.parse(text) : text;
+    const userHtml = typeof marked !== 'undefined' ? marked.parse(text) : escapeHtml(text);
     messages.innerHTML += `<div class="message user-message">${userHtml}</div>`;
     input.value = '';
     messages.scrollTop = messages.scrollHeight;
     input.disabled = true;
 
     const typingId = 'bot-typing-' + Date.now();
-    messages.innerHTML += `<div id="${typingId}" class="message bot-message italic">Consulting Career Assistant...</div>`;
+    messages.innerHTML += `<div id="${typingId}" class="message bot-message">Thinking…</div>`;
     messages.scrollTop = messages.scrollHeight;
 
     try {
-      let timezone = "unknown";
-      try {
-        timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-      } catch (e) {}
+      let timezone = 'unknown';
+      try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (e) {}
 
-      // Update this URL to your actual worker URL after running 'wrangler deploy'
       const response = await fetch('https://portfolio-chat.mkato.workers.dev', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           prompt: text,
           timestamp: new Date().toISOString(),
           userAgent: navigator.userAgent,
           language: navigator.language,
-          timezone: timezone,
+          timezone,
           screenRes: `${window.screen.width}x${window.screen.height}`,
           deviceMemory: navigator.deviceMemory || null,
           cores: navigator.hardwareConcurrency || null
@@ -390,31 +378,27 @@ function setupChatBot() {
 
       const data = await response.json();
       document.getElementById(typingId)?.remove();
-      const botReply = data.reply || "I'm not sure about that. Try asking about his work at Meta or Apple!";
-      const botHtml = typeof marked !== 'undefined' ? marked.parse(botReply) : botReply;
+      const botReply = data.reply || "Try asking about Michael's work at Meta, Apple, or Sledgehammer.";
+      const botHtml = typeof marked !== 'undefined' ? marked.parse(botReply) : escapeHtml(botReply);
       messages.innerHTML += `<div class="message bot-message">${botHtml}</div>`;
     } catch (error) {
-      console.error("Career Assistant Error:", error);
       document.getElementById(typingId)?.remove();
-      messages.innerHTML += `<div class="message bot-message"><strong>Error:</strong> ${error.message}<br><br>I'm having trouble connecting to my brain. Please try again later!</div>`;
+      messages.innerHTML += `<div class="message bot-message"><strong>Connection error:</strong> ${escapeHtml(error.message)}</div>`;
     } finally {
       input.disabled = false;
       input.focus();
+      messages.scrollTop = messages.scrollHeight;
     }
-    messages.scrollTop = messages.scrollHeight;
   };
 
-  send.onclick = handleSend;
-  input.onkeypress = (e) => { if (e.key === 'Enter') handleSend(); };
+  send?.addEventListener('click', handleSend);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSend(); });
 }
 
-/**
- * Setup simple anonymous commenting for blog posts
- */
-async function setupComments() {
-  // Target the post containers (cards in the feed or the main container on single pages)
+/* ===== Blog Comments (Cloudflare D1 Worker) ===== */
+function setupComments() {
   const targets = document.querySelectorAll('.blog-feed-item, #blog-post .container');
-  if (targets.length === 0) return;
+  if (!targets.length) return;
 
   targets.forEach(async (target) => {
     const slug = target.dataset.postId || target.id || window.location.pathname.split('/').filter(Boolean).pop();
@@ -424,9 +408,9 @@ async function setupComments() {
     commentWrapper.className = 'comments-section';
     commentWrapper.innerHTML = `
       <h3 class="comments-title">Comments</h3>
-      <div class="comments-list" id="comments-list-${slug}">Loading comments...</div>
+      <div class="comments-list" id="comments-list-${slug}">Loading comments…</div>
       <form class="comment-form" id="comment-form-${slug}">
-        <input type="text" placeholder="Name (anonymous)" class="comment-name-input" maxlength="50">
+        <input type="text" placeholder="Name (optional)" class="comment-name-input" maxlength="50">
         <textarea placeholder="Share your thoughts..." required class="comment-text-input" maxlength="2000"></textarea>
         <button type="submit" class="comment-submit-btn">Post Comment</button>
         <div class="comment-status"></div>
@@ -439,15 +423,14 @@ async function setupComments() {
     const status = form.querySelector('.comment-status');
     const submitBtn = form.querySelector('.comment-submit-btn');
 
-    // Load existing approved comments
     try {
-      const response = await fetch(`https://portfolio-comments.mkato.workers.dev/comments?slug=${slug}`);
+      const response = await fetch(`https://portfolio-comments.mkato.workers.dev/comments?slug=${encodeURIComponent(slug)}`);
       if (response.ok) {
         const comments = await response.json();
-        if (comments.length === 0) {
-          listContainer.innerHTML = '<p style="font-style: italic; opacity: 0.6;">No comments yet. Be the first!</p>';
+        if (!comments.length) {
+          listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.88rem;">No comments yet.</p>';
         } else {
-          listContainer.innerHTML = comments.map(c => `
+          listContainer.innerHTML = comments.map((c) => `
             <div class="comment-item">
               <div class="comment-meta">
                 <span class="comment-author">${escapeHtml(c.author)}</span>
@@ -459,34 +442,31 @@ async function setupComments() {
         }
       }
     } catch (e) {
-      listContainer.innerHTML = '<p>Error loading comments.</p>';
+      listContainer.innerHTML = '<p style="color: var(--text-muted); font-size: 0.88rem;">Unable to load comments right now.</p>';
     }
 
-    // Handle submission
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const author = form.querySelector('.comment-name-input').value.trim() || 'Anonymous';
       const text = form.querySelector('.comment-text-input').value.trim();
 
       submitBtn.disabled = true;
-      status.textContent = 'Posting...';
+      status.textContent = 'Posting…';
 
       try {
-        let timezone = "unknown";
-        try {
-          timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        } catch (e) {}
+        let timezone = 'unknown';
+        try { timezone = Intl.DateTimeFormat().resolvedOptions().timeZone; } catch (err) {}
 
         const response = await fetch('https://portfolio-comments.mkato.workers.dev/comments', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            slug, 
-            author, 
+          body: JSON.stringify({
+            slug,
+            author,
             text,
             userAgent: navigator.userAgent,
             language: navigator.language,
-            timezone: timezone,
+            timezone,
             screenRes: `${window.screen.width}x${window.screen.height}`,
             deviceMemory: navigator.deviceMemory || null,
             cores: navigator.hardwareConcurrency || null
@@ -494,7 +474,7 @@ async function setupComments() {
         });
 
         if (response.ok) {
-          status.textContent = 'Comment submitted! It will appear once approved.';
+          status.textContent = 'Comment submitted. It will appear once approved.';
           form.reset();
         } else {
           throw new Error();
@@ -508,24 +488,11 @@ async function setupComments() {
   });
 }
 
-function escapeHtml(unsafe) {
-  return unsafe
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-/**
- * Set up lightbox handlers. The lightbox is a modal <dialog>, so Esc, focus
- * trapping, and scroll lock (html:has(dialog:modal) in CSS) come from the browser.
- */
+/* ===== Lightbox Dialog ===== */
 function setupModalHandlers() {
   const lightbox = document.getElementById('lightbox-container');
   if (!lightbox) return;
 
-  // Close when clicking anywhere except the image or the nav controls
   lightbox.addEventListener('click', (e) => {
     const isImage = e.target.closest('.lightbox-image');
     const isNav = e.target.closest('.lightbox-prev, .lightbox-next, .lightbox-counter');
@@ -543,9 +510,6 @@ function setupModalHandlers() {
   });
 }
 
-/**
- * Open lightbox to display images at specified index
- */
 function openLightbox(images, startIndex = 0) {
   const lightbox = document.getElementById('lightbox-container');
   if (!lightbox || !images.length) return;
@@ -555,84 +519,55 @@ function openLightbox(images, startIndex = 0) {
   const lightboxCounter = lightbox.querySelector('.lightbox-counter');
   const prevButton = lightbox.querySelector('.lightbox-prev');
   const nextButton = lightbox.querySelector('.lightbox-next');
+  const nav = lightbox.querySelector('.lightbox-nav');
   if (!lightboxImage || !lightboxCaption || !lightboxCounter || !prevButton || !nextButton) return;
-  
+
   let currentIndex = startIndex || 0;
-  
-  // Function to update lightbox content
+
   function updateLightbox() {
-    // Set image with fallback
     lightboxImage.referrerPolicy = 'no-referrer';
     lightboxImage.src = images[currentIndex].src;
-    lightboxImage.onerror = function() {
-      this.src = '/api/placeholder/640/360';
-      this.onerror = null;
-    };
-    
-    // Update caption and counter
     lightboxCaption.textContent = images[currentIndex].caption || '';
     lightboxCounter.textContent = `${currentIndex + 1} / ${images.length}`;
-    
-    // Update buttons state
     prevButton.disabled = currentIndex === 0;
     nextButton.disabled = currentIndex === images.length - 1;
+    if (nav) nav.hidden = images.length <= 1;
   }
-  
-  // Set up navigation
+
   prevButton.onclick = () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      updateLightbox();
-    }
+    if (currentIndex > 0) { currentIndex--; updateLightbox(); }
   };
-  
   nextButton.onclick = () => {
-    if (currentIndex < images.length - 1) {
-      currentIndex++;
-      updateLightbox();
-    }
+    if (currentIndex < images.length - 1) { currentIndex++; updateLightbox(); }
   };
-  
-  // Show lightbox with current image
+
   updateLightbox();
   if (!lightbox.open) lightbox.showModal();
 }
 
-/**
- * Convert YouTube watch URLs to embed URLs
- */
 function getYouTubeEmbedUrl(url) {
   if (!url) return null;
-  
-  // Handle array of videos
-  if (Array.isArray(url)) {
-    return url.map(u => getYouTubeEmbedUrl(u)).filter(Boolean);
-  }
-  
-  // Handle various YouTube URL formats
   const regexPatterns = [
-    /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
-    /^([^"&?\/\s]{11})$/ // Direct video ID
+    /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/,
+    /^([^"&?/\s]{11})$/
   ];
-  
   for (const pattern of regexPatterns) {
     const match = url.match(pattern);
-    if (match && match[1]) {
-      return `https://www.youtube.com/embed/${match[1]}`;
-    }
+    if (match && match[1]) return `https://www.youtube.com/embed/${match[1]}`;
   }
-  
-  return url; // Return original if can't be parsed
+  return url;
 }
 
-/**
- * Normalize image data to consistent format
- */
 function normalizeImageData(images) {
   if (!images) return [];
-  
-  return images.map(img => {
-    if (typeof img === 'string') return { src: img, caption: '' };
-    return img;
-  });
+  return images.map((img) => (typeof img === 'string' ? { src: img, caption: '' } : img));
+}
+
+function escapeHtml(unsafe) {
+  return String(unsafe || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

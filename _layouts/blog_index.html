@@ -4,16 +4,29 @@
   {% include page_head.html style_path="/style.css" %}
 </head>
 <body data-page="blog">
-  <canvas id="background-canvas" aria-hidden="true"></canvas>
   {% include site-nav.html %}
   {% include site-header.html %}
+
   <main>
     {{ content }}
   </main>
+
+  <dialog id="lightbox-container" class="lightbox" aria-label="Image viewer">
+    <button type="button" class="lightbox-close" aria-label="Close" title="Close (Esc)">&times;</button>
+    <div class="lightbox-content">
+      <img id="lightbox-image" class="lightbox-image" alt="" referrerpolicy="no-referrer">
+      <div class="lightbox-caption"></div>
+      <div class="lightbox-nav">
+        <button type="button" class="lightbox-prev" aria-label="Previous image">←</button>
+        <span class="mono lightbox-counter"></span>
+        <button type="button" class="lightbox-next" aria-label="Next image">→</button>
+      </div>
+    </div>
+  </dialog>
+
   {% include site-footer.html %}
 
-  <script src="{{ 'site-content.js' | relative_url }}"></script>
-  <script src="{{ 'shaders.js' | relative_url }}"></script>
-  <script src="{{ 'index.js' | relative_url }}"></script>
+  <script src="{{ '/site-content.js' | relative_url }}" defer></script>
+  <script src="{{ '/index.js' | relative_url }}" defer></script>
 </body>
 </html>
