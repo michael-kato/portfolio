@@ -17,8 +17,13 @@ stack:
 summary: One or two crisp sentences explaining what it does and why it exists.
 # Optional fields:
 # featured: true
-# media_type: video   # video | image | video_tabs
+# media_type: video   # video | image | video_tabs | image_tabs
 # media: /resources/demo.mp4
+# media_caption: Optional lightbox caption for single image
+# images:             # used when media_type is image_tabs
+#   - label: Overview
+#     src: /resources/projects/shot_01.jpg
+#     caption: Caption shown in lightbox
 # image_lightbox: /resources/node_graph.png
 # image_lightbox_label: View node graph
 # playable: /resources/match2/index.html

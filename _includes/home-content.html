@@ -24,7 +24,7 @@
         {% for project in sorted_projects %}
           {% assign tag_list = project.tags | default: project.category | join: " " %}
           {% assign has_media = false %}
-          {% if project.media_type == "video" or project.media_type == "video_tabs" or project.media_type == "image" %}
+          {% if project.media_type == "video" or project.media_type == "video_tabs" or project.media_type == "image" or project.media_type == "image_tabs" %}
             {% assign has_media = true %}
           {% endif %}
 
@@ -93,8 +93,26 @@
                 </div>
               {% elsif project.media_type == "image" and project.media %}
                 <div class="project-entry__media">
-                  <button type="button" class="media-zoom-btn" data-lightbox-src="{{ project.media | relative_url }}" data-lightbox-caption="{{ project.title }}">
-                    <img src="{{ project.media | relative_url }}" alt="{{ project.title }}" loading="lazy">
+                  <button type="button" class="media-zoom-btn" data-lightbox-src="{{ project.media | relative_url }}" data-lightbox-caption="{{ project.media_caption | default: project.title | escape }}">
+                    <img src="{{ project.media | relative_url }}" alt="{{ project.media_alt | default: project.media_caption | default: project.title | escape }}" loading="lazy">
+                  </button>
+                </div>
+              {% elsif project.media_type == "image_tabs" and project.images %}
+                <div class="project-entry__media project-entry__media--tabs project-entry__media--image-tabs" data-image-tabs>
+                  <div class="media-tabs" role="tablist" aria-label="{{ project.title }} screenshots">
+                    {% for img in project.images %}
+                      <button type="button"
+                              class="media-tab{% if forloop.first %} is-active{% endif %}"
+                              role="tab"
+                              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                              data-image-src="{{ img.src | relative_url }}"
+                              data-image-caption="{{ img.caption | default: img.label | escape }}">
+                        {{ img.label }}
+                      </button>
+                    {% endfor %}
+                  </div>
+                  <button type="button" class="media-zoom-btn" data-image-stage aria-label="Expand {{ project.title }} screenshot">
+                    <img src="{{ project.images.first.src | relative_url }}" alt="{{ project.images.first.caption | default: project.title | escape }}" loading="lazy">
                   </button>
                 </div>
               {% endif %}
