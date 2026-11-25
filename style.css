@@ -701,6 +701,19 @@ html:has(dialog:modal) {
   cursor: zoom-in;
 }
 
+.project-entry__media--image-tabs .media-zoom-btn {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-inset);
+}
+
+.project-entry__media--image-tabs .media-zoom-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 /* Directory Rows (GitHub / Contact) */
 .directory-row {
   display: grid;

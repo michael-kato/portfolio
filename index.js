@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applyPortfolioVariant();
   setupProjectFilters();
   setupVideoTabs();
+  setupImageTabs();
   setupMeshShowcase();
   setupPlayableModal();
   setupLightboxTriggers();
@@ -113,6 +114,42 @@ function setupVideoTabs() {
         video.load();
         video.play().catch(() => {});
       });
+    });
+  });
+}
+
+/* ===== Multi-Image Screenshot Switcher ===== */
+function setupImageTabs() {
+  document.querySelectorAll('[data-image-tabs]').forEach((wrap) => {
+    const tabs = Array.from(wrap.querySelectorAll('.media-tab[data-image-src]'));
+    const stageBtn = wrap.querySelector('[data-image-stage]');
+    const imgEl = stageBtn?.querySelector('img');
+    if (!tabs.length || !stageBtn || !imgEl) return;
+
+    const images = tabs.map((tab) => ({
+      src: tab.dataset.imageSrc,
+      caption: tab.dataset.imageCaption || ''
+    }));
+    let currentIndex = 0;
+
+    tabs.forEach((tab, idx) => {
+      tab.addEventListener('click', () => {
+        if (idx === currentIndex) return;
+        currentIndex = idx;
+
+        tabs.forEach((t, i) => {
+          const active = i === idx;
+          t.classList.toggle('is-active', active);
+          t.setAttribute('aria-selected', String(active));
+        });
+
+        imgEl.src = images[idx].src;
+        imgEl.alt = images[idx].caption || imgEl.alt;
+      });
+    });
+
+    stageBtn.addEventListener('click', () => {
+      openLightbox(images, currentIndex);
     });
   });
 }
